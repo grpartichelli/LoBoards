@@ -11,12 +11,12 @@ public class Move {
         this.player = player;
     }
 
+    public static String positionToString(int x, int y) {
+        return (char)(x+65) + String.valueOf(y+1);
+    }
+
     @Override
     public String toString() {
-        return "Move{" +
-                "x=" + x +
-                ", y=" + y +
-                ", player=" + player +
-                '}';
+        return "Player " + player + ": " + positionToString(x, y);
     }
 }

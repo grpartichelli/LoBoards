@@ -6,38 +6,110 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <EditText
-        android:id="@+id/input"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Seu comando aqui"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/enter"
+    <Button
+        android:id="@+id/C3"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
+        android:text="C3"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toEndOf="@+id/B3"
+        app:layout_constraintTop_toBottomOf="@+id/C2" />
+
+    <Button
+        android:id="@+id/A3"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
+        android:text="A3"
+        app:layout_constraintEnd_toStartOf="@+id/B3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/A2" />
+
+    <Button
+        android:id="@+id/C1"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
+        android:text="C1"
+        app:layout_constraintBottom_toTopOf="@+id/C2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/B1" />
+
+    <Button
+        android:id="@+id/A1"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
+        android:text="A1"
+        app:layout_constraintBottom_toTopOf="@+id/A2"
+        app:layout_constraintEnd_toStartOf="@+id/B1"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/B1"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
+        android:text="B1"
+        app:layout_constraintBottom_toTopOf="@+id/B2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/A2"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
+        android:text="A2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/B2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/enter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Enter"
+        android:id="@+id/C2"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
+        android:text="C2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toEndOf="@+id/B2"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/B3"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
+        android:text="B3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/B2" />
+
+    <Button
+        android:id="@+id/B2"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
+        android:text="B2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/display"
-        android:layout_width="126dp"
-        android:layout_height="175dp"
+        android:id="@+id/info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Histórico da partida:\n"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/enter" />
+        app:layout_constraintTop_toBottomOf="@+id/B3" />
+
+    <ToggleButton
+        android:id="@+id/toggleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="Reconhecedor de fala"
+        android:textOff="DESLIGADO"
+        android:textOn="LIGADO"
+        app:layout_constraintBottom_toTopOf="@+id/B1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
