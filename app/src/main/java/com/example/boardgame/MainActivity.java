@@ -1,11 +1,13 @@
 package com.example.boardgame;
 
+import androidx.annotation.ColorInt;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
@@ -14,16 +16,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
-    private SpeechRecognizer speechRecognizer;
+    /*private SpeechRecognizer speechRecognizer;
     private Intent intent;
 
-    private ToggleButton toggleButton;
+    private ToggleButton toggleButton;*/
     private Button[][] buttons;
     private TextView info;
 
@@ -39,32 +42,35 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Objects.requireNonNull(getSupportActionBar()).hide();
 
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, PackageManager.PERMISSION_GRANTED);
+        //ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, PackageManager.PERMISSION_GRANTED);
 
         game = new TicTacToe();
+        setTitle(game.getName());
         board = game.getInitialBoard();
         player = Agent.PLAYER_1;
-        agent = new RandomAgent(Agent.PLAYER_2);
+        agent = new ZeroDepthAgent(Agent.PLAYER_2);
         turn = player;
 
-        toggleButton = findViewById(R.id.toggleButton);
+        //toggleButton = findViewById(R.id.toggleButton);
         buttons = new Button[][]{
-                {findViewById(R.id.A1), findViewById(R.id.B1), findViewById(R.id.C1)},
-                {findViewById(R.id.A2), findViewById(R.id.B2), findViewById(R.id.C2)},
-                {findViewById(R.id.A3), findViewById(R.id.B3), findViewById(R.id.C3)},
+                {findViewById(R.id.A1), findViewById(R.id.A2), findViewById(R.id.A3)},
+                {findViewById(R.id.B1), findViewById(R.id.B2), findViewById(R.id.B3)},
+                {findViewById(R.id.C1), findViewById(R.id.C2), findViewById(R.id.C3)}
         };
         info = findViewById(R.id.info);
 
         for(final int x : new int[]{0, 1, 2})
-            for(final int y : new int[]{0, 1, 2})
+            for(final int y : new int[]{0, 1, 2}) {
+                buttons[x][y].setText(Move.positionToString(x, y) + " vazio");
                 buttons[x][y].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         makeGameStep(x, y);
                     }
                 });
+            }
 
-        intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        /*intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
         speechRecognizer.setRecognitionListener(new RecognitionListener() {
@@ -111,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
                 else
                     speechRecognizer.stopListening();
             }
-        });
+        });*/
     }
 
     private void makeGameStep(int x, int y) {
@@ -120,15 +126,40 @@ public class MainActivity extends AppCompatActivity {
             board = game.applyMove(playerMove, board);
             turn = Agent.getOpponentOf(turn);
             buttons[x][y].setText(playerMove.toString());
+            buttons[x][y].setBackgroundColor(Color.GREEN);
             info.setText(info.getText() + "" + playerMove + "\n");
             if(!game.isTerminalState(board)) {
                 Move agentMove = agent.selectMove(game, board);
                 board = game.applyMove(agentMove, board);
                 turn = Agent.getOpponentOf(turn);
                 buttons[agentMove.x][agentMove.y].setText(agentMove.toString());
+                buttons[agentMove.x][agentMove.y].setBackgroundColor(Color.RED);
+                Toast.makeText(this, agentMove.toString(), Toast.LENGTH_SHORT).show();
                 info.setText(info.getText() + "" + agentMove + "\n");
+                if(game.isTerminalState(board))
+                    endGame();
             }
+            else
+                endGame();
         }
+    }
+
+    private void endGame() {
+        notifyResult();
+        openGameEndActivity();
+    }
+
+    private void notifyResult() {
+        if(game.isVictory(board, player))
+            Toast.makeText(this, "Você venceu!", Toast.LENGTH_LONG).show();
+        else if(game.isVictory(board, agent.getPlayer()))
+            Toast.makeText(this, "Você perdeu", Toast.LENGTH_LONG).show();
+        else
+            Toast.makeText(this, "Empate", Toast.LENGTH_LONG).show();
+    }
+
+    private void openGameEndActivity() {
+        startActivity(new Intent(this, GameEndActivity.class));
     }
 
 }

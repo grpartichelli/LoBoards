@@ -10,6 +10,7 @@
         android:id="@+id/C3"
         android:layout_width="125dp"
         android:layout_height="125dp"
+        android:backgroundTint="#000000"
         android:text="C3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/B3"
@@ -19,6 +20,7 @@
         android:id="@+id/A3"
         android:layout_width="125dp"
         android:layout_height="125dp"
+        android:backgroundTint="#000000"
         android:text="A3"
         app:layout_constraintEnd_toStartOf="@+id/B3"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,6 +30,7 @@
         android:id="@+id/C1"
         android:layout_width="125dp"
         android:layout_height="125dp"
+        android:backgroundTint="#000000"
         android:text="C1"
         app:layout_constraintBottom_toTopOf="@+id/C2"
         app:layout_constraintEnd_toEndOf="parent"
@@ -37,6 +40,7 @@
         android:id="@+id/A1"
         android:layout_width="125dp"
         android:layout_height="125dp"
+        android:backgroundTint="#000000"
         android:text="A1"
         app:layout_constraintBottom_toTopOf="@+id/A2"
         app:layout_constraintEnd_toStartOf="@+id/B1"
@@ -46,6 +50,7 @@
         android:id="@+id/B1"
         android:layout_width="125dp"
         android:layout_height="125dp"
+        android:backgroundTint="#000000"
         android:text="B1"
         app:layout_constraintBottom_toTopOf="@+id/B2"
         app:layout_constraintEnd_toEndOf="parent"
@@ -55,6 +60,7 @@
         android:id="@+id/A2"
         android:layout_width="125dp"
         android:layout_height="125dp"
+        android:backgroundTint="#000000"
         android:text="A2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/B2"
@@ -65,6 +71,7 @@
         android:id="@+id/C2"
         android:layout_width="125dp"
         android:layout_height="125dp"
+        android:backgroundTint="#000000"
         android:text="C2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -75,6 +82,7 @@
         android:id="@+id/B3"
         android:layout_width="125dp"
         android:layout_height="125dp"
+        android:backgroundTint="#000000"
         android:text="B3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -84,6 +92,7 @@
         android:id="@+id/B2"
         android:layout_width="125dp"
         android:layout_height="125dp"
+        android:backgroundTint="#000000"
         android:text="B2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -100,7 +109,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/B3" />
 
-    <ToggleButton
+    <!--<ToggleButton
         android:id="@+id/toggleButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -110,6 +119,6 @@
         app:layout_constraintBottom_toTopOf="@+id/B1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,7 +3,7 @@ package com.example.boardgame;
 import java.util.ArrayList;
 
 public abstract class Game {
-    public abstract int[][] enterCommandLine(String command, int[][] board, int player);
+    public abstract String getName();
     protected abstract int[][] getInitialBoard();
     protected abstract boolean isVictory(int[][] board, int player);
     protected abstract boolean isDraw(int[][] board);

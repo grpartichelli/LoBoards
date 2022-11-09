@@ -5,11 +5,8 @@ import java.util.Collections;
 
 public class TicTacToe extends Game {
     @Override
-    public int[][] enterCommandLine(String command, int[][] board, int player) {
-        int[][] newBoard = copyBoard(board);
-        String[] position = command.split(" ");
-        newBoard = applyMove(new Move(Integer.valueOf(position[0]), Integer.valueOf(position[1]), player), board);
-        return newBoard;
+    public String getName() {
+        return "Jogo da Velha";
     }
 
     @Override

@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.boardgame">
 
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-    
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -12,9 +12,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BoardGame">
         <activity
+            android:name=".GameEndActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
-            android:exported="true"
-            >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

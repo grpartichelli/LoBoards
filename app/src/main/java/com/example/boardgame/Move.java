@@ -15,8 +15,14 @@ public class Move {
         return (char)(x+65) + String.valueOf(y+1);
     }
 
+    private String getPlayerName() {
+        if(player == Agent.PLAYER_1)
+            return "Você";
+        return "Oponente";
+    }
+
     @Override
     public String toString() {
-        return "Player " + player + ": " + positionToString(x, y);
+        return getPlayerName() + ": " + positionToString(x, y);
     }
 }
