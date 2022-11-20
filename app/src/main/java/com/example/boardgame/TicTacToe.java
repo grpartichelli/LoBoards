@@ -47,14 +47,14 @@ public class TicTacToe extends Game {
 
     @Override
     protected boolean isLegalMove(Move move, int[][] board) {
-        return board[move.x][move.y] == 0;
+        return board[move.endX][move.endY] == 0;
     }
 
     @Override
     protected int[][] applyMove(Move move, int[][] board) {
         int[][] newBoard = copyBoard(board);
         if(move != null)
-            newBoard[move.x][move.y] = move.player;
+            newBoard[move.endX][move.endY] = move.player;
         return newBoard;
     }
 
@@ -70,5 +70,10 @@ public class TicTacToe extends Game {
         }
         Collections.shuffle(moves);
         return moves;
+    }
+
+    @Override
+    protected boolean isMovementGame(int[][] board) {
+        return false;
     }
 }

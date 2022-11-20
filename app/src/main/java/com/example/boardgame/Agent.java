@@ -25,4 +25,10 @@ public abstract class Agent {
             return PLAYER_2;
         return PLAYER_1;
     }
+
+    public static String getPlayerName(int player) {
+        if(player == Agent.PLAYER_1)
+            return "Você";
+        return "Oponente";
+    }
 }
