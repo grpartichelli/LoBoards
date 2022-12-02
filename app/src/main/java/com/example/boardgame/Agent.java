@@ -1,6 +1,7 @@
 package com.example.boardgame;
 
 public abstract class Agent {
+    public static final int EMPTY = 0;
     public static final int PLAYER_1 = 1;
     public static final int PLAYER_2 = 2;
 
@@ -29,6 +30,8 @@ public abstract class Agent {
     public static String getPlayerName(int player) {
         if(player == Agent.PLAYER_1)
             return "Você";
-        return "Oponente";
+        if(player == Agent.PLAYER_2)
+            return "Oponente";
+        return "Vazio";
     }
 }

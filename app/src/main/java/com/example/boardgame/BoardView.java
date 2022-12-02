@@ -11,8 +11,8 @@ import androidx.annotation.Nullable;
 
 public class BoardView extends View {
     private int[][] board = new TicTacToe().getInitialBoard();
-    private int selectedX = Move.OUT_OF_BOARD;
-    private int selectedY = Move.OUT_OF_BOARD;
+    private int selectedX = Movement.OUT_OF_BOARD;
+    private int selectedY = Movement.OUT_OF_BOARD;
 
     private final Paint paint = new Paint();
 
@@ -29,8 +29,8 @@ public class BoardView extends View {
 
     public void drawBoard(int[][] board) {
         this.board = board;
-        this.selectedX = Move.OUT_OF_BOARD;
-        this.selectedY = Move.OUT_OF_BOARD;
+        this.selectedX = Movement.OUT_OF_BOARD;
+        this.selectedY = Movement.OUT_OF_BOARD;
         update();
     }
 
@@ -61,13 +61,13 @@ public class BoardView extends View {
             startX = getPosition(x, getWidth(), getBoardWidth());
             startY = getPosition(0, getHeight(), getBoardHeight());
             stopX = startX;
-            stopY = getPosition(3-1, getHeight(), getBoardHeight());
+            stopY = getPosition(getBoardHeight()-1, getHeight(), getBoardHeight());
             canvas.drawLine(startX, startY, stopX, stopY, paint);
         }
         for(int y=0; y< getBoardHeight(); y++) {
             startX = getPosition(0, getWidth(), getBoardWidth());
             startY = getPosition(y, getHeight(), getBoardHeight());
-            stopX = getPosition(3-1, getWidth(), getBoardWidth());
+            stopX = getPosition(getBoardWidth()-1, getWidth(), getBoardWidth());
             stopY = startY;
             canvas.drawLine(startX, startY, stopX, stopY, paint);
         }
@@ -134,12 +134,12 @@ public class BoardView extends View {
         for(int x=0; x < getBoardWidth(); x++) {
             cx = getPosition(x, getWidth(), getBoardWidth());
             cy = getPosition(0, getHeight(), getBoardHeight()) - padding;
-            canvas.drawText(String.valueOf(Move.positionToString(x, 0).charAt(0)), cx, cy, paint);
+            canvas.drawText(String.valueOf(Movement.positionToString(x, 0).charAt(0)), cx, cy, paint);
         }
         for(int y=0; y < getBoardHeight(); y++) {
             cx = getPosition(0, getWidth(), getBoardWidth()) - padding;
             cy = getPosition(y, getHeight(), getBoardHeight()) + textSize/3;
-            canvas.drawText(String.valueOf(Move.positionToString(0, y).charAt(1)), cx, cy, paint);
+            canvas.drawText(String.valueOf(Movement.positionToString(0, y).charAt(1)), cx, cy, paint);
         }
     }
 
@@ -148,7 +148,7 @@ public class BoardView extends View {
     }
 
     private int getPieceRadius() {
-        return getWidth()/12;
+        return getWidth()/(getBoardWidth()*4);
     }
 
     private int getBoardWidth() {

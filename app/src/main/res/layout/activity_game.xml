@@ -7,107 +7,426 @@
     tools:context=".GameActivity">
 
     <Button
-        android:id="@+id/C3"
+        android:id="@+id/C3_3x3"
         android:layout_width="110dp"
         android:layout_height="110dp"
         android:background="@android:color/transparent"
         android:insetTop="0dp"
         android:insetBottom="0dp"
-        app:layout_constraintStart_toEndOf="@+id/B3"
-        app:layout_constraintTop_toBottomOf="@+id/C2"
+        android:visibility="invisible"
+        app:layout_constraintStart_toEndOf="@+id/B3_3x3"
+        app:layout_constraintTop_toBottomOf="@+id/C2_3x3"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <Button
-        android:id="@+id/A3"
+        android:id="@+id/A3_3x3"
         android:layout_width="110dp"
         android:layout_height="110dp"
         android:background="@android:color/transparent"
         android:insetTop="0dp"
         android:insetBottom="0dp"
-        app:layout_constraintEnd_toStartOf="@+id/B3"
-        app:layout_constraintTop_toBottomOf="@+id/A2"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toStartOf="@+id/B3_3x3"
+        app:layout_constraintTop_toBottomOf="@+id/A2_3x3"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <Button
-        android:id="@+id/C1"
+        android:id="@+id/C1_3x3"
         android:layout_width="110dp"
         android:layout_height="110dp"
         android:background="@android:color/transparent"
         android:insetTop="0dp"
         android:insetBottom="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/C2"
-        app:layout_constraintStart_toEndOf="@+id/B1"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/C2_3x3"
+        app:layout_constraintStart_toEndOf="@+id/B1_3x3"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <Button
-        android:id="@+id/A1"
+        android:id="@+id/A1_3x3"
         android:layout_width="110dp"
         android:layout_height="110dp"
         android:background="@android:color/transparent"
         android:insetTop="0dp"
         android:insetBottom="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/A2"
-        app:layout_constraintEnd_toStartOf="@+id/B1"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/A2_3x3"
+        app:layout_constraintEnd_toStartOf="@+id/B1_3x3"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <Button
-        android:id="@+id/B1"
+        android:id="@+id/B1_3x3"
         android:layout_width="110dp"
         android:layout_height="110dp"
         android:background="@android:color/transparent"
         android:insetTop="0dp"
         android:insetBottom="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/B2"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/B2_3x3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <Button
-        android:id="@+id/A2"
+        android:id="@+id/A2_3x3"
         android:layout_width="110dp"
         android:layout_height="110dp"
         android:background="@android:color/transparent"
         android:insetTop="0dp"
         android:insetBottom="0dp"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/B2"
+        app:layout_constraintEnd_toStartOf="@+id/B2_3x3"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <Button
-        android:id="@+id/C2"
+        android:id="@+id/C2_3x3"
         android:layout_width="110dp"
         android:layout_height="110dp"
         android:background="@android:color/transparent"
         android:insetTop="0dp"
         android:insetBottom="0dp"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/B2"
+        app:layout_constraintStart_toEndOf="@+id/B2_3x3"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <Button
-        android:id="@+id/B3"
+        android:id="@+id/B3_3x3"
         android:layout_width="110dp"
         android:layout_height="110dp"
         android:background="@android:color/transparent"
         android:insetTop="0dp"
         android:insetBottom="0dp"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/B2"
+        app:layout_constraintTop_toBottomOf="@+id/B2_3x3"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <Button
-        android:id="@+id/B2"
+        android:id="@+id/B2_3x3"
         android:layout_width="110dp"
         android:layout_height="110dp"
         android:background="@android:color/transparent"
         android:insetTop="0dp"
         android:insetBottom="0dp"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/D2_5x5"
+        android:layout_width="67dp"
+        android:layout_height="67dp"
+        android:background="@android:color/transparent"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/D3_5x5"
+        app:layout_constraintStart_toEndOf="@+id/C2_5x5"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/C3_5x5"
+        android:layout_width="67dp"
+        android:layout_height="67dp"
+        android:background="@android:color/transparent"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/A5_5x5"
+        android:layout_width="67dp"
+        android:layout_height="67dp"
+        android:background="@android:color/transparent"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toStartOf="@+id/B5_5x5"
+        app:layout_constraintTop_toBottomOf="@+id/A4_5x5"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/E5_5x5"
+        android:layout_width="67dp"
+        android:layout_height="67dp"
+        android:background="@android:color/transparent"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:visibility="invisible"
+        app:layout_constraintStart_toEndOf="@+id/D5_5x5"
+        app:layout_constraintTop_toBottomOf="@+id/E4_5x5"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/E1_5x5"
+        android:layout_width="67dp"
+        android:layout_height="67dp"
+        android:background="@android:color/transparent"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/E2_5x5"
+        app:layout_constraintStart_toEndOf="@+id/D1_5x5"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/A1_5x5"
+        android:layout_width="67dp"
+        android:layout_height="67dp"
+        android:background="@android:color/transparent"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/A2_5x5"
+        app:layout_constraintEnd_toStartOf="@+id/B1_5x5"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/A4_5x5"
+        android:layout_width="67dp"
+        android:layout_height="67dp"
+        android:background="@android:color/transparent"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toStartOf="@+id/B4_5x5"
+        app:layout_constraintTop_toBottomOf="@+id/A3_5x5"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/E4_5x5"
+        android:layout_width="67dp"
+        android:layout_height="67dp"
+        android:background="@android:color/transparent"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:visibility="invisible"
+        app:layout_constraintStart_toEndOf="@+id/D4_5x5"
+        app:layout_constraintTop_toBottomOf="@+id/E3_5x5"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/E2_5x5"
+        android:layout_width="67dp"
+        android:layout_height="67dp"
+        android:background="@android:color/transparent"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/E3_5x5"
+        app:layout_constraintStart_toEndOf="@+id/D2_5x5"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/A2_5x5"
+        android:layout_width="67dp"
+        android:layout_height="67dp"
+        android:background="@android:color/transparent"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/A3_5x5"
+        app:layout_constraintEnd_toStartOf="@+id/B2_5x5"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/D5_5x5"
+        android:layout_width="67dp"
+        android:layout_height="67dp"
+        android:background="@android:color/transparent"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:visibility="invisible"
+        app:layout_constraintStart_toEndOf="@+id/C5_5x5"
+        app:layout_constraintTop_toBottomOf="@+id/D4_5x5"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/B5_5x5"
+        android:layout_width="67dp"
+        android:layout_height="67dp"
+        android:background="@android:color/transparent"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toStartOf="@+id/C5_5x5"
+        app:layout_constraintTop_toBottomOf="@+id/B4_5x5"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/D1_5x5"
+        android:layout_width="67dp"
+        android:layout_height="67dp"
+        android:background="@android:color/transparent"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/D2_5x5"
+        app:layout_constraintStart_toEndOf="@+id/C1_5x5"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/B1_5x5"
+        android:layout_width="67dp"
+        android:layout_height="67dp"
+        android:background="@android:color/transparent"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/B2_5x5"
+        app:layout_constraintEnd_toStartOf="@+id/C1_5x5"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/A3_5x5"
+        android:layout_width="67dp"
+        android:layout_height="67dp"
+        android:background="@android:color/transparent"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/B3_5x5"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/E3_5x5"
+        android:layout_width="67dp"
+        android:layout_height="67dp"
+        android:background="@android:color/transparent"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/D3_5x5"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/C5_5x5"
+        android:layout_width="67dp"
+        android:layout_height="67dp"
+        android:background="@android:color/transparent"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/C4_5x5"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/C1_5x5"
+        android:layout_width="67dp"
+        android:layout_height="67dp"
+        android:background="@android:color/transparent"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/C2_5x5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/D4_5x5"
+        android:layout_width="67dp"
+        android:layout_height="67dp"
+        android:background="@android:color/transparent"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:visibility="invisible"
+        app:layout_constraintStart_toEndOf="@+id/C4_5x5"
+        app:layout_constraintTop_toBottomOf="@+id/D3_5x5"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/B4_5x5"
+        android:layout_width="67dp"
+        android:layout_height="67dp"
+        android:background="@android:color/transparent"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toStartOf="@+id/C4_5x5"
+        app:layout_constraintTop_toBottomOf="@+id/B3_5x5"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/B2_5x5"
+        android:layout_width="67dp"
+        android:layout_height="67dp"
+        android:background="@android:color/transparent"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/B3_5x5"
+        app:layout_constraintEnd_toStartOf="@+id/C2_5x5"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/C2_5x5"
+        android:layout_width="67dp"
+        android:layout_height="67dp"
+        android:background="@android:color/transparent"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/C3_5x5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/C4_5x5"
+        android:layout_width="67dp"
+        android:layout_height="67dp"
+        android:background="@android:color/transparent"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/C3_5x5"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/B3_5x5"
+        android:layout_width="67dp"
+        android:layout_height="67dp"
+        android:background="@android:color/transparent"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/C3_5x5"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/D3_5x5"
+        android:layout_width="67dp"
+        android:layout_height="67dp"
+        android:background="@android:color/transparent"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/C3_5x5"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="SpeakableTextPresentCheck" />
 
@@ -143,9 +462,9 @@
         android:textSize="14sp"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/C3"
+        app:layout_constraintEnd_toStartOf="@+id/C3_3x3"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/B3" />
+        app:layout_constraintTop_toBottomOf="@+id/B3_3x3" />
 
     <Button
         android:id="@+id/back"
@@ -161,15 +480,15 @@
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/A3"
-        app:layout_constraintTop_toBottomOf="@+id/B3" />
+        app:layout_constraintStart_toEndOf="@+id/A3_3x3"
+        app:layout_constraintTop_toBottomOf="@+id/B3_3x3" />
 
     <TextView
         android:id="@+id/gameName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Game Name"
-        android:textSize="24sp"
+        android:textSize="32sp"
         app:layout_constraintBottom_toTopOf="@+id/boardView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -180,7 +499,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Result"
-        android:textSize="18sp"
+        android:textSize="24sp"
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/boardView"
         app:layout_constraintEnd_toEndOf="parent"

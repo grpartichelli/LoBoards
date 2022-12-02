@@ -21,13 +21,23 @@
         android:id="@+id/buttonTicTacToe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:capitalize="none"
         android:contentDescription="Jogo da Velha"
         android:text="Jogo da Velha"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <Button
+        android:id="@+id/buttonAlquerque"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="Alquerque"
+        android:text="Alquerque"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonTapatan" />
 
     <Button
         android:id="@+id/buttonTapatan"

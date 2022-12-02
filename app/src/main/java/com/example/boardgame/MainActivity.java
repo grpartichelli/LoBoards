@@ -10,11 +10,12 @@ import java.util.HashMap;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
-    private Button buttonTicTacToe, buttonTapatan;
+    private Button buttonTicTacToe, buttonTapatan, buttonAlquerque;
 
     public final static HashMap<String, Game> games = new HashMap<String, Game>() {{
         put(new Tapatan().getName(), new Tapatan());
         put(new TicTacToe().getName(), new TicTacToe());
+        put(new Alquerque().getName(), new Alquerque());
     }};
 
     @Override
@@ -27,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
         buttonTapatan.setOnClickListener(view -> openGameActivity(new Tapatan().getName()));
         buttonTicTacToe = findViewById(R.id.buttonTicTacToe);
         buttonTicTacToe.setOnClickListener(view -> openGameActivity(new TicTacToe().getName()));
+        buttonAlquerque = findViewById(R.id.buttonAlquerque);
+        buttonAlquerque.setOnClickListener(view -> openGameActivity(new Alquerque().getName()));
     }
 
     private void openGameActivity(String gameName) {

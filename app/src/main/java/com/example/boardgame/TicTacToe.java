@@ -10,12 +10,12 @@ public class TicTacToe extends Game {
     }
 
     @Override
-    protected int[][] getInitialBoard() {
-        return new int[][]{{0, 0, 0}, {0, 0, 0}, {0, 0, 0}};
+    public int[][] getInitialBoard() {
+        return new int[][]{{Agent.EMPTY, Agent.EMPTY, Agent.EMPTY}, {Agent.EMPTY, Agent.EMPTY, Agent.EMPTY}, {Agent.EMPTY, Agent.EMPTY, Agent.EMPTY}};
     }
 
     @Override
-    protected boolean isVictory(int[][] board, int player) {
+    public boolean isVictory(int[][] board, int player) {
         return isLineVictory(board, player) || isColumnVictory(board, player) || isDiagonalVictory(board, player);
     }
 
@@ -37,29 +37,21 @@ public class TicTacToe extends Game {
     }
 
     @Override
-    protected boolean isDraw(int[][] board) {
+    public boolean isDraw(int[][] board) {
         for(int x=0; x < 3; x++)
             for(int y=0; y < 3; y++)
-                if(board[x][y] == 0)
+                if(board[x][y] == Agent.EMPTY)
                     return false;
         return !isVictory(board, Agent.PLAYER_1) && !isVictory(board, Agent.PLAYER_2);
     }
 
     @Override
-    protected boolean isLegalMove(Move move, int[][] board) {
-        return board[move.endX][move.endY] == 0;
+    public boolean isLegalMove(Move move, int[][] board) {
+        return move.movements.length == 1 && move.movements[0].isInsertion(board);
     }
 
     @Override
-    protected int[][] applyMove(Move move, int[][] board) {
-        int[][] newBoard = copyBoard(board);
-        if(move != null)
-            newBoard[move.endX][move.endY] = move.player;
-        return newBoard;
-    }
-
-    @Override
-    protected ArrayList<Move> getLegalMoves(int[][] board, int player) {
+    public ArrayList<Move> getLegalMoves(int[][] board, int player) {
         ArrayList<Move> moves = new ArrayList<>();
         for(int x=0; x < 3; x++) {
             for(int y=0; y < 3; y++) {
@@ -73,7 +65,12 @@ public class TicTacToe extends Game {
     }
 
     @Override
-    protected boolean isMovementGame(int[][] board) {
-        return false;
+    public boolean isInsertionGame(int[][] board) {
+        return true;
+    }
+
+    @Override
+    public Move getPlayerMove(int startX, int startY, int endX, int endY, int[][] board, int player) {
+        return new Move(endX, endY, player);
     }
 }

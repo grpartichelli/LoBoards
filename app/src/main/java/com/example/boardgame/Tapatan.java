@@ -10,47 +10,30 @@ public class Tapatan extends Game {
     }
 
     @Override
-    protected int[][] getInitialBoard() {
-        return new int[][]{{1, 0, 2}, {2, 0, 1}, {1, 0, 2}};
+    public int[][] getInitialBoard() {
+        return new int[][]{{Agent.PLAYER_1, Agent.EMPTY, Agent.PLAYER_2}, {Agent.PLAYER_2, Agent.EMPTY, Agent.PLAYER_1}, {Agent.PLAYER_1, Agent.EMPTY, Agent.PLAYER_2}};
     }
 
     @Override
-    protected boolean isVictory(int[][] board, int player) {
+    public boolean isVictory(int[][] board, int player) {
         return new TicTacToe().isVictory(board, player);
     }
 
     @Override
-    protected boolean isDraw(int[][] board) {
+    public boolean isDraw(int[][] board) {
         return false;
     }
 
     @Override
-    protected boolean isLegalMove(Move move, int[][] board) {
-        if(move.startX == Move.OUT_OF_BOARD && move.startY == Move.OUT_OF_BOARD)
-            return false;
-        return
-                board[move.startX][move.startY] == move.player &&
-                board[move.endX][move.endY] == 0 &&
-                Math.abs(move.startX - move.endX) <= 1 &&
-                Math.abs(move.startY - move.endY) <= 1 &&
-                        (move.startX % 2 == move.startY % 2 || Math.abs(move.startX - move.endX) + Math.abs(move.startY - move.endY) == 1);
+    public boolean isLegalMove(Move move, int[][] board) {
+        return move.movements.length == 1 && move.movements[0].isAdjacentInlineMovement(board);
     }
 
     @Override
-    protected int[][] applyMove(Move move, int[][] board) {
-        int[][] newBoard = copyBoard(board);
-        if(move != null) {
-            newBoard[move.startX][move.startY] = 0;
-            newBoard[move.endX][move.endY] = move.player;
-        }
-        return newBoard;
-    }
-
-    @Override
-    protected ArrayList<Move> getLegalMoves(int[][] board, int player) {
+    public ArrayList<Move> getLegalMoves(int[][] board, int player) {
         ArrayList<Move> moves = new ArrayList<>();
-        for(int x=0; x < 3; x++)
-            for(int y=0; y < 3; y++)
+        for(int x=0; x < getBoardWidth(board); x++)
+            for(int y=0; y < getBoardHeight(board); y++)
                 if(board[x][y] == player)
                     for(int[] eightRegion : new int[][]{{0,1}, {1,1}, {1,0}, {0,-1}, {-1,-1}, {-1, 0}, {1,-1}, {-1,1}})
                         if(isOnBoardLimits(x+eightRegion[0], y+eightRegion[1], board)) {
@@ -63,7 +46,12 @@ public class Tapatan extends Game {
     }
 
     @Override
-    protected boolean isMovementGame(int[][] board) {
-        return true;
+    public boolean isInsertionGame(int[][] board) {
+        return false;
+    }
+
+    @Override
+    public Move getPlayerMove(int startX, int startY, int endX, int endY, int[][] board, int player) {
+        return new Move(startX, startY, endX, endY, player);
     }
 }
