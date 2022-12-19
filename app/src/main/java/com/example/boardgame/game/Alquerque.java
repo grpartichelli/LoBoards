@@ -1,9 +1,11 @@
-package com.example.boardgame;
+package com.example.boardgame.game;
+
+import com.example.boardgame.move.Move;
+import com.example.boardgame.move.Movement;
+import com.example.boardgame.player.Player;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 
 public class Alquerque extends Game {
     @Override
@@ -14,11 +16,11 @@ public class Alquerque extends Game {
     @Override
     public int[][] getInitialBoard() {
         return new int[][]{
-                {Agent.PLAYER_1, Agent.PLAYER_1, Agent.PLAYER_1, Agent.PLAYER_2, Agent.PLAYER_2},
-                {Agent.PLAYER_1, Agent.PLAYER_1, Agent.PLAYER_1, Agent.PLAYER_2, Agent.PLAYER_2},
-                {Agent.PLAYER_1, Agent.PLAYER_1, Agent.EMPTY, Agent.PLAYER_2, Agent.PLAYER_2},
-                {Agent.PLAYER_1, Agent.PLAYER_1, Agent.PLAYER_2, Agent.PLAYER_2, Agent.PLAYER_2},
-                {Agent.PLAYER_1, Agent.PLAYER_1, Agent.PLAYER_2, Agent.PLAYER_2, Agent.PLAYER_2}
+                {Player.PLAYER_1, Player.PLAYER_1, Player.PLAYER_1, Player.PLAYER_2, Player.PLAYER_2},
+                {Player.PLAYER_1, Player.PLAYER_1, Player.PLAYER_1, Player.PLAYER_2, Player.PLAYER_2},
+                {Player.PLAYER_1, Player.PLAYER_1, Player.EMPTY, Player.PLAYER_2, Player.PLAYER_2},
+                {Player.PLAYER_1, Player.PLAYER_1, Player.PLAYER_2, Player.PLAYER_2, Player.PLAYER_2},
+                {Player.PLAYER_1, Player.PLAYER_1, Player.PLAYER_2, Player.PLAYER_2, Player.PLAYER_2}
         };
     }
 
@@ -26,7 +28,7 @@ public class Alquerque extends Game {
     public boolean isVictory(int[][] board, int player) {
         for(int x=0; x < 5; x++)
             for(int y=0; y < 5; y++)
-                if(board[x][y] == Agent.getOpponentOf(player))
+                if(board[x][y] == Player.getOpponentOf(player))
                     return false;
         return true;
     }
@@ -43,9 +45,8 @@ public class Alquerque extends Game {
         if(move.movements.length == 1)
             return move.movements[0].isAdjacentInlineMovement(board);
         int[][] newBoard = copyBoard(board);
-        List<Movement> movements = Arrays.asList(move.movements);
         ArrayList<Movement> removals = new ArrayList<>();
-        for(Movement movement : movements) {
+        for(Movement movement : move.movements) {
             if(movement.isRemoval(newBoard))
                 break;
             if(!movement.isAdjacentInlineOpponentJump(newBoard))
@@ -54,7 +55,7 @@ public class Alquerque extends Game {
             removals.add(Movement.getRemovalFor(movement));
         }
         int expectedRemovals = 0;
-        for(Movement movement : movements)
+        for(Movement movement : move.movements)
             for(Movement removal : removals)
                 if(movement.isRemoval(newBoard) && movement.startX == removal.startX && movement.startY == removal.startY)
                     expectedRemovals++;
@@ -91,8 +92,7 @@ public class Alquerque extends Game {
             for(int y=0; y < getBoardHeight(board); y++)
                 if(board[x][y] == player)
                     for(ArrayList<Movement> movementSequence : getEliminationMovementSequences(x, y, board, player, new ArrayList<>())) {
-                        ArrayList<Movement> movementsWithRemovals = new ArrayList<>();
-                        movementsWithRemovals.addAll(movementSequence);
+                        ArrayList<Movement> movementsWithRemovals = new ArrayList<>(movementSequence);
                         for(Movement movement : movementSequence)
                             movementsWithRemovals.add(Movement.getRemovalFor(movement));
                         Move move = new Move(movementsWithRemovals, player);
@@ -116,7 +116,7 @@ public class Alquerque extends Game {
                 Movement movement = new Movement(lastX, lastY, newX, newY, player);
                 int[] newEliminationSpot = new int[]{Movement.getRemovalFor(movement).startX, Movement.getRemovalFor(movement).startY};
                 if(movement.isAdjacentInlineOpponentJump(board) && !containsTuple(newEliminationSpot, eliminationSpots)) {
-                    ArrayList<int[]> newEliminationSpots = copyList(eliminationSpots);
+                    ArrayList<int[]> newEliminationSpots = new ArrayList<>(eliminationSpots);
                     newEliminationSpots.add(newEliminationSpot);
                     ArrayList<ArrayList<Movement>> nextEliminationMovementSequences =
                             getEliminationMovementSequences(newX, newY, applyMovement(movement, board), player, newEliminationSpots);
@@ -139,22 +139,10 @@ public class Alquerque extends Game {
         return movementSequences;
     }
 
-    private ArrayList<int[]> copyList(ArrayList<int[]> list) {
-        ArrayList<int[]> newList = new ArrayList<>();
-        for(int[] element : list)
-            newList.add(element);
-        return newList;
-    }
-
     private boolean containsTuple(int[] tuple, ArrayList<int[]> list) {
         for(int[] element : list)
             if(tuple[0] == element[0] && tuple[1] == element[1])
                 return true;
-        return false;
-    }
-
-    @Override
-    public boolean isInsertionGame(int[][] board) {
         return false;
     }
 

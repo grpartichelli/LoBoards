@@ -1,35 +1,37 @@
-package com.example.boardgame;
+package com.example.boardgame.move;
+
+import com.example.boardgame.player.Player;
 
 import java.util.ArrayList;
 
 public class Move {
     public Movement[] movements;
-    public int player;
+    public int playerId;
 
-    public Move(int x, int y, int player) {
-        movements = new Movement[]{new Movement(x, y, player)};
-        this.player = player;
+    public Move(int x, int y, int playerId) {
+        movements = new Movement[]{new Movement(x, y, playerId)};
+        this.playerId = playerId;
     }
 
-    public Move(int startX, int startY, int endX, int endY, int player) {
-        movements = new Movement[]{new Movement(startX, startY, endX, endY, player)};
-        this.player = player;
+    public Move(int startX, int startY, int endX, int endY, int playerId) {
+        movements = new Movement[]{new Movement(startX, startY, endX, endY, playerId)};
+        this.playerId = playerId;
     }
 
-    public Move(ArrayList<Movement> movements, int player) {
+    public Move(ArrayList<Movement> movements, int playerId) {
         this.movements = new Movement[movements.size()];
         for(int i=0; i < movements.size(); i++)
             this.movements[i] = movements.get(i);
-        this.player = player;
+        this.playerId = playerId;
     }
 
     @Override
     public String toString() {
         String result = "";
         if(movements.length > 0) {
-            result = Agent.getPlayerName(player) + ": ";
+            result = Player.getName(playerId) + ":";
             for(Movement movement : movements)
-                result += movement.toString();
+                result += " " + movement.toString();
         }
         return result;
     }

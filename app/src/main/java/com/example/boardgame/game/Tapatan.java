@@ -1,4 +1,7 @@
-package com.example.boardgame;
+package com.example.boardgame.game;
+
+import com.example.boardgame.move.Move;
+import com.example.boardgame.player.Player;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,7 +14,7 @@ public class Tapatan extends Game {
 
     @Override
     public int[][] getInitialBoard() {
-        return new int[][]{{Agent.PLAYER_1, Agent.EMPTY, Agent.PLAYER_2}, {Agent.PLAYER_2, Agent.EMPTY, Agent.PLAYER_1}, {Agent.PLAYER_1, Agent.EMPTY, Agent.PLAYER_2}};
+        return new int[][]{{Player.PLAYER_1, Player.EMPTY, Player.PLAYER_2}, {Player.PLAYER_2, Player.EMPTY, Player.PLAYER_1}, {Player.PLAYER_1, Player.EMPTY, Player.PLAYER_2}};
     }
 
     @Override
@@ -43,11 +46,6 @@ public class Tapatan extends Game {
                         }
         Collections.shuffle(moves);
         return moves;
-    }
-
-    @Override
-    public boolean isInsertionGame(int[][] board) {
-        return false;
     }
 
     @Override

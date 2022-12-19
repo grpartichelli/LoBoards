@@ -5,31 +5,37 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
-import android.os.Build;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import android.view.View;
 import android.view.accessibility.AccessibilityEvent;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.example.boardgame.game.Game;
+import com.example.boardgame.move.Move;
+import com.example.boardgame.move.Movement;
+import com.example.boardgame.player.Human;
+import com.example.boardgame.player.agent.MinimaxAgent;
+import com.example.boardgame.player.Player;
+import com.example.boardgame.ui.BoardView;
 
 import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class GameActivity extends AppCompatActivity {
     private BoardView boardView;
     private Button[][] buttons;
-    private TextView gameName, result, info;
+    private TextView gameName, status, info;
     private Button playAgain, back;
 
     private Game game;
     private int[][] board;
-    private int player;
-    private Agent agent;
     private int turn;
-    private int selectedX = Movement.OUT_OF_BOARD;
-    private int selectedY = Movement.OUT_OF_BOARD;
+    private Player player1;
+    private Player player2;
+    private boolean isGameRunning;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,17 +44,23 @@ public class GameActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Objects.requireNonNull(getSupportActionBar()).hide();
 
-        game = MainActivity.games.get(this.getIntent().getExtras().get("gameName"));
+        game = PreGameActivity.GAMES.get(this.getIntent().getExtras().get(PreGameActivity.GAME_NAME));
         setTitle(game.getName());
-        player = Agent.PLAYER_1;
-        agent = new MinimaxAgent(Agent.PLAYER_2);
+        player1 = new Human(Player.PLAYER_1);
+        if((boolean) this.getIntent().getExtras().get(PreGameActivity.IS_MULTIPLAYER))
+            player2 = new Human(Player.PLAYER_2);
+        else
+            player2 = new MinimaxAgent(Player.PLAYER_2, (String) this.getIntent().getExtras().get(PreGameActivity.DIFFICULTY));
 
         boardView = findViewById(R.id.boardView);
+        boardView.setPlayer1Color(getSharedPreferences(SettingsActivity.SETTINGS, MODE_PRIVATE).getInt(SettingsActivity.PLAYER_1_COLOR, Color.GREEN));
+        boardView.setPlayer2Color(getSharedPreferences(SettingsActivity.SETTINGS, MODE_PRIVATE).getInt(SettingsActivity.PLAYER_2_COLOR, Color.RED));
+        boardView.setCursorColor(getSharedPreferences(SettingsActivity.SETTINGS, MODE_PRIVATE).getInt(SettingsActivity.CURSOR_COLOR, Color.BLUE));
         setUpButtons(game);
         gameName = findViewById(R.id.gameName);
         gameName.setText(game.getName());
         gameName.setTextColor(Color.BLACK);
-        result = findViewById(R.id.result);
+        status = findViewById(R.id.status);
         info = findViewById(R.id.info);
         info.setTextColor(Color.WHITE);
         info.setText("Histórico");
@@ -58,6 +70,7 @@ public class GameActivity extends AppCompatActivity {
         back.setOnClickListener(view -> openMainActivity());
 
         resetGame();
+        new Thread(GameActivity.this::gameLoop).start();
     }
 
     private void setUpButtons(Game game) {
@@ -79,7 +92,7 @@ public class GameActivity extends AppCompatActivity {
             for(final int x : new int[]{0, 1, 2})
                 for(final int y : new int[]{0, 1, 2}) {
                     buttons[x][y].setVisibility(View.VISIBLE);
-                    buttons[x][y].setOnClickListener(view -> makeGameStep(x, y));
+                    buttons[x][y].setOnClickListener(view -> setCursorByClick(x, y));
                 }
         }
         else {
@@ -87,100 +100,107 @@ public class GameActivity extends AppCompatActivity {
             for(final int x : new int[]{0, 1, 2, 3, 4})
                 for(final int y : new int[]{0, 1, 2, 3, 4}) {
                     buttons[x][y].setVisibility(View.VISIBLE);
-                    buttons[x][y].setOnClickListener(view -> makeGameStep(x, y));
+                    buttons[x][y].setOnClickListener(view -> setCursorByClick(x, y));
                 }
         }
     }
 
-    private void makeGameStep(int x, int y) {
-        if(player == turn && !game.isTerminalState(board)) {
-            Move playerMove = null;
-            if(!game.isInsertionGame(board)) {
-                if(board[x][y] == player) {
-                    selectPiece(x, y);
-                    return;
-                }
-                else
-                    playerMove = game.getPlayerMove(selectedX, selectedY, x, y, board, player);
-            }
-            else
-                playerMove = game.getPlayerMove(Movement.OUT_OF_BOARD, Movement.OUT_OF_BOARD, x, y, board, player);
-            if(game.isLegalMove(playerMove, board)) {
-                makeMove(playerMove);
-                if(!game.isTerminalState(board)) {
-                    makeMove(agent.selectMove(game, board));
-                    updateButtonsDescription();
-                    if(game.isTerminalState(board))
-                        endGame();
-                }
-                else
-                    endGame();
-            }
+    private void setCursorByClick(int x, int y) {
+        Player player = Player.selectPlayerById(player1, player2, turn);
+        if(player instanceof Human) {
+            ((Human) player).setCursor(x, y);
+            buttons[x][y].announceForAccessibility("Selecionado " + Movement.positionToString(x, y));
+            boardView.drawBoard(board, x, y);
         }
     }
 
-    private void selectPiece(int x, int y) {
-        selectedX = x;
-        selectedY = y;
-        buttons[x][y].announceForAccessibility("Selecionado " + Movement.positionToString(x, y));
-        boardView.drawBoard(board, selectedX, selectedY);
+    private void gameLoop() {
+        while(true) {
+            if(isGameRunning) {
+                Player player = Player.selectPlayerById(player1, player2, turn);
+                if (player.isReady()) {
+                    Move move = player.getMove(game, board);
+                    if (game.isLegalMove(move, board)) {
+                        makeMove(move);
+                        if(game.isTerminalState(board))
+                            endGame();
+                    }
+                }
+            }
+        }
     }
 
     private void makeMove(Move move) {
         if(move == null)
             return;
-        board = game.applyMove(move, board);
-        turn = Agent.getOpponentOf(turn);
-        boardView.announceForAccessibility(move.toString());
-        boardView.drawBoard(board);
+        runOnUiThread(() -> boardView.announceForAccessibility(move.toString()));
+        runOnUiThread(() -> boardView.drawBoard(board, move));
+        board = Game.applyMove(move, board);
+        runOnUiThread(() -> updateButtonsDescription());
+        turn = Player.getOpponentOf(turn);
+        showTurn();
         info.setContentDescription(info.getContentDescription() + "" + move + "\n");
     }
 
     private void updateButtonsDescription() {
         for(int x = 0; x < Game.getBoardWidth(board); x++)
             for(int y = 0; y < Game.getBoardHeight(board); y++)
-                buttons[x][y].setContentDescription(Movement.positionToString(x, y) + ": " + Agent.getPlayerName(board[x][y]));
+                buttons[x][y].setContentDescription(Movement.positionToString(x, y) + ": " + Player.getName(board[x][y]));
     }
 
     private void endGame() {
+        isGameRunning = false;
         showResult();
-        result.setVisibility(View.VISIBLE);
-        playAgain.setVisibility(View.VISIBLE);
-        //playAgain.requestFocus();
-        //playAgain.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);
+        runOnUiThread(() -> {
+            playAgain.setVisibility(View.VISIBLE);
+            //playAgain.requestFocus();//
+            //playAgain.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);//
+        });
+
     }
 
     private void resetGame() {
+        turn = Player.getRandomId();
+        showTurn();
         board = game.getInitialBoard();
         updateButtonsDescription();
-        turn = player;
         info.setContentDescription("Histórico da partida:\n");
         boardView.drawBoard(board);
-        result.setVisibility(View.INVISIBLE);
-        result.setText("");
         playAgain.setVisibility(View.INVISIBLE);
         buttons[0][0].requestFocus();
         buttons[0][0].sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);
+        isGameRunning = true;
+    }
+
+    private void showTurn() {
+        String statusMessage = "Vez do " + Player.getName(turn);
+        runOnUiThread(() -> {
+            status.setText(statusMessage);
+            status.announceForAccessibility(statusMessage);
+        });
+        status.setTextColor(boardView.getPlayerColor(turn));
     }
 
     private void showResult() {
         int resultColor;
         String resultText;
-        if(game.isVictory(board, player)) {
-            resultText = "Você venceu!";
-            resultColor = Color.BLUE;
+        if(game.isVictory(board, player1.getId())) {
+            resultText = Player.getName(Player.PLAYER_1) +  " venceu!";
+            resultColor = boardView.getPlayerColor(Player.PLAYER_1);
         }
-        else if(game.isVictory(board, agent.getPlayer())) {
-            resultText = "Você perdeu";
-            resultColor = Color.RED;
+        else if(game.isVictory(board, player2.getId())) {
+            resultText = Player.getName(Player.PLAYER_2) +  " venceu!";
+            resultColor = boardView.getPlayerColor(Player.PLAYER_2);
         }
         else {
             resultText = "Empate";
-            resultColor = Color.GRAY;
+            resultColor = boardView.getPlayerColor(Player.EMPTY);
         }
-        result.announceForAccessibility(resultText);
-        result.setText(resultText);
-        result.setTextColor(resultColor);
+        runOnUiThread(() -> status.announceForAccessibility(resultText));
+        SpannableString spanString = new SpannableString(resultText.toUpperCase());
+        spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, spanString.length(), 0);
+        runOnUiThread(() -> status.setText(spanString));
+        status.setTextColor(resultColor);
     }
 
     private void openMainActivity() {

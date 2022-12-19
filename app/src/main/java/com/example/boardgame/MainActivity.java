@@ -6,17 +6,11 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.HashMap;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
-    private Button buttonTicTacToe, buttonTapatan, buttonAlquerque;
 
-    public final static HashMap<String, Game> games = new HashMap<String, Game>() {{
-        put(new Tapatan().getName(), new Tapatan());
-        put(new TicTacToe().getName(), new TicTacToe());
-        put(new Alquerque().getName(), new Alquerque());
-    }};
+    private Button singleplayer, multiplayer, settings, credits;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,17 +18,27 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Objects.requireNonNull(getSupportActionBar()).hide();
 
-        buttonTapatan = findViewById(R.id.buttonTapatan);
-        buttonTapatan.setOnClickListener(view -> openGameActivity(new Tapatan().getName()));
-        buttonTicTacToe = findViewById(R.id.buttonTicTacToe);
-        buttonTicTacToe.setOnClickListener(view -> openGameActivity(new TicTacToe().getName()));
-        buttonAlquerque = findViewById(R.id.buttonAlquerque);
-        buttonAlquerque.setOnClickListener(view -> openGameActivity(new Alquerque().getName()));
+        singleplayer = findViewById(R.id.buttonSingleplayer);
+        singleplayer.setOnClickListener(view -> openPreGameActivity(false));
+        multiplayer = findViewById(R.id.buttonMultiplayer);
+        multiplayer.setOnClickListener(view -> openPreGameActivity(true));
+        settings = findViewById(R.id.buttonSettings);
+        settings.setOnClickListener(view -> openSettingsActivity());
+        credits = findViewById(R.id.buttonCredits);
+        credits.setOnClickListener(view -> openCreditsActivity());
     }
 
-    private void openGameActivity(String gameName) {
-        Intent intent = new Intent(this, GameActivity.class);
-        intent.putExtra("gameName", gameName);
+    private void openPreGameActivity(boolean isMultiplayer) {
+        Intent intent = new Intent(this, PreGameActivity.class);
+        intent.putExtra(PreGameActivity.IS_MULTIPLAYER, isMultiplayer);
         startActivity(intent);
+    }
+
+    private void openSettingsActivity() {
+        startActivity(new Intent(this, SettingsActivity.class));
+    }
+
+    private void openCreditsActivity() {
+        startActivity(new Intent(this, CreditsActivity.class));
     }
 }

@@ -1,4 +1,6 @@
-package com.example.boardgame;
+package com.example.boardgame.move;
+
+import com.example.boardgame.player.Player;
 
 public class Movement {
     public static final int OUT_OF_BOARD = -1;
@@ -38,12 +40,12 @@ public class Movement {
     }
 
     public boolean isAdjacentInlineOpponentJump(int[][] board) {
-        if(isInsertion(board) || isRemoval(board))
+        if(startX == OUT_OF_BOARD || startY == OUT_OF_BOARD || endX == OUT_OF_BOARD || endY == OUT_OF_BOARD)
             return false;
         return
                 board[startX][startY] == piece &&
-                        board[endX][endY] == Agent.EMPTY &&
-                        board[getRemovalFor(this).startX][getRemovalFor(this).startY] == Agent.getOpponentOf(piece) &&
+                        board[endX][endY] == Player.EMPTY &&
+                        board[getRemovalFor(this).startX][getRemovalFor(this).startY] == Player.getOpponentOf(piece) &&
                         Math.abs(startX - endX) <= 2 &&
                         Math.abs(startY - endY) <= 2 &&
                         (startX % 2 == startY % 2 ||
@@ -51,11 +53,11 @@ public class Movement {
     }
 
     public boolean isAdjacentInlineMovement(int[][] board) {
-        if(isInsertion(board) || isRemoval(board))
+        if(startX == OUT_OF_BOARD || startY == OUT_OF_BOARD || endX == OUT_OF_BOARD || endY == OUT_OF_BOARD)
             return false;
         return
                 board[startX][startY] == piece &&
-                        board[endX][endY] == Agent.EMPTY &&
+                        board[endX][endY] == Player.EMPTY &&
                         Math.abs(startX - endX) <= 1 &&
                         Math.abs(startY - endY) <= 1 &&
                         (startX % 2 == startY % 2 ||
@@ -68,13 +70,13 @@ public class Movement {
                 (jump.startY + jump.endY)/2,
                 Movement.OUT_OF_BOARD,
                 Movement.OUT_OF_BOARD,
-                Agent.getOpponentOf(jump.piece));
+                Player.getOpponentOf(jump.piece));
     }
 
     public boolean isInsertion(int[][] board) {
         if(endX == OUT_OF_BOARD || endY == OUT_OF_BOARD)
             return false;
-        return startX == OUT_OF_BOARD && startY == OUT_OF_BOARD && board[endX][endY] == Agent.EMPTY;
+        return startX == OUT_OF_BOARD && startY == OUT_OF_BOARD && board[endX][endY] == Player.EMPTY;
     }
 
     public boolean isRemoval(int[][] board) {

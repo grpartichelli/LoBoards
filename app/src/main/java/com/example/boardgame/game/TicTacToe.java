@@ -1,4 +1,7 @@
-package com.example.boardgame;
+package com.example.boardgame.game;
+
+import com.example.boardgame.move.Move;
+import com.example.boardgame.player.Player;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,7 +14,7 @@ public class TicTacToe extends Game {
 
     @Override
     public int[][] getInitialBoard() {
-        return new int[][]{{Agent.EMPTY, Agent.EMPTY, Agent.EMPTY}, {Agent.EMPTY, Agent.EMPTY, Agent.EMPTY}, {Agent.EMPTY, Agent.EMPTY, Agent.EMPTY}};
+        return new int[][]{{Player.EMPTY, Player.EMPTY, Player.EMPTY}, {Player.EMPTY, Player.EMPTY, Player.EMPTY}, {Player.EMPTY, Player.EMPTY, Player.EMPTY}};
     }
 
     @Override
@@ -40,9 +43,9 @@ public class TicTacToe extends Game {
     public boolean isDraw(int[][] board) {
         for(int x=0; x < 3; x++)
             for(int y=0; y < 3; y++)
-                if(board[x][y] == Agent.EMPTY)
+                if(board[x][y] == Player.EMPTY)
                     return false;
-        return !isVictory(board, Agent.PLAYER_1) && !isVictory(board, Agent.PLAYER_2);
+        return !isVictory(board, Player.PLAYER_1) && !isVictory(board, Player.PLAYER_2);
     }
 
     @Override
@@ -62,11 +65,6 @@ public class TicTacToe extends Game {
         }
         Collections.shuffle(moves);
         return moves;
-    }
-
-    @Override
-    public boolean isInsertionGame(int[][] board) {
-        return true;
     }
 
     @Override

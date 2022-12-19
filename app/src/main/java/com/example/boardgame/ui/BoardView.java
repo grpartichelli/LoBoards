@@ -1,4 +1,4 @@
-package com.example.boardgame;
+package com.example.boardgame.ui;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -9,10 +9,21 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
+import com.example.boardgame.game.Game;
+import com.example.boardgame.game.TicTacToe;
+import com.example.boardgame.move.Move;
+import com.example.boardgame.move.Movement;
+import com.example.boardgame.player.Player;
+
+import java.util.ArrayList;
+import java.util.Collections;
+
 public class BoardView extends View {
     private int[][] board = new TicTacToe().getInitialBoard();
     private int selectedX = Movement.OUT_OF_BOARD;
     private int selectedY = Movement.OUT_OF_BOARD;
+    private ArrayList<Movement> movements = new ArrayList<>();
+    private int player1Color = Color.GREEN, player2Color = Color.RED, cursorColor = Color.BLUE;
 
     private final Paint paint = new Paint();
 
@@ -28,30 +39,39 @@ public class BoardView extends View {
     }
 
     public void drawBoard(int[][] board) {
-        this.board = board;
+        this.board = Game.copyBoard(board);
         this.selectedX = Movement.OUT_OF_BOARD;
         this.selectedY = Movement.OUT_OF_BOARD;
-        update();
+        invalidate();
     }
 
     public void drawBoard(int[][] board, int selectedX, int selectedY) {
-        this.board = board;
+        this.board = Game.copyBoard(board);
         this.selectedX = selectedX;
         this.selectedY = selectedY;
-        update();
+        invalidate();
     }
 
-    private void update() {
-        setVisibility(View.INVISIBLE);
-        setVisibility(View.VISIBLE);
+    public void drawBoard(int[][] board, Move move) {
+        if(this.board == null)
+            this.board = Game.copyBoard(board);
+        this.selectedX = Movement.OUT_OF_BOARD;
+        this.selectedY = Movement.OUT_OF_BOARD;
+        Collections.addAll(this.movements, move.movements);
+        invalidate();
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         drawLines(canvas);
-        drawPieces(canvas);
         drawCoordinates(canvas);
+        drawPieces(canvas);
+        if(!movements.isEmpty()) {
+            board = Game.applyMovement(movements.get(0), board);
+            movements.remove(0);
+            postInvalidateDelayed(300);
+        }
     }
 
     private void drawLines(Canvas canvas) {
@@ -91,15 +111,32 @@ public class BoardView extends View {
                 }
     }
 
+    private void drawCoordinates(Canvas canvas) {
+        int cx, cy, padding = (3*getPieceRadius())/2, textSize = getPieceRadius()/2;
+        paint.setColor(Color.BLACK);
+        paint.setTextAlign(Paint.Align.CENTER);
+        paint.setTextSize(textSize);
+        for(int x=0; x < getBoardWidth(); x++) {
+            cx = getCrescentPosition(x, getWidth(), getBoardWidth());
+            cy = getPosition(getBoardHeight() - 1, getHeight(), getBoardHeight()) + padding + textSize;
+            canvas.drawText(String.valueOf(Movement.positionToString(x, 0).charAt(0)), cx, cy, paint);
+        }
+        for(int y=0; y < getBoardHeight(); y++) {
+            cx = getPosition(0, getWidth(), getBoardWidth()) - padding;
+            cy = getDecrescentPosition(y, getHeight(), getBoardHeight()) + textSize/3;
+            canvas.drawText(String.valueOf(Movement.positionToString(0, y).charAt(1)), cx, cy, paint);
+        }
+    }
+
     private void drawPieces(Canvas canvas) {
         int cx, cy, radius;
         for(int x=0; x < getBoardWidth(); x++)
             for(int y=0; y < getBoardHeight(); y++) {
-                cx = getPosition(x, getWidth(), getBoardWidth());
-                cy = getPosition(y, getHeight(), getBoardHeight());
-                if(board[x][y] != 0){
+                cx = getCrescentPosition(x, getWidth(), getBoardWidth());
+                cy = getDecrescentPosition(y, getHeight(), getBoardHeight());
+                if(board[x][y] != Player.EMPTY){
                     if(selectedX == x && selectedY == y) {
-                        paint.setColor(Color.BLUE);
+                        paint.setColor(cursorColor);
                         radius = getPieceRadius()+4;
                     }
                     else {
@@ -108,43 +145,25 @@ public class BoardView extends View {
                     }
                     canvas.drawCircle(cx, cy, radius, paint);
                 }
-                switch (board[x][y]) {
-                    case Agent.PLAYER_1:
-                        radius = getPieceRadius();
-                        paint.setColor(Color.GREEN);
-                        break;
-                    case Agent.PLAYER_2:
-                        radius = getPieceRadius();
-                        paint.setColor(Color.RED);
-                        break;
-                    default:
-                        radius = getPieceRadius()/2;
-                        paint.setColor(Color.GRAY);
-                        break;
-                }
+                if (board[x][y] == Player.EMPTY)
+                    radius = getPieceRadius()/2;
+                else
+                    radius = getPieceRadius();
+                paint.setColor(getPlayerColor(board[x][y]));
                 canvas.drawCircle(cx, cy, radius, paint);
             }
     }
 
-    private void drawCoordinates(Canvas canvas) {
-        int cx, cy, padding = (3*getPieceRadius())/2, textSize = getPieceRadius()/2;
-        paint.setColor(Color.BLACK);
-        paint.setTextAlign(Paint.Align.CENTER);
-        paint.setTextSize(textSize);
-        for(int x=0; x < getBoardWidth(); x++) {
-            cx = getPosition(x, getWidth(), getBoardWidth());
-            cy = getPosition(0, getHeight(), getBoardHeight()) - padding;
-            canvas.drawText(String.valueOf(Movement.positionToString(x, 0).charAt(0)), cx, cy, paint);
-        }
-        for(int y=0; y < getBoardHeight(); y++) {
-            cx = getPosition(0, getWidth(), getBoardWidth()) - padding;
-            cy = getPosition(y, getHeight(), getBoardHeight()) + textSize/3;
-            canvas.drawText(String.valueOf(Movement.positionToString(0, y).charAt(1)), cx, cy, paint);
-        }
+    private int getPosition(int index, int totalSize, int totalQuantity) {
+        return getCrescentPosition(index, totalSize, totalQuantity);
     }
 
-    private int getPosition(int index, int totalSize, int totalQuantity) {
+    private int getCrescentPosition(int index, int totalSize, int totalQuantity) {
         return (totalSize/(totalQuantity+1)) * (index+1);
+    }
+
+    private int getDecrescentPosition(int index, int totalSize, int totalQuantity) {
+        return (totalSize/(totalQuantity+1)) * (totalQuantity - index);
     }
 
     private int getPieceRadius() {
@@ -156,5 +175,25 @@ public class BoardView extends View {
     }
     private int getBoardHeight() {
         return Game.getBoardHeight(board);
+    }
+
+    public int getPlayerColor(int playerId) {
+        if(playerId == Player.PLAYER_1)
+            return player1Color;
+        if(playerId == Player.PLAYER_2)
+            return player2Color;
+        return Color.GRAY;
+    }
+
+    public void setPlayer1Color(int player1Color) {
+        this.player1Color = player1Color;
+    }
+
+    public void setPlayer2Color(int player2Color) {
+        this.player2Color = player2Color;
+    }
+
+    public void setCursorColor(int cursorColor) {
+        this.cursorColor = cursorColor;
     }
 }

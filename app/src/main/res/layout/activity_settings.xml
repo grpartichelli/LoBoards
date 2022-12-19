@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal|center_vertical"
+    android:orientation="vertical"
+    tools:context=".SettingsActivity">
+
+    <TextView
+        android:id="@+id/settingsTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="100sp"
+        android:gravity="center"
+        android:text="Configurações"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textColor="#000000" />
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="20sp"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/colorChooser1Label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:labelFor="@id/colorChooser1"
+            android:text="Cor do jogador 1"
+            android:textSize="20sp"
+            android:textColor="#000000" />
+
+        <Spinner
+            android:id="@+id/colorChooser1"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            tools:layout_editor_absoluteY="284dp" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="20sp"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/colorChooser2Label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:labelFor="@id/colorChooser2"
+            android:text="Cor do jogador 2"
+            android:textSize="20sp"
+            android:textColor="#000000" />
+
+        <Spinner
+            android:id="@+id/colorChooser2"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            tools:layout_editor_absoluteY="377dp" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="50sp"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/colorChooser3Label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:labelFor="@id/colorChooser2"
+            android:text="Cor do cursor"
+            android:textSize="20sp"
+            android:textColor="#000000" />
+
+        <Spinner
+            android:id="@+id/colorChooser3"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            tools:layout_editor_absoluteY="472dp" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#000000"
+            android:text="Salvar e voltar"
+            android:textSize="20sp"
+            app:cornerRadius="200dp" />
+    </TableRow>
+
+</TableLayout>
