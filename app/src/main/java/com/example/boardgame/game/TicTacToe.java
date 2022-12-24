@@ -71,4 +71,9 @@ public class TicTacToe extends Game {
     public Move getPlayerMove(int startX, int startY, int endX, int endY, int[][] board, int player) {
         return new Move(endX, endY, player);
     }
+
+    @Override
+    public String getRules() {
+        return "Em sua vez, o jogador pode inserir uma peça em uma posição vazia do tabuleiro. Ganha aquele que conseguir alinhar três peças.";
+    }
 }

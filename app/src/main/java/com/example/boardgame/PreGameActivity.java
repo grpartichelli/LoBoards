@@ -66,6 +66,7 @@ public class PreGameActivity extends AppCompatActivity {
         intent.putExtra(DIFFICULTY, getCheckedDifficulty());
 
         startActivity(intent);
+        finish();
     }
 
     private String getCheckedDifficulty() {

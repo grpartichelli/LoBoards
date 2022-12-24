@@ -1,6 +1,7 @@
 package com.example.boardgame.ui;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -23,6 +24,7 @@ public class ColorChooserAdapter extends ArrayAdapter<Integer> {
         TextView view = (TextView) super.getView(position, convertView, parent);
         view.setBackgroundColor(getItem(position));
         view.setText("");
+        view.setContentDescription(getColorName(getItem(position)));
         return view;
     }
 
@@ -31,6 +33,26 @@ public class ColorChooserAdapter extends ArrayAdapter<Integer> {
         TextView view = (TextView) super.getDropDownView(position, convertView, parent);
         view.setBackgroundColor(getItem(position));
         view.setText("");
+        view.setContentDescription(getColorName(getItem(position)));
         return view;
+    }
+
+    private String getColorName(int color) {
+        switch (color) {
+            case Color.RED:
+                return "Vermelho";
+            case Color.BLUE:
+                return "Azul";
+            case Color.CYAN:
+                return "Ciano";
+            case Color.MAGENTA:
+                return "Magenta";
+            case Color.YELLOW:
+                return "Amarelo";
+            case Color.GREEN:
+                return "Verde";
+            default:
+                return "";
+        }
     }
 }

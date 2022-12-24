@@ -13,7 +13,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="100sp"
-            android:text="LoBo Games"
+            android:text="LOBO GAMES"
             android:textAppearance="@style/TextAppearance.AppCompat.Display2"
             android:textColor="#000000" />
 
@@ -22,10 +22,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20sp"
-            android:backgroundTint="#000000"
             android:text="Um Jogador"
             android:textSize="20sp"
-            app:cornerRadius="200dp" />
+            app:backgroundTint="#000000" />
 
         <Button
             android:id="@+id/buttonMultiplayer"
@@ -34,8 +33,16 @@
             android:layout_marginBottom="20sp"
             android:text="Multijogador"
             android:textSize="20sp"
-            android:backgroundTint="#000000"
-            app:cornerRadius="200dp" />
+            app:backgroundTint="#000000" />
+
+        <Button
+            android:id="@+id/buttonHowToPlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20sp"
+            android:text="Como Jogar"
+            android:textSize="20sp"
+            app:backgroundTint="#000000" />
 
         <Button
             android:id="@+id/buttonSettings"
@@ -44,8 +51,7 @@
             android:layout_marginBottom="20sp"
             android:text="Configurações"
             android:textSize="20sp"
-            android:backgroundTint="#000000"
-            app:cornerRadius="200dp" />
+            app:backgroundTint="#000000" />
 
         <Button
             android:id="@+id/buttonCredits"
@@ -54,6 +60,6 @@
             android:layout_marginBottom="20sp"
             android:text="Créditos"
             android:textSize="20sp"
-            android:backgroundTint="#000000"
-            app:cornerRadius="200dp" />
+            app:backgroundTint="#000000" />
+
 </LinearLayout>

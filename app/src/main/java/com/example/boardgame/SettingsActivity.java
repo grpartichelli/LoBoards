@@ -87,7 +87,7 @@ public class SettingsActivity extends AppCompatActivity {
         sharedPreferences.edit().putInt(PLAYER_2_COLOR, (int) colorChooser2.getSelectedItem()).apply();
         sharedPreferences.edit().putInt(CURSOR_COLOR, (int) colorChooser3.getSelectedItem()).apply();
 
-        startActivity(new Intent(this, MainActivity.class));
+        finish();
     }
 
     private int getIndexOf(int item, Integer[] array) {

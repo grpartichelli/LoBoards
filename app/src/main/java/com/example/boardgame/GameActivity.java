@@ -1,6 +1,7 @@
 package com.example.boardgame;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -27,7 +28,7 @@ import java.util.Objects;
 public class GameActivity extends AppCompatActivity {
     private BoardView boardView;
     private Button[][] buttons;
-    private TextView gameName, status, info;
+    private TextView gameName, status;
     private Button playAgain, back;
 
     private Game game;
@@ -53,6 +54,7 @@ public class GameActivity extends AppCompatActivity {
             player2 = new MinimaxAgent(Player.PLAYER_2, (String) this.getIntent().getExtras().get(PreGameActivity.DIFFICULTY));
 
         boardView = findViewById(R.id.boardView);
+        boardView.resizeToScreenSize();
         boardView.setPlayer1Color(getSharedPreferences(SettingsActivity.SETTINGS, MODE_PRIVATE).getInt(SettingsActivity.PLAYER_1_COLOR, Color.GREEN));
         boardView.setPlayer2Color(getSharedPreferences(SettingsActivity.SETTINGS, MODE_PRIVATE).getInt(SettingsActivity.PLAYER_2_COLOR, Color.RED));
         boardView.setCursorColor(getSharedPreferences(SettingsActivity.SETTINGS, MODE_PRIVATE).getInt(SettingsActivity.CURSOR_COLOR, Color.BLUE));
@@ -61,13 +63,10 @@ public class GameActivity extends AppCompatActivity {
         gameName.setText(game.getName());
         gameName.setTextColor(Color.BLACK);
         status = findViewById(R.id.status);
-        info = findViewById(R.id.info);
-        info.setTextColor(Color.WHITE);
-        info.setText("Histórico");
         playAgain = findViewById(R.id.playAgain);
         playAgain.setOnClickListener(view -> resetGame());
         back = findViewById(R.id.back);
-        back.setOnClickListener(view -> openMainActivity());
+        back.setOnClickListener(view -> finish());
 
         resetGame();
         new Thread(GameActivity.this::gameLoop).start();
@@ -106,11 +105,13 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void setCursorByClick(int x, int y) {
-        Player player = Player.selectPlayerById(player1, player2, turn);
-        if(player instanceof Human) {
-            ((Human) player).setCursor(x, y);
-            buttons[x][y].announceForAccessibility("Selecionado " + Movement.positionToString(x, y));
-            boardView.drawBoard(board, x, y);
+        if(isGameRunning) {
+            Player player = Player.selectPlayerById(player1, player2, turn);
+            if (player instanceof Human) {
+                ((Human) player).setCursor(x, y);
+                buttons[x][y].announceForAccessibility("Selecionado " + Movement.positionToString(x, y));
+                boardView.drawBoard(board, x, y);
+            }
         }
     }
 
@@ -136,10 +137,11 @@ public class GameActivity extends AppCompatActivity {
         runOnUiThread(() -> boardView.announceForAccessibility(move.toString()));
         runOnUiThread(() -> boardView.drawBoard(board, move));
         board = Game.applyMove(move, board);
-        runOnUiThread(() -> updateButtonsDescription());
         turn = Player.getOpponentOf(turn);
         showTurn();
-        info.setContentDescription(info.getContentDescription() + "" + move + "\n");
+        Player currentPlayer = Player.selectPlayerById(player1, player2, turn);
+        if(currentPlayer instanceof Human)
+            runOnUiThread(this::updateButtonsDescription);
     }
 
     private void updateButtonsDescription() {
@@ -156,7 +158,6 @@ public class GameActivity extends AppCompatActivity {
             //playAgain.requestFocus();//
             //playAgain.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);//
         });
-
     }
 
     private void resetGame() {
@@ -164,11 +165,10 @@ public class GameActivity extends AppCompatActivity {
         showTurn();
         board = game.getInitialBoard();
         updateButtonsDescription();
-        info.setContentDescription("Histórico da partida:\n");
         boardView.drawBoard(board);
         playAgain.setVisibility(View.INVISIBLE);
-        buttons[0][0].requestFocus();
-        buttons[0][0].sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);
+        //buttons[0][Game.getBoardHeight(board)-1].requestFocus();
+        //buttons[0][Game.getBoardHeight(board)-1].sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);
         isGameRunning = true;
     }
 
@@ -177,8 +177,8 @@ public class GameActivity extends AppCompatActivity {
         runOnUiThread(() -> {
             status.setText(statusMessage);
             status.announceForAccessibility(statusMessage);
+            status.setTextColor(boardView.getPlayerColor(turn));
         });
-        status.setTextColor(boardView.getPlayerColor(turn));
     }
 
     private void showResult() {
@@ -199,12 +199,9 @@ public class GameActivity extends AppCompatActivity {
         runOnUiThread(() -> status.announceForAccessibility(resultText));
         SpannableString spanString = new SpannableString(resultText.toUpperCase());
         spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, spanString.length(), 0);
-        runOnUiThread(() -> status.setText(spanString));
-        status.setTextColor(resultColor);
+        runOnUiThread(() -> {
+            status.setText(spanString);
+            status.setTextColor(resultColor);
+        });
     }
-
-    private void openMainActivity() {
-          startActivity(new Intent(this, MainActivity.class));
-    }
-
 }

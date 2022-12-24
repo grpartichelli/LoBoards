@@ -96,10 +96,9 @@
             android:id="@+id/save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="#000000"
+            app:backgroundTint="#000000"
             android:text="Salvar e voltar"
-            android:textSize="20sp"
-            app:cornerRadius="200dp" />
+            android:textSize="20sp" />
     </TableRow>
 
 </TableLayout>

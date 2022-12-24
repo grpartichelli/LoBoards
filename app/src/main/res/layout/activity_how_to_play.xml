@@ -5,30 +5,50 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal|center_vertical"
-    android:orientation="vertical"
-    tools:context=".CreditsActivity">
+    tools:context=".HowToPlayActivity"
+    android:orientation="vertical">
 
     <TextView
-        android:id="@+id/creditsTitle"
+        android:id="@+id/howToPlayTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="100sp"
+        android:layout_marginBottom="50sp"
         android:gravity="center"
-        android:text="Créditos"
+        android:text="Como Jogar"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:textColor="#000000" />
 
     <TextView
-        android:id="@+id/creatorText"
+        android:id="@+id/gameSpinnerLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:labelFor="@id/gameSpinner"
+        android:gravity="center_horizontal|center_vertical"
+        android:textColor="#000000"
+        android:layout_marginBottom="10sp"
+        android:textSize="20sp"
+        android:text="Selecionar Jogo:" />
+
+    <Spinner
+        android:id="@+id/gameSpinner"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30sp"
+        android:contentDescription="Seletor de Jogos"
+        android:minHeight="48dp"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/gameRules"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20sp"
         android:layout_marginLeft="20sp"
         android:layout_marginEnd="20sp"
         android:layout_marginRight="20sp"
-        android:layout_marginBottom="100sp"
+        android:layout_marginBottom="20sp"
         android:gravity="center"
-        android:text="Feito por Marco Antônio Vieira como parte do trabalho de conclusão do curso de Ciência da Computação.\n\nContato: marco.vieira@inf.ufrgs.br"
+        android:text="regras"
         android:textColor="#000000"
         android:textSize="20sp" />
 

@@ -18,6 +18,6 @@ public class CreditsActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).hide();
 
         back = findViewById(R.id.back);
-        back.setOnClickListener(view -> startActivity(new Intent(this, MainActivity.class)));
+        back.setOnClickListener(view -> finish());
     }
 }

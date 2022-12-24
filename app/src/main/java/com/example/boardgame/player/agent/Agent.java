@@ -4,6 +4,8 @@ import com.example.boardgame.move.Move;
 import com.example.boardgame.game.Game;
 import com.example.boardgame.player.Player;
 
+import java.util.ArrayList;
+
 public abstract class Agent extends Player {
     public static String EASY_DIFFICULTY = "Fácil";
     public static String MEDIUM_DIFFICULTY = "Médio";
@@ -24,4 +26,17 @@ public abstract class Agent extends Player {
     }
 
     public abstract Move selectMove(Game game, int[][] board);
+
+    protected int[][] makePlayout(Game game, int[][] board) {
+        int[][] newBoard = Game.copyBoard(board);
+        int currentPlayer = getId();
+        while(!game.isTerminalState(newBoard)) {
+            ArrayList<Move> legalMoves = game.getLegalMoves(newBoard, currentPlayer);
+            if(legalMoves.isEmpty())
+                return newBoard;
+            newBoard = Game.applyMove(legalMoves.get(0), newBoard);
+            currentPlayer = getOpponentOf(currentPlayer);
+        }
+        return newBoard;
+    }
 }

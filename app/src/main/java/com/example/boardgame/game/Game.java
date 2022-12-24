@@ -1,5 +1,7 @@
 package com.example.boardgame.game;
 
+import androidx.annotation.NonNull;
+
 import com.example.boardgame.move.Move;
 import com.example.boardgame.move.Movement;
 import com.example.boardgame.player.Player;
@@ -14,6 +16,7 @@ public abstract class Game {
     public abstract boolean isLegalMove(Move move, int[][] board);
     public abstract ArrayList<Move> getLegalMoves(int[][] board, int player);
     public abstract Move getPlayerMove(int startX, int startY, int endX, int endY, int[][] board, int player);
+    public abstract String getRules();
 
     public boolean isTerminalState(int[][] board) {
         return isVictory(board, Player.PLAYER_1) || isVictory(board, Player.PLAYER_2) || isDraw(board);

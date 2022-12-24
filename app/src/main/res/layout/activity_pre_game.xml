@@ -25,8 +25,8 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="100sp"
         android:contentDescription="Seletor de Jogos"
-        android:textSize="20sp"
-        android:minHeight="48dp" />
+        android:minHeight="48dp"
+        android:textSize="20sp" />
 
     <RadioGroup
         android:id="@+id/difficultyChooser"
@@ -42,6 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="10sp"
+            app:buttonTint="#000000"
             android:text="Fácil"
             android:textSize="20sp" />
 
@@ -50,6 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="10sp"
+            app:buttonTint="#000000"
             android:text="Médio"
             android:textSize="20sp" />
 
@@ -57,6 +59,7 @@
             android:id="@+id/radioHard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:buttonTint="#000000"
             android:text="Difícil"
             android:textSize="20sp" />
 
@@ -68,7 +71,6 @@
         android:layout_height="wrap_content"
         android:text="Jogar"
         android:textSize="20sp"
-        android:backgroundTint="#000000"
-        app:cornerRadius="200dp"/>
+        app:backgroundTint="#000000" />
 
 </LinearLayout>

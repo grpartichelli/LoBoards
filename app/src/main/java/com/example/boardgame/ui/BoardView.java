@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.boardgame.game.Game;
 import com.example.boardgame.game.TicTacToe;
@@ -36,6 +37,13 @@ public class BoardView extends View {
 
     public BoardView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+    }
+
+    public void resizeToScreenSize() {
+        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) getLayoutParams();
+        layoutParams.width = getResources().getDisplayMetrics().widthPixels;
+        layoutParams.height = getResources().getDisplayMetrics().widthPixels;
+        setLayoutParams(layoutParams);
     }
 
     public void drawBoard(int[][] board) {
@@ -137,11 +145,11 @@ public class BoardView extends View {
                 if(board[x][y] != Player.EMPTY){
                     if(selectedX == x && selectedY == y) {
                         paint.setColor(cursorColor);
-                        radius = getPieceRadius()+4;
+                        radius = getPieceRadius()+(getPieceBorderWidth()*2);
                     }
                     else {
                         paint.setColor(Color.BLACK);
-                        radius = getPieceRadius()+2;
+                        radius = getPieceRadius()+getPieceBorderWidth();
                     }
                     canvas.drawCircle(cx, cy, radius, paint);
                 }
@@ -164,6 +172,10 @@ public class BoardView extends View {
 
     private int getDecrescentPosition(int index, int totalSize, int totalQuantity) {
         return (totalSize/(totalQuantity+1)) * (totalQuantity - index);
+    }
+
+    private int getPieceBorderWidth() {
+        return Math.max(getPieceRadius()/45, 2);
     }
 
     private int getPieceRadius() {

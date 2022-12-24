@@ -151,13 +151,14 @@ public class Alquerque extends Game {
         ArrayList<Move> legalMoves = getLegalMoves(board, player);
         for(Move move : legalMoves) {
             ArrayList<Movement> movementsWithoutRemovals = removeRemovals(move.movements, board);
-            if(
-                    movementsWithoutRemovals.get(0).startX == startX &&
-                    movementsWithoutRemovals.get(0).startY == startY &&
-                    movementsWithoutRemovals.get(movementsWithoutRemovals.size()-1).endX == endX &&
-                    movementsWithoutRemovals.get(movementsWithoutRemovals.size()-1).endY == endY
-            )
-                return move;
+            for(Movement movement : movementsWithoutRemovals)
+                if(
+                        movementsWithoutRemovals.get(0).startX == startX &&
+                        movementsWithoutRemovals.get(0).startY == startY &&
+                        movement.endX == endX &&
+                        movement.endY == endY
+                )
+                    return move;
         }
         return null;
     }
@@ -170,4 +171,8 @@ public class Alquerque extends Game {
         return newMovements;
     }
 
+    @Override
+    public String getRules() {
+        return "Cada jogador possui doze peças posicionadas no tabuleiro. O jogador pode capturar peças adversárias saltando sobre elas, respeitando as linhas do tabuleiro. Capturas em sequência são permitidas, sendo que o jogador é obrigado a capturar o máximo de peças que puder em sua jogada. Caso não existam possibilidades de captura, as peças podem se deslocar para posições adjacentes. Vence o jogador que capturar todas as peças do adversário.";
+    }
 }

@@ -52,4 +52,9 @@ public class Tapatan extends Game {
     public Move getPlayerMove(int startX, int startY, int endX, int endY, int[][] board, int player) {
         return new Move(startX, startY, endX, endY, player);
     }
+
+    @Override
+    public String getRules() {
+        return "Cada jogador possui três peças posicionadas no tabuleiro. É permitido apenas o deslocamento das peças para posições adjacentes conectadas por uma das linhas do tabuleiro. Ganha aquele que conseguir alinhar três peças.";
+    }
 }

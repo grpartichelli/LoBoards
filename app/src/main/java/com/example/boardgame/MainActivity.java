@@ -10,7 +10,7 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button singleplayer, multiplayer, settings, credits;
+    private Button singleplayer, multiplayer, howToPlay, settings, credits;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
         singleplayer.setOnClickListener(view -> openPreGameActivity(false));
         multiplayer = findViewById(R.id.buttonMultiplayer);
         multiplayer.setOnClickListener(view -> openPreGameActivity(true));
+        howToPlay = findViewById(R.id.buttonHowToPlay);
+        howToPlay.setOnClickListener(view -> openHowToPlayActivity());
         settings = findViewById(R.id.buttonSettings);
         settings.setOnClickListener(view -> openSettingsActivity());
         credits = findViewById(R.id.buttonCredits);
@@ -33,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra(PreGameActivity.IS_MULTIPLAYER, isMultiplayer);
         startActivity(intent);
     }
+
+    private void openHowToPlayActivity() { startActivity(new Intent(this, HowToPlayActivity.class)); }
 
     private void openSettingsActivity() {
         startActivity(new Intent(this, SettingsActivity.class));
