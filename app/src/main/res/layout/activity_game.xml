@@ -569,7 +569,7 @@
         app:layout_constraintTop_toBottomOf="@id/D4_5x5"
         tools:ignore="SpeakableTextPresentCheck" />
 
-    <com.example.boardgame.ui.BoardView
+    <com.marcoantonioaav.lobogames.ui.BoardView
         android:id="@+id/boardView"
         android:layout_width="390dp"
         android:layout_height="390dp"
@@ -582,14 +582,13 @@
         android:id="@+id/playAgain"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="Jogar Novamente"
+        android:contentDescription="Recomeçar jogo"
         android:paddingLeft="12dp"
         android:paddingTop="2dp"
         android:paddingRight="12dp"
         android:paddingBottom="2dp"
-        android:text="Jogar\nNovamente"
+        android:text="Recomeçar\nJogo"
         android:textSize="16sp"
-        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/A1_3x3"

@@ -6,7 +6,7 @@ android {
     compileSdk 32
 
     defaultConfig {
-        applicationId "com.example.boardgame"
+        applicationId "com.marcoantonioaav.lobogames"
         minSdk 16
         targetSdk 32
         versionCode 1
@@ -25,7 +25,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    namespace 'com.example.boardgame'
+    namespace 'com.marcoantonioaav.lobogames'
 }
 
 dependencies {
