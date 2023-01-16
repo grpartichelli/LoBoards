@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal|center_vertical"
+    android:orientation="vertical"
+    tools:context=".AboutActivity">
+
+    <TextView
+        android:id="@+id/aboutTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        android:gravity="center"
+        android:text="Sobre"
+        android:textSize="34sp" />
+
+    <TextView
+        android:id="@+id/linkLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:labelFor="@id/linkButton"
+        android:text="Visite o site do projeto LoBoGames:"
+        android:textSize="20sp"
+        android:gravity="center" />
+
+    <Button
+        android:id="@+id/linkButton"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:maxWidth="400dp"
+        android:text="https://www.inf.ufrgs.br/lobogames"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="#0915F6"
+        android:textSize="20sp"
+        app:backgroundTint="#00FFFFFF" />
+
+    <TextView
+        android:id="@+id/creatorText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:text="Aplicativo feito por Marco Antônio Vieira como parte do trabalho de conclusão de curso de Ciência da Computação.\n\nContato: marco.vieira@inf.ufrgs.br"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/versionText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="30dp"
+        android:gravity="center"
+        android:text="Versão do aplicativo: X.Y.Z"
+        android:textSize="15sp" />
+
+    <Button
+        android:id="@+id/back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Voltar"
+        android:textSize="20sp" />
+
+
+</LinearLayout>

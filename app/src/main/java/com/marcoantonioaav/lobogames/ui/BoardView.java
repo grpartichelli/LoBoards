@@ -1,6 +1,7 @@
 package com.marcoantonioaav.lobogames.ui;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -83,7 +84,7 @@ public class BoardView extends View {
     }
 
     private void drawLines(Canvas canvas) {
-        paint.setColor(Color.BLACK);
+        paint.setColor(getPrimaryColor());
         int startX, startY, stopX, stopY;
         for(int x=0; x < getBoardWidth(); x++) {
             startX = getPosition(x, getWidth(), getBoardWidth());
@@ -121,7 +122,7 @@ public class BoardView extends View {
 
     private void drawCoordinates(Canvas canvas) {
         int cx, cy, padding = (3*getPieceRadius())/2, textSize = getPieceRadius()/2;
-        paint.setColor(Color.BLACK);
+        paint.setColor(getPrimaryColor());
         paint.setTextAlign(Paint.Align.CENTER);
         paint.setTextSize(textSize);
         for(int x=0; x < getBoardWidth(); x++) {
@@ -148,7 +149,7 @@ public class BoardView extends View {
                         radius = getPieceRadius()+(getPieceBorderWidth()*2);
                     }
                     else {
-                        paint.setColor(Color.BLACK);
+                        paint.setColor(getPrimaryColor());
                         radius = getPieceRadius()+getPieceBorderWidth();
                     }
                     canvas.drawCircle(cx, cy, radius, paint);
@@ -207,5 +208,12 @@ public class BoardView extends View {
 
     public void setCursorColor(int cursorColor) {
         this.cursorColor = cursorColor;
+    }
+
+    private int getPrimaryColor() {
+        int nightModeFlags = getContext().getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        if(nightModeFlags == Configuration.UI_MODE_NIGHT_YES)
+                return Color.WHITE;
+        return Color.BLACK;
     }
 }

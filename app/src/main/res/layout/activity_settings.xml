@@ -12,16 +12,15 @@
         android:id="@+id/settingsTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="100sp"
+        android:layout_marginBottom="50dp"
         android:gravity="center"
         android:text="Configurações"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textColor="#000000" />
+        android:textSize="34sp" />
 
     <TableRow
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="20sp"
+        android:layout_marginBottom="10dp"
         android:gravity="center">
 
         <TextView
@@ -30,21 +29,19 @@
             android:layout_height="wrap_content"
             android:labelFor="@id/colorChooser1"
             android:text="Cor do jogador 1"
-            android:textSize="20sp"
-            android:textColor="#000000" />
+            android:textSize="20sp" />
 
         <Spinner
             android:id="@+id/colorChooser1"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            tools:layout_editor_absoluteY="284dp" />
+            android:minHeight="48dp" />
     </TableRow>
 
     <TableRow
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="20sp"
+        android:layout_marginBottom="10dp"
         android:gravity="center">
 
         <TextView
@@ -53,38 +50,34 @@
             android:layout_height="wrap_content"
             android:labelFor="@id/colorChooser2"
             android:text="Cor do jogador 2"
-            android:textSize="20sp"
-            android:textColor="#000000" />
+            android:textSize="20sp" />
 
         <Spinner
             android:id="@+id/colorChooser2"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            tools:layout_editor_absoluteY="377dp" />
+            android:minHeight="48dp" />
     </TableRow>
 
     <TableRow
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="50sp"
+        android:layout_marginBottom="30dp"
         android:gravity="center">
 
         <TextView
             android:id="@+id/colorChooser3Label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:labelFor="@id/colorChooser2"
+            android:labelFor="@id/colorChooser3"
             android:text="Cor do cursor"
-            android:textSize="20sp"
-            android:textColor="#000000" />
+            android:textSize="20sp" />
 
         <Spinner
             android:id="@+id/colorChooser3"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            tools:layout_editor_absoluteY="472dp" />
+            android:minHeight="48dp" />
     </TableRow>
 
     <TableRow
@@ -96,7 +89,6 @@
             android:id="@+id/save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:backgroundTint="#000000"
             android:text="Salvar e voltar"
             android:textSize="20sp" />
     </TableRow>

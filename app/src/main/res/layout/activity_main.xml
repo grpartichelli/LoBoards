@@ -6,60 +6,55 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal|center_vertical"
     android:orientation="vertical"
+    tools:actionBarNavMode="list"
     tools:context=".MainActivity">
 
-        <TextView
-            android:id="@+id/textView"
+        <ImageView
+            android:id="@+id/imageView"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="100sp"
-            android:text="LOBO GAMES"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display2"
-            android:textColor="#000000" />
+            android:layout_height="200dp"
+            android:layout_marginBottom="20dp"
+            android:contentDescription="@string/app_name"
+            app:srcCompat="@drawable/lobogames" />
 
         <Button
             android:id="@+id/buttonSingleplayer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20sp"
+            android:layout_marginBottom="10dp"
             android:text="Um Jogador"
-            android:textSize="20sp"
-            app:backgroundTint="#000000" />
+            android:textSize="20sp" />
 
         <Button
             android:id="@+id/buttonMultiplayer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20sp"
+            android:layout_marginBottom="10dp"
             android:text="Multijogador"
-            android:textSize="20sp"
-            app:backgroundTint="#000000" />
+            android:textSize="20sp" />
 
         <Button
             android:id="@+id/buttonHowToPlay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20sp"
+            android:layout_marginBottom="10dp"
             android:text="Como Jogar"
-            android:textSize="20sp"
-            app:backgroundTint="#000000" />
+            android:textSize="20sp" />
 
         <Button
             android:id="@+id/buttonSettings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20sp"
+            android:layout_marginBottom="10dp"
             android:text="Configurações"
-            android:textSize="20sp"
-            app:backgroundTint="#000000" />
+            android:textSize="20sp" />
 
         <Button
-            android:id="@+id/buttonCredits"
+            android:id="@+id/buttonAbout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20sp"
-            android:text="Créditos"
-            android:textSize="20sp"
-            app:backgroundTint="#000000" />
+            android:layout_marginBottom="10dp"
+            android:text="Sobre"
+            android:textSize="20sp" />
 
 </LinearLayout>

@@ -1,21 +1,24 @@
 package com.marcoantonioaav.lobogames;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button singleplayer, multiplayer, howToPlay, settings, credits;
+    private Button singleplayer, multiplayer, howToPlay, settings, about;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Objects.requireNonNull(getSupportActionBar()).hide();
 
         singleplayer = findViewById(R.id.buttonSingleplayer);
@@ -26,8 +29,8 @@ public class MainActivity extends AppCompatActivity {
         howToPlay.setOnClickListener(view -> openHowToPlayActivity());
         settings = findViewById(R.id.buttonSettings);
         settings.setOnClickListener(view -> openSettingsActivity());
-        credits = findViewById(R.id.buttonCredits);
-        credits.setOnClickListener(view -> openCreditsActivity());
+        about = findViewById(R.id.buttonAbout);
+        about.setOnClickListener(view -> openAboutActivity());
     }
 
     private void openPreGameActivity(boolean isMultiplayer) {
@@ -42,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(this, SettingsActivity.class));
     }
 
-    private void openCreditsActivity() {
-        startActivity(new Intent(this, CreditsActivity.class));
+    private void openAboutActivity() {
+        startActivity(new Intent(this, AboutActivity.class));
     }
 }

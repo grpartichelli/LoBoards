@@ -4,15 +4,14 @@ import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.game.Game;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.Random;
 
 public class MinimaxAgent extends Agent {
     private Game game;
 
-    private float imprecision = 0f;
+    private String difficulty = MEDIUM_DIFFICULTY;
 
     private final int DEPTH = 2;
     private final int EVALUATION_PLAYOUTS = 25;
@@ -28,12 +27,7 @@ public class MinimaxAgent extends Agent {
     }
 
     public void setDifficulty(String difficulty) {
-        if(Objects.equals(difficulty, EASY_DIFFICULTY))
-            imprecision = 0.8f;
-        else if(Objects.equals(difficulty, MEDIUM_DIFFICULTY))
-            imprecision = 0.4f;
-        else
-            imprecision = 0f;
+        this.difficulty = difficulty;
     }
 
     @Override
@@ -43,56 +37,48 @@ public class MinimaxAgent extends Agent {
         if(moves.isEmpty())
             return null;
         HashMap<Move, Float> ratedMoves = rateMoves(moves, board);
-        ArrayList<Move> filteredMoves = filterMovesByScores(ratedMoves);
-        Collections.shuffle(filteredMoves);
-        return filteredMoves.get(0);
-    }
-
-    private ArrayList<Move> filterMovesByScores(HashMap<Move, Float> ratedMoves) {
-        ArrayList<Move> movesOrderedByScore = getMovesOrderedByScore(ratedMoves);
-        float scoresSum = getScoresSum(ratedMoves);
-        float maxInverseScoreRange = scoresSum*imprecision;
-        float sum = 0f;
-        ArrayList<Move> filteredMoves = new ArrayList<>();
-        for(int i = movesOrderedByScore.size()-1; i >= 0; i--) {
-            Move move = movesOrderedByScore.get(i);
-            filteredMoves.add(move);
-            sum += normalizeScore(ratedMoves.get(move));
-            if (sum > maxInverseScoreRange)
-                break;
-        }
-        return filteredMoves;
-    }
-
-    private ArrayList<Move> getMovesOrderedByScore(HashMap<Move, Float> scores) {
-        ArrayList<Move> moves = new ArrayList<>(scores.keySet());
-        Collections.sort(moves, new Comparator<Move>() {
-            @Override
-            public int compare(Move move1, Move move2) {
-                return Float.compare(scores.get(move1), scores.get(move2));
-            }
-        });
-        return moves;
-    }
-
-    private float getScoresSum(HashMap<Move, Float> scores) {
-        float scoreSum = 0f;
-        for(Move move : scores.keySet())
-            scoreSum += normalizeScore(scores.get(move));
-        return scoreSum;
-    }
-
-    private float normalizeScore(float score) {
-        return score + MAX;
+        return selectMoveByScore(ratedMoves);
     }
 
     private HashMap<Move, Float> rateMoves(ArrayList<Move> moves, int[][] board) {
         HashMap<Move, Float> ratedMoves = new HashMap<>();
         for(Move move : moves)  {
-            float score = minimax(Game.applyMove(move, board), DEPTH, MIN, MAX, false);
+            float score = minimax(Game.applyMove(move, board), DEPTH-1, MIN, MAX, false);
             ratedMoves.put(move, score);
         }
         return ratedMoves;
+    }
+
+    private Move selectMoveByScore(HashMap<Move, Float> ratedMoves) {
+        ArrayList<Move> moves = new ArrayList<>(ratedMoves.keySet());
+        float moveQuality = getRandomMoveQuality();
+        Move selectedMove = null;
+        float selectedQualityDifference = Float.POSITIVE_INFINITY;
+        for(Move move : moves) {
+            float qualityDifference = Math.abs(normalizeScore(ratedMoves.get(move)) - moveQuality);
+            if(qualityDifference < selectedQualityDifference) {
+                selectedMove = move;
+                selectedQualityDifference = qualityDifference;
+            }
+        }
+        return selectedMove;
+    }
+
+    private float getRandomMoveQuality() {
+        float quality = getRandomBetween(0f, 1f);
+        if(Objects.equals(difficulty, EASY_DIFFICULTY))
+            return (float) Math.pow(quality, 2);
+        if(Objects.equals(difficulty, MEDIUM_DIFFICULTY))
+            return quality;
+        return (float) Math.sqrt(quality);
+    }
+
+    private float getRandomBetween(float min, float max) {
+        return min + new Random().nextFloat() * (max - min);
+    }
+
+    private float normalizeScore(float score) {
+        return (score - MIN) / (MAX - MIN);
     }
 
     private float minimax(int[][] board, int depth, float alpha, float beta, boolean isMaximizing) {

@@ -58,7 +58,6 @@ public class GameActivity extends AppCompatActivity {
         setUpButtons(game);
         gameName = findViewById(R.id.gameName);
         gameName.setText(game.getName());
-        gameName.setTextColor(Color.BLACK);
         status = findViewById(R.id.status);
         playAgain = findViewById(R.id.playAgain);
         playAgain.setOnClickListener(view -> resetGame());
