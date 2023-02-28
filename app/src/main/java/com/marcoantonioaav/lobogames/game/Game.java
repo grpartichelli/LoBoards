@@ -9,11 +9,11 @@ import java.util.ArrayList;
 public abstract class Game {
     public abstract String getName();
     public abstract int[][] getInitialBoard();
-    public abstract boolean isVictory(int[][] board, int player);
+    public abstract boolean isVictory(int[][] board, int playerId);
     public abstract boolean isDraw(int[][] board);
     public abstract boolean isLegalMove(Move move, int[][] board);
-    public abstract ArrayList<Move> getLegalMoves(int[][] board, int player);
-    public abstract Move getPlayerMove(int startX, int startY, int endX, int endY, int[][] board, int player);
+    public abstract ArrayList<Move> getLegalMoves(int[][] board, int playerId);
+    public abstract Move getPlayerMove(int startX, int startY, int endX, int endY, int[][] board, int playerId);
     public abstract String getRules();
 
     public boolean isTerminalState(int[][] board) {

@@ -13,7 +13,7 @@ public class MinimaxAgent extends Agent {
 
     private String difficulty = MEDIUM_DIFFICULTY;
 
-    private final int DEPTH = 2;
+    private final int DEPTH = 3;
     private final int EVALUATION_PLAYOUTS = 25;
     private final float PLAYOUT_DEPTH_WEIGHT = 0.9f;
 

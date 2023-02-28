@@ -25,10 +25,10 @@ public class Alquerque extends Game {
     }
 
     @Override
-    public boolean isVictory(int[][] board, int player) {
+    public boolean isVictory(int[][] board, int playerId) {
         for(int x=0; x < 5; x++)
             for(int y=0; y < 5; y++)
-                if(board[x][y] == Player.getOpponentOf(player))
+                if(board[x][y] == Player.getOpponentOf(playerId))
                     return false;
         return true;
     }
@@ -63,10 +63,10 @@ public class Alquerque extends Game {
     }
 
     @Override
-    public ArrayList<Move> getLegalMoves(int[][] board, int player) {
-        ArrayList<Move> moves = getEliminationMoves(board, player);
+    public ArrayList<Move> getLegalMoves(int[][] board, int playerId) {
+        ArrayList<Move> moves = getEliminationMoves(board, playerId);
         if(moves.isEmpty())
-            return getAdjacentInlineMoves(board, player);
+            return getAdjacentInlineMoves(board, playerId);
         return moves;
     }
 
@@ -147,8 +147,8 @@ public class Alquerque extends Game {
     }
 
     @Override
-    public Move getPlayerMove(int startX, int startY, int endX, int endY, int[][] board, int player) {
-        ArrayList<Move> legalMoves = getLegalMoves(board, player);
+    public Move getPlayerMove(int startX, int startY, int endX, int endY, int[][] board, int playerId) {
+        ArrayList<Move> legalMoves = getLegalMoves(board, playerId);
         for(Move move : legalMoves) {
             ArrayList<Movement> movementsWithoutRemovals = removeRemovals(move.movements, board);
             for(Movement movement : movementsWithoutRemovals)

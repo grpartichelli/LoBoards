@@ -18,8 +18,8 @@ public class TicTacToe extends Game {
     }
 
     @Override
-    public boolean isVictory(int[][] board, int player) {
-        return isLineVictory(board, player) || isColumnVictory(board, player) || isDiagonalVictory(board, player);
+    public boolean isVictory(int[][] board, int playerId) {
+        return isLineVictory(board, playerId) || isColumnVictory(board, playerId) || isDiagonalVictory(board, playerId);
     }
 
     private boolean isDiagonalVictory(int[][] board, int player) {
@@ -54,11 +54,11 @@ public class TicTacToe extends Game {
     }
 
     @Override
-    public ArrayList<Move> getLegalMoves(int[][] board, int player) {
+    public ArrayList<Move> getLegalMoves(int[][] board, int playerId) {
         ArrayList<Move> moves = new ArrayList<>();
         for(int x=0; x < 3; x++) {
             for(int y=0; y < 3; y++) {
-                Move newMove = new Move(x, y, player);
+                Move newMove = new Move(x, y, playerId);
                 if(isLegalMove(newMove, board))
                     moves.add(newMove);
             }
@@ -68,8 +68,8 @@ public class TicTacToe extends Game {
     }
 
     @Override
-    public Move getPlayerMove(int startX, int startY, int endX, int endY, int[][] board, int player) {
-        return new Move(endX, endY, player);
+    public Move getPlayerMove(int startX, int startY, int endX, int endY, int[][] board, int playerId) {
+        return new Move(endX, endY, playerId);
     }
 
     @Override

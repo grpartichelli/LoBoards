@@ -18,8 +18,8 @@ public class Tapatan extends Game {
     }
 
     @Override
-    public boolean isVictory(int[][] board, int player) {
-        return new TicTacToe().isVictory(board, player);
+    public boolean isVictory(int[][] board, int playerId) {
+        return new TicTacToe().isVictory(board, playerId);
     }
 
     @Override
@@ -33,14 +33,14 @@ public class Tapatan extends Game {
     }
 
     @Override
-    public ArrayList<Move> getLegalMoves(int[][] board, int player) {
+    public ArrayList<Move> getLegalMoves(int[][] board, int playerId) {
         ArrayList<Move> moves = new ArrayList<>();
         for(int x=0; x < getBoardWidth(board); x++)
             for(int y=0; y < getBoardHeight(board); y++)
-                if(board[x][y] == player)
+                if(board[x][y] == playerId)
                     for(int[] eightRegion : new int[][]{{0,1}, {1,1}, {1,0}, {0,-1}, {-1,-1}, {-1, 0}, {1,-1}, {-1,1}})
                         if(isOnBoardLimits(x+eightRegion[0], y+eightRegion[1], board)) {
-                            Move newMove = new Move(x, y, x+eightRegion[0], y+eightRegion[1], player);
+                            Move newMove = new Move(x, y, x+eightRegion[0], y+eightRegion[1], playerId);
                             if(isLegalMove(newMove, board))
                                 moves.add(newMove);
                         }
@@ -49,8 +49,8 @@ public class Tapatan extends Game {
     }
 
     @Override
-    public Move getPlayerMove(int startX, int startY, int endX, int endY, int[][] board, int player) {
-        return new Move(startX, startY, endX, endY, player);
+    public Move getPlayerMove(int startX, int startY, int endX, int endY, int[][] board, int playerId) {
+        return new Move(startX, startY, endX, endY, playerId);
     }
 
     @Override
