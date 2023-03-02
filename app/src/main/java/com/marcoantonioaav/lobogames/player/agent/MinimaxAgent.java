@@ -44,7 +44,7 @@ public class MinimaxAgent extends Agent {
         HashMap<Move, Float> ratedMoves = new HashMap<>();
         for(Move move : moves)  {
             float score = minimax(Game.applyMove(move, board), DEPTH-1, MIN, MAX, false);
-            ratedMoves.put(move, score);
+            ratedMoves.put(move, normalizeScore(score));
         }
         return ratedMoves;
     }
@@ -55,7 +55,7 @@ public class MinimaxAgent extends Agent {
         Move selectedMove = null;
         float selectedQualityDifference = Float.POSITIVE_INFINITY;
         for(Move move : moves) {
-            float qualityDifference = Math.abs(normalizeScore(ratedMoves.get(move)) - moveQuality);
+            float qualityDifference = Math.abs(ratedMoves.get(move) - moveQuality);
             if(qualityDifference < selectedQualityDifference) {
                 selectedMove = move;
                 selectedQualityDifference = qualityDifference;
@@ -65,16 +65,15 @@ public class MinimaxAgent extends Agent {
     }
 
     private float getRandomMoveQuality() {
-        float quality = getRandomBetween(0f, 1f);
         if(Objects.equals(difficulty, EASY_DIFFICULTY))
-            return (float) Math.pow(quality, 2);
+            return getRandomOnGaussian(0.4f, 0.3f);
         if(Objects.equals(difficulty, MEDIUM_DIFFICULTY))
-            return quality;
-        return (float) Math.sqrt(quality);
+            return getRandomOnGaussian(0.5f, 0.25f);
+        return getRandomOnGaussian(0.7f, 0.2f);
     }
 
-    private float getRandomBetween(float min, float max) {
-        return min + new Random().nextFloat() * (max - min);
+    private float getRandomOnGaussian(float mean, float standardDeviation) {
+        return (float)(new Random().nextGaussian()*standardDeviation)+mean;
     }
 
     private float normalizeScore(float score) {
