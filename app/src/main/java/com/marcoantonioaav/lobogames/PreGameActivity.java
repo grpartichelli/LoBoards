@@ -15,6 +15,7 @@ import com.marcoantonioaav.lobogames.game.Alquerque;
 import com.marcoantonioaav.lobogames.game.Game;
 import com.marcoantonioaav.lobogames.game.Tapatan;
 import com.marcoantonioaav.lobogames.game.TicTacToe;
+import com.marcoantonioaav.lobogames.game.TsoroYematatu;
 import com.marcoantonioaav.lobogames.player.agent.Agent;
 
 import java.util.HashMap;
@@ -34,6 +35,7 @@ public class PreGameActivity extends AppCompatActivity {
         put(new Tapatan().getName(), new Tapatan());
         put(new TicTacToe().getName(), new TicTacToe());
         put(new Alquerque().getName(), new Alquerque());
+        put(new TsoroYematatu().getName(), new TsoroYematatu());
     }};
 
     @Override
