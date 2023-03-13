@@ -5,6 +5,7 @@ import com.marcoantonioaav.lobogames.player.Player;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import android.util.Log;
 
 public class TsoroYematatu extends Game {
     @Override
@@ -118,14 +119,31 @@ public class TsoroYematatu extends Game {
 
     @Override
     public boolean isLegalMove(Move move, int[][] board) {
-        return move.movements.length == 1 && move.movements[0].isInsertion(board);
+        if (getPlayerPieces(board, move.playerId) < 4) {
+            Log.i("LegalMove", "adiciona");
+            return move.movements.length == 1 && move.movements[0].isInsertion(board);
+        }
+        Log.i("LegalMove", "movimenta");
+        return move.movements.length == 1 && move.movements[0].isAdjacentInlineMovement(board);
+
     }
+
+    private int getPlayerPieces(int[][] board, int playerId) {
+        int count = 0;
+
+        for(int x=0; x<getBoardWidth(board); x++)
+            for(int y=0; y<getBoardHeight(board); y++)
+                if(board[x][y] == playerId)
+                    count++;
+        return count;
+    }
+
 
     @Override
     public ArrayList<Move> getLegalMoves(int[][] board, int playerId) {
         ArrayList<Move> moves = new ArrayList<>();
-        for(int x=0; x < 5; x++) {
-            for(int y=0; y < 5; y++) {
+        for(int x=0; x < getBoardWidth(board); x++) {
+            for(int y=0; y < getBoardHeight(board); y++) {
                 Move newMove = new Move(x, y, playerId);
                 if(isLegalMove(newMove, board))
                     moves.add(newMove);
