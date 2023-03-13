@@ -1,6 +1,7 @@
 package com.marcoantonioaav.lobogames;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.ViewCompat;
 
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
@@ -18,6 +19,7 @@ import com.marcoantonioaav.lobogames.move.Movement;
 import com.marcoantonioaav.lobogames.player.Human;
 import com.marcoantonioaav.lobogames.player.agent.MinimaxAgent;
 import com.marcoantonioaav.lobogames.player.Player;
+import com.marcoantonioaav.lobogames.ui.BoardButtonDelegate;
 import com.marcoantonioaav.lobogames.ui.BoardView;
 
 import java.util.Objects;
@@ -96,6 +98,10 @@ public class GameActivity extends AppCompatActivity {
                 for(final int y : new int[]{0, 1, 2, 3, 4}) {
                     buttons[x][y].setVisibility(View.VISIBLE);
                     buttons[x][y].setOnClickListener(view -> setCursorByClick(x, y));
+                    if(x > 0)
+                        ViewCompat.setAccessibilityDelegate(buttons[x][y], new BoardButtonDelegate(buttons[x-1][y]));
+                    else if(y != 4)
+                        ViewCompat.setAccessibilityDelegate(buttons[x][y], new BoardButtonDelegate(buttons[0][y+1]));
                 }
         }
     }

@@ -149,91 +149,6 @@
         tools:ignore="SpeakableTextPresentCheck" />
 
     <Button
-        android:id="@+id/D4_5x5"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@android:color/transparent"
-        android:insetTop="0dp"
-        android:insetBottom="0dp"
-        android:visibility="invisible"
-
-        app:layout_constraintBottom_toTopOf="@+id/D3_5x5"
-        app:layout_constraintEnd_toStartOf="@+id/E5_5x5"
-        app:layout_constraintStart_toEndOf="@+id/C4_5x5"
-        app:layout_constraintTop_toBottomOf="@id/D5_5x5"
-        tools:ignore="SpeakableTextPresentCheck" />
-
-    <Button
-        android:id="@+id/C3_5x5"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@android:color/transparent"
-        android:insetTop="0dp"
-        android:insetBottom="0dp"
-        android:visibility="invisible"
-
-        app:layout_constraintBottom_toTopOf="@+id/C2_5x5"
-        app:layout_constraintEnd_toStartOf="@+id/D3_5x5"
-        app:layout_constraintStart_toEndOf="@+id/B3_5x5"
-        app:layout_constraintTop_toBottomOf="@id/C4_5x5"
-        tools:ignore="SpeakableTextPresentCheck" />
-
-    <Button
-        android:id="@+id/A1_5x5"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@android:color/transparent"
-        android:insetTop="0dp"
-        android:insetBottom="0dp"
-        android:visibility="invisible"
-        android:layout_marginBottom="29sp"
-        android:layout_marginLeft="29sp"
-
-        app:layout_constraintBottom_toBottomOf="@+id/boardView"
-        app:layout_constraintEnd_toStartOf="@+id/B1_5x5"
-        app:layout_constraintStart_toStartOf="@+id/boardView"
-        app:layout_constraintTop_toBottomOf="@id/A2_5x5"
-
-        tools:ignore="SpeakableTextPresentCheck" />
-
-    <Button
-        android:id="@+id/E1_5x5"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@android:color/transparent"
-        android:insetTop="0dp"
-        android:insetBottom="0dp"
-        android:visibility="invisible"
-        android:layout_marginRight="29sp"
-        android:layout_marginBottom="29sp"
-
-        app:layout_constraintBottom_toBottomOf="@+id/boardView"
-        app:layout_constraintEnd_toEndOf="@+id/boardView"
-        app:layout_constraintStart_toEndOf="@+id/D1_5x5"
-        app:layout_constraintTop_toBottomOf="@id/E2_5x5"
-
-        tools:ignore="SpeakableTextPresentCheck" />
-
-    <Button
-        android:id="@+id/E5_5x5"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="1dp"
-        android:background="@android:color/transparent"
-        android:insetTop="0dp"
-        android:insetBottom="0dp"
-        android:layout_marginRight="29sp"
-        android:layout_marginTop="29sp"
-
-        android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/E4_5x5"
-        app:layout_constraintEnd_toEndOf="@+id/boardView"
-
-        app:layout_constraintStart_toEndOf="@+id/D5_5x5"
-        app:layout_constraintTop_toTopOf="@+id/boardView"
-        tools:ignore="SpeakableTextPresentCheck" />
-
-    <Button
         android:id="@+id/A5_5x5"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -252,125 +167,6 @@
         tools:ignore="SpeakableTextPresentCheck" />
 
     <Button
-        android:id="@+id/A2_5x5"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@android:color/transparent"
-        android:insetTop="0dp"
-        android:insetBottom="0dp"
-        android:visibility="invisible"
-        android:layout_marginLeft="29sp"
-
-        app:layout_constraintBottom_toTopOf="@+id/A1_5x5"
-        app:layout_constraintEnd_toStartOf="@+id/B2_5x5"
-        app:layout_constraintStart_toStartOf="@+id/boardView"
-
-        app:layout_constraintTop_toBottomOf="@id/A3_5x5"
-        tools:ignore="SpeakableTextPresentCheck" />
-
-    <Button
-        android:id="@+id/E2_5x5"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@android:color/transparent"
-        android:insetTop="0dp"
-        android:insetBottom="0dp"
-        android:visibility="invisible"
-
-        android:layout_marginRight="29sp"
-        app:layout_constraintBottom_toTopOf="@+id/E1_5x5"
-        app:layout_constraintEnd_toEndOf="@+id/boardView"
-
-        app:layout_constraintStart_toEndOf="@+id/D2_5x5"
-        app:layout_constraintTop_toBottomOf="@id/E3_5x5"
-        tools:ignore="SpeakableTextPresentCheck" />
-
-    <Button
-        android:id="@+id/E4_5x5"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@android:color/transparent"
-        android:insetTop="0dp"
-        android:insetBottom="0dp"
-        android:visibility="invisible"
-        android:layout_marginRight="29sp"
-
-        app:layout_constraintBottom_toTopOf="@+id/E3_5x5"
-        app:layout_constraintEnd_toEndOf="@+id/boardView"
-
-        app:layout_constraintStart_toEndOf="@+id/D4_5x5"
-        app:layout_constraintTop_toBottomOf="@id/E5_5x5"
-        tools:ignore="SpeakableTextPresentCheck" />
-
-    <Button
-        android:id="@+id/A4_5x5"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@android:color/transparent"
-        android:insetTop="0dp"
-        android:insetBottom="0dp"
-        android:visibility="invisible"
-        android:layout_marginLeft="29sp"
-
-        app:layout_constraintBottom_toTopOf="@+id/A3_5x5"
-        app:layout_constraintEnd_toStartOf="@+id/B4_5x5"
-        app:layout_constraintStart_toStartOf="@+id/boardView"
-
-        app:layout_constraintTop_toBottomOf="@id/A5_5x5"
-        tools:ignore="SpeakableTextPresentCheck" />
-
-    <Button
-        android:id="@+id/D1_5x5"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@android:color/transparent"
-        android:insetTop="0dp"
-        android:insetBottom="0dp"
-        android:visibility="invisible"
-        android:layout_marginBottom="29sp"
-
-        app:layout_constraintBottom_toBottomOf="@+id/boardView"
-        app:layout_constraintEnd_toStartOf="@+id/E1_5x5"
-        app:layout_constraintStart_toEndOf="@+id/C1_5x5"
-
-        app:layout_constraintTop_toBottomOf="@id/D2_5x5"
-        tools:ignore="SpeakableTextPresentCheck" />
-
-    <Button
-        android:id="@+id/B1_5x5"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@android:color/transparent"
-        android:insetTop="0dp"
-        android:insetBottom="0dp"
-        android:visibility="invisible"
-
-        android:layout_marginBottom="29sp"
-        app:layout_constraintBottom_toBottomOf="@+id/boardView"
-        app:layout_constraintEnd_toStartOf="@+id/C1_5x5"
-        app:layout_constraintStart_toEndOf="@+id/A1_5x5"
-
-        app:layout_constraintTop_toBottomOf="@+id/B2_5x5"
-        tools:ignore="SpeakableTextPresentCheck" />
-
-    <Button
-        android:id="@+id/D5_5x5"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@android:color/transparent"
-        android:insetTop="0dp"
-        android:insetBottom="0dp"
-        android:visibility="invisible"
-        android:layout_marginTop="29sp"
-
-        app:layout_constraintBottom_toTopOf="@+id/D4_5x5"
-        app:layout_constraintEnd_toStartOf="@+id/E5_5x5"
-
-        app:layout_constraintStart_toEndOf="@+id/C5_5x5"
-        app:layout_constraintTop_toTopOf="@+id/boardView"
-        tools:ignore="SpeakableTextPresentCheck" />
-
-    <Button
         android:id="@+id/B5_5x5"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -385,57 +181,6 @@
 
         app:layout_constraintStart_toEndOf="@+id/A5_5x5"
         app:layout_constraintTop_toTopOf="@id/boardView"
-        tools:ignore="SpeakableTextPresentCheck" />
-
-    <Button
-        android:id="@+id/A3_5x5"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@android:color/transparent"
-        android:insetTop="0dp"
-        android:insetBottom="0dp"
-        android:visibility="invisible"
-        android:layout_marginLeft="29sp"
-
-        app:layout_constraintBottom_toTopOf="@+id/A2_5x5"
-        app:layout_constraintEnd_toStartOf="@+id/B3_5x5"
-        app:layout_constraintStart_toStartOf="@+id/boardView"
-
-        app:layout_constraintTop_toBottomOf="@id/A4_5x5"
-        tools:ignore="SpeakableTextPresentCheck" />
-
-    <Button
-        android:id="@+id/E3_5x5"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@android:color/transparent"
-        android:insetTop="0dp"
-        android:insetBottom="0dp"
-        android:visibility="invisible"
-
-        android:layout_marginRight="29sp"
-        app:layout_constraintBottom_toTopOf="@+id/E2_5x5"
-        app:layout_constraintEnd_toEndOf="@+id/boardView"
-
-        app:layout_constraintStart_toEndOf="@+id/D3_5x5"
-        app:layout_constraintTop_toBottomOf="@id/E4_5x5"
-        tools:ignore="SpeakableTextPresentCheck" />
-
-    <Button
-        android:id="@+id/C1_5x5"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@android:color/transparent"
-        android:insetTop="0dp"
-        android:insetBottom="0dp"
-        android:visibility="invisible"
-        android:layout_marginBottom="29sp"
-
-        app:layout_constraintBottom_toBottomOf="@+id/boardView"
-        app:layout_constraintEnd_toStartOf="@+id/D1_5x5"
-        app:layout_constraintStart_toEndOf="@+id/B1_5x5"
-
-        app:layout_constraintTop_toBottomOf="@id/C2_5x5"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <Button
@@ -458,35 +203,56 @@
         tools:ignore="SpeakableTextPresentCheck" />
 
     <Button
-        android:id="@+id/D2_5x5"
+        android:id="@+id/D5_5x5"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@android:color/transparent"
         android:insetTop="0dp"
         android:insetBottom="0dp"
         android:visibility="invisible"
+        android:layout_marginTop="29sp"
 
-        app:layout_constraintBottom_toTopOf="@+id/D1_5x5"
-        app:layout_constraintEnd_toStartOf="@+id/E2_5x5"
+        app:layout_constraintBottom_toTopOf="@+id/D4_5x5"
+        app:layout_constraintEnd_toStartOf="@+id/E5_5x5"
 
-        app:layout_constraintStart_toEndOf="@+id/C2_5x5"
-        app:layout_constraintTop_toBottomOf="@id/D3_5x5"
+        app:layout_constraintStart_toEndOf="@+id/C5_5x5"
+        app:layout_constraintTop_toTopOf="@+id/boardView"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <Button
-        android:id="@+id/B2_5x5"
+        android:id="@+id/E5_5x5"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="1dp"
+        android:background="@android:color/transparent"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:layout_marginRight="29sp"
+        android:layout_marginTop="29sp"
+
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/E4_5x5"
+        app:layout_constraintEnd_toEndOf="@+id/boardView"
+
+        app:layout_constraintStart_toEndOf="@+id/D5_5x5"
+        app:layout_constraintTop_toTopOf="@+id/boardView"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/A4_5x5"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@android:color/transparent"
         android:insetTop="0dp"
         android:insetBottom="0dp"
         android:visibility="invisible"
+        android:layout_marginLeft="29sp"
 
-        app:layout_constraintBottom_toTopOf="@+id/B1_5x5"
-        app:layout_constraintEnd_toStartOf="@+id/C2_5x5"
+        app:layout_constraintBottom_toTopOf="@+id/A3_5x5"
+        app:layout_constraintEnd_toStartOf="@+id/B4_5x5"
+        app:layout_constraintStart_toStartOf="@+id/boardView"
 
-        app:layout_constraintStart_toEndOf="@+id/A2_5x5"
-        app:layout_constraintTop_toBottomOf="@id/B3_5x5"
+        app:layout_constraintTop_toBottomOf="@id/A5_5x5"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <Button
@@ -522,7 +288,7 @@
         tools:ignore="SpeakableTextPresentCheck" />
 
     <Button
-        android:id="@+id/C2_5x5"
+        android:id="@+id/D4_5x5"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@android:color/transparent"
@@ -530,11 +296,44 @@
         android:insetBottom="0dp"
         android:visibility="invisible"
 
-        app:layout_constraintBottom_toTopOf="@+id/C1_5x5"
-        app:layout_constraintEnd_toStartOf="@+id/D2_5x5"
+        app:layout_constraintBottom_toTopOf="@+id/D3_5x5"
+        app:layout_constraintEnd_toStartOf="@+id/E5_5x5"
+        app:layout_constraintStart_toEndOf="@+id/C4_5x5"
+        app:layout_constraintTop_toBottomOf="@id/D5_5x5"
+        tools:ignore="SpeakableTextPresentCheck" />
 
-        app:layout_constraintStart_toEndOf="@+id/B2_5x5"
-        app:layout_constraintTop_toBottomOf="@id/C3_5x5"
+    <Button
+        android:id="@+id/E4_5x5"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@android:color/transparent"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:visibility="invisible"
+        android:layout_marginRight="29sp"
+
+        app:layout_constraintBottom_toTopOf="@+id/E3_5x5"
+        app:layout_constraintEnd_toEndOf="@+id/boardView"
+
+        app:layout_constraintStart_toEndOf="@+id/D4_5x5"
+        app:layout_constraintTop_toBottomOf="@id/E5_5x5"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/A3_5x5"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@android:color/transparent"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:visibility="invisible"
+        android:layout_marginLeft="29sp"
+
+        app:layout_constraintBottom_toTopOf="@+id/A2_5x5"
+        app:layout_constraintEnd_toStartOf="@+id/B3_5x5"
+        app:layout_constraintStart_toStartOf="@+id/boardView"
+
+        app:layout_constraintTop_toBottomOf="@id/A4_5x5"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <Button
@@ -554,6 +353,21 @@
         tools:ignore="SpeakableTextPresentCheck" />
 
     <Button
+        android:id="@+id/C3_5x5"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@android:color/transparent"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:visibility="invisible"
+
+        app:layout_constraintBottom_toTopOf="@+id/C2_5x5"
+        app:layout_constraintEnd_toStartOf="@+id/D3_5x5"
+        app:layout_constraintStart_toEndOf="@+id/B3_5x5"
+        app:layout_constraintTop_toBottomOf="@id/C4_5x5"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
         android:id="@+id/D3_5x5"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -567,6 +381,192 @@
 
         app:layout_constraintStart_toEndOf="@+id/C3_5x5"
         app:layout_constraintTop_toBottomOf="@id/D4_5x5"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/E3_5x5"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@android:color/transparent"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:visibility="invisible"
+
+        android:layout_marginRight="29sp"
+        app:layout_constraintBottom_toTopOf="@+id/E2_5x5"
+        app:layout_constraintEnd_toEndOf="@+id/boardView"
+
+        app:layout_constraintStart_toEndOf="@+id/D3_5x5"
+        app:layout_constraintTop_toBottomOf="@id/E4_5x5"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/A2_5x5"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@android:color/transparent"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:visibility="invisible"
+        android:layout_marginLeft="29sp"
+
+        app:layout_constraintBottom_toTopOf="@+id/A1_5x5"
+        app:layout_constraintEnd_toStartOf="@+id/B2_5x5"
+        app:layout_constraintStart_toStartOf="@+id/boardView"
+
+        app:layout_constraintTop_toBottomOf="@id/A3_5x5"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/B2_5x5"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@android:color/transparent"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:visibility="invisible"
+
+        app:layout_constraintBottom_toTopOf="@+id/B1_5x5"
+        app:layout_constraintEnd_toStartOf="@+id/C2_5x5"
+
+        app:layout_constraintStart_toEndOf="@+id/A2_5x5"
+        app:layout_constraintTop_toBottomOf="@id/B3_5x5"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/C2_5x5"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@android:color/transparent"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:visibility="invisible"
+
+        app:layout_constraintBottom_toTopOf="@+id/C1_5x5"
+        app:layout_constraintEnd_toStartOf="@+id/D2_5x5"
+
+        app:layout_constraintStart_toEndOf="@+id/B2_5x5"
+        app:layout_constraintTop_toBottomOf="@id/C3_5x5"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/D2_5x5"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@android:color/transparent"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:visibility="invisible"
+
+        app:layout_constraintBottom_toTopOf="@+id/D1_5x5"
+        app:layout_constraintEnd_toStartOf="@+id/E2_5x5"
+
+        app:layout_constraintStart_toEndOf="@+id/C2_5x5"
+        app:layout_constraintTop_toBottomOf="@id/D3_5x5"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/E2_5x5"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@android:color/transparent"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:visibility="invisible"
+
+        android:layout_marginRight="29sp"
+        app:layout_constraintBottom_toTopOf="@+id/E1_5x5"
+        app:layout_constraintEnd_toEndOf="@+id/boardView"
+
+        app:layout_constraintStart_toEndOf="@+id/D2_5x5"
+        app:layout_constraintTop_toBottomOf="@id/E3_5x5"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/A1_5x5"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@android:color/transparent"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:visibility="invisible"
+        android:layout_marginBottom="29sp"
+        android:layout_marginLeft="29sp"
+
+        app:layout_constraintBottom_toBottomOf="@+id/boardView"
+        app:layout_constraintEnd_toStartOf="@+id/B1_5x5"
+        app:layout_constraintStart_toStartOf="@+id/boardView"
+        app:layout_constraintTop_toBottomOf="@id/A2_5x5"
+
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/B1_5x5"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@android:color/transparent"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:visibility="invisible"
+
+        android:layout_marginBottom="29sp"
+        app:layout_constraintBottom_toBottomOf="@+id/boardView"
+        app:layout_constraintEnd_toStartOf="@+id/C1_5x5"
+        app:layout_constraintStart_toEndOf="@+id/A1_5x5"
+
+        app:layout_constraintTop_toBottomOf="@+id/B2_5x5"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/C1_5x5"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@android:color/transparent"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:visibility="invisible"
+        android:layout_marginBottom="29sp"
+
+        app:layout_constraintBottom_toBottomOf="@+id/boardView"
+        app:layout_constraintEnd_toStartOf="@+id/D1_5x5"
+        app:layout_constraintStart_toEndOf="@+id/B1_5x5"
+
+        app:layout_constraintTop_toBottomOf="@id/C2_5x5"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/D1_5x5"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@android:color/transparent"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:visibility="invisible"
+        android:layout_marginBottom="29sp"
+
+        app:layout_constraintBottom_toBottomOf="@+id/boardView"
+        app:layout_constraintEnd_toStartOf="@+id/E1_5x5"
+        app:layout_constraintStart_toEndOf="@+id/C1_5x5"
+
+        app:layout_constraintTop_toBottomOf="@id/D2_5x5"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/E1_5x5"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@android:color/transparent"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:visibility="invisible"
+        android:layout_marginRight="29sp"
+        android:layout_marginBottom="29sp"
+
+        app:layout_constraintBottom_toBottomOf="@+id/boardView"
+        app:layout_constraintEnd_toEndOf="@+id/boardView"
+        app:layout_constraintStart_toEndOf="@+id/D1_5x5"
+        app:layout_constraintTop_toBottomOf="@id/E2_5x5"
+
         tools:ignore="SpeakableTextPresentCheck" />
 
     <com.marcoantonioaav.lobogames.ui.BoardView

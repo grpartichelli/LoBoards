@@ -13,13 +13,13 @@ public class MinimaxAgent extends Agent {
 
     private String difficulty = MEDIUM_DIFFICULTY;
 
-    private final int DEPTH = 3;
-    private final int EVALUATION_PLAYOUTS = 25;
-    private final float PLAYOUT_DEPTH_WEIGHT = 0.9f;
+    private final int SEARCH_TIME_MILLIS = 1500;
 
-    private final int MAX = 1;
-    private final int MIN = -MAX;
-    private final int NEUTRAL = (MIN + MAX)/2;
+    private final int EVALUATION_PLAYOUTS = 25;
+
+    private final float MAX = 1;
+    private final float MIN = -MAX;
+    private final float NEUTRAL = (MIN + MAX)/2;
 
     public MinimaxAgent(int player, String difficulty) {
         super(player, difficulty);
@@ -42,9 +42,16 @@ public class MinimaxAgent extends Agent {
 
     private HashMap<Move, Float> rateMoves(ArrayList<Move> moves, int[][] board) {
         HashMap<Move, Float> ratedMoves = new HashMap<>();
-        for(Move move : moves)  {
-            float score = minimax(Game.applyMove(move, board), DEPTH-1, MIN, MAX, false);
-            ratedMoves.put(move, normalizeScore(score));
+        long startTime = System.currentTimeMillis();
+        long timeSpent = 0;
+        int depth = 0;
+        while(timeSpent < SEARCH_TIME_MILLIS) {
+            for(Move move : moves)  {
+                float score = minimax(Game.applyMove(move, board), depth, MIN, MAX, false);
+                ratedMoves.put(move, normalizeScore(score));
+            }
+            depth++;
+            timeSpent = System.currentTimeMillis() - startTime;
         }
         return ratedMoves;
     }
@@ -68,8 +75,8 @@ public class MinimaxAgent extends Agent {
         if(Objects.equals(difficulty, EASY_DIFFICULTY))
             return getRandomOnGaussian(0.4f, 0.3f);
         if(Objects.equals(difficulty, MEDIUM_DIFFICULTY))
-            return getRandomOnGaussian(0.5f, 0.25f);
-        return getRandomOnGaussian(0.7f, 0.2f);
+            return getRandomOnGaussian(0.6f, 0.3f);
+        return getRandomOnGaussian(1f, 0.3f);
     }
 
     private float getRandomOnGaussian(float mean, float standardDeviation) {
@@ -110,11 +117,17 @@ public class MinimaxAgent extends Agent {
     }
 
     private float evaluate(boolean isMaximizing, int[][] board) {
+        if(game.isTerminalState(board))
+            return evaluateTerminalState(board);
+        return evaluateWithPlayouts(isMaximizing, board);
+    }
+
+    private float evaluateWithPlayouts(boolean isMaximizing, int[][] board) {
         float evaluation = 0f;
         int turn = getId();
         if(!isMaximizing)
             turn = getOpponentOf(turn);
-        for (int p = 0; p < EVALUATION_PLAYOUTS; p++)
+        for(int p = 0; p < EVALUATION_PLAYOUTS; p++)
             evaluation += makePlayout(turn, board);
         return evaluation/EVALUATION_PLAYOUTS;
     }
@@ -122,19 +135,17 @@ public class MinimaxAgent extends Agent {
     protected float makePlayout(int turn, int[][] board) {
         int[][] newBoard = Game.copyBoard(board);
         int currentPlayer = turn;
-        int currentDepth = 0;
         while(!game.isTerminalState(newBoard)) {
             ArrayList<Move> legalMoves = game.getLegalMoves(newBoard, currentPlayer);
             if(legalMoves.isEmpty())
                 return NEUTRAL;
             newBoard = Game.applyMove(legalMoves.get(0), newBoard);
             currentPlayer = getOpponentOf(currentPlayer);
-            currentDepth++;
         }
-        return (float) (evaluateTerminalState(newBoard)*Math.pow(PLAYOUT_DEPTH_WEIGHT, currentDepth));
+        return evaluateTerminalState(newBoard);
     }
 
-    private int evaluateTerminalState(int[][] board) {
+    private float evaluateTerminalState(int[][] board) {
         if(game.isVictory(board, getId()))
             return MAX;
         if(game.isVictory(board, getOpponent()))
