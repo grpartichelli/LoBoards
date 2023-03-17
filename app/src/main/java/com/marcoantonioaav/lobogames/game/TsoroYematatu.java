@@ -144,9 +144,14 @@ public class TsoroYematatu extends Game {
         ArrayList<Move> moves = new ArrayList<>();
         for(int x=0; x < getBoardWidth(board); x++) {
             for(int y=0; y < getBoardHeight(board); y++) {
-                Move newMove = new Move(x, y, playerId);
-                if(isLegalMove(newMove, board))
-                    moves.add(newMove);
+                if (board[x][y] == playerId) {
+                    for(int[] eightRegion : new int[][]{{0,1}, {1,1}, {1,0}, {0,-1}, {-1,-1}, {-1, 0}, {1,-1}, {-1,1}})
+                        if(isOnBoardLimits(x+eightRegion[0], y+eightRegion[1], board)) {
+                            Move newMove = new Move(x, y, x+eightRegion[0], y+eightRegion[1], playerId);
+                            if(isLegalMove(newMove, board))
+                                moves.add(newMove);
+                        }
+                }
             }
         }
         Collections.shuffle(moves);
@@ -155,7 +160,9 @@ public class TsoroYematatu extends Game {
 
     @Override
     public Move getPlayerMove(int startX, int startY, int endX, int endY, int[][] board, int playerId) {
-        return new Move(endX, endY, playerId);
+        if (getPlayerPieces(board, playerId) < 4)
+            return new Move(endX, endY, playerId);
+        else return new Move(startX, startY, endX, endY, playerId);
     }
 
     @Override
