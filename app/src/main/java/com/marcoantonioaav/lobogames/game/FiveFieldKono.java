@@ -65,7 +65,7 @@ public class FiveFieldKono extends Game {
             return false;
 
 
-        return move.movements.length == 1 && move.movements[0].isDiagonalMovement(board);
+        return move.movements.length == 1 && move.movements[0].isAdjacentInlineMovement(board);
     }
 
     @Override
