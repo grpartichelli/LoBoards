@@ -43,14 +43,14 @@ public class MinimaxAgent extends Agent {
         long startTime = System.currentTimeMillis();
         long timeSpent = 0;
         int depth = 0;
-        evaluationPlayouts = 5;
+        evaluationPlayouts = 1;
         while(timeSpent < SEARCH_TIME_MILLIS) {
             for(Move move : moves) {
                 float score = minimax(Game.applyMove(move, board), depth, MIN, MAX, false);
                 ratedMoves.put(move, normalizeScore(score));
             }
             depth++;
-            evaluationPlayouts += 5;
+            evaluationPlayouts = depth*5;
             timeSpent = System.currentTimeMillis() - startTime;
         }
         return ratedMoves;
