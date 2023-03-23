@@ -34,23 +34,30 @@ public class FiveFieldKono extends Game {
         };
     }
 
-        @Override
+    private boolean isPlayerOnInitialPosition(int playerId, int[][] board) {
+        int[][] initialBoard = getInitialBoard();
+        for(int x=0; x < getBoardWidth(board); x++)
+            for(int y=0; y < getBoardHeight(board); y++)
+                if((board[x][y] == playerId && initialBoard[x][y] != playerId) || (initialBoard[x][y] == playerId && board[x][y] != playerId))
+                    return false;
+        return true;
+    }
+
+    @Override
     public boolean isVictory(int[][] board, int playerId) {
-        ArrayList<Move> moves = getLegalMoves(board, enemyId(playerId));
+        ArrayList<Move> moves = getLegalMoves(board, Player.getOpponentOf(playerId));
         if(moves.isEmpty())
             return true;
 
-        if(isInInitialState(board, getInitialBoard(), Player.PLAYER_1) ||isInInitialState(board, getInitialBoard(), Player.PLAYER_2))
+        if(isPlayerOnInitialPosition(Player.PLAYER_1, board) || isPlayerOnInitialPosition(Player.PLAYER_2, board))
             return false;
 
         for(int x=0; x < getBoardWidth(board); x++)
             for(int y=0; y < getBoardHeight(board); y++)
-                if(getInitialBoard()[x][y] == enemyId(playerId) && board[x][y] == Player.EMPTY)
+                if(getInitialBoard()[x][y] == Player.getOpponentOf(playerId) && board[x][y] == Player.EMPTY)
                     return false;
         return true;
-
     }
-
 
     @Override
     public boolean isDraw(int[][] board) {
@@ -61,9 +68,8 @@ public class FiveFieldKono extends Game {
     public boolean isLegalMove(Move move, int[][] board) {
         int[][] newBoard = copyBoard(board);
         newBoard = applyMovement(move.movements[0], newBoard);
-        if(isInInitialState(newBoard, getInitialBoard(), move.playerId))
+        if(isPlayerOnInitialPosition(move.playerId, newBoard))
             return false;
-
 
         return move.movements.length == 1 && move.movements[0].isAdjacentInlineMovement(board);
     }

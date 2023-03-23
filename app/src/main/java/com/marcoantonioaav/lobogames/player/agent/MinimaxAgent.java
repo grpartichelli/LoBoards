@@ -11,9 +11,9 @@ import java.util.Random;
 public class MinimaxAgent extends Agent {
     private Game game;
 
-    private final int SEARCH_TIME_MILLIS = 1500;
+    private int evaluationPlayouts = 5;
 
-    private final int EVALUATION_PLAYOUTS = 25;
+    private final int SEARCH_TIME_MILLIS = 1500;
 
     private final float MAX = 1;
     private final float MIN = -MAX;
@@ -43,12 +43,14 @@ public class MinimaxAgent extends Agent {
         long startTime = System.currentTimeMillis();
         long timeSpent = 0;
         int depth = 0;
+        evaluationPlayouts = 5;
         while(timeSpent < SEARCH_TIME_MILLIS) {
             for(Move move : moves) {
                 float score = minimax(Game.applyMove(move, board), depth, MIN, MAX, false);
                 ratedMoves.put(move, normalizeScore(score));
             }
             depth++;
+            evaluationPlayouts += 5;
             timeSpent = System.currentTimeMillis() - startTime;
         }
         return ratedMoves;
@@ -125,9 +127,9 @@ public class MinimaxAgent extends Agent {
         int turn = getId();
         if(!isMaximizing)
             turn = getOpponentOf(turn);
-        for(int p = 0; p < EVALUATION_PLAYOUTS; p++)
+        for(int p = 0; p < evaluationPlayouts; p++)
             evaluation += makePlayout(turn, board);
-        return evaluation/EVALUATION_PLAYOUTS;
+        return evaluation/evaluationPlayouts;
     }
 
     protected float makePlayout(int turn, int[][] board) {
