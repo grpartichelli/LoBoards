@@ -11,8 +11,6 @@ import java.util.Random;
 public class MinimaxAgent extends Agent {
     private Game game;
 
-    private String difficulty = MEDIUM_DIFFICULTY;
-
     private final int SEARCH_TIME_MILLIS = 1500;
 
     private final int EVALUATION_PLAYOUTS = 25;
@@ -21,14 +19,14 @@ public class MinimaxAgent extends Agent {
     private final float MIN = -MAX;
     private final float NEUTRAL = (MIN + MAX)/2;
 
-    public MinimaxAgent(int player, String difficulty) {
-        super(player, difficulty);
-        setDifficulty(difficulty);
-    }
+    private float easyMean = 0.4f;
+    private float mediumMean = 0.6f;
+    private float hardMean = 1f;
+    private float easyStandardDeviation = 0.3f;
+    private float mediumStandardDeviation = 0.3f;
+    private float hardStandardDeviation = 0.3f;
 
-    public void setDifficulty(String difficulty) {
-        this.difficulty = difficulty;
-    }
+    public MinimaxAgent(int player, String difficulty) { super(player, difficulty); }
 
     @Override
     public Move selectMove(Game game, int[][] board) {
@@ -46,7 +44,7 @@ public class MinimaxAgent extends Agent {
         long timeSpent = 0;
         int depth = 0;
         while(timeSpent < SEARCH_TIME_MILLIS) {
-            for(Move move : moves)  {
+            for(Move move : moves) {
                 float score = minimax(Game.applyMove(move, board), depth, MIN, MAX, false);
                 ratedMoves.put(move, normalizeScore(score));
             }
@@ -72,11 +70,11 @@ public class MinimaxAgent extends Agent {
     }
 
     private float getRandomMoveQuality() {
-        if(Objects.equals(difficulty, EASY_DIFFICULTY))
-            return getRandomOnGaussian(0.4f, 0.3f);
-        if(Objects.equals(difficulty, MEDIUM_DIFFICULTY))
-            return getRandomOnGaussian(0.6f, 0.3f);
-        return getRandomOnGaussian(1f, 0.3f);
+        if(Objects.equals(getDifficulty(), EASY_DIFFICULTY))
+            return getRandomOnGaussian(easyMean, easyStandardDeviation);
+        if(Objects.equals(getDifficulty(), MEDIUM_DIFFICULTY))
+            return getRandomOnGaussian(mediumMean, mediumStandardDeviation);
+        return getRandomOnGaussian(hardMean, hardStandardDeviation);
     }
 
     private float getRandomOnGaussian(float mean, float standardDeviation) {
@@ -151,5 +149,32 @@ public class MinimaxAgent extends Agent {
         if(game.isVictory(board, getOpponent()))
             return MIN;
         return NEUTRAL;
+    }
+
+    public void setEasyMean(float easyMean) {
+        this.easyMean = easyMean;
+    }
+
+    public void setMediumMean(float mediumMean) {
+        this.mediumMean = mediumMean;
+    }
+
+    public void setHardMean(float hardMean) {
+        this.hardMean = hardMean;
+    }
+
+    public void setEasyStandardDeviation(float easyStandardDeviation) {
+        if(easyStandardDeviation != 0)
+            this.easyStandardDeviation = easyStandardDeviation;
+    }
+
+    public void setMediumStandardDeviation(float mediumStandardDeviation) {
+        if(mediumStandardDeviation != 0)
+            this.mediumStandardDeviation = mediumStandardDeviation;
+    }
+
+    public void setHardStandardDeviation(float hardStandardDeviation) {
+        if(hardStandardDeviation != 0)
+            this.hardStandardDeviation = hardStandardDeviation;
     }
 }
