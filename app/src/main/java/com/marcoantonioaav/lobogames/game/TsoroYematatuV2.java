@@ -135,7 +135,6 @@ public class TsoroYematatuV2 extends Game {
         return count;
     }
 
-
     @Override
     public ArrayList<Move> getLegalMoves(int[][] board, int playerId) {
         ArrayList<Move> moves = new ArrayList<>();
