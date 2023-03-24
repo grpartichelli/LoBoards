@@ -7,10 +7,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import android.util.Log;
 
-public class TsoroYematatu extends Game {
+public class TsoroYematatuV2 extends Game {
     @Override
     public String getName() {
-        return "Tsoro Yematatu";
+        return "Tsoro Yematatu V2";
     }
 
     @Override
@@ -125,7 +125,7 @@ public class TsoroYematatu extends Game {
         return move.movements.length == 1 && move.movements[0].isAdjacentInlineMovement(board);
     }
 
-    private int getPlayerPieces(int[][] board, int playerId) {
+    int getPlayerPieces(int[][] board, int playerId) {
         int count = 0;
 
         for(int x=0; x<getBoardWidth(board); x++)
@@ -187,6 +187,6 @@ public class TsoroYematatu extends Game {
 
     @Override
     public String getRules() {
-        return "Em sua vez, o jogador pode inserir uma peça em uma posição vazia do tabuleiro, até atingir 4 peças. Após, pode movimentar uma peça por vez. Ganha aquele que conseguir alinhar 4 peças.";
+        return "Em sua vez, o jogador pode inserir uma peça em uma posição vazia do tabuleiro, até atingir 4 peças. Após, pode movimentar uma peça por vez, apenas em áreas adjacentes à atual posição. Ganha aquele que conseguir alinhar 4 peças.";
     }
 }
