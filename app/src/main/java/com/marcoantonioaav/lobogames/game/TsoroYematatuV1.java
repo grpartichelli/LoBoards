@@ -10,9 +10,8 @@ public class TsoroYematatuV1 extends TsoroYematatuV2 {
     }
     @Override
     public boolean isLegalMove(Move move, int[][] board) {
-        if (getPlayerPieces(board, move.playerId) < 4) {
+        if (getPlayerPieces(board, move.playerId) < 4)
             return move.movements.length == 1 && move.movements[0].isInsertion(board);
-        }
         return move.movements.length == 1 && board[move.movements[0].endX][move.movements[0].endY] == Player.EMPTY;
     }
 

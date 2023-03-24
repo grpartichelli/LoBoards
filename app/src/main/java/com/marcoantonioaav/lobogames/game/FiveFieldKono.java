@@ -97,6 +97,6 @@ public class FiveFieldKono extends Game {
 
     @Override
     public String getRules() {
-        return "Mova suas peças diagonalmente tal que as posições iniciais do inimigo estejam completamente preenchidas por peças suas ou dele.";
+        return "Cada jogador possui sete peças posicionadas no tabuleiro. É permitido apenas o deslocamento das peças para posições adjacentes conectadas por uma das linhas do tabuleiro. O jogador ganha caso as posições iniciais do oponente estejam completamente preenchidas por peças, sejam suas ou do oponente.";
     }
 }

@@ -11,9 +11,10 @@ import java.util.Random;
 public class MinimaxAgent extends Agent {
     private Game game;
 
-    private int evaluationPlayouts = 5;
-
+    private final int MAX_EVALUATION_PLAYOUTS = 25;
     private final int SEARCH_TIME_MILLIS = 1500;
+
+    private int evaluationPlayouts = MAX_EVALUATION_PLAYOUTS;
 
     private final float MAX = 1;
     private final float MIN = -MAX;
@@ -50,7 +51,10 @@ public class MinimaxAgent extends Agent {
                 ratedMoves.put(move, normalizeScore(score));
             }
             depth++;
-            evaluationPlayouts = depth*5;
+            if(depth >= 3)
+                evaluationPlayouts = MAX_EVALUATION_PLAYOUTS;
+            else
+                evaluationPlayouts++;
             timeSpent = System.currentTimeMillis() - startTime;
         }
         return ratedMoves;

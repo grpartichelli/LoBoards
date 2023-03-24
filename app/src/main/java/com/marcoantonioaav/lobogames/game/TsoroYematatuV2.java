@@ -5,7 +5,6 @@ import com.marcoantonioaav.lobogames.player.Player;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import android.util.Log;
 
 public class TsoroYematatuV2 extends Game {
     @Override
@@ -119,15 +118,13 @@ public class TsoroYematatuV2 extends Game {
 
     @Override
     public boolean isLegalMove(Move move, int[][] board) {
-        if (getPlayerPieces(board, move.playerId) < 4) {
+        if (getPlayerPieces(board, move.playerId) < 4)
             return move.movements.length == 1 && move.movements[0].isInsertion(board);
-        }
         return move.movements.length == 1 && move.movements[0].isAdjacentInlineMovement(board);
     }
 
     int getPlayerPieces(int[][] board, int playerId) {
         int count = 0;
-
         for(int x=0; x<getBoardWidth(board); x++)
             for(int y=0; y<getBoardHeight(board); y++)
                 if(board[x][y] == playerId)
@@ -137,18 +134,13 @@ public class TsoroYematatuV2 extends Game {
 
     @Override
     public ArrayList<Move> getLegalMoves(int[][] board, int playerId) {
-        ArrayList<Move> moves = new ArrayList<>();
-
-        if (getPlayerPieces(board, playerId) < 4) {
-            LegalInsertionMoves(board, playerId, moves);
-            return moves;
-        }
-
-        LegalMovementMoves(board, playerId, moves);
-        return moves;
+        if (getPlayerPieces(board, playerId) < 4)
+            return getLegalInsertionMoves(board, playerId);
+        return getLegalMovementMoves(board, playerId);
     }
 
-    private ArrayList<Move> LegalInsertionMoves(int board[][], int playerId, ArrayList moves) {
+    private ArrayList<Move> getLegalInsertionMoves(int board[][], int playerId) {
+        ArrayList<Move> moves = new ArrayList<>();
         for(int x=0; x < getBoardWidth(board); x++) {
             for(int y=0; y < getBoardHeight(board); y++) {
                 Move newMove = new Move(x, y, playerId);
@@ -160,7 +152,8 @@ public class TsoroYematatuV2 extends Game {
         return moves;
     }
 
-    private ArrayList<Move> LegalMovementMoves(int board[][], int playerId, ArrayList moves) {
+    private ArrayList<Move> getLegalMovementMoves(int board[][], int playerId) {
+        ArrayList<Move> moves = new ArrayList<>();
         for(int x=0; x < getBoardWidth(board); x++) {
             for(int y=0; y < getBoardHeight(board); y++) {
                 if (board[x][y] == playerId) {
