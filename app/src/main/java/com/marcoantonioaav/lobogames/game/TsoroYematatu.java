@@ -120,12 +120,9 @@ public class TsoroYematatu extends Game {
     @Override
     public boolean isLegalMove(Move move, int[][] board) {
         if (getPlayerPieces(board, move.playerId) < 4) {
-            Log.i("LegalMove", "adiciona");
             return move.movements.length == 1 && move.movements[0].isInsertion(board);
         }
-        Log.i("LegalMove", "movimenta");
         return move.movements.length == 1 && move.movements[0].isAdjacentInlineMovement(board);
-
     }
 
     private int getPlayerPieces(int[][] board, int playerId) {
@@ -142,6 +139,29 @@ public class TsoroYematatu extends Game {
     @Override
     public ArrayList<Move> getLegalMoves(int[][] board, int playerId) {
         ArrayList<Move> moves = new ArrayList<>();
+
+        if (getPlayerPieces(board, playerId) < 4) {
+            LegalInsertionMoves(board, playerId, moves);
+            return moves;
+        }
+
+        LegalMovementMoves(board, playerId, moves);
+        return moves;
+    }
+
+    private ArrayList<Move> LegalInsertionMoves(int board[][], int playerId, ArrayList moves) {
+        for(int x=0; x < getBoardWidth(board); x++) {
+            for(int y=0; y < getBoardHeight(board); y++) {
+                Move newMove = new Move(x, y, playerId);
+                if(isLegalMove(newMove, board))
+                    moves.add(newMove);
+            }
+        }
+        Collections.shuffle(moves);
+        return moves;
+    }
+
+    private ArrayList<Move> LegalMovementMoves(int board[][], int playerId, ArrayList moves) {
         for(int x=0; x < getBoardWidth(board); x++) {
             for(int y=0; y < getBoardHeight(board); y++) {
                 if (board[x][y] == playerId) {
@@ -167,6 +187,6 @@ public class TsoroYematatu extends Game {
 
     @Override
     public String getRules() {
-        return "Em sua vez, o jogador pode inserir uma peça em uma posição vazia do tabuleiro, até atingir 4 peças. Após, pode movimentar uma peça por vez. Ganha aquele que conseguir alinhas 4 peças.";
+        return "Em sua vez, o jogador pode inserir uma peça em uma posição vazia do tabuleiro, até atingir 4 peças. Após, pode movimentar uma peça por vez. Ganha aquele que conseguir alinhar 4 peças.";
     }
 }
