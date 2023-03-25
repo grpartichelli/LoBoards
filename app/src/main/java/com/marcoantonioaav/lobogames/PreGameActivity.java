@@ -41,7 +41,7 @@ public class PreGameActivity extends AppCompatActivity {
         put(new FiveFieldKono().getName(), new FiveFieldKono());
         put(new TsoroYematatuV1().getName(), new TsoroYematatuV1());
         put(new TsoroYematatuV2().getName(), new TsoroYematatuV2());
-        put(new TsoroYematatuV3().getName(), new TsoroYematatuV3());
+        //put(new TsoroYematatuV3().getName(), new TsoroYematatuV3());
     }};
 
     @Override
