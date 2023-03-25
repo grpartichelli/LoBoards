@@ -18,6 +18,7 @@ import com.marcoantonioaav.lobogames.game.Tapatan;
 import com.marcoantonioaav.lobogames.game.TicTacToe;
 import com.marcoantonioaav.lobogames.game.TsoroYematatuV1;
 import com.marcoantonioaav.lobogames.game.TsoroYematatuV2;
+import com.marcoantonioaav.lobogames.game.TsoroYematatuV3;
 import com.marcoantonioaav.lobogames.player.agent.Agent;
 
 import java.util.HashMap;
@@ -40,6 +41,7 @@ public class PreGameActivity extends AppCompatActivity {
         put(new FiveFieldKono().getName(), new FiveFieldKono());
         put(new TsoroYematatuV1().getName(), new TsoroYematatuV1());
         put(new TsoroYematatuV2().getName(), new TsoroYematatuV2());
+        put(new TsoroYematatuV3().getName(), new TsoroYematatuV3());
     }};
 
     @Override

@@ -52,6 +52,21 @@ public class Movement {
                                 Math.abs(startX - endX) + Math.abs(startY - endY) == 2);
     }
 
+
+    /*public boolean isAdjacentInlineOrOpponentJump(int[][] board) {
+        if(startX == OUT_OF_BOARD || startY == OUT_OF_BOARD || endX == OUT_OF_BOARD || endY == OUT_OF_BOARD)
+            return false;
+        return
+                board[startX][startY] == piece &&
+                        board[endX][endY] == Player.EMPTY &&
+                        if (board[endX+1][endY+1] != Player.EMPTY) {
+                            Math.abs(startX - endX) <= 2 &&
+                                    Math.abs(startY - endY) <= 2 &&
+                                    (startX % 2 == startY % 2 ||
+                                            Math.abs(startX - endX) + Math.abs(startY - endY) == 2);
+                        }
+    }*/
+
     public boolean isAdjacentInlineMovement(int[][] board) {
         if(startX == OUT_OF_BOARD || startY == OUT_OF_BOARD || endX == OUT_OF_BOARD || endY == OUT_OF_BOARD)
             return false;
