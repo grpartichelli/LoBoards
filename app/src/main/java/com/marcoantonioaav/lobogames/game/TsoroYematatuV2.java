@@ -139,7 +139,7 @@ public class TsoroYematatuV2 extends Game {
         return getLegalMovementMoves(board, playerId);
     }
 
-    private ArrayList<Move> getLegalInsertionMoves(int board[][], int playerId) {
+    ArrayList<Move> getLegalInsertionMoves(int board[][], int playerId) {
         ArrayList<Move> moves = new ArrayList<>();
         for(int x=0; x < getBoardWidth(board); x++) {
             for(int y=0; y < getBoardHeight(board); y++) {
