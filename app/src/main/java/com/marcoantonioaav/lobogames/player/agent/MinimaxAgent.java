@@ -11,10 +11,9 @@ import java.util.Random;
 public class MinimaxAgent extends Agent {
     private Game game;
 
-    private final int MAX_EVALUATION_PLAYOUTS = 25;
+    private final int EVALUATION_PLAYOUTS = 25;
+    private final int MAX_PLAYOUT_DEPTH = 50;
     private final int SEARCH_TIME_MILLIS = 1500;
-
-    private int evaluationPlayouts = MAX_EVALUATION_PLAYOUTS;
 
     private final float MAX = 1;
     private final float MIN = -MAX;
@@ -44,17 +43,12 @@ public class MinimaxAgent extends Agent {
         long startTime = System.currentTimeMillis();
         long timeSpent = 0;
         int depth = 0;
-        evaluationPlayouts = 1;
         while(timeSpent < SEARCH_TIME_MILLIS) {
             for(Move move : moves) {
                 float score = minimax(Game.applyMove(move, board), depth, MIN, MAX, false);
                 ratedMoves.put(move, normalizeScore(score));
             }
             depth++;
-            if(depth >= 3)
-                evaluationPlayouts = MAX_EVALUATION_PLAYOUTS;
-            else
-                evaluationPlayouts++;
             timeSpent = System.currentTimeMillis() - startTime;
         }
         return ratedMoves;
@@ -131,20 +125,22 @@ public class MinimaxAgent extends Agent {
         int turn = getId();
         if(!isMaximizing)
             turn = getOpponentOf(turn);
-        for(int p = 0; p < evaluationPlayouts; p++)
+        for(int p = 0; p < EVALUATION_PLAYOUTS; p++)
             evaluation += makePlayout(turn, board);
-        return evaluation/evaluationPlayouts;
+        return evaluation/EVALUATION_PLAYOUTS;
     }
 
     protected float makePlayout(int turn, int[][] board) {
         int[][] newBoard = Game.copyBoard(board);
         int currentPlayer = turn;
-        while(!game.isTerminalState(newBoard)) {
+        int depth = 0;
+        while(!game.isTerminalState(newBoard) && depth < MAX_PLAYOUT_DEPTH) {
             ArrayList<Move> legalMoves = game.getLegalMoves(newBoard, currentPlayer);
             if(legalMoves.isEmpty())
                 return NEUTRAL;
             newBoard = Game.applyMove(legalMoves.get(0), newBoard);
             currentPlayer = getOpponentOf(currentPlayer);
+            depth++;
         }
         return evaluateTerminalState(newBoard);
     }

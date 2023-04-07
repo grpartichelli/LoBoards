@@ -44,12 +44,12 @@ public class Movement {
             return false;
         return
                 board[startX][startY] == piece &&
-                        board[endX][endY] == Player.EMPTY &&
-                        board[getRemovalFor(this).startX][getRemovalFor(this).startY] == Player.getOpponentOf(piece) &&
-                        Math.abs(startX - endX) <= 2 &&
-                        Math.abs(startY - endY) <= 2 &&
-                        (startX % 2 == startY % 2 ||
-                                Math.abs(startX - endX) + Math.abs(startY - endY) == 2);
+                board[endX][endY] == Player.EMPTY &&
+                board[getRemovalFor(this).startX][getRemovalFor(this).startY] == Player.getOpponentOf(piece) &&
+                Math.abs(startX - endX) <= 2 &&
+                Math.abs(startY - endY) <= 2 &&
+                (startX % 2 == startY % 2 ||
+                        Math.abs(startX - endX) + Math.abs(startY - endY) == 2);
     }
 
 
@@ -72,11 +72,11 @@ public class Movement {
             return false;
         return
                 board[startX][startY] == piece &&
-                        board[endX][endY] == Player.EMPTY &&
-                        Math.abs(startX - endX) <= 1 &&
-                        Math.abs(startY - endY) <= 1 &&
-                        (startX % 2 == startY % 2 ||
-                                Math.abs(startX - endX) + Math.abs(startY - endY) == 1);
+                board[endX][endY] == Player.EMPTY &&
+                Math.abs(startX - endX) <= 1 &&
+                Math.abs(startY - endY) <= 1 &&
+                (startX % 2 == startY % 2 ||
+                        Math.abs(startX - endX) + Math.abs(startY - endY) == 1);
     }
 
     public boolean isDiagonalMovement(int[][] board) {
@@ -85,9 +85,9 @@ public class Movement {
 
         return
                 board[startX][startY] == piece &&
-                        board[endX][endY] == Player.EMPTY &&
-                        Math.abs(startX - endX) == 1 &&
-                        Math.abs(startY - endY) == 1;
+                board[endX][endY] == Player.EMPTY &&
+                Math.abs(startX - endX) == 1 &&
+                Math.abs(startY - endY) == 1;
     }
 
     public static Movement getRemovalFor(Movement jump) {

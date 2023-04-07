@@ -9,7 +9,7 @@ import java.util.Collections;
 public class TsoroYematatuV2 extends Game {
     @Override
     public String getName() {
-        return "Tsoro Yematatu V2";
+        return "Tsoro Yematatu";
     }
 
     @Override
@@ -139,7 +139,7 @@ public class TsoroYematatuV2 extends Game {
         return getLegalMovementMoves(board, playerId);
     }
 
-    ArrayList<Move> getLegalInsertionMoves(int board[][], int playerId) {
+    protected ArrayList<Move> getLegalInsertionMoves(int board[][], int playerId) {
         ArrayList<Move> moves = new ArrayList<>();
         for(int x=0; x < getBoardWidth(board); x++) {
             for(int y=0; y < getBoardHeight(board); y++) {
