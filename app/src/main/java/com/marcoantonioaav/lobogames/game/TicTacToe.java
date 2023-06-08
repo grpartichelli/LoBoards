@@ -2,6 +2,7 @@ package com.marcoantonioaav.lobogames.game;
 
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.player.Player;
+import com.marcoantonioaav.lobogames.player.agent.MinimaxAgent;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -75,5 +76,10 @@ public class TicTacToe extends Game {
     @Override
     public String getRules() {
         return "Em sua vez, o jogador pode inserir uma peça em uma posição vazia do tabuleiro. Ganha aquele que conseguir alinhar três peças.";
+    }
+
+    @Override
+    public float getHeuristicEvaluationOf(int[][] board, int playerId, int turn) {
+        return MinimaxAgent.evaluateWithPlayouts(board, playerId, turn, this);
     }
 }

@@ -13,14 +13,14 @@ public class TsoroYematatuV1 extends TsoroYematatuV2 {
     }
     @Override
     public boolean isLegalMove(Move move, int[][] board) {
-        if (getPlayerPieces(board, move.playerId) < 4)
+        if (countPlayerPieces(board, move.playerId) < 4)
             return move.movements.length == 1 && move.movements[0].isInsertion(board);
         return move.movements.length == 1 && board[move.movements[0].endX][move.movements[0].endY] == Player.EMPTY;
     }
 
     @Override
     public ArrayList<Move> getLegalMoves(int[][] board, int playerId) {
-        if (getPlayerPieces(board, playerId) < 4)
+        if (countPlayerPieces(board, playerId) < 4)
             return getLegalInsertionMoves(board, playerId);
         return getLegalMovementMoves(board, playerId);
     }

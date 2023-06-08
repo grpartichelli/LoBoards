@@ -1,7 +1,6 @@
 package com.marcoantonioaav.lobogames.game;
 
 import com.marcoantonioaav.lobogames.move.Move;
-import com.marcoantonioaav.lobogames.player.Player;
 
 public class TsoroYematatuV3 extends TsoroYematatuV2 {
     @Override
@@ -10,7 +9,7 @@ public class TsoroYematatuV3 extends TsoroYematatuV2 {
     }
     @Override
     public boolean isLegalMove(Move move, int[][] board) {
-        if (getPlayerPieces(board, move.playerId) < 4) {
+        if (countPlayerPieces(board, move.playerId) < 4) {
             return move.movements.length == 1 && move.movements[0].isInsertion(board);
         }
         return (move.movements.length == 1 && move.movements[0].isAdjacentInlineMovement(board));

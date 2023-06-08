@@ -15,6 +15,15 @@ public abstract class Game {
     public abstract ArrayList<Move> getLegalMoves(int[][] board, int playerId);
     public abstract Move getPlayerMove(int startX, int startY, int endX, int endY, int[][] board, int playerId);
     public abstract String getRules();
+    /**Método que retorna a avaliação heurística de um estado do jogo,
+     * utilizado pelo agente MinimaxAgent.
+     * @param board tabuleiro
+     * @param playerId id do agente
+     * @param turn id do player da rodada (i.e. que fará a próxima jogada)
+     * @return float - Avaliação no intervalo [MinimaxAgent.MIN, MinimaxAgent.MAX].
+     * Dica: pode ser utilizado MinimaxAgent.normalizeToEvaluationLimits().
+     */
+    public abstract float getHeuristicEvaluationOf(int[][] board, int playerId, int turn);
 
     public boolean isTerminalState(int[][] board) {
         return isVictory(board, Player.PLAYER_1) || isVictory(board, Player.PLAYER_2) || isDraw(board);
@@ -43,6 +52,15 @@ public abstract class Game {
             for(int y=0; y < getBoardHeight(board); y++)
                 newBoard[x][y] = board[x][y];
         return newBoard;
+    }
+
+    protected int countPlayerPieces(int[][] board, int playerId) {
+        int count = 0;
+        for(int x=0; x<getBoardWidth(board); x++)
+            for(int y=0; y<getBoardHeight(board); y++)
+                if(board[x][y] == playerId)
+                    count++;
+        return count;
     }
 
     public static boolean isOnBoardLimits(int x, int y, int[][] board) {

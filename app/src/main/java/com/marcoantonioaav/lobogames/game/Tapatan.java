@@ -2,6 +2,7 @@ package com.marcoantonioaav.lobogames.game;
 
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.player.Player;
+import com.marcoantonioaav.lobogames.player.agent.MinimaxAgent;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -56,5 +57,10 @@ public class Tapatan extends Game {
     @Override
     public String getRules() {
         return "Cada jogador possui três peças posicionadas no tabuleiro. É permitido apenas o deslocamento das peças para posições adjacentes conectadas por uma das linhas do tabuleiro. Ganha aquele que conseguir alinhar três peças.";
+    }
+
+    @Override
+    public float getHeuristicEvaluationOf(int[][] board, int playerId, int turn) {
+        return MinimaxAgent.evaluateWithPlayouts(board, playerId, turn, this);
     }
 }

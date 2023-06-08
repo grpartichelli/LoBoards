@@ -2,6 +2,7 @@ package com.marcoantonioaav.lobogames.game;
 
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.player.Player;
+import com.marcoantonioaav.lobogames.player.agent.MinimaxAgent;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -98,5 +99,10 @@ public class FiveFieldKono extends Game {
     @Override
     public String getRules() {
         return "Cada jogador possui sete peças posicionadas no tabuleiro. É permitido apenas o deslocamento das peças para posições adjacentes conectadas por uma das linhas do tabuleiro. O jogador ganha caso as posições iniciais do oponente estejam completamente preenchidas por peças, sejam suas ou do oponente.";
+    }
+
+    @Override
+    public float getHeuristicEvaluationOf(int[][] board, int playerId, int turn) {
+        return MinimaxAgent.evaluateWithPlayouts(board, playerId, turn, this);
     }
 }

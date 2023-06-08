@@ -11,13 +11,13 @@ import java.util.Random;
 public class MinimaxAgent extends Agent {
     private Game game;
 
-    private final int EVALUATION_PLAYOUTS = 25;
-    private final int MAX_PLAYOUT_DEPTH = 50;
+    private static final int EVALUATION_PLAYOUTS = 25;
+    private static final int MAX_PLAYOUT_DEPTH = 50;
     private final int SEARCH_TIME_MILLIS = 1500;
 
-    private final float MAX = 1;
-    private final float MIN = -MAX;
-    private final float NEUTRAL = (MIN + MAX)/2;
+    public static final float MAX = 1;
+    public static final float MIN = -MAX;
+    public static final float NEUTRAL = (MIN + MAX)/2;
 
     private float easyMean = 0.4f;
     private float mediumMean = 0.6f;
@@ -46,7 +46,7 @@ public class MinimaxAgent extends Agent {
         while(timeSpent < SEARCH_TIME_MILLIS) {
             for(Move move : moves) {
                 float score = minimax(Game.applyMove(move, board), depth, MIN, MAX, false);
-                ratedMoves.put(move, normalizeScore(score));
+                ratedMoves.put(move, normalizeTo0To1(score));
             }
             depth++;
             timeSpent = System.currentTimeMillis() - startTime;
@@ -81,13 +81,17 @@ public class MinimaxAgent extends Agent {
         return (float)(new Random().nextGaussian()*standardDeviation)+mean;
     }
 
-    private float normalizeScore(float score) {
+    private float normalizeTo0To1(float score) {
         return (score - MIN) / (MAX - MIN);
+    }
+
+    public static float normalizeToEvaluationLimits(float value, float valueMin, float valueMax) {
+        return MIN + ((value - valueMin)*(MAX - MIN)) / (valueMax - valueMin);
     }
 
     private float minimax(int[][] board, int depth, float alpha, float beta, boolean isMaximizing) {
         if(depth == 0 || game.isTerminalState(board))
-            return evaluate(isMaximizing, board);
+            return evaluate(board, isMaximizing);
         if(isMaximizing) {
             float maxValue = MIN;
             for(Move move : game.getLegalMoves(board, getId())) {
@@ -114,23 +118,23 @@ public class MinimaxAgent extends Agent {
         }
     }
 
-    private float evaluate(boolean isMaximizing, int[][] board) {
+    private float evaluate(int[][] board, boolean isMaximizing) {
         if(game.isTerminalState(board))
-            return evaluateTerminalState(board);
-        return evaluateWithPlayouts(isMaximizing, board);
-    }
-
-    private float evaluateWithPlayouts(boolean isMaximizing, int[][] board) {
-        float evaluation = 0f;
+            return evaluateTerminalState(board, getId(), game);
         int turn = getId();
         if(!isMaximizing)
             turn = getOpponentOf(turn);
+        return game.getHeuristicEvaluationOf(board, getId(), turn);
+    }
+
+    public static float evaluateWithPlayouts(int[][] board, int player, int turn, Game game) {
+        float evaluation = 0f;
         for(int p = 0; p < EVALUATION_PLAYOUTS; p++)
-            evaluation += makePlayout(turn, board);
+            evaluation += makePlayout(board, player, turn, game);
         return evaluation/EVALUATION_PLAYOUTS;
     }
 
-    protected float makePlayout(int turn, int[][] board) {
+    protected static float makePlayout(int[][] board, int player, int turn, Game game) {
         int[][] newBoard = Game.copyBoard(board);
         int currentPlayer = turn;
         int depth = 0;
@@ -142,13 +146,13 @@ public class MinimaxAgent extends Agent {
             currentPlayer = getOpponentOf(currentPlayer);
             depth++;
         }
-        return evaluateTerminalState(newBoard);
+        return evaluateTerminalState(newBoard, player, game);
     }
 
-    private float evaluateTerminalState(int[][] board) {
-        if(game.isVictory(board, getId()))
+    protected static float evaluateTerminalState(int[][] board, int player, Game game) {
+        if(game.isVictory(board, player))
             return MAX;
-        if(game.isVictory(board, getOpponent()))
+        if(game.isVictory(board, getOpponentOf(player)))
             return MIN;
         return NEUTRAL;
     }

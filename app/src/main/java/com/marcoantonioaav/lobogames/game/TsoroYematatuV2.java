@@ -2,6 +2,7 @@ package com.marcoantonioaav.lobogames.game;
 
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.player.Player;
+import com.marcoantonioaav.lobogames.player.agent.MinimaxAgent;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -118,23 +119,14 @@ public class TsoroYematatuV2 extends Game {
 
     @Override
     public boolean isLegalMove(Move move, int[][] board) {
-        if (getPlayerPieces(board, move.playerId) < 4)
+        if (countPlayerPieces(board, move.playerId) < 4)
             return move.movements.length == 1 && move.movements[0].isInsertion(board);
         return move.movements.length == 1 && move.movements[0].isAdjacentInlineMovement(board);
     }
 
-    int getPlayerPieces(int[][] board, int playerId) {
-        int count = 0;
-        for(int x=0; x<getBoardWidth(board); x++)
-            for(int y=0; y<getBoardHeight(board); y++)
-                if(board[x][y] == playerId)
-                    count++;
-        return count;
-    }
-
     @Override
     public ArrayList<Move> getLegalMoves(int[][] board, int playerId) {
-        if (getPlayerPieces(board, playerId) < 4)
+        if (countPlayerPieces(board, playerId) < 4)
             return getLegalInsertionMoves(board, playerId);
         return getLegalMovementMoves(board, playerId);
     }
@@ -172,7 +164,7 @@ public class TsoroYematatuV2 extends Game {
 
     @Override
     public Move getPlayerMove(int startX, int startY, int endX, int endY, int[][] board, int playerId) {
-        if (getPlayerPieces(board, playerId) < 4)
+        if (countPlayerPieces(board, playerId) < 4)
             return new Move(endX, endY, playerId);
         else return new Move(startX, startY, endX, endY, playerId);
     }
@@ -180,5 +172,10 @@ public class TsoroYematatuV2 extends Game {
     @Override
     public String getRules() {
         return "Em sua vez, o jogador pode inserir uma peça em uma posição vazia do tabuleiro, até atingir 4 peças. Após, pode movimentar uma peça por vez, apenas em áreas adjacentes à atual posição. Ganha aquele que conseguir alinhar 4 peças.";
+    }
+
+    @Override
+    public float getHeuristicEvaluationOf(int[][] board, int playerId, int turn) {
+        return MinimaxAgent.evaluateWithPlayouts(board, playerId, turn, this);
     }
 }

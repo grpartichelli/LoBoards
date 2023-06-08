@@ -3,6 +3,8 @@ package com.marcoantonioaav.lobogames.game;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.move.Movement;
 import com.marcoantonioaav.lobogames.player.Player;
+import com.marcoantonioaav.lobogames.player.agent.Agent;
+import com.marcoantonioaav.lobogames.player.agent.MinimaxAgent;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -174,5 +176,13 @@ public class Alquerque extends Game {
     @Override
     public String getRules() {
         return "Cada jogador possui doze peças posicionadas no tabuleiro. O jogador pode capturar peças adversárias saltando sobre elas, respeitando as linhas do tabuleiro. Capturas em sequência são permitidas, sendo que o jogador é obrigado a capturar o máximo de peças que puder em sua jogada. Caso não existam possibilidades de captura, as peças podem se deslocar para posições adjacentes. Vence o jogador que capturar todas as peças do adversário.";
+    }
+
+    @Override
+    public float getHeuristicEvaluationOf(int[][] board, int playerId, int turn) {
+        int playerPieces = countPlayerPieces(board, playerId);
+        int opponentPieces = countPlayerPieces(board, Agent.getOpponentOf(playerId));
+        int maxPieceCount = 12;
+        return MinimaxAgent.normalizeToEvaluationLimits(playerPieces - opponentPieces, -maxPieceCount, maxPieceCount);
     }
 }
