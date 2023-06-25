@@ -25,6 +25,8 @@ public abstract class Game {
      */
     public abstract float getHeuristicEvaluationOf(int[][] board, int playerId, int turn);
 
+
+
     public boolean isTerminalState(int[][] board) {
         return isVictory(board, Player.PLAYER_1) || isVictory(board, Player.PLAYER_2) || isDraw(board);
     }

@@ -47,7 +47,7 @@ public class GameActivity extends AppCompatActivity {
         game = PreGameActivity.GAMES.get(this.getIntent().getExtras().get(PreGameActivity.GAME_NAME));
         setTitle(game.getName());
         player1 = new Human(Player.PLAYER_1);
-        if((boolean) this.getIntent().getExtras().get(PreGameActivity.IS_MULTIPLAYER))
+        if ((boolean) this.getIntent().getExtras().get(PreGameActivity.IS_MULTIPLAYER))
             player2 = new Human(Player.PLAYER_2);
         else
             player2 = new MinimaxAgent(Player.PLAYER_2, (String) this.getIntent().getExtras().get(PreGameActivity.DIFFICULTY));
@@ -84,30 +84,29 @@ public class GameActivity extends AppCompatActivity {
                 {findViewById(R.id.E1_5x5), findViewById(R.id.E2_5x5), findViewById(R.id.E3_5x5), findViewById(R.id.E4_5x5), findViewById(R.id.E5_5x5)}
         };
 
-        if(Game.getBoardWidth(game.getInitialBoard()) == 3) {
+        if (Game.getBoardWidth(game.getInitialBoard()) == 3) {
             buttons = buttons3x3;
-            for(final int x : new int[]{0, 1, 2})
-                for(final int y : new int[]{0, 1, 2}) {
+            for (final int x : new int[]{0, 1, 2})
+                for (final int y : new int[]{0, 1, 2}) {
                     buttons[x][y].setVisibility(View.VISIBLE);
                     buttons[x][y].setOnClickListener(view -> setCursorByClick(x, y));
                 }
-        }
-        else {
+        } else {
             buttons = buttons5x5;
-            for(final int x : new int[]{0, 1, 2, 3, 4})
-                for(final int y : new int[]{0, 1, 2, 3, 4}) {
+            for (final int x : new int[]{0, 1, 2, 3, 4})
+                for (final int y : new int[]{0, 1, 2, 3, 4}) {
                     buttons[x][y].setVisibility(View.VISIBLE);
                     buttons[x][y].setOnClickListener(view -> setCursorByClick(x, y));
-                    if(x > 0)
-                        ViewCompat.setAccessibilityDelegate(buttons[x][y], new BoardButtonDelegate(buttons[x-1][y]));
-                    else if(y != 4)
-                        ViewCompat.setAccessibilityDelegate(buttons[x][y], new BoardButtonDelegate(buttons[0][y+1]));
+                    if (x > 0)
+                        ViewCompat.setAccessibilityDelegate(buttons[x][y], new BoardButtonDelegate(buttons[x - 1][y]));
+                    else if (y != 4)
+                        ViewCompat.setAccessibilityDelegate(buttons[x][y], new BoardButtonDelegate(buttons[0][y + 1]));
                 }
         }
     }
 
     private void setCursorByClick(int x, int y) {
-        if(isGameRunning) {
+        if (isGameRunning) {
             Player player = Player.selectPlayerById(player1, player2, turn);
             if (player instanceof Human) {
                 ((Human) player).setCursor(x, y);
@@ -118,14 +117,14 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void gameLoop() {
-        while(true) {
-            if(isGameRunning) {
+        while (true) {
+            if (isGameRunning) {
                 Player player = Player.selectPlayerById(player1, player2, turn);
                 if (player.isReady()) {
                     Move move = player.getMove(game, board);
                     if (game.isLegalMove(move, board)) {
                         makeMove(move);
-                        if(game.isTerminalState(board))
+                        if (game.isTerminalState(board))
                             endGame();
                     }
                 }
@@ -134,21 +133,24 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void makeMove(Move move) {
-        if(move == null)
+        if (move == null) {
             return;
+        }
         runOnUiThread(() -> boardView.announceForAccessibility(move.toString()));
         runOnUiThread(() -> boardView.drawBoard(board, move));
         board = Game.applyMove(move, board);
         turn = Player.getOpponentOf(turn);
         showTurn();
         Player currentPlayer = Player.selectPlayerById(player1, player2, turn);
-        if(currentPlayer instanceof Human)
+        if (currentPlayer instanceof Human) {
             runOnUiThread(this::updateButtonsDescription);
+            // ((Human) currentPlayer).clearCursor();
+        }
     }
 
     private void updateButtonsDescription() {
-        for(int x = 0; x < Game.getBoardWidth(board); x++)
-            for(int y = 0; y < Game.getBoardHeight(board); y++)
+        for (int x = 0; x < Game.getBoardWidth(board); x++)
+            for (int y = 0; y < Game.getBoardHeight(board); y++)
                 buttons[x][y].setContentDescription(Movement.positionToString(x, y) + ": " + Player.getName(board[x][y]));
     }
 
@@ -178,15 +180,13 @@ public class GameActivity extends AppCompatActivity {
     private void showResult() {
         int resultColor;
         String resultText;
-        if(game.isVictory(board, player1.getId())) {
-            resultText = Player.getName(Player.PLAYER_1) +  " venceu!";
+        if (game.isVictory(board, player1.getId())) {
+            resultText = Player.getName(Player.PLAYER_1) + " venceu!";
             resultColor = boardView.getPlayerColor(Player.PLAYER_1);
-        }
-        else if(game.isVictory(board, player2.getId())) {
-            resultText = Player.getName(Player.PLAYER_2) +  " venceu!";
+        } else if (game.isVictory(board, player2.getId())) {
+            resultText = Player.getName(Player.PLAYER_2) + " venceu!";
             resultColor = boardView.getPlayerColor(Player.PLAYER_2);
-        }
-        else {
+        } else {
             resultText = "Empate";
             resultColor = boardView.getPlayerColor(Player.EMPTY);
         }

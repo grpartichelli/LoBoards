@@ -34,4 +34,11 @@ public class Human extends Player {
         this.cursorY = y;
         ready = true;
     }
+
+    public void clearCursor() {
+        this.lastCursorX = Movement.OUT_OF_BOARD;
+        this.lastCursorY = Movement.OUT_OF_BOARD;
+        this.cursorX = Movement.OUT_OF_BOARD;
+        this.cursorY = Movement.OUT_OF_BOARD;
+    }
 }

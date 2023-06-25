@@ -37,21 +37,6 @@ public class TsoroYematatuV2 extends Game {
         return false;
     }
 
-    /*private boolean isLineVictory(int[][] board, int playerId){
-        // line victory
-        int count = 0;
-        for (int y = 0; y < getBoardHeight(board); y++){
-            for (int x = 0; x < getBoardWidth(board); x++){
-                if (board[x][y] == playerId) {
-                    count++;
-                }
-            }
-        }
-        if (count == 4)
-            return true;
-        else return false;
-    }*/
-
     private boolean isColumnVictory(int[][] board, int player) {
         for(int x=0; x < getBoardWidth(board); x++)
             if((board[x][0] == player && board[x][1] == player && board[x][2] == player && board[x][3] == player) ||
@@ -60,57 +45,12 @@ public class TsoroYematatuV2 extends Game {
         return false;
     }
 
-    /*private boolean isColumnVictory(int[][] board, int playerId){
-        int count = 0;
-        // column victory
-        for (int x = 0; x < getBoardWidth(board); x++){
-            for (int y = 0; y < getBoardHeight(board); y++) {
-                if (board[x][y] == playerId) {
-                    count++;
-                }
-            }
-        }
-        if (count == 4)
-            return true;
-        else return false;
-    }*/
-
     private boolean isDiagonalVictory(int[][] board, int player) {
         return ((board[1][1] == player && board[2][2] == player && board[3][3] == player && board[4][4] == player) ||
                 (board[0][0] == player && board[1][1] == player && board[2][2] == player && board[3][3] == player) ||
                 (board[0][4] == player && board[1][3] == player && board[2][2] == player && board[3][1] == player) ||
                 (board[1][3] == player && board[2][2] == player && board[3][1] == player && board[4][0] == player));
     }
-
-    /*private boolean isDiagonalVictory(int[][] board, int playerId){
-        // diagonal victory
-        int x = 0;
-        int y = 0;
-        int count = 0;
-        do {
-            if (board[x][y] == playerId) {
-                count++;
-            }
-            x++;
-            y++;
-        } while (x < 5 && y < 5);
-
-        if (count < 4) {
-            x = 4;
-            y = 4;
-            count = 0;
-            do {
-                if (board[x][y] == playerId) {
-                    count++;
-                }
-                x--;
-                y--;
-            } while (x > 0 && y > 0);
-        }
-        if (count == 4)
-            return true;
-        else return false;
-    }*/
 
     @Override
     public boolean isDraw(int[][] board) {

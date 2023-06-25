@@ -11,12 +11,7 @@ import android.widget.Button;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 
-import com.marcoantonioaav.lobogames.game.Alquerque;
-import com.marcoantonioaav.lobogames.game.FiveFieldKono;
-import com.marcoantonioaav.lobogames.game.Game;
-import com.marcoantonioaav.lobogames.game.Tapatan;
-import com.marcoantonioaav.lobogames.game.TicTacToe;
-import com.marcoantonioaav.lobogames.game.TsoroYematatuV2;
+import com.marcoantonioaav.lobogames.game.*;
 import com.marcoantonioaav.lobogames.player.agent.Agent;
 
 import java.util.HashMap;
@@ -38,6 +33,7 @@ public class PreGameActivity extends AppCompatActivity {
         put(new Alquerque().getName(), new Alquerque());
         put(new FiveFieldKono().getName(), new FiveFieldKono());
         put(new TsoroYematatuV2().getName(), new TsoroYematatuV2());
+        put(new GenericGame().getName(), new GenericGame() );
     }};
 
     @Override

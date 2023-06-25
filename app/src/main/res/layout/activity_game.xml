@@ -552,22 +552,22 @@
         tools:ignore="SpeakableTextPresentCheck" />
 
     <Button
-        android:id="@+id/E1_5x5"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@android:color/transparent"
-        android:insetTop="0dp"
-        android:insetBottom="0dp"
-        android:visibility="invisible"
-        android:layout_marginRight="29sp"
-        android:layout_marginBottom="29sp"
+            android:id="@+id/E1_5x5"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@android:color/transparent"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:visibility="invisible"
+            android:layout_marginRight="29sp"
+            android:layout_marginBottom="29sp"
 
-        app:layout_constraintBottom_toBottomOf="@+id/boardView"
-        app:layout_constraintEnd_toEndOf="@+id/boardView"
-        app:layout_constraintStart_toEndOf="@+id/D1_5x5"
-        app:layout_constraintTop_toBottomOf="@id/E2_5x5"
+            app:layout_constraintBottom_toBottomOf="@+id/boardView"
+            app:layout_constraintEnd_toEndOf="@+id/boardView"
+            app:layout_constraintStart_toEndOf="@+id/D1_5x5"
+            app:layout_constraintTop_toBottomOf="@id/E2_5x5"
 
-        tools:ignore="SpeakableTextPresentCheck" />
+            tools:ignore="SpeakableTextPresentCheck"/>
 
     <com.marcoantonioaav.lobogames.ui.BoardView
         android:id="@+id/boardView"
