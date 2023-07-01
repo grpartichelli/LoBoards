@@ -2,10 +2,7 @@ package com.marcoantonioaav.lobogames.ui;
 
 import android.content.Context;
 import android.content.res.Configuration;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
+import android.graphics.*;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
@@ -26,19 +23,20 @@ import java.util.Collections;
 
 public class BoardView extends View {
     private int[][] board = new TicTacToe().getInitialBoard();
-    private Drawable boardImage;
-
     private int selectedX = Movement.OUT_OF_BOARD;
     private int selectedY = Movement.OUT_OF_BOARD;
     private ArrayList<Movement> movements = new ArrayList<>();
     private int player1Color = Color.GREEN, player2Color = Color.RED, cursorColor = Color.BLUE;
-
     private final Paint paint = new Paint();
+
+    private Drawable boardImage;
+    private static double BOARD_PADDING_PERCENTAGE = 0.05;
 
     public BoardView(Context context) {
         super(context);
         initializeView();
     }
+
     public BoardView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         initializeView();
@@ -87,7 +85,7 @@ public class BoardView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        drawBoard(canvas);
+        drawBoardImage(canvas);
         drawPieces(canvas);
         if (!movements.isEmpty()) {
             board = Game.applyMovement(movements.get(0), board);
@@ -96,8 +94,14 @@ public class BoardView extends View {
         }
     }
 
-    private void drawBoard(Canvas canvas) {
-        Rect imageBounds = canvas.getClipBounds();
+    public void drawBoardImage(Canvas canvas) {
+        Rect clipBounds = canvas.getClipBounds();
+        Rect imageBounds = new Rect(
+                (int) (clipBounds.right * BOARD_PADDING_PERCENTAGE),
+                (int) (clipBounds.bottom * BOARD_PADDING_PERCENTAGE),
+                (int) (clipBounds.right * (1 - BOARD_PADDING_PERCENTAGE)),
+                (int) (clipBounds.bottom * (1 - BOARD_PADDING_PERCENTAGE))
+        );
         boardImage.setBounds(imageBounds);
         boardImage.draw(canvas);
     }
@@ -125,10 +129,6 @@ public class BoardView extends View {
                 paint.setColor(getPlayerColor(board[x][y]));
                 canvas.drawCircle(cx, cy, radius, paint);
             }
-    }
-
-    private int getPosition(int index, int totalSize, int totalQuantity) {
-        return getCrescentPosition(index, totalSize, totalQuantity);
     }
 
     private int getCrescentPosition(int index, int totalSize, int totalQuantity) {
