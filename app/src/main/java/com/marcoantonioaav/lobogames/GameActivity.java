@@ -31,12 +31,11 @@ public class GameActivity extends AppCompatActivity {
     private Button playAgain, back;
 
     private Game game;
-    private int[][] board;
     private int turn;
     private Player player1;
     private Player player2;
     private boolean isGameRunning;
-
+    // TODO: Fix activity and board view
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,10 +121,10 @@ public class GameActivity extends AppCompatActivity {
             if (isGameRunning) {
                 Player player = Player.selectPlayerById(player1, player2, turn);
                 if (player.isReady()) {
-                    Move move = player.getMove(game, board);
-                    if (game.isLegalMove(move, board)) {
+                    Move move = player.getMove(game);
+                    if (game.isLegalMove(move)) {
                         makeMove(move);
-                        if (game.isTerminalState(board))
+                        if (game.isTerminalState())
                             endGame();
                     }
                 }
@@ -139,13 +138,12 @@ public class GameActivity extends AppCompatActivity {
         }
         runOnUiThread(() -> boardView.announceForAccessibility(move.toString()));
         runOnUiThread(() -> boardView.drawBoard(board, move));
-        board = Game.applyMove(move, board);
+        game.getBoard().applyMove(move);
         turn = Player.getOpponentOf(turn);
         showTurn();
         Player currentPlayer = Player.selectPlayerById(player1, player2, turn);
         if (currentPlayer instanceof Human) {
             runOnUiThread(this::updateButtonsDescription);
-            // ((Human) currentPlayer).clearCursor();
         }
     }
 
@@ -163,7 +161,6 @@ public class GameActivity extends AppCompatActivity {
     private void resetGame() {
         turn = Player.getRandomId();
         showTurn();
-        board = game.getInitialBoard();
         updateButtonsDescription();
         boardView.drawBoard(board);
         isGameRunning = true;

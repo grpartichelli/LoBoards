@@ -1,6 +1,7 @@
 package com.marcoantonioaav.lobogames.game;
 
 import com.marcoantonioaav.lobogames.R;
+import com.marcoantonioaav.lobogames.board.Board;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.player.Player;
 import com.marcoantonioaav.lobogames.player.agent.MinimaxAgent;
@@ -24,40 +25,43 @@ public class Tapatan extends Game {
     }
 
     @Override
-    public int[][] getInitialBoard() {
-        return new int[][]{{Player.PLAYER_1, Player.EMPTY, Player.PLAYER_2}, {Player.PLAYER_2, Player.EMPTY, Player.PLAYER_1}, {Player.PLAYER_1, Player.EMPTY, Player.PLAYER_2}};
+    public Board getInitialBoard() {
+        int[][] matrix = new int[][]{
+                {Player.PLAYER_1, Player.EMPTY, Player.PLAYER_2},
+                {Player.PLAYER_2, Player.EMPTY, Player.PLAYER_1},
+                {Player.PLAYER_1, Player.EMPTY, Player.PLAYER_2}
+        };
+        int boardImageId = R.drawable._3x3;
+        return new Board(matrix, boardImageId);
     }
 
     @Override
-    public int getBoardImage() {
-        return R.drawable._3x3;
+    public boolean isVictory(int playerId) {
+        TicTacToe ticTacToe = new TicTacToe();
+        ticTacToe.setBoard(this.board);
+        return ticTacToe.isVictory(playerId);
     }
 
     @Override
-    public boolean isVictory(int[][] board, int playerId) {
-        return new TicTacToe().isVictory(board, playerId);
-    }
-
-    @Override
-    public boolean isDraw(int[][] board) {
+    public boolean isDraw() {
         return false;
     }
 
     @Override
-    public boolean isLegalMove(Move move, int[][] board) {
-        return move.movements.length == 1 && move.movements[0].isAdjacentInlineMovement(board);
+    public boolean isLegalMove(Move move) {
+        return move.movements.length == 1 && move.movements[0].isAdjacentInlineMovement(this.board);
     }
 
     @Override
-    public ArrayList<Move> getLegalMoves(int[][] board, int playerId) {
+    public ArrayList<Move> getLegalMoves(int playerId) {
         ArrayList<Move> moves = new ArrayList<>();
-        for (int x = 0; x < getBoardWidth(board); x++)
-            for (int y = 0; y < getBoardHeight(board); y++)
-                if (board[x][y] == playerId)
+        for (int x = 0; x < this.board.getWidth(); x++)
+            for (int y = 0; y < this.board.getHeight(); y++)
+                if (this.board.getMatrix()[x][y] == playerId)
                     for (int[] eightRegion : new int[][]{{0, 1}, {1, 1}, {1, 0}, {0, -1}, {-1, -1}, {-1, 0}, {1, -1}, {-1, 1}})
-                        if (isOnBoardLimits(x + eightRegion[0], y + eightRegion[1], board)) {
+                        if (this.board.isOnLimits(x + eightRegion[0], y + eightRegion[1])) {
                             Move newMove = new Move(x, y, x + eightRegion[0], y + eightRegion[1], playerId);
-                            if (isLegalMove(newMove, board))
+                            if (isLegalMove(newMove))
                                 moves.add(newMove);
                         }
         Collections.shuffle(moves);
@@ -65,12 +69,12 @@ public class Tapatan extends Game {
     }
 
     @Override
-    public Move getPlayerMove(int startX, int startY, int endX, int endY, int[][] board, int playerId) {
+    public Move getPlayerMove(int startX, int startY, int endX, int endY, int playerId) {
         return new Move(startX, startY, endX, endY, playerId);
     }
 
     @Override
-    public float getHeuristicEvaluationOf(int[][] board, int playerId, int turn) {
-        return MinimaxAgent.evaluateWithPlayouts(board, playerId, turn, this);
+    public float getHeuristicEvaluationOf(int playerId, int turn) {
+        return MinimaxAgent.evaluateWithPlayouts(this, playerId, turn);
     }
 }

@@ -1,6 +1,7 @@
 package com.marcoantonioaav.lobogames.game;
 
 import com.marcoantonioaav.lobogames.R;
+import com.marcoantonioaav.lobogames.board.Board;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.player.Player;
 import com.marcoantonioaav.lobogames.player.agent.MinimaxAgent;
@@ -25,74 +26,75 @@ public class TsoroYematatu extends Game {
     }
 
     @Override
-    public int[][] getInitialBoard() {
-        return new int[][]{
+    public Board getInitialBoard() {
+        int[][] matrix = new int[][]{
                 {Player.EMPTY, Player.EMPTY, Player.EMPTY, Player.EMPTY, Player.EMPTY},
                 {Player.EMPTY, Player.EMPTY, Player.EMPTY, Player.EMPTY, Player.EMPTY},
                 {Player.EMPTY, Player.EMPTY, Player.EMPTY, Player.EMPTY, Player.EMPTY},
                 {Player.EMPTY, Player.EMPTY, Player.EMPTY, Player.EMPTY, Player.EMPTY},
                 {Player.EMPTY, Player.EMPTY, Player.EMPTY, Player.EMPTY, Player.EMPTY}
         };
+        int boardImageId = R.drawable._5x5;
+        return new Board(matrix, boardImageId);
     }
+
 
     @Override
-    public int getBoardImage() {
-        return R.drawable._5x5;
+    public boolean isVictory(int playerId) {
+        return isLineVictory(playerId) || isColumnVictory(playerId) || isDiagonalVictory(playerId);
     }
 
-    @Override
-    public boolean isVictory(int[][] board, int playerId) {
-        return isLineVictory(board, playerId) || isColumnVictory(board, playerId) || isDiagonalVictory(board, playerId);
-    }
-
-    private boolean isLineVictory(int[][] board, int player) {
-        for (int y = 0; y < getBoardHeight(board); y++)
-            if ((board[0][y] == player && board[1][y] == player && board[2][y] == player && board[3][y] == player) ||
-                    (board[1][y] == player && board[2][y] == player && board[3][y] == player && board[4][y] == player))
+    private boolean isLineVictory(int player) {
+        int[][] matrix = this.board.getMatrix();
+        for (int y = 0; y < this.board.getHeight(); y++)
+            if ((matrix[0][y] == player && matrix[1][y] == player && matrix[2][y] == player && matrix[3][y] == player) ||
+                    (matrix[1][y] == player && matrix[2][y] == player && matrix[3][y] == player && matrix[4][y] == player))
                 return true;
         return false;
     }
 
-    private boolean isColumnVictory(int[][] board, int player) {
-        for (int x = 0; x < getBoardWidth(board); x++)
-            if ((board[x][0] == player && board[x][1] == player && board[x][2] == player && board[x][3] == player) ||
-                    (board[x][1] == player && board[x][2] == player && board[x][3] == player && board[x][4] == player))
+    private boolean isColumnVictory(int player) {
+        int[][] matrix = this.board.getMatrix();
+        for (int x = 0; x < this.board.getWidth(); x++)
+            if ((matrix[x][0] == player && matrix[x][1] == player && matrix[x][2] == player && matrix[x][3] == player) ||
+                    (matrix[x][1] == player && matrix[x][2] == player && matrix[x][3] == player && matrix[x][4] == player))
                 return true;
         return false;
     }
 
-    private boolean isDiagonalVictory(int[][] board, int player) {
-        return ((board[1][1] == player && board[2][2] == player && board[3][3] == player && board[4][4] == player) ||
-                (board[0][0] == player && board[1][1] == player && board[2][2] == player && board[3][3] == player) ||
-                (board[0][4] == player && board[1][3] == player && board[2][2] == player && board[3][1] == player) ||
-                (board[1][3] == player && board[2][2] == player && board[3][1] == player && board[4][0] == player));
+    private boolean isDiagonalVictory(int player) {
+        int[][] matrix = this.board.getMatrix();
+        return ((matrix[1][1] == player && matrix[2][2] == player && matrix[3][3] == player && matrix[4][4] == player) ||
+                (matrix[0][0] == player && matrix[1][1] == player && matrix[2][2] == player && matrix[3][3] == player) ||
+                (matrix[0][4] == player && matrix[1][3] == player && matrix[2][2] == player && matrix[3][1] == player) ||
+                (matrix[1][3] == player && matrix[2][2] == player && matrix[3][1] == player && matrix[4][0] == player));
     }
 
     @Override
-    public boolean isDraw(int[][] board) {
+    public boolean isDraw() {
         return false;
     }
 
     @Override
-    public boolean isLegalMove(Move move, int[][] board) {
-        if (countPlayerPieces(board, move.playerId) < 4)
+    public boolean isLegalMove(Move move) {
+        if (this.board.countPlayerPieces(move.playerId) < 4)
             return move.movements.length == 1 && move.movements[0].isInsertion(board);
         return move.movements.length == 1 && move.movements[0].isAdjacentInlineMovement(board);
     }
 
     @Override
-    public ArrayList<Move> getLegalMoves(int[][] board, int playerId) {
-        if (countPlayerPieces(board, playerId) < 4)
-            return getLegalInsertionMoves(board, playerId);
-        return getLegalMovementMoves(board, playerId);
+    public ArrayList<Move> getLegalMoves(int playerId) {
+        if (this.board.countPlayerPieces(playerId) < 4)
+            return getLegalInsertionMoves(playerId);
+        return getLegalMovementMoves(playerId);
     }
 
-    protected ArrayList<Move> getLegalInsertionMoves(int board[][], int playerId) {
+    protected ArrayList<Move> getLegalInsertionMoves(int playerId) {
         ArrayList<Move> moves = new ArrayList<>();
-        for (int x = 0; x < getBoardWidth(board); x++) {
-            for (int y = 0; y < getBoardHeight(board); y++) {
+        for (int x = 0; x < this.board.getWidth(); x++) {
+            for (int y = 0; y < this.board.getHeight(); y++) {
                 Move newMove = new Move(x, y, playerId);
-                if (isLegalMove(newMove, board))
+                if (isLegalMove(newMove))
                     moves.add(newMove);
             }
         }
@@ -100,15 +102,15 @@ public class TsoroYematatu extends Game {
         return moves;
     }
 
-    private ArrayList<Move> getLegalMovementMoves(int board[][], int playerId) {
+    private ArrayList<Move> getLegalMovementMoves(int playerId) {
         ArrayList<Move> moves = new ArrayList<>();
-        for (int x = 0; x < getBoardWidth(board); x++) {
-            for (int y = 0; y < getBoardHeight(board); y++) {
-                if (board[x][y] == playerId) {
+        for (int x = 0; x < this.board.getWidth(); x++) {
+            for (int y = 0; y < this.board.getHeight(); y++) {
+                if (this.board.getMatrix()[x][y] == playerId) {
                     for (int[] eightRegion : new int[][]{{0, 1}, {1, 1}, {1, 0}, {0, -1}, {-1, -1}, {-1, 0}, {1, -1}, {-1, 1}})
-                        if (isOnBoardLimits(x + eightRegion[0], y + eightRegion[1], board)) {
+                        if (this.board.isOnLimits(x + eightRegion[0], y + eightRegion[1])) {
                             Move newMove = new Move(x, y, x + eightRegion[0], y + eightRegion[1], playerId);
-                            if (isLegalMove(newMove, board))
+                            if (isLegalMove(newMove))
                                 moves.add(newMove);
                         }
                 }
@@ -119,14 +121,14 @@ public class TsoroYematatu extends Game {
     }
 
     @Override
-    public Move getPlayerMove(int startX, int startY, int endX, int endY, int[][] board, int playerId) {
-        if (countPlayerPieces(board, playerId) < 4)
+    public Move getPlayerMove(int startX, int startY, int endX, int endY, int playerId) {
+        if (this.board.countPlayerPieces(playerId) < 4)
             return new Move(endX, endY, playerId);
         else return new Move(startX, startY, endX, endY, playerId);
     }
 
     @Override
-    public float getHeuristicEvaluationOf(int[][] board, int playerId, int turn) {
-        return MinimaxAgent.evaluateWithPlayouts(board, playerId, turn, this);
+    public float getHeuristicEvaluationOf(int playerId, int turn) {
+        return MinimaxAgent.evaluateWithPlayouts(this, playerId, turn);
     }
 }

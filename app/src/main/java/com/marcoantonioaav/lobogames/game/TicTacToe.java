@@ -1,6 +1,7 @@
 package com.marcoantonioaav.lobogames.game;
 
 import com.marcoantonioaav.lobogames.R;
+import com.marcoantonioaav.lobogames.board.Board;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.player.Player;
 import com.marcoantonioaav.lobogames.player.agent.MinimaxAgent;
@@ -25,60 +26,64 @@ public class TicTacToe extends Game {
     }
 
     @Override
-    public int[][] getInitialBoard() {
-        return new int[][]{{Player.EMPTY, Player.EMPTY, Player.EMPTY}, {Player.EMPTY, Player.EMPTY, Player.EMPTY}, {Player.EMPTY, Player.EMPTY, Player.EMPTY}};
+    public Board getInitialBoard() {
+        int[][] matrix = new int[][]{
+                {Player.EMPTY, Player.EMPTY, Player.EMPTY},
+                {Player.EMPTY, Player.EMPTY, Player.EMPTY},
+                {Player.EMPTY, Player.EMPTY, Player.EMPTY}
+        };
+        int boardImageId = R.drawable._3x3;
+        return new Board(matrix, boardImageId);
     }
 
     @Override
-    public int getBoardImage() {
-        return R.drawable._3x3;
+    public boolean isVictory(int playerId) {
+        return isLineVictory(playerId) || isColumnVictory(playerId) || isDiagonalVictory(playerId);
     }
 
-    @Override
-    public boolean isVictory(int[][] board, int playerId) {
-        return isLineVictory(board, playerId) || isColumnVictory(board, playerId) || isDiagonalVictory(board, playerId);
+    private boolean isDiagonalVictory(int player) {
+        int[][] matrix = this.getBoard().getMatrix();
+        return (matrix[0][0] == player && matrix[1][1] == player && matrix[2][2] == player) ||
+                (matrix[0][2] == player && matrix[1][1] == player && matrix[2][0] == player);
     }
 
-    private boolean isDiagonalVictory(int[][] board, int player) {
-        return (board[0][0] == player && board[1][1] == player && board[2][2] == player) ||
-                (board[0][2] == player && board[1][1] == player && board[2][0] == player);
-    }
-
-    private boolean isColumnVictory(int[][] board, int player) {
+    private boolean isColumnVictory(int player) {
+        int[][] matrix = this.getBoard().getMatrix();
         for (int x = 0; x < 3; x++)
-            if (board[x][0] == player && board[x][1] == player && board[x][2] == player)
+            if (matrix[x][0] == player && matrix[x][1] == player && matrix[x][2] == player)
                 return true;
         return false;
     }
 
-    private boolean isLineVictory(int[][] board, int player) {
+    private boolean isLineVictory(int player) {
+        int[][] matrix = this.getBoard().getMatrix();
         for (int y = 0; y < 3; y++)
-            if (board[0][y] == player && board[1][y] == player && board[2][y] == player)
+            if (matrix[0][y] == player && matrix[1][y] == player && matrix[2][y] == player)
                 return true;
         return false;
     }
 
     @Override
-    public boolean isDraw(int[][] board) {
+    public boolean isDraw() {
         for (int x = 0; x < 3; x++)
             for (int y = 0; y < 3; y++)
-                if (board[x][y] == Player.EMPTY)
+                if (this.board.getMatrix()[x][y] == Player.EMPTY)
                     return false;
-        return !isVictory(board, Player.PLAYER_1) && !isVictory(board, Player.PLAYER_2);
+        return !isVictory(Player.PLAYER_1) && !isVictory(Player.PLAYER_2);
     }
 
     @Override
-    public boolean isLegalMove(Move move, int[][] board) {
-        return move.movements.length == 1 && move.movements[0].isInsertion(board);
+    public boolean isLegalMove(Move move) {
+        return move.movements.length == 1 && move.movements[0].isInsertion(this.board);
     }
 
     @Override
-    public ArrayList<Move> getLegalMoves(int[][] board, int playerId) {
+    public ArrayList<Move> getLegalMoves(int playerId) {
         ArrayList<Move> moves = new ArrayList<>();
         for (int x = 0; x < 3; x++) {
             for (int y = 0; y < 3; y++) {
                 Move newMove = new Move(x, y, playerId);
-                if (isLegalMove(newMove, board))
+                if (isLegalMove(newMove))
                     moves.add(newMove);
             }
         }
@@ -87,12 +92,12 @@ public class TicTacToe extends Game {
     }
 
     @Override
-    public Move getPlayerMove(int startX, int startY, int endX, int endY, int[][] board, int playerId) {
+    public Move getPlayerMove(int startX, int startY, int endX, int endY, int playerId) {
         return new Move(endX, endY, playerId);
     }
 
     @Override
-    public float getHeuristicEvaluationOf(int[][] board, int playerId, int turn) {
-        return MinimaxAgent.evaluateWithPlayouts(board, playerId, turn, this);
+    public float getHeuristicEvaluationOf(int playerId, int turn) {
+        return MinimaxAgent.evaluateWithPlayouts(this, playerId, turn);
     }
 }

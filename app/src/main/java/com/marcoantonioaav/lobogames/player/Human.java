@@ -22,9 +22,9 @@ public class Human extends Player {
     }
 
     @Override
-    public Move getMove(Game game, int[][] board) {
+    public Move getMove(Game game) {
         ready = false;
-        return game.getPlayerMove(lastCursorX, lastCursorY, cursorX, cursorY, board, getId());
+        return game.getPlayerMove(lastCursorX, lastCursorY, cursorX, cursorY, getId());
     }
 
     public void setCursor(int x, int y) {

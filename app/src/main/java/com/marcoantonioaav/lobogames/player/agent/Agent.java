@@ -1,7 +1,7 @@
 package com.marcoantonioaav.lobogames.player.agent;
 
-import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.game.Game;
+import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.player.Player;
 
 public abstract class Agent extends Player {
@@ -24,9 +24,9 @@ public abstract class Agent extends Player {
     public boolean isReady() { return true; }
 
     @Override
-    public final Move getMove(Game game, int[][] board) {
-        return selectMove(game, board);
+    public final Move getMove(Game game) {
+        return selectMove(game);
     }
 
-    public abstract Move selectMove(Game game, int[][] board);
+    public abstract Move selectMove(Game game);
 }

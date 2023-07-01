@@ -13,7 +13,6 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.res.ResourcesCompat;
 import com.marcoantonioaav.lobogames.game.Game;
-import com.marcoantonioaav.lobogames.game.TicTacToe;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.move.Movement;
 import com.marcoantonioaav.lobogames.player.Player;
@@ -22,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class BoardView extends View {
-    private int[][] board = new TicTacToe().getInitialBoard();
+    private int[][] board;
     private int selectedX = Movement.OUT_OF_BOARD;
     private int selectedY = Movement.OUT_OF_BOARD;
     private final ArrayList<Movement> movements = new ArrayList<>();

@@ -1,5 +1,6 @@
 package com.marcoantonioaav.lobogames.move;
 
+import com.marcoantonioaav.lobogames.board.Board;
 import com.marcoantonioaav.lobogames.player.Player;
 
 public class Movement {
@@ -39,53 +40,41 @@ public class Movement {
         return positionToString(startX, startY) + " para " + positionToString(endX, endY);
     }
 
-    public boolean isAdjacentInlineOpponentJump(int[][] board) {
+    public boolean isAdjacentInlineOpponentJump(Board board) {
+        int[][] matrix = board.getMatrix();
         if(startX == OUT_OF_BOARD || startY == OUT_OF_BOARD || endX == OUT_OF_BOARD || endY == OUT_OF_BOARD)
             return false;
         return
-                board[startX][startY] == piece &&
-                board[endX][endY] == Player.EMPTY &&
-                board[getRemovalFor(this).startX][getRemovalFor(this).startY] == Player.getOpponentOf(piece) &&
+                matrix[startX][startY] == piece &&
+                matrix[endX][endY] == Player.EMPTY &&
+                matrix[getRemovalFor(this).startX][getRemovalFor(this).startY] == Player.getOpponentOf(piece) &&
                 Math.abs(startX - endX) <= 2 &&
                 Math.abs(startY - endY) <= 2 &&
                 (startX % 2 == startY % 2 ||
                         Math.abs(startX - endX) + Math.abs(startY - endY) == 2);
     }
 
-
-    /*public boolean isAdjacentInlineOrOpponentJump(int[][] board) {
+    public boolean isAdjacentInlineMovement(Board board) {
+        int[][] matrix = board.getMatrix();
         if(startX == OUT_OF_BOARD || startY == OUT_OF_BOARD || endX == OUT_OF_BOARD || endY == OUT_OF_BOARD)
             return false;
         return
-                board[startX][startY] == piece &&
-                        board[endX][endY] == Player.EMPTY &&
-                        if (board[endX+1][endY+1] != Player.EMPTY) {
-                            Math.abs(startX - endX) <= 2 &&
-                                    Math.abs(startY - endY) <= 2 &&
-                                    (startX % 2 == startY % 2 ||
-                                            Math.abs(startX - endX) + Math.abs(startY - endY) == 2);
-                        }
-    }*/
-
-    public boolean isAdjacentInlineMovement(int[][] board) {
-        if(startX == OUT_OF_BOARD || startY == OUT_OF_BOARD || endX == OUT_OF_BOARD || endY == OUT_OF_BOARD)
-            return false;
-        return
-                board[startX][startY] == piece &&
-                board[endX][endY] == Player.EMPTY &&
+                matrix[startX][startY] == piece &&
+                matrix[endX][endY] == Player.EMPTY &&
                 Math.abs(startX - endX) <= 1 &&
                 Math.abs(startY - endY) <= 1 &&
                 (startX % 2 == startY % 2 ||
                         Math.abs(startX - endX) + Math.abs(startY - endY) == 1);
     }
 
-    public boolean isDiagonalMovement(int[][] board) {
+    public boolean isDiagonalMovement(Board board) {
+        int[][] matrix = board.getMatrix();
         if(startX == OUT_OF_BOARD || startY == OUT_OF_BOARD || endX == OUT_OF_BOARD || endY == OUT_OF_BOARD)
             return false;
 
         return
-                board[startX][startY] == piece &&
-                board[endX][endY] == Player.EMPTY &&
+                matrix[startX][startY] == piece &&
+                matrix[endX][endY] == Player.EMPTY &&
                 Math.abs(startX - endX) == 1 &&
                 Math.abs(startY - endY) == 1;
     }
@@ -99,15 +88,16 @@ public class Movement {
                 Player.getOpponentOf(jump.piece));
     }
 
-    public boolean isInsertion(int[][] board) {
+    public boolean isInsertion(Board board) {
+        int[][] matrix = board.getMatrix();
         if(endX == OUT_OF_BOARD || endY == OUT_OF_BOARD)
             return false;
-        return startX == OUT_OF_BOARD && startY == OUT_OF_BOARD && board[endX][endY] == Player.EMPTY;
+        return startX == OUT_OF_BOARD && startY == OUT_OF_BOARD && board.getMatrix()[endX][endY] == Player.EMPTY;
     }
 
-    public boolean isRemoval(int[][] board) {
+    public boolean isRemoval(Board board) {
         if(startX == OUT_OF_BOARD || startY == OUT_OF_BOARD)
             return false;
-        return endX == OUT_OF_BOARD && endY == OUT_OF_BOARD && board[startX][startY] == piece;
+        return endX == OUT_OF_BOARD && endY == OUT_OF_BOARD && board.getMatrix()[startX][startY] == piece;
     }
 }
