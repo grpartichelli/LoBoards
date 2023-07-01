@@ -2,14 +2,15 @@ package com.marcoantonioaav.lobogames.ui;
 
 import android.content.Context;
 import android.content.res.Configuration;
-import android.graphics.*;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
-
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
-
 import androidx.core.content.res.ResourcesCompat;
 import com.marcoantonioaav.lobogames.R;
 import com.marcoantonioaav.lobogames.game.Game;
@@ -48,7 +49,7 @@ public class BoardView extends View {
     }
 
     private void initializeView() {
-        boardImage = ResourcesCompat.getDrawable(getResources(), R.drawable.tapantan, null);
+        boardImage = ResourcesCompat.getDrawable(getResources(), R.drawable._5x5, null);
     }
 
     public void resizeToScreenSize() {
