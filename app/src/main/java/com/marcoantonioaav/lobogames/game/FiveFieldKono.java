@@ -1,5 +1,6 @@
 package com.marcoantonioaav.lobogames.game;
 
+import com.marcoantonioaav.lobogames.R;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.player.Player;
 import com.marcoantonioaav.lobogames.player.agent.MinimaxAgent;
@@ -33,6 +34,11 @@ public class FiveFieldKono extends Game {
                 {Player.PLAYER_1,  Player.EMPTY,     Player.EMPTY,   Player.EMPTY,     Player.PLAYER_2},
                 {Player.PLAYER_1,  Player.PLAYER_1,  Player.EMPTY,   Player.PLAYER_2,  Player.PLAYER_2}
         };
+    }
+
+    @Override
+    public int getBoardImage() {
+        return R.drawable._5x5;
     }
 
     private boolean isPlayerOnInitialPosition(int playerId, int[][] board) {

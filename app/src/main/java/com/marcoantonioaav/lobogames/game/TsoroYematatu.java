@@ -1,5 +1,6 @@
 package com.marcoantonioaav.lobogames.game;
 
+import com.marcoantonioaav.lobogames.R;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.player.Player;
 import com.marcoantonioaav.lobogames.player.agent.MinimaxAgent;
@@ -7,7 +8,7 @@ import com.marcoantonioaav.lobogames.player.agent.MinimaxAgent;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class TsoroYematatuV2 extends Game {
+public class TsoroYematatu extends Game {
     @Override
     public String getName() {
         return "Tsoro Yematatu";
@@ -22,6 +23,11 @@ public class TsoroYematatuV2 extends Game {
             {Player.EMPTY, Player.EMPTY, Player.EMPTY, Player.EMPTY, Player.EMPTY},
             {Player.EMPTY, Player.EMPTY, Player.EMPTY, Player.EMPTY, Player.EMPTY}
         };
+    }
+
+    @Override
+    public int getBoardImage() {
+        return R.drawable._5x5;
     }
 
     @Override

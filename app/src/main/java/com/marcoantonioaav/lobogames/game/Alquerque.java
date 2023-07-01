@@ -1,5 +1,6 @@
 package com.marcoantonioaav.lobogames.game;
 
+import com.marcoantonioaav.lobogames.R;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.move.Movement;
 import com.marcoantonioaav.lobogames.player.Player;
@@ -24,6 +25,11 @@ public class Alquerque extends Game {
                 {Player.PLAYER_1, Player.PLAYER_1, Player.PLAYER_2, Player.PLAYER_2, Player.PLAYER_2},
                 {Player.PLAYER_1, Player.PLAYER_1, Player.PLAYER_2, Player.PLAYER_2, Player.PLAYER_2}
         };
+    }
+
+    @Override
+    public int getBoardImage() {
+        return R.drawable._5x5;
     }
 
     @Override

@@ -12,7 +12,6 @@ import android.view.View;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.res.ResourcesCompat;
-import com.marcoantonioaav.lobogames.R;
 import com.marcoantonioaav.lobogames.game.Game;
 import com.marcoantonioaav.lobogames.game.TicTacToe;
 import com.marcoantonioaav.lobogames.move.Move;
@@ -26,30 +25,27 @@ public class BoardView extends View {
     private int[][] board = new TicTacToe().getInitialBoard();
     private int selectedX = Movement.OUT_OF_BOARD;
     private int selectedY = Movement.OUT_OF_BOARD;
-    private ArrayList<Movement> movements = new ArrayList<>();
-    private int player1Color = Color.GREEN, player2Color = Color.RED, cursorColor = Color.BLUE;
+    private final ArrayList<Movement> movements = new ArrayList<>();
+    private int player1Color = Color.GREEN;
+    private int player2Color = Color.RED;
+    private int cursorColor = Color.BLUE;
     private final Paint paint = new Paint();
 
     private Drawable boardImage;
-    private static double BOARD_PADDING_PERCENTAGE = 0.05;
 
     public BoardView(Context context) {
         super(context);
-        initializeView();
     }
 
     public BoardView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        initializeView();
     }
 
     public BoardView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        initializeView();
     }
-
-    private void initializeView() {
-        boardImage = ResourcesCompat.getDrawable(getResources(), R.drawable._5x5, null);
+    public void setBoardImage(int boardImageId) {
+        this.boardImage = ResourcesCompat.getDrawable(getResources(), boardImageId, null);
     }
 
     public void resizeToScreenSize() {
@@ -96,12 +92,13 @@ public class BoardView extends View {
     }
 
     public void drawBoardImage(Canvas canvas) {
+        double boardPaddingPercentage = 0.05;
         Rect clipBounds = canvas.getClipBounds();
         Rect imageBounds = new Rect(
-                (int) (clipBounds.right * BOARD_PADDING_PERCENTAGE),
-                (int) (clipBounds.bottom * BOARD_PADDING_PERCENTAGE),
-                (int) (clipBounds.right * (1 - BOARD_PADDING_PERCENTAGE)),
-                (int) (clipBounds.bottom * (1 - BOARD_PADDING_PERCENTAGE))
+                (int) (clipBounds.right * boardPaddingPercentage),
+                (int) (clipBounds.bottom * boardPaddingPercentage),
+                (int) (clipBounds.right * (1 - boardPaddingPercentage)),
+                (int) (clipBounds.bottom * (1 - boardPaddingPercentage))
         );
         boardImage.setBounds(imageBounds);
         boardImage.draw(canvas);

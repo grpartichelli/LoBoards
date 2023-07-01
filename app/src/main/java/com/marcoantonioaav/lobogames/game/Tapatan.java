@@ -1,5 +1,6 @@
 package com.marcoantonioaav.lobogames.game;
 
+import com.marcoantonioaav.lobogames.R;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.player.Player;
 import com.marcoantonioaav.lobogames.player.agent.MinimaxAgent;
@@ -16,6 +17,11 @@ public class Tapatan extends Game {
     @Override
     public int[][] getInitialBoard() {
         return new int[][]{{Player.PLAYER_1, Player.EMPTY, Player.PLAYER_2}, {Player.PLAYER_2, Player.EMPTY, Player.PLAYER_1}, {Player.PLAYER_1, Player.EMPTY, Player.PLAYER_2}};
+    }
+
+    @Override
+    public int getBoardImage() {
+        return R.drawable._3x3;
     }
 
     @Override

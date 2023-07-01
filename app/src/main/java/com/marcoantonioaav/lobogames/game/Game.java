@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public abstract class Game {
     public abstract String getName();
     public abstract int[][] getInitialBoard();
+    public abstract int getBoardImage();
     public abstract boolean isVictory(int[][] board, int playerId);
     public abstract boolean isDraw(int[][] board);
     public abstract boolean isLegalMove(Move move, int[][] board);
