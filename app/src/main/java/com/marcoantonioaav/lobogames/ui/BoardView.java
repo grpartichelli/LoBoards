@@ -48,7 +48,7 @@ public class BoardView extends View {
     }
 
     private void initializeView() {
-        boardImage = ResourcesCompat.getDrawable(getResources(), R.drawable.tapatan, null);
+        boardImage = ResourcesCompat.getDrawable(getResources(), R.drawable.tapantan, null);
     }
 
     public void resizeToScreenSize() {
