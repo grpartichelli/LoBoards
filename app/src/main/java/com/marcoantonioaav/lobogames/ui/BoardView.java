@@ -44,6 +44,7 @@ public class BoardView extends View {
     public BoardView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
+
     public void setBoardImage(int boardImageId) {
         this.boardImage = ResourcesCompat.getDrawable(getResources(), boardImageId, null);
     }

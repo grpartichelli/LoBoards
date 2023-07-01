@@ -9,19 +9,29 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class TsoroYematatu extends Game {
+
+    public TsoroYematatu() {
+        super();
+    }
+
     @Override
     public String getName() {
         return "Tsoro Yematatu";
     }
 
     @Override
+    public String getRules() {
+        return "Em sua vez, o jogador pode inserir uma peça em uma posição vazia do tabuleiro, até atingir 4 peças. Após, pode movimentar uma peça por vez, apenas em áreas adjacentes à atual posição. Ganha aquele que conseguir alinhar 4 peças.";
+    }
+
+    @Override
     public int[][] getInitialBoard() {
         return new int[][]{
-            {Player.EMPTY, Player.EMPTY, Player.EMPTY, Player.EMPTY, Player.EMPTY},
-            {Player.EMPTY, Player.EMPTY, Player.EMPTY, Player.EMPTY, Player.EMPTY},
-            {Player.EMPTY, Player.EMPTY, Player.EMPTY, Player.EMPTY, Player.EMPTY},
-            {Player.EMPTY, Player.EMPTY, Player.EMPTY, Player.EMPTY, Player.EMPTY},
-            {Player.EMPTY, Player.EMPTY, Player.EMPTY, Player.EMPTY, Player.EMPTY}
+                {Player.EMPTY, Player.EMPTY, Player.EMPTY, Player.EMPTY, Player.EMPTY},
+                {Player.EMPTY, Player.EMPTY, Player.EMPTY, Player.EMPTY, Player.EMPTY},
+                {Player.EMPTY, Player.EMPTY, Player.EMPTY, Player.EMPTY, Player.EMPTY},
+                {Player.EMPTY, Player.EMPTY, Player.EMPTY, Player.EMPTY, Player.EMPTY},
+                {Player.EMPTY, Player.EMPTY, Player.EMPTY, Player.EMPTY, Player.EMPTY}
         };
     }
 
@@ -36,16 +46,16 @@ public class TsoroYematatu extends Game {
     }
 
     private boolean isLineVictory(int[][] board, int player) {
-        for(int y=0; y < getBoardHeight(board); y++)
-            if((board[0][y] == player && board[1][y] == player && board[2][y] == player && board[3][y] == player) ||
+        for (int y = 0; y < getBoardHeight(board); y++)
+            if ((board[0][y] == player && board[1][y] == player && board[2][y] == player && board[3][y] == player) ||
                     (board[1][y] == player && board[2][y] == player && board[3][y] == player && board[4][y] == player))
                 return true;
         return false;
     }
 
     private boolean isColumnVictory(int[][] board, int player) {
-        for(int x=0; x < getBoardWidth(board); x++)
-            if((board[x][0] == player && board[x][1] == player && board[x][2] == player && board[x][3] == player) ||
+        for (int x = 0; x < getBoardWidth(board); x++)
+            if ((board[x][0] == player && board[x][1] == player && board[x][2] == player && board[x][3] == player) ||
                     (board[x][1] == player && board[x][2] == player && board[x][3] == player && board[x][4] == player))
                 return true;
         return false;
@@ -79,10 +89,10 @@ public class TsoroYematatu extends Game {
 
     protected ArrayList<Move> getLegalInsertionMoves(int board[][], int playerId) {
         ArrayList<Move> moves = new ArrayList<>();
-        for(int x=0; x < getBoardWidth(board); x++) {
-            for(int y=0; y < getBoardHeight(board); y++) {
+        for (int x = 0; x < getBoardWidth(board); x++) {
+            for (int y = 0; y < getBoardHeight(board); y++) {
                 Move newMove = new Move(x, y, playerId);
-                if(isLegalMove(newMove, board))
+                if (isLegalMove(newMove, board))
                     moves.add(newMove);
             }
         }
@@ -92,13 +102,13 @@ public class TsoroYematatu extends Game {
 
     private ArrayList<Move> getLegalMovementMoves(int board[][], int playerId) {
         ArrayList<Move> moves = new ArrayList<>();
-        for(int x=0; x < getBoardWidth(board); x++) {
-            for(int y=0; y < getBoardHeight(board); y++) {
+        for (int x = 0; x < getBoardWidth(board); x++) {
+            for (int y = 0; y < getBoardHeight(board); y++) {
                 if (board[x][y] == playerId) {
-                    for(int[] eightRegion : new int[][]{{0,1}, {1,1}, {1,0}, {0,-1}, {-1,-1}, {-1, 0}, {1,-1}, {-1,1}})
-                        if(isOnBoardLimits(x+eightRegion[0], y+eightRegion[1], board)) {
-                            Move newMove = new Move(x, y, x+eightRegion[0], y+eightRegion[1], playerId);
-                            if(isLegalMove(newMove, board))
+                    for (int[] eightRegion : new int[][]{{0, 1}, {1, 1}, {1, 0}, {0, -1}, {-1, -1}, {-1, 0}, {1, -1}, {-1, 1}})
+                        if (isOnBoardLimits(x + eightRegion[0], y + eightRegion[1], board)) {
+                            Move newMove = new Move(x, y, x + eightRegion[0], y + eightRegion[1], playerId);
+                            if (isLegalMove(newMove, board))
                                 moves.add(newMove);
                         }
                 }
@@ -113,11 +123,6 @@ public class TsoroYematatu extends Game {
         if (countPlayerPieces(board, playerId) < 4)
             return new Move(endX, endY, playerId);
         else return new Move(startX, startY, endX, endY, playerId);
-    }
-
-    @Override
-    public String getRules() {
-        return "Em sua vez, o jogador pode inserir uma peça em uma posição vazia do tabuleiro, até atingir 4 peças. Após, pode movimentar uma peça por vez, apenas em áreas adjacentes à atual posição. Ganha aquele que conseguir alinhar 4 peças.";
     }
 
     @Override

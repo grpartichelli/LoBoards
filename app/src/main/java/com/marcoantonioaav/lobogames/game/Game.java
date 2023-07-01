@@ -7,15 +7,31 @@ import com.marcoantonioaav.lobogames.player.Player;
 import java.util.ArrayList;
 
 public abstract class Game {
+
+    private int[][] board;
+
+    protected Game() {
+        board = getInitialBoard();
+    }
+
+    public int[][] getBoard() {
+        return board;
+    }
+
+    public void setBoard(int[][] board) {
+        this.board = board;
+    }
+
     public abstract String getName();
     public abstract int[][] getInitialBoard();
+    public abstract String getRules();
+
     public abstract int getBoardImage();
     public abstract boolean isVictory(int[][] board, int playerId);
     public abstract boolean isDraw(int[][] board);
     public abstract boolean isLegalMove(Move move, int[][] board);
     public abstract ArrayList<Move> getLegalMoves(int[][] board, int playerId);
     public abstract Move getPlayerMove(int startX, int startY, int endX, int endY, int[][] board, int playerId);
-    public abstract String getRules();
     /**Método que retorna a avaliação heurística de um estado do jogo,
      * utilizado pelo agente MinimaxAgent.
      * @param board tabuleiro
