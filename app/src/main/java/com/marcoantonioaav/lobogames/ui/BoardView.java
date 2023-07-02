@@ -12,25 +12,23 @@ import android.view.View;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.res.ResourcesCompat;
-import com.marcoantonioaav.lobogames.game.Game;
+import com.marcoantonioaav.lobogames.board.Board;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.move.Movement;
 import com.marcoantonioaav.lobogames.player.Player;
 
-import java.util.ArrayList;
-import java.util.Collections;
-
 public class BoardView extends View {
-    private int[][] board;
     private int selectedX = Movement.OUT_OF_BOARD;
     private int selectedY = Movement.OUT_OF_BOARD;
-    private final ArrayList<Movement> movements = new ArrayList<>();
     private int player1Color = Color.GREEN;
     private int player2Color = Color.RED;
     private int cursorColor = Color.BLUE;
     private final Paint paint = new Paint();
 
+    private Board board;
     private Drawable boardImage;
+    private Move currentMove;
+
 
     public BoardView(Context context) {
         super(context);
@@ -44,8 +42,9 @@ public class BoardView extends View {
         super(context, attrs, defStyleAttr);
     }
 
-    public void setBoardImage(int boardImageId) {
-        this.boardImage = ResourcesCompat.getDrawable(getResources(), boardImageId, null);
+    public void setBoard(Board board) {
+        this.board = board;
+        this.boardImage = ResourcesCompat.getDrawable(getResources(), board.getImageResourceId(), null);
     }
 
     public void resizeToScreenSize() {
@@ -55,27 +54,17 @@ public class BoardView extends View {
         setLayoutParams(layoutParams);
     }
 
-    public void drawBoard(int[][] board) {
-        this.board = Game.copyBoard(board);
-        this.selectedX = Movement.OUT_OF_BOARD;
-        this.selectedY = Movement.OUT_OF_BOARD;
-        invalidate();
-    }
 
-    public void drawBoard(int[][] board, int selectedX, int selectedY) {
-        this.board = Game.copyBoard(board);
+    public void drawSelectedPosition(int selectedX, int selectedY) {
         this.selectedX = selectedX;
         this.selectedY = selectedY;
         invalidate();
     }
 
-    public void drawBoard(int[][] board, Move move) {
-        if (this.board == null) {
-            this.board = Game.copyBoard(board);
-        }
+    public void drawMove(Move move) {
         this.selectedX = Movement.OUT_OF_BOARD;
         this.selectedY = Movement.OUT_OF_BOARD;
-        Collections.addAll(this.movements, move.movements);
+        this.currentMove = move;
         invalidate();
     }
 
@@ -84,9 +73,9 @@ public class BoardView extends View {
         super.onDraw(canvas);
         drawBoardImage(canvas);
         drawPieces(canvas);
-        if (!movements.isEmpty()) {
-            board = Game.applyMovement(movements.get(0), board);
-            movements.remove(0);
+        if (currentMove != null && !currentMove.movements.isEmpty()) {
+            this.board.applyMovement(currentMove.movements.get(0));
+            currentMove.movements.remove(0);
             postInvalidateDelayed(300);
         }
     }
@@ -106,11 +95,11 @@ public class BoardView extends View {
 
     private void drawPieces(Canvas canvas) {
         int cx, cy, radius;
-        for (int x = 0; x < getBoardWidth(); x++)
-            for (int y = 0; y < getBoardHeight(); y++) {
-                cx = getCrescentPosition(x, getWidth(), getBoardWidth());
-                cy = getDecrescentPosition(y, getHeight(), getBoardHeight());
-                if (board[x][y] != Player.EMPTY) {
+        for (int x = 0; x < this.board.getWidth(); x++)
+            for (int y = 0; y < this.board.getHeight(); y++) {
+                cx = getCrescentPosition(x, getWidth(), this.board.getWidth());
+                cy = getDecrescentPosition(y, getHeight(), this.board.getHeight());
+                if (this.board.getMatrix()[x][y] != Player.EMPTY) {
                     if (selectedX == x && selectedY == y) {
                         paint.setColor(cursorColor);
                         radius = getPieceRadius() + (getPieceBorderWidth() * 2);
@@ -120,11 +109,11 @@ public class BoardView extends View {
                     }
                     canvas.drawCircle(cx, cy, radius, paint);
                 }
-                if (board[x][y] == Player.EMPTY)
+                if (this.board.getMatrix()[x][y] == Player.EMPTY)
                     radius = getPieceRadius() / 2;
                 else
                     radius = getPieceRadius();
-                paint.setColor(getPlayerColor(board[x][y]));
+                paint.setColor(getPlayerColor(this.board.getMatrix()[x][y]));
                 canvas.drawCircle(cx, cy, radius, paint);
             }
     }
@@ -142,15 +131,7 @@ public class BoardView extends View {
     }
 
     private int getPieceRadius() {
-        return getWidth() / (getBoardWidth() * 4);
-    }
-
-    private int getBoardWidth() {
-        return Game.getBoardWidth(board);
-    }
-
-    private int getBoardHeight() {
-        return Game.getBoardHeight(board);
+        return getWidth() / (this.board.getWidth() * 4);
     }
 
     public int getPlayerColor(int playerId) {

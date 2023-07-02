@@ -35,7 +35,7 @@ public class GameActivity extends AppCompatActivity {
     private Player player1;
     private Player player2;
     private boolean isGameRunning;
-    // TODO: Fix activity and board view
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,31 +46,41 @@ public class GameActivity extends AppCompatActivity {
         game = PreGameActivity.GAMES.get(this.getIntent().getExtras().get(PreGameActivity.GAME_NAME));
         setTitle(game.getName());
         player1 = new Human(Player.PLAYER_1);
-        if ((boolean) this.getIntent().getExtras().get(PreGameActivity.IS_MULTIPLAYER))
+        if ((boolean) this.getIntent().getExtras().get(PreGameActivity.IS_MULTIPLAYER)) {
             player2 = new Human(Player.PLAYER_2);
-        else
+        }
+        else {
             player2 = new MinimaxAgent(Player.PLAYER_2, (String) this.getIntent().getExtras().get(PreGameActivity.DIFFICULTY));
+        }
+        setUpButtons();
 
+        // board
         boardView = findViewById(R.id.boardView);
-        boardView.setBoardImage(game.getBoardImage());
         boardView.resizeToScreenSize();
         boardView.setPlayer1Color(getSharedPreferences(SettingsActivity.SETTINGS, MODE_PRIVATE).getInt(SettingsActivity.PLAYER_1_COLOR, Color.GREEN));
         boardView.setPlayer2Color(getSharedPreferences(SettingsActivity.SETTINGS, MODE_PRIVATE).getInt(SettingsActivity.PLAYER_2_COLOR, Color.RED));
         boardView.setCursorColor(getSharedPreferences(SettingsActivity.SETTINGS, MODE_PRIVATE).getInt(SettingsActivity.CURSOR_COLOR, Color.BLUE));
-        setUpButtons(game);
+
+        // game name
         gameName = findViewById(R.id.gameName);
         gameName.setText(game.getName());
+
+        // status
         status = findViewById(R.id.status);
+
+        // play again
         playAgain = findViewById(R.id.playAgain);
-        playAgain.setOnClickListener(view -> resetGame());
+        playAgain.setOnClickListener(view -> initializeGame());
+
+        // back
         back = findViewById(R.id.back);
         back.setOnClickListener(view -> finish());
 
-        resetGame();
+        initializeGame();
         new Thread(GameActivity.this::gameLoop).start();
     }
 
-    private void setUpButtons(Game game) {
+    private void setUpButtons() {
         final Button[][] buttons3x3 = new Button[][]{
                 {findViewById(R.id.A1_3x3), findViewById(R.id.A2_3x3), findViewById(R.id.A3_3x3)},
                 {findViewById(R.id.B1_3x3), findViewById(R.id.B2_3x3), findViewById(R.id.B3_3x3)},
@@ -84,7 +94,7 @@ public class GameActivity extends AppCompatActivity {
                 {findViewById(R.id.E1_5x5), findViewById(R.id.E2_5x5), findViewById(R.id.E3_5x5), findViewById(R.id.E4_5x5), findViewById(R.id.E5_5x5)}
         };
 
-        if (Game.getBoardWidth(game.getInitialBoard()) == 3) {
+        if (this.game.getBoard().getWidth() == 3) {
             buttons = buttons3x3;
             for (final int x : new int[]{0, 1, 2})
                 for (final int y : new int[]{0, 1, 2}) {
@@ -111,7 +121,7 @@ public class GameActivity extends AppCompatActivity {
             if (player instanceof Human) {
                 ((Human) player).setCursor(x, y);
                 buttons[x][y].announceForAccessibility("Selecionado " + Movement.positionToString(x, y));
-                boardView.drawBoard(board, x, y);
+                boardView.drawSelectedPosition(x, y);
             }
         }
     }
@@ -136,9 +146,10 @@ public class GameActivity extends AppCompatActivity {
         if (move == null) {
             return;
         }
-        runOnUiThread(() -> boardView.announceForAccessibility(move.toString()));
-        runOnUiThread(() -> boardView.drawBoard(board, move));
         game.getBoard().applyMove(move);
+        boardView.setBoard(game.getBoard());
+        runOnUiThread(() -> boardView.announceForAccessibility(move.toString()));
+        runOnUiThread(() -> boardView.drawMove(move));
         turn = Player.getOpponentOf(turn);
         showTurn();
         Player currentPlayer = Player.selectPlayerById(player1, player2, turn);
@@ -148,9 +159,9 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void updateButtonsDescription() {
-        for (int x = 0; x < Game.getBoardWidth(board); x++)
-            for (int y = 0; y < Game.getBoardHeight(board); y++)
-                buttons[x][y].setContentDescription(Movement.positionToString(x, y) + ": " + Player.getName(board[x][y]));
+        for (int x = 0; x < this.game.getBoard().getWidth(); x++)
+            for (int y = 0; y < this.game.getBoard().getHeight(); y++)
+                buttons[x][y].setContentDescription(Movement.positionToString(x, y) + ": " + Player.getName(this.game.getBoard().getMatrix()[x][y]));
     }
 
     private void endGame() {
@@ -158,11 +169,12 @@ public class GameActivity extends AppCompatActivity {
         showResult();
     }
 
-    private void resetGame() {
+    private void initializeGame() {
         turn = Player.getRandomId();
         showTurn();
         updateButtonsDescription();
-        boardView.drawBoard(board);
+        game.restart();
+        boardView.setBoard(game.getBoard());
         isGameRunning = true;
     }
 
@@ -178,10 +190,10 @@ public class GameActivity extends AppCompatActivity {
     private void showResult() {
         int resultColor;
         String resultText;
-        if (game.isVictory(board, player1.getId())) {
+        if (game.isVictory(player1.getId())) {
             resultText = Player.getName(Player.PLAYER_1) + " venceu!";
             resultColor = boardView.getPlayerColor(Player.PLAYER_1);
-        } else if (game.isVictory(board, player2.getId())) {
+        } else if (game.isVictory(player2.getId())) {
             resultText = Player.getName(Player.PLAYER_2) + " venceu!";
             resultColor = boardView.getPlayerColor(Player.PLAYER_2);
         } else {

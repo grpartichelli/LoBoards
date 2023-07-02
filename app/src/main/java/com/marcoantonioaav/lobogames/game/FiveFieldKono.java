@@ -75,11 +75,11 @@ public class FiveFieldKono extends Game {
     @Override
     public boolean isLegalMove(Move move) {
         Board newBoard = this.board.copy();
-        newBoard.applyMovement(move.movements[0]);
+        newBoard.applyMovement(move.movements.get(0));
         if (isPlayerOnInitialPosition(newBoard, move.playerId))
             return false;
 
-        return move.movements.length == 1 && move.movements[0].isAdjacentInlineMovement(board);
+        return move.movements.size() == 1 && move.movements.get(0).isAdjacentInlineMovement(board);
     }
 
     @Override

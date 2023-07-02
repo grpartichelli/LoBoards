@@ -49,7 +49,7 @@ public class Tapatan extends Game {
 
     @Override
     public boolean isLegalMove(Move move) {
-        return move.movements.length == 1 && move.movements[0].isAdjacentInlineMovement(this.board);
+        return move.movements.size() == 1 && move.movements.get(0).isAdjacentInlineMovement(this.board);
     }
 
     @Override

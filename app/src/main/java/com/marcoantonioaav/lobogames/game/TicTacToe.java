@@ -74,7 +74,7 @@ public class TicTacToe extends Game {
 
     @Override
     public boolean isLegalMove(Move move) {
-        return move.movements.length == 1 && move.movements[0].isInsertion(this.board);
+        return move.movements.size() == 1 && move.movements.get(0).isInsertion(this.board);
     }
 
     @Override

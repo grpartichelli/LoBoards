@@ -78,8 +78,8 @@ public class TsoroYematatu extends Game {
     @Override
     public boolean isLegalMove(Move move) {
         if (this.board.countPlayerPieces(move.playerId) < 4)
-            return move.movements.length == 1 && move.movements[0].isInsertion(board);
-        return move.movements.length == 1 && move.movements[0].isAdjacentInlineMovement(board);
+            return move.movements.size() == 1 && move.movements.get(0).isInsertion(board);
+        return move.movements.size() == 1 && move.movements.get(0).isAdjacentInlineMovement(board);
     }
 
     @Override

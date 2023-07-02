@@ -10,6 +10,7 @@ import com.marcoantonioaav.lobogames.player.agent.MinimaxAgent;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class Alquerque extends Game {
 
@@ -58,8 +59,8 @@ public class Alquerque extends Game {
     public boolean isLegalMove(Move move) {
         if (move == null)
             return false;
-        if (move.movements.length == 1)
-            return move.movements[0].isAdjacentInlineMovement(this.board);
+        if (move.movements.size() == 1)
+            return move.movements.get(0).isAdjacentInlineMovement(this.board);
         Board newBoard = this.board.copy();
         ArrayList<Movement> removals = new ArrayList<>();
         for (Movement movement : move.movements) {
@@ -180,7 +181,7 @@ public class Alquerque extends Game {
         return null;
     }
 
-    private ArrayList<Movement> removeRemovals(Movement[] movements) {
+    private ArrayList<Movement> removeRemovals(List<Movement> movements) {
         ArrayList<Movement> newMovements = new ArrayList<>();
         for (Movement movement : movements)
             if (!movement.isRemoval(this.board))

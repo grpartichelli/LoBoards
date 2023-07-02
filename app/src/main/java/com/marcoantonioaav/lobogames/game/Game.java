@@ -1,5 +1,6 @@
 package com.marcoantonioaav.lobogames.game;
 
+import androidx.annotation.NonNull;
 import com.marcoantonioaav.lobogames.board.Board;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.player.Player;
@@ -50,11 +51,14 @@ public abstract class Game {
     public abstract float getHeuristicEvaluationOf(int playerId, int turn);
 
     public Game copy() {
-        // TODO: Implement copy
-        return new Tapatan();
+        // TODO
     }
 
     public boolean isTerminalState() {
         return isVictory(Player.PLAYER_1) || isVictory(Player.PLAYER_2) || isDraw();
+    }
+
+    public void restart() {
+        this.board = getInitialBoard();
     }
 }
