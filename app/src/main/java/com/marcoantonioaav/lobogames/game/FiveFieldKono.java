@@ -39,6 +39,11 @@ public class FiveFieldKono extends Game {
     }
 
     @Override
+    public Game newInstance() {
+        return new FiveFieldKono();
+    }
+
+    @Override
     public boolean isVictory(int playerId) {
         ArrayList<Move> moves = getLegalMoves(Player.getOpponentOf(playerId));
         if (moves.isEmpty())

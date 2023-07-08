@@ -36,6 +36,11 @@ public class Tapatan extends Game {
     }
 
     @Override
+    public Game newInstance() {
+        return new Tapatan();
+    }
+
+    @Override
     public boolean isVictory(int playerId) {
         TicTacToe ticTacToe = new TicTacToe();
         ticTacToe.setBoard(this.board);

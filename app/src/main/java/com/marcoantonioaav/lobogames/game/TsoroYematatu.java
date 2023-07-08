@@ -38,6 +38,10 @@ public class TsoroYematatu extends Game {
         return new Board(matrix, boardImageId);
     }
 
+    @Override
+    public Game newInstance() {
+        return new TsoroYematatu();
+    }
 
     @Override
     public boolean isVictory(int playerId) {

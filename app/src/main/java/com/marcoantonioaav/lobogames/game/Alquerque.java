@@ -42,6 +42,11 @@ public class Alquerque extends Game {
     }
 
     @Override
+    public Game newInstance() {
+        return new Alquerque();
+    }
+
+    @Override
     public boolean isVictory(int playerId) {
         for (int x = 0; x < 5; x++)
             for (int y = 0; y < 5; y++)

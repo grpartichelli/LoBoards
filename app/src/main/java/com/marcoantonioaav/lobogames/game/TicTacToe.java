@@ -37,6 +37,11 @@ public class TicTacToe extends Game {
     }
 
     @Override
+    public Game newInstance() {
+        return new TicTacToe();
+    }
+
+    @Override
     public boolean isVictory(int playerId) {
         return isLineVictory(playerId) || isColumnVictory(playerId) || isDiagonalVictory(playerId);
     }

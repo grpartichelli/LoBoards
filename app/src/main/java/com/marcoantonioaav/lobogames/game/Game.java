@@ -1,6 +1,5 @@
 package com.marcoantonioaav.lobogames.game;
 
-import androidx.annotation.NonNull;
 import com.marcoantonioaav.lobogames.board.Board;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.player.Player;
@@ -29,6 +28,14 @@ public abstract class Game {
 
     public abstract String getRules();
 
+    public abstract Game newInstance();
+
+    public Game copy() {
+        Game game = newInstance();
+        game.setBoard(game.getBoard().copy());
+        return game;
+    }
+
     public abstract boolean isVictory(int playerId);
 
     public abstract boolean isDraw();
@@ -49,10 +56,6 @@ public abstract class Game {
      * Dica: pode ser utilizado MinimaxAgent.normalizeToEvaluationLimits().
      */
     public abstract float getHeuristicEvaluationOf(int playerId, int turn);
-
-    public Game copy() {
-        // TODO
-    }
 
     public boolean isTerminalState() {
         return isVictory(Player.PLAYER_1) || isVictory(Player.PLAYER_2) || isDraw();
