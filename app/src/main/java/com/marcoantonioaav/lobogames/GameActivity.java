@@ -147,7 +147,6 @@ public class GameActivity extends AppCompatActivity {
             return;
         }
         game.getBoard().applyMove(move);
-        boardView.setBoard(game.getBoard());
         runOnUiThread(() -> boardView.announceForAccessibility(move.toString()));
         runOnUiThread(() -> boardView.drawMove(move));
         turn = Player.getOpponentOf(turn);
@@ -175,6 +174,7 @@ public class GameActivity extends AppCompatActivity {
         updateButtonsDescription();
         game.restart();
         boardView.setBoard(game.getBoard());
+        boardView.draw();
         isGameRunning = true;
     }
 

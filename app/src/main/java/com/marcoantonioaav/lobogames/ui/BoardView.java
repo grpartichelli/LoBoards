@@ -54,6 +54,9 @@ public class BoardView extends View {
         setLayoutParams(layoutParams);
     }
 
+    public void draw() {
+        invalidate();
+    }
 
     public void drawSelectedPosition(int selectedX, int selectedY) {
         this.selectedX = selectedX;
