@@ -46,7 +46,9 @@ public class Board {
     public Board copy() {
         int[][] newBoardMatrix = new int[this.matrix[0].length][this.matrix.length];
         for (int x = 0; x < getWidth(); x++) {
-            System.arraycopy(this.matrix[x], 0, newBoardMatrix[x], 0, getHeight());
+            for (int y = 0; y < getHeight(); y++) {
+                newBoardMatrix[x][y] = this.matrix[x][y];
+            }
         }
         return new Board(
                 newBoardMatrix,

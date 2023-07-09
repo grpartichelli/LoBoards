@@ -31,9 +31,10 @@ public abstract class Game {
     public abstract Game newInstance();
 
     public Game copy() {
-        Game game = newInstance();
-        game.setBoard(game.getBoard().copy());
-        return game;
+        Game newGame = this.newInstance();
+        Board newBoard = this.getBoard().copy();
+        newGame.setBoard(newBoard);
+        return newGame;
     }
 
     public abstract boolean isVictory(int playerId);
