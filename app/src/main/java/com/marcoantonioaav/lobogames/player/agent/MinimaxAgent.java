@@ -1,5 +1,6 @@
 package com.marcoantonioaav.lobogames.player.agent;
 
+import android.util.Log;
 import com.marcoantonioaav.lobogames.game.Game;
 import com.marcoantonioaav.lobogames.move.Move;
 
@@ -12,7 +13,6 @@ public class MinimaxAgent extends Agent {
     private static final int EVALUATION_PLAYOUTS = 25;
     private static final int MAX_PLAYOUT_DEPTH = 50;
     private final int SEARCH_TIME_MILLIS = 1500;
-
     public static final float MAX = 1;
     public static final float MIN = -MAX;
     public static final float NEUTRAL = (MIN + MAX)/2;
@@ -139,15 +139,15 @@ public class MinimaxAgent extends Agent {
         int currentPlayer = turn;
         int depth = 0;
         Game copyGame = game.copy();
-        while(!game.isTerminalState() && depth < MAX_PLAYOUT_DEPTH) {
-            ArrayList<Move> legalMoves = game.getLegalMoves(currentPlayer);
+        while(!copyGame.isTerminalState() && depth < MAX_PLAYOUT_DEPTH) {
+            ArrayList<Move> legalMoves = copyGame.getLegalMoves(currentPlayer);
             if(legalMoves.isEmpty())
                 return NEUTRAL;
             copyGame.getBoard().applyMove(legalMoves.get(0));
             currentPlayer = getOpponentOf(currentPlayer);
             depth++;
         }
-        return evaluateTerminalState(game, player);
+        return evaluateTerminalState(copyGame, player);
     }
 
     private static float evaluateTerminalState(Game game, int player) {
