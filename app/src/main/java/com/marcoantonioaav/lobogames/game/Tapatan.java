@@ -1,15 +1,16 @@
 package com.marcoantonioaav.lobogames.game;
 
 import com.marcoantonioaav.lobogames.R;
-import com.marcoantonioaav.lobogames.board.Board;
+import com.marcoantonioaav.lobogames.board.MatrixBoard;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.player.Player;
 import com.marcoantonioaav.lobogames.player.agent.MinimaxAgent;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
-public class Tapatan extends Game {
+public class Tapatan extends Game<MatrixBoard> {
     public Tapatan() {
         super();
     }
@@ -25,18 +26,18 @@ public class Tapatan extends Game {
     }
 
     @Override
-    public Board getInitialBoard() {
+    public MatrixBoard getInitialBoard() {
         int[][] matrix = new int[][]{
                 {Player.PLAYER_1, Player.EMPTY, Player.PLAYER_2},
                 {Player.PLAYER_2, Player.EMPTY, Player.PLAYER_1},
                 {Player.PLAYER_1, Player.EMPTY, Player.PLAYER_2}
         };
         int boardImageId = R.drawable._3x3;
-        return new Board(matrix, boardImageId);
+        return new MatrixBoard(matrix, boardImageId);
     }
 
     @Override
-    public Game newInstance() {
+    public Game<MatrixBoard> newInstance() {
         return new Tapatan();
     }
 
@@ -58,11 +59,11 @@ public class Tapatan extends Game {
     }
 
     @Override
-    public ArrayList<Move> getLegalMoves(int playerId) {
-        ArrayList<Move> moves = new ArrayList<>();
+    public List<Move> getLegalMoves(int playerId) {
+        List<Move> moves = new ArrayList<>();
         for (int x = 0; x < this.board.getWidth(); x++)
             for (int y = 0; y < this.board.getHeight(); y++)
-                if (this.board.getMatrix()[x][y] == playerId)
+                if (this.board.valueAt(x, y) == playerId)
                     for (int[] eightRegion : new int[][]{{0, 1}, {1, 1}, {1, 0}, {0, -1}, {-1, -1}, {-1, 0}, {1, -1}, {-1, 1}})
                         if (this.board.isOnLimits(x + eightRegion[0], y + eightRegion[1])) {
                             Move newMove = new Move(x, y, x + eightRegion[0], y + eightRegion[1], playerId);

@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.marcoantonioaav.lobogames.board.MatrixBoard;
 import com.marcoantonioaav.lobogames.game.Game;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.move.Movement;
@@ -30,7 +31,7 @@ public class GameActivity extends AppCompatActivity {
     private TextView gameName, status;
     private Button playAgain, back;
 
-    private Game game;
+    private Game<MatrixBoard> game;
     private int turn;
     private Player player1;
     private Player player2;
@@ -48,8 +49,7 @@ public class GameActivity extends AppCompatActivity {
         player1 = new Human(Player.PLAYER_1);
         if ((boolean) this.getIntent().getExtras().get(PreGameActivity.IS_MULTIPLAYER)) {
             player2 = new Human(Player.PLAYER_2);
-        }
-        else {
+        } else {
             player2 = new MinimaxAgent(Player.PLAYER_2, (String) this.getIntent().getExtras().get(PreGameActivity.DIFFICULTY));
         }
         setUpButtons();
@@ -160,7 +160,7 @@ public class GameActivity extends AppCompatActivity {
     private void updateButtonsDescription() {
         for (int x = 0; x < this.game.getBoard().getWidth(); x++)
             for (int y = 0; y < this.game.getBoard().getHeight(); y++)
-                buttons[x][y].setContentDescription(Movement.positionToString(x, y) + ": " + Player.getName(this.game.getBoard().getMatrix()[x][y]));
+                buttons[x][y].setContentDescription(Movement.positionToString(x, y) + ": " + Player.getName(this.game.getBoard().valueAt(x, y)));
     }
 
     private void endGame() {

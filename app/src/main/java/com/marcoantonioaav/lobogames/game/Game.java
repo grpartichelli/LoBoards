@@ -4,35 +4,35 @@ import com.marcoantonioaav.lobogames.board.Board;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.player.Player;
 
-import java.util.ArrayList;
+import java.util.List;
 
-public abstract class Game {
+public abstract class Game<T extends Board> {
 
-    protected Board board;
+    protected T board;
 
     protected Game() {
         board = getInitialBoard();
     }
 
-    public Board getBoard() {
+    public T getBoard() {
         return board;
     }
 
-    public void setBoard(Board board) {
+    public void setBoard(T board) {
         this.board = board;
     }
 
     public abstract String getName();
 
-    public abstract Board getInitialBoard();
+    public abstract T getInitialBoard();
 
     public abstract String getRules();
 
-    public abstract Game newInstance();
+    public abstract Game<T> newInstance();
 
-    public Game copy() {
-        Game newGame = this.newInstance();
-        Board newBoard = this.getBoard().copy();
+    public Game<T> copy() {
+        Game<T> newGame = this.newInstance();
+        T newBoard = (T) this.getBoard().copy();
         newGame.setBoard(newBoard);
         return newGame;
     }
@@ -43,7 +43,7 @@ public abstract class Game {
 
     public abstract boolean isLegalMove(Move move);
 
-    public abstract ArrayList<Move> getLegalMoves(int playerId);
+    public abstract List<Move> getLegalMoves(int playerId);
 
     public abstract Move getPlayerMove(int startX, int startY, int endX, int endY, int playerId);
 

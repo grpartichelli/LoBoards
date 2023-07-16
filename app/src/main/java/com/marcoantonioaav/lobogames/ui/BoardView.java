@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.res.ResourcesCompat;
 import com.marcoantonioaav.lobogames.board.Board;
+import com.marcoantonioaav.lobogames.board.MatrixBoard;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.move.Movement;
 import com.marcoantonioaav.lobogames.player.Player;
@@ -25,7 +26,7 @@ public class BoardView extends View {
     private int cursorColor = Color.BLUE;
     private final Paint paint = new Paint();
 
-    private Board board;
+    private MatrixBoard board;
     private Drawable boardImage;
     private Move currentMove;
 
@@ -42,7 +43,7 @@ public class BoardView extends View {
         super(context, attrs, defStyleAttr);
     }
 
-    public void setBoard(Board board) {
+    public void setBoard(MatrixBoard board) {
         this.board = board;
         this.boardImage = ResourcesCompat.getDrawable(getResources(), board.getImageResourceId(), null);
     }
@@ -102,7 +103,7 @@ public class BoardView extends View {
             for (int y = 0; y < this.board.getHeight(); y++) {
                 cx = getCrescentPosition(x, getWidth(), this.board.getWidth());
                 cy = getDecrescentPosition(y, getHeight(), this.board.getHeight());
-                if (this.board.getMatrix()[x][y] != Player.EMPTY) {
+                if (this.board.valueAt(x, y) != Player.EMPTY) {
                     if (selectedX == x && selectedY == y) {
                         paint.setColor(cursorColor);
                         radius = getPieceRadius() + (getPieceBorderWidth() * 2);
@@ -112,11 +113,11 @@ public class BoardView extends View {
                     }
                     canvas.drawCircle(cx, cy, radius, paint);
                 }
-                if (this.board.getMatrix()[x][y] == Player.EMPTY)
+                if (this.board.valueAt(x, y) == Player.EMPTY)
                     radius = getPieceRadius() / 2;
                 else
                     radius = getPieceRadius();
-                paint.setColor(getPlayerColor(this.board.getMatrix()[x][y]));
+                paint.setColor(getPlayerColor(this.board.valueAt(x, y)));
                 canvas.drawCircle(cx, cy, radius, paint);
             }
     }

@@ -2,6 +2,7 @@ package com.marcoantonioaav.lobogames.game;
 
 import com.marcoantonioaav.lobogames.R;
 import com.marcoantonioaav.lobogames.board.Board;
+import com.marcoantonioaav.lobogames.board.MatrixBoard;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.player.Player;
 import com.marcoantonioaav.lobogames.player.agent.MinimaxAgent;
@@ -9,7 +10,7 @@ import com.marcoantonioaav.lobogames.player.agent.MinimaxAgent;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class TicTacToe extends Game {
+public class TicTacToe extends Game<MatrixBoard> {
 
     public TicTacToe() {
         super();
@@ -26,18 +27,18 @@ public class TicTacToe extends Game {
     }
 
     @Override
-    public Board getInitialBoard() {
+    public MatrixBoard getInitialBoard() {
         int[][] matrix = new int[][]{
                 {Player.EMPTY, Player.EMPTY, Player.EMPTY},
                 {Player.EMPTY, Player.EMPTY, Player.EMPTY},
                 {Player.EMPTY, Player.EMPTY, Player.EMPTY}
         };
         int boardImageId = R.drawable._3x3;
-        return new Board(matrix, boardImageId);
+        return new MatrixBoard(matrix, boardImageId);
     }
 
     @Override
-    public Game newInstance() {
+    public Game<MatrixBoard> newInstance() {
         return new TicTacToe();
     }
 
@@ -47,23 +48,28 @@ public class TicTacToe extends Game {
     }
 
     private boolean isDiagonalVictory(int player) {
-        int[][] matrix = this.getBoard().getMatrix();
-        return (matrix[0][0] == player && matrix[1][1] == player && matrix[2][2] == player) ||
-                (matrix[0][2] == player && matrix[1][1] == player && matrix[2][0] == player);
+        return (this.board.valueAt(0, 0) == player
+                && this.board.valueAt(1, 1) == player
+                && this.board.valueAt(2, 2) == player)
+                || (this.board.valueAt(0, 2) == player
+                && this.board.valueAt(1, 1) == player
+                && this.board.valueAt(2, 0) == player);
     }
 
     private boolean isColumnVictory(int player) {
-        int[][] matrix = this.getBoard().getMatrix();
         for (int x = 0; x < 3; x++)
-            if (matrix[x][0] == player && matrix[x][1] == player && matrix[x][2] == player)
+            if (this.board.valueAt(x, 0) == player
+                    && this.board.valueAt(x, 1) == player
+                    && this.board.valueAt(x, 2) == player)
                 return true;
         return false;
     }
 
     private boolean isLineVictory(int player) {
-        int[][] matrix = this.getBoard().getMatrix();
         for (int y = 0; y < 3; y++)
-            if (matrix[0][y] == player && matrix[1][y] == player && matrix[2][y] == player)
+            if (this.board.valueAt(0, y) == player
+                    && this.board.valueAt(1, y) == player
+                    && this.board.valueAt(2, y) == player)
                 return true;
         return false;
     }
@@ -72,7 +78,7 @@ public class TicTacToe extends Game {
     public boolean isDraw() {
         for (int x = 0; x < 3; x++)
             for (int y = 0; y < 3; y++)
-                if (this.board.getMatrix()[x][y] == Player.EMPTY)
+                if (this.board.valueAt(x, y) == Player.EMPTY)
                     return false;
         return !isVictory(Player.PLAYER_1) && !isVictory(Player.PLAYER_2);
     }

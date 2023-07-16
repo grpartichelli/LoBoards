@@ -2,17 +2,17 @@ package com.marcoantonioaav.lobogames.game;
 
 import com.marcoantonioaav.lobogames.R;
 import com.marcoantonioaav.lobogames.board.Board;
+import com.marcoantonioaav.lobogames.board.MatrixBoard;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.move.Movement;
 import com.marcoantonioaav.lobogames.player.Player;
-import com.marcoantonioaav.lobogames.player.agent.Agent;
 import com.marcoantonioaav.lobogames.player.agent.MinimaxAgent;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Alquerque extends Game {
+public class Alquerque extends Game<MatrixBoard> {
 
     public Alquerque() {
         super();
@@ -29,7 +29,7 @@ public class Alquerque extends Game {
     }
 
     @Override
-    public Board getInitialBoard() {
+    public MatrixBoard getInitialBoard() {
         int[][] matrix = new int[][]{
                 {Player.PLAYER_1, Player.PLAYER_1, Player.PLAYER_1, Player.PLAYER_2, Player.PLAYER_2},
                 {Player.PLAYER_1, Player.PLAYER_1, Player.PLAYER_1, Player.PLAYER_2, Player.PLAYER_2},
@@ -38,11 +38,11 @@ public class Alquerque extends Game {
                 {Player.PLAYER_1, Player.PLAYER_1, Player.PLAYER_2, Player.PLAYER_2, Player.PLAYER_2}
         };
         int boardImageId = R.drawable._5x5;
-        return new Board(matrix, boardImageId);
+        return new MatrixBoard(matrix, boardImageId);
     }
 
     @Override
-    public Game newInstance() {
+    public Game<MatrixBoard> newInstance() {
         return new Alquerque();
     }
 
@@ -50,7 +50,7 @@ public class Alquerque extends Game {
     public boolean isVictory(int playerId) {
         for (int x = 0; x < 5; x++)
             for (int y = 0; y < 5; y++)
-                if (this.board.getMatrix()[x][y] == Player.getOpponentOf(playerId))
+                if (this.board.valueAt(x, y) == Player.getOpponentOf(playerId))
                     return false;
         return true;
     }
@@ -66,8 +66,8 @@ public class Alquerque extends Game {
             return false;
         if (move.movements.size() == 1)
             return move.movements.get(0).isAdjacentInlineMovement(this.board);
-        Board newBoard = this.board.copy();
-        ArrayList<Movement> removals = new ArrayList<>();
+        MatrixBoard newBoard = this.board.copy();
+        List<Movement> removals = new ArrayList<>();
         for (Movement movement : move.movements) {
             if (movement.isRemoval(newBoard))
                 break;
@@ -85,18 +85,18 @@ public class Alquerque extends Game {
     }
 
     @Override
-    public ArrayList<Move> getLegalMoves(int playerId) {
-        ArrayList<Move> moves = getEliminationMoves(playerId);
+    public List<Move> getLegalMoves(int playerId) {
+        List<Move> moves = getEliminationMoves(playerId);
         if (moves.isEmpty())
             return getAdjacentInlineMoves(playerId);
         return moves;
     }
 
-    private ArrayList<Move> getAdjacentInlineMoves(int player) {
-        ArrayList<Move> moves = new ArrayList<>();
+    private List<Move> getAdjacentInlineMoves(int player) {
+        List<Move> moves = new ArrayList<>();
         for (int x = 0; x < this.board.getWidth(); x++)
             for (int y = 0; y < this.board.getHeight(); y++)
-                if (this.board.getMatrix()[x][y] == player)
+                if (this.board.valueAt(x, y) == player)
                     for (int[] eightRegion : new int[][]{{0, 1}, {1, 1}, {1, 0}, {0, -1}, {-1, -1}, {-1, 0}, {1, -1}, {-1, 1}})
                         if (this.board.isOnLimits(x + eightRegion[0], y + eightRegion[1])) {
                             Move newMove = new Move(x, y, x + eightRegion[0], y + eightRegion[1], player);
@@ -112,7 +112,7 @@ public class Alquerque extends Game {
         int bestEliminationCount = 0;
         for (int x = 0; x < this.board.getWidth(); x++)
             for (int y = 0; y < this.board.getHeight(); y++)
-                if (this.getBoard().getMatrix()[x][y] == player)
+                if (this.board.valueAt(x, y) == player)
                     for (ArrayList<Movement> movementSequence : getEliminationMovementSequences(x, y, this.board, player, new ArrayList<>())) {
                         ArrayList<Movement> movementsWithRemovals = new ArrayList<>(movementSequence);
                         for (Movement movement : movementSequence)
@@ -130,7 +130,7 @@ public class Alquerque extends Game {
         return moves;
     }
 
-    private ArrayList<ArrayList<Movement>> getEliminationMovementSequences(int lastX, int lastY, Board board, int player, ArrayList<int[]> eliminationSpots) {
+    private ArrayList<ArrayList<Movement>> getEliminationMovementSequences(int lastX, int lastY, MatrixBoard board, int player, ArrayList<int[]> eliminationSpots) {
         ArrayList<ArrayList<Movement>> movementSequences = new ArrayList<>();
         for (int[] eightRegion : new int[][]{{0, 2}, {2, 2}, {2, 0}, {0, -2}, {-2, -2}, {-2, 0}, {2, -2}, {-2, 2}}) {
             int newX = lastX + eightRegion[0], newY = lastY + eightRegion[1];
@@ -140,7 +140,7 @@ public class Alquerque extends Game {
                 if (movement.isAdjacentInlineOpponentJump(board) && !containsTuple(newEliminationSpot, eliminationSpots)) {
                     ArrayList<int[]> newEliminationSpots = new ArrayList<>(eliminationSpots);
                     newEliminationSpots.add(newEliminationSpot);
-                    Board appliedMoveBoard = board.copy();
+                    MatrixBoard appliedMoveBoard = board.copy();
                     appliedMoveBoard.applyMovement(movement);
                     ArrayList<ArrayList<Movement>> nextEliminationMovementSequences =
                             getEliminationMovementSequences(newX, newY, appliedMoveBoard, player, newEliminationSpots);
@@ -171,9 +171,9 @@ public class Alquerque extends Game {
 
     @Override
     public Move getPlayerMove(int startX, int startY, int endX, int endY, int playerId) {
-        ArrayList<Move> legalMoves = getLegalMoves(playerId);
+        List<Move> legalMoves = getLegalMoves(playerId);
         for (Move move : legalMoves) {
-            ArrayList<Movement> movementsWithoutRemovals = removeRemovals(move.movements);
+            List<Movement> movementsWithoutRemovals = removeRemovals(move.movements);
             for (Movement movement : movementsWithoutRemovals)
                 if (
                         movementsWithoutRemovals.get(0).startX == startX &&
@@ -186,8 +186,8 @@ public class Alquerque extends Game {
         return null;
     }
 
-    private ArrayList<Movement> removeRemovals(List<Movement> movements) {
-        ArrayList<Movement> newMovements = new ArrayList<>();
+    private List<Movement> removeRemovals(List<Movement> movements) {
+        List<Movement> newMovements = new ArrayList<>();
         for (Movement movement : movements)
             if (!movement.isRemoval(this.board))
                 newMovements.add(movement);
@@ -197,7 +197,7 @@ public class Alquerque extends Game {
     @Override
     public float getHeuristicEvaluationOf(int playerId, int turn) {
         int playerPieces = this.board.countPlayerPieces(playerId);
-        int opponentPieces = this.board.countPlayerPieces(Agent.getOpponentOf(playerId));
+        int opponentPieces = this.board.countPlayerPieces(Player.getOpponentOf(playerId));
         int maxPieceCount = 12;
         return MinimaxAgent.normalizeToEvaluationLimits(playerPieces - opponentPieces, -maxPieceCount, maxPieceCount);
     }

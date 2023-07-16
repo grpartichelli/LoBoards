@@ -16,7 +16,7 @@ public abstract class Player {
         this.id = id;
     }
 
-    public abstract Move getMove(Game game);
+    public abstract Move getMove(Game<?> game);
 
     public abstract boolean isReady();
 

@@ -2,14 +2,16 @@ package com.marcoantonioaav.lobogames.game;
 
 import com.marcoantonioaav.lobogames.R;
 import com.marcoantonioaav.lobogames.board.Board;
+import com.marcoantonioaav.lobogames.board.MatrixBoard;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.player.Player;
 import com.marcoantonioaav.lobogames.player.agent.MinimaxAgent;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
-public class TsoroYematatu extends Game {
+public class TsoroYematatu extends Game<MatrixBoard> {
 
     public TsoroYematatu() {
         super();
@@ -26,7 +28,7 @@ public class TsoroYematatu extends Game {
     }
 
     @Override
-    public Board getInitialBoard() {
+    public MatrixBoard getInitialBoard() {
         int[][] matrix = new int[][]{
                 {Player.EMPTY, Player.EMPTY, Player.EMPTY, Player.EMPTY, Player.EMPTY},
                 {Player.EMPTY, Player.EMPTY, Player.EMPTY, Player.EMPTY, Player.EMPTY},
@@ -35,11 +37,11 @@ public class TsoroYematatu extends Game {
                 {Player.EMPTY, Player.EMPTY, Player.EMPTY, Player.EMPTY, Player.EMPTY}
         };
         int boardImageId = R.drawable._5x5;
-        return new Board(matrix, boardImageId);
+        return new MatrixBoard(matrix, boardImageId);
     }
 
     @Override
-    public Game newInstance() {
+    public Game<MatrixBoard> newInstance() {
         return new TsoroYematatu();
     }
 
@@ -49,29 +51,51 @@ public class TsoroYematatu extends Game {
     }
 
     private boolean isLineVictory(int player) {
-        int[][] matrix = this.board.getMatrix();
         for (int y = 0; y < this.board.getHeight(); y++)
-            if ((matrix[0][y] == player && matrix[1][y] == player && matrix[2][y] == player && matrix[3][y] == player) ||
-                    (matrix[1][y] == player && matrix[2][y] == player && matrix[3][y] == player && matrix[4][y] == player))
+            if ((this.board.valueAt(0, y) == player
+                    && this.board.valueAt(1, y) == player
+                    && this.board.valueAt(2, y) == player
+                    && this.board.valueAt(3, y) == player)
+                    || (this.board.valueAt(1, y) == player
+                    && this.board.valueAt(2, y) == player
+                    && this.board.valueAt(3, y) == player
+                    && this.board.valueAt(4, y) == player)
+            )
                 return true;
         return false;
     }
 
     private boolean isColumnVictory(int player) {
-        int[][] matrix = this.board.getMatrix();
         for (int x = 0; x < this.board.getWidth(); x++)
-            if ((matrix[x][0] == player && matrix[x][1] == player && matrix[x][2] == player && matrix[x][3] == player) ||
-                    (matrix[x][1] == player && matrix[x][2] == player && matrix[x][3] == player && matrix[x][4] == player))
+            if ((this.board.valueAt(x, 0) == player
+                    && this.board.valueAt(x, 1) == player
+                    && this.board.valueAt(x, 2) == player
+                    && this.board.valueAt(x, 3) == player)
+                    || (this.board.valueAt(x, 1) == player
+                    && this.board.valueAt(x, 2) == player
+                    && this.board.valueAt(x, 3) == player
+                    && this.board.valueAt(x, 4) == player))
                 return true;
         return false;
     }
 
     private boolean isDiagonalVictory(int player) {
-        int[][] matrix = this.board.getMatrix();
-        return ((matrix[1][1] == player && matrix[2][2] == player && matrix[3][3] == player && matrix[4][4] == player) ||
-                (matrix[0][0] == player && matrix[1][1] == player && matrix[2][2] == player && matrix[3][3] == player) ||
-                (matrix[0][4] == player && matrix[1][3] == player && matrix[2][2] == player && matrix[3][1] == player) ||
-                (matrix[1][3] == player && matrix[2][2] == player && matrix[3][1] == player && matrix[4][0] == player));
+        return ((this.board.valueAt(1, 1) == player
+                && this.board.valueAt(2, 2) == player
+                && this.board.valueAt(3, 3) == player
+                && this.board.valueAt(4, 4) == player)
+                || (this.board.valueAt(0, 0) == player
+                && this.board.valueAt(1, 1) == player
+                && this.board.valueAt(2, 2) == player
+                && this.board.valueAt(3, 3) == player)
+                || (this.board.valueAt(0, 4) == player
+                && this.board.valueAt(1, 3) == player
+                && this.board.valueAt(2, 2) == player
+                && this.board.valueAt(3, 1) == player)
+                || (this.board.valueAt(1, 3) == player
+                && this.board.valueAt(2, 2) == player
+                && this.board.valueAt(3, 1) == player
+                && this.board.valueAt(4, 0) == player));
     }
 
     @Override
@@ -87,14 +111,14 @@ public class TsoroYematatu extends Game {
     }
 
     @Override
-    public ArrayList<Move> getLegalMoves(int playerId) {
+    public List<Move> getLegalMoves(int playerId) {
         if (this.board.countPlayerPieces(playerId) < 4)
             return getLegalInsertionMoves(playerId);
         return getLegalMovementMoves(playerId);
     }
 
-    protected ArrayList<Move> getLegalInsertionMoves(int playerId) {
-        ArrayList<Move> moves = new ArrayList<>();
+    protected List<Move> getLegalInsertionMoves(int playerId) {
+        List<Move> moves = new ArrayList<>();
         for (int x = 0; x < this.board.getWidth(); x++) {
             for (int y = 0; y < this.board.getHeight(); y++) {
                 Move newMove = new Move(x, y, playerId);
@@ -106,11 +130,11 @@ public class TsoroYematatu extends Game {
         return moves;
     }
 
-    private ArrayList<Move> getLegalMovementMoves(int playerId) {
-        ArrayList<Move> moves = new ArrayList<>();
+    private List<Move> getLegalMovementMoves(int playerId) {
+        List<Move> moves = new ArrayList<>();
         for (int x = 0; x < this.board.getWidth(); x++) {
             for (int y = 0; y < this.board.getHeight(); y++) {
-                if (this.board.getMatrix()[x][y] == playerId) {
+                if (this.board.valueAt(x, y) == playerId) {
                     for (int[] eightRegion : new int[][]{{0, 1}, {1, 1}, {1, 0}, {0, -1}, {-1, -1}, {-1, 0}, {1, -1}, {-1, 1}})
                         if (this.board.isOnLimits(x + eightRegion[0], y + eightRegion[1])) {
                             Move newMove = new Move(x, y, x + eightRegion[0], y + eightRegion[1], playerId);

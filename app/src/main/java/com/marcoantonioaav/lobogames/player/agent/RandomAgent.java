@@ -9,7 +9,7 @@ public class RandomAgent extends Agent {
     }
 
     @Override
-    public Move selectMove(Game game) {
+    public Move selectMove(Game<?> game) {
         if (game.getLegalMoves(getId()).isEmpty())
             return null;
         return game.getLegalMoves(getId()).get(0);

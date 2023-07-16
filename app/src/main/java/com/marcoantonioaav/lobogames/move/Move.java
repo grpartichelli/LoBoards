@@ -1,6 +1,6 @@
 package com.marcoantonioaav.lobogames.move;
 
-import com.marcoantonioaav.lobogames.board.Board;
+import com.marcoantonioaav.lobogames.board.MatrixBoard;
 import com.marcoantonioaav.lobogames.player.Player;
 
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ public class Move {
         return result;
     }
 
-    public int getRemovalCount(Board board) {
+    public int getRemovalCount(MatrixBoard board) {
         int count = 0;
         for(Movement movement : movements)
             if(movement.isRemoval(board))
