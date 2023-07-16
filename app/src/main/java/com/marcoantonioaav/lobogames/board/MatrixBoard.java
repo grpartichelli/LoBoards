@@ -4,11 +4,13 @@ import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.move.Movement;
 import com.marcoantonioaav.lobogames.player.Player;
 
+import java.util.ArrayList;
+
 public class MatrixBoard extends Board {
     private final int[][] matrix;
 
     public MatrixBoard(int[][] matrix, int imageResourceId) {
-        super(imageResourceId);
+        super(imageResourceId, new ArrayList<>());
         this.matrix = matrix;
     }
 

@@ -10,9 +10,9 @@ public abstract class Player {
     public static final int PLAYER_1 = 1;
     public static final int PLAYER_2 = 2;
 
-    private int id;
+    private final int id;
 
-    public Player(int id) {
+    Player(int id) {
         this.id = id;
     }
 
