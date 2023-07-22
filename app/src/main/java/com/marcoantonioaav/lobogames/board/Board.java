@@ -2,6 +2,7 @@ package com.marcoantonioaav.lobogames.board;
 
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.move.Movement;
+import com.marcoantonioaav.lobogames.position.Line;
 import com.marcoantonioaav.lobogames.position.Position;
 
 import java.util.ArrayList;
@@ -10,8 +11,9 @@ import java.util.List;
 public abstract class Board {
     private final int imageResourceId;
     private final List<Position> positions = new ArrayList<>();
+    private final List<Line> lines = new ArrayList<>();
 
-    protected Board(int imageResourceId, List<Position> positions) {
+    protected Board(int imageResourceId, List<Position> positions, List<Line> lines) {
         this.imageResourceId = imageResourceId;
     }
 

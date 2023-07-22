@@ -2,25 +2,23 @@ package com.marcoantonioaav.lobogames.position;
 
 import com.marcoantonioaav.lobogames.player.Player;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Position {
 
-    private final int x;
-    private final int y;
+    private final List<Position> connectedPositions = new ArrayList<>();
+    private final Coordinate coordinate;
     private final String label;
     private Player occupiedBy;
 
-    public Position(int x, int y, String label) {
-        this.x = x;
-        this.y = y;
+    public Position(Coordinate coordinate, String label) {
+        this.coordinate = coordinate;
         this.label = label;
     }
 
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
+    public Coordinate getCoordinate() {
+        return coordinate;
     }
 
     public String getLabel() {

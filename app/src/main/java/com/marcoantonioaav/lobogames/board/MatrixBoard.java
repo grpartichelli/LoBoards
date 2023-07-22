@@ -10,7 +10,7 @@ public class MatrixBoard extends Board {
     private final int[][] matrix;
 
     public MatrixBoard(int[][] matrix, int imageResourceId) {
-        super(imageResourceId, new ArrayList<>());
+        super(imageResourceId, new ArrayList<>(), new ArrayList<>());
         this.matrix = matrix;
     }
 
