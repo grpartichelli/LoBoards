@@ -7,6 +7,7 @@ import com.marcoantonioaav.lobogames.board.MatrixBoard;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.player.Player;
 import com.marcoantonioaav.lobogames.player.agent.MinimaxAgent;
+import com.marcoantonioaav.lobogames.testconstants.Standard3X3Board;
 import com.marcoantonioaav.lobogames.testconstants.TestConstants;
 
 import java.util.ArrayList;
@@ -34,8 +35,7 @@ public class TestGame extends Game<MatrixBoard> {
                 {Player.EMPTY, Player.EMPTY, Player.EMPTY},
                 {Player.EMPTY, Player.EMPTY, Player.EMPTY}
         };
-        Drawable image = ContextCompat.getDrawable(LoBoGames.getAppContext(), TestConstants.IMAGE_ID_3X3);
-        return new MatrixBoard(matrix, image, TestConstants.POSITIONS_3X3, new ArrayList<>());
+        return new MatrixBoard(matrix, Standard3X3Board.IMAGE);
     }
 
     @Override

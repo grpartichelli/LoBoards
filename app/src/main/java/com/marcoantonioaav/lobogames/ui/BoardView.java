@@ -9,6 +9,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import com.marcoantonioaav.lobogames.board.Board;
 import com.marcoantonioaav.lobogames.board.MatrixBoard;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.move.Movement;
@@ -23,7 +24,7 @@ public class BoardView extends View {
     private int cursorColor = Color.BLUE;
     private final Paint paint = new Paint();
 
-    private MatrixBoard board;
+    private Board board;
     private Move currentMove;
 
 
@@ -85,17 +86,16 @@ public class BoardView extends View {
     }
 
     private void drawPieces(Canvas canvas) {
-        float radius = getPieceRadius();
-        paint.setColor(player1Color);
+        float radius = (float) getWidth() / 16;
 
         for (Position position: this.board.getPositions()) {
-            canvas.drawCircle(position.getCoordinate().x(), position.getCoordinate().y(), radius, paint);
+            if (position.getOccupiedBy() != Player.EMPTY) {
+                paint.setColor(getPlayerColor(position.getOccupiedBy()));
+                canvas.drawCircle(position.getCoordinate().x(), position.getCoordinate().y(), radius, paint);
+            }
         }
     }
 
-    private int getPieceRadius() {
-        return getWidth() / (this.board.getWidth() * 4);
-    }
 
     public int getPlayerColor(int playerId) {
         if (playerId == Player.PLAYER_1)
