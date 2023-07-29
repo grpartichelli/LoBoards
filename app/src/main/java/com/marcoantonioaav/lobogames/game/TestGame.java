@@ -12,20 +12,19 @@ import com.marcoantonioaav.lobogames.testconstants.TestConstants;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class TicTacToe extends Game<MatrixBoard> {
-
-    public TicTacToe() {
+public class TestGame extends Game<MatrixBoard> {
+    public TestGame() {
         super();
     }
 
     @Override
     public String getName() {
-        return "Jogo da Velha";
+        return "Test game";
     }
 
     @Override
     public String getRules() {
-        return "Em sua vez, o jogador pode inserir uma peça em uma posição vazia do tabuleiro. Ganha aquele que conseguir alinhar três peças.";
+        return "Test game rules";
     }
 
     @Override
@@ -36,12 +35,12 @@ public class TicTacToe extends Game<MatrixBoard> {
                 {Player.EMPTY, Player.EMPTY, Player.EMPTY}
         };
         Drawable image = ContextCompat.getDrawable(LoBoGames.getAppContext(), TestConstants.IMAGE_ID_3X3);
-        return new MatrixBoard(matrix, image);
+        return new MatrixBoard(matrix, image, TestConstants.POSITIONS_3X3, new ArrayList<>());
     }
 
     @Override
     public Game<MatrixBoard> newInstance() {
-        return new TicTacToe();
+        return new TestGame();
     }
 
     @Override

@@ -1,16 +1,25 @@
 package com.marcoantonioaav.lobogames.board;
 
+import android.graphics.drawable.Drawable;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.move.Movement;
 import com.marcoantonioaav.lobogames.player.Player;
+import com.marcoantonioaav.lobogames.position.Line;
+import com.marcoantonioaav.lobogames.position.Position;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MatrixBoard extends Board {
     private final int[][] matrix;
 
-    public MatrixBoard(int[][] matrix, int imageResourceId) {
-        super(imageResourceId, new ArrayList<>(), new ArrayList<>());
+    public MatrixBoard(int[][] matrix, Drawable image) {
+        super(image, new ArrayList<>(), new ArrayList<>());
+        this.matrix = matrix;
+    }
+
+    public MatrixBoard(int[][] matrix, Drawable image, List<Position> positions, List<Line> lines) {
+        super(image, positions, lines);
         this.matrix = matrix;
     }
 
@@ -43,7 +52,7 @@ public class MatrixBoard extends Board {
         for (int x = 0; x < getWidth(); x++) {
             System.arraycopy(this.matrix[x], 0, newBoardMatrix[x], 0, getHeight());
         }
-        return new MatrixBoard(newBoardMatrix, this.getImageResourceId());
+        return new MatrixBoard(newBoardMatrix, this.image);
     }
 
     @Override

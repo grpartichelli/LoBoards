@@ -8,7 +8,7 @@ import java.util.List;
 public class Position {
 
     private final List<Position> connectedPositions = new ArrayList<>();
-    private final Coordinate coordinate;
+    private Coordinate coordinate;
     private final String label;
     private Player occupiedBy;
 
@@ -19,6 +19,10 @@ public class Position {
 
     public Coordinate getCoordinate() {
         return coordinate;
+    }
+
+    public void setCoordinate(Coordinate coordinate) {
+        this.coordinate = coordinate;
     }
 
     public String getLabel() {

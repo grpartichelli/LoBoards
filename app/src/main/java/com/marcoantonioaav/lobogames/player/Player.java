@@ -12,7 +12,7 @@ public abstract class Player {
 
     private final int id;
 
-    Player(int id) {
+    protected Player(int id) {
         this.id = id;
     }
 

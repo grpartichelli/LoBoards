@@ -5,18 +5,15 @@ import android.content.res.Configuration;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.res.ResourcesCompat;
-import com.marcoantonioaav.lobogames.board.Board;
 import com.marcoantonioaav.lobogames.board.MatrixBoard;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.move.Movement;
 import com.marcoantonioaav.lobogames.player.Player;
+import com.marcoantonioaav.lobogames.position.Position;
 
 public class BoardView extends View {
     private int selectedX = Movement.OUT_OF_BOARD;
@@ -27,7 +24,6 @@ public class BoardView extends View {
     private final Paint paint = new Paint();
 
     private MatrixBoard board;
-    private Drawable boardImage;
     private Move currentMove;
 
 
@@ -45,7 +41,6 @@ public class BoardView extends View {
 
     public void setBoard(MatrixBoard board) {
         this.board = board;
-        this.boardImage = ResourcesCompat.getDrawable(getResources(), board.getImageResourceId(), null);
     }
 
     public void resizeToScreenSize() {
@@ -85,53 +80,17 @@ public class BoardView extends View {
     }
 
     public void drawBoardImage(Canvas canvas) {
-        double boardPaddingPercentage = 0.05;
-        Rect clipBounds = canvas.getClipBounds();
-        Rect imageBounds = new Rect(
-                (int) (clipBounds.right * boardPaddingPercentage),
-                (int) (clipBounds.bottom * boardPaddingPercentage),
-                (int) (clipBounds.right * (1 - boardPaddingPercentage)),
-                (int) (clipBounds.bottom * (1 - boardPaddingPercentage))
-        );
-        boardImage.setBounds(imageBounds);
-        boardImage.draw(canvas);
+        board.fitImageToCanvas(canvas);
+        board.getImage().draw(canvas);
     }
 
     private void drawPieces(Canvas canvas) {
-        int cx, cy, radius;
-        for (int x = 0; x < this.board.getWidth(); x++)
-            for (int y = 0; y < this.board.getHeight(); y++) {
-                cx = getCrescentPosition(x, getWidth(), this.board.getWidth());
-                cy = getDecrescentPosition(y, getHeight(), this.board.getHeight());
-                if (this.board.valueAt(x, y) != Player.EMPTY) {
-                    if (selectedX == x && selectedY == y) {
-                        paint.setColor(cursorColor);
-                        radius = getPieceRadius() + (getPieceBorderWidth() * 2);
-                    } else {
-                        paint.setColor(getPrimaryColor());
-                        radius = getPieceRadius() + getPieceBorderWidth();
-                    }
-                    canvas.drawCircle(cx, cy, radius, paint);
-                }
-                if (this.board.valueAt(x, y) == Player.EMPTY)
-                    radius = getPieceRadius() / 2;
-                else
-                    radius = getPieceRadius();
-                paint.setColor(getPlayerColor(this.board.valueAt(x, y)));
-                canvas.drawCircle(cx, cy, radius, paint);
-            }
-    }
+        float radius = getPieceRadius();
+        paint.setColor(player1Color);
 
-    private int getCrescentPosition(int index, int totalSize, int totalQuantity) {
-        return (totalSize / (totalQuantity + 1)) * (index + 1);
-    }
-
-    private int getDecrescentPosition(int index, int totalSize, int totalQuantity) {
-        return (totalSize / (totalQuantity + 1)) * (totalQuantity - index);
-    }
-
-    private int getPieceBorderWidth() {
-        return Math.max(getPieceRadius() / 45, 2);
+        for (Position position: this.board.getPositions()) {
+            canvas.drawCircle(position.getCoordinate().x(), position.getCoordinate().y(), radius, paint);
+        }
     }
 
     private int getPieceRadius() {

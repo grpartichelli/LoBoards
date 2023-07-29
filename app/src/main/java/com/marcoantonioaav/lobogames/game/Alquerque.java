@@ -1,12 +1,14 @@
 package com.marcoantonioaav.lobogames.game;
 
-import com.marcoantonioaav.lobogames.R;
-import com.marcoantonioaav.lobogames.board.Board;
+import android.graphics.drawable.Drawable;
+import androidx.core.content.ContextCompat;
+import com.marcoantonioaav.lobogames.application.LoBoGames;
 import com.marcoantonioaav.lobogames.board.MatrixBoard;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.move.Movement;
 import com.marcoantonioaav.lobogames.player.Player;
 import com.marcoantonioaav.lobogames.player.agent.MinimaxAgent;
+import com.marcoantonioaav.lobogames.testconstants.TestConstants;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -37,8 +39,8 @@ public class Alquerque extends Game<MatrixBoard> {
                 {Player.PLAYER_1, Player.PLAYER_1, Player.PLAYER_2, Player.PLAYER_2, Player.PLAYER_2},
                 {Player.PLAYER_1, Player.PLAYER_1, Player.PLAYER_2, Player.PLAYER_2, Player.PLAYER_2}
         };
-        int boardImageId = R.drawable._5x5;
-        return new MatrixBoard(matrix, boardImageId);
+        Drawable image = ContextCompat.getDrawable(LoBoGames.getAppContext(), TestConstants.IMAGE_ID_5X5);
+        return new MatrixBoard(matrix, image);
     }
 
     @Override

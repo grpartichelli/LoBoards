@@ -28,6 +28,7 @@ public class PreGameActivity extends AppCompatActivity {
     public static final String IS_MULTIPLAYER = "IS_MULTIPLAYER";
     public static final String DIFFICULTY = "DIFFICULTY";
     public static final HashMap<String, Game> GAMES = new HashMap<String, Game>() {{
+        put(new TestGame().getName(), new TestGame());
         put(new Tapatan().getName(), new Tapatan());
         put(new TicTacToe().getName(), new TicTacToe());
         put(new Alquerque().getName(), new Alquerque());

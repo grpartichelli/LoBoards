@@ -3,6 +3,7 @@
 
     <application
         android:allowBackup="true"
+        android:name="com.marcoantonioaav.lobogames.application.LoBoGames"
         android:icon="@mipmap/ic_launcher_lobogames"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_lobogames_round"

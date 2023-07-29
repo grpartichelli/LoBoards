@@ -1,10 +1,13 @@
 package com.marcoantonioaav.lobogames.game;
 
-import com.marcoantonioaav.lobogames.R;
+import android.graphics.drawable.Drawable;
+import androidx.core.content.ContextCompat;
+import com.marcoantonioaav.lobogames.application.LoBoGames;
 import com.marcoantonioaav.lobogames.board.MatrixBoard;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.player.Player;
 import com.marcoantonioaav.lobogames.player.agent.MinimaxAgent;
+import com.marcoantonioaav.lobogames.testconstants.TestConstants;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,8 +35,8 @@ public class Tapatan extends Game<MatrixBoard> {
                 {Player.PLAYER_2, Player.EMPTY, Player.PLAYER_1},
                 {Player.PLAYER_1, Player.EMPTY, Player.PLAYER_2}
         };
-        int boardImageId = R.drawable._3x3;
-        return new MatrixBoard(matrix, boardImageId);
+        Drawable image = ContextCompat.getDrawable(LoBoGames.getAppContext(), TestConstants.IMAGE_ID_3X3);
+        return new MatrixBoard(matrix, image);
     }
 
     @Override
