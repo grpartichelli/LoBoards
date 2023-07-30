@@ -86,7 +86,7 @@ public class BoardView extends View {
     }
 
     private void drawPieces(Canvas canvas) {
-        float radius = (float) getWidth() / 16;
+        float radius = (float) (getWidth() * this.board.getPositionRadiusScale());
 
         for (Position position: this.board.getPositions()) {
             if (position.getOccupiedBy() != Player.EMPTY) {

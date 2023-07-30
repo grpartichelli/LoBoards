@@ -9,9 +9,7 @@ import com.marcoantonioaav.lobogames.position.Coordinate;
 import com.marcoantonioaav.lobogames.position.Line;
 import com.marcoantonioaav.lobogames.position.Position;
 import com.marcoantonioaav.lobogames.testconstants.Standard3X3Board;
-import com.marcoantonioaav.lobogames.testconstants.TestConstants;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Board {
@@ -48,6 +46,10 @@ public abstract class Board {
             position.setCoordinate(coord);
         }
         return positions;
+    }
+
+    public double getPositionRadiusScale() {
+        return Standard3X3Board.POSITION_RADIUS_SCALE;
     }
 
     public List<Line> getLines() {

@@ -16,6 +16,7 @@ public class Standard3X3Board {
     public static final int IMAGE_WIDTH = 655;
     public static final Drawable IMAGE = ContextCompat.getDrawable(LoBoGames.getAppContext(), R.drawable._3x3);
     public static final double PADDING_PERCENTAGE = 0.05;
+    public static final double POSITION_RADIUS_SCALE = (double) 1 / 12;
     public static final Map<Pair<Integer, Integer>, Position> POSITIONS_3X3 = new HashMap<>();
     static {
         POSITIONS_3X3.put(Pair.create(0, 2), new Position(new Coordinate(36, 50), "0x0"));
@@ -28,5 +29,6 @@ public class Standard3X3Board {
         POSITIONS_3X3.put(Pair.create(1, 0), new Position(new Coordinate(327, 596), "1x2"));
         POSITIONS_3X3.put(Pair.create(2, 0), new Position(new Coordinate(618, 596), "2x2"));
     } // NOTE: Flipped Y axis
+    // TODO: Update labels
 }
 
