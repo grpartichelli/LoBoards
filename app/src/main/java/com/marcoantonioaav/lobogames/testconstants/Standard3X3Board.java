@@ -19,15 +19,15 @@ public class Standard3X3Board {
     public static final double POSITION_RADIUS_SCALE = (double) 1 / 12;
     public static final Map<Pair<Integer, Integer>, Position> POSITIONS_3X3 = new HashMap<>();
     static {
-        POSITIONS_3X3.put(Pair.create(0, 2), new Position(new Coordinate(36, 50), "0x0"));
-        POSITIONS_3X3.put(Pair.create(1, 2), new Position(new Coordinate(327, 50), "1x0"));
-        POSITIONS_3X3.put(Pair.create(2, 2), new Position(new Coordinate(618, 50), "2x0"));
+        POSITIONS_3X3.put(Pair.create(0, 2), new Position(new Coordinate(36, 50), "0x2"));
+        POSITIONS_3X3.put(Pair.create(1, 2), new Position(new Coordinate(327, 50), "1x2"));
+        POSITIONS_3X3.put(Pair.create(2, 2), new Position(new Coordinate(618, 50), "2x2"));
         POSITIONS_3X3.put(Pair.create(0, 1), new Position(new Coordinate(36, 323), "0x1"));
         POSITIONS_3X3.put(Pair.create(1, 1), new Position(new Coordinate(327, 323), "1x1"));
         POSITIONS_3X3.put(Pair.create(2, 1), new Position(new Coordinate(618, 323), "2x1"));
-        POSITIONS_3X3.put(Pair.create(0, 0), new Position(new Coordinate(36, 596), "0x2"));
-        POSITIONS_3X3.put(Pair.create(1, 0), new Position(new Coordinate(327, 596), "1x2"));
-        POSITIONS_3X3.put(Pair.create(2, 0), new Position(new Coordinate(618, 596), "2x2"));
+        POSITIONS_3X3.put(Pair.create(0, 0), new Position(new Coordinate(36, 596), "0x0"));
+        POSITIONS_3X3.put(Pair.create(1, 0), new Position(new Coordinate(327, 596), "1x0"));
+        POSITIONS_3X3.put(Pair.create(2, 0), new Position(new Coordinate(618, 596), "2x0"));
     } // NOTE: Flipped Y axis
     // TODO: Update labels
 }

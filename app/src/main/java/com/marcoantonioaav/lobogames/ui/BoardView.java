@@ -40,6 +40,10 @@ public class BoardView extends View {
         super(context, attrs, defStyleAttr);
     }
 
+    public Board getBoard() {
+        return this.board; // TODO: remove this
+    }
+
     public void setBoard(MatrixBoard board) {
         this.board = board;
     }
@@ -86,7 +90,7 @@ public class BoardView extends View {
     }
 
     private void drawPieces(Canvas canvas) {
-        float radius = (float) (getWidth() * this.board.getPositionRadiusScale());
+        float radius = getPositionRadius();
 
         for (Position position: this.board.getPositions()) {
             if (position.getOccupiedBy() != Player.EMPTY) {
@@ -96,6 +100,9 @@ public class BoardView extends View {
         }
     }
 
+    public float getPositionRadius() {
+        return (float) (getWidth() * this.board.getPositionRadiusScale());
+    }
 
     public int getPlayerColor(int playerId) {
         if (playerId == Player.PLAYER_1)

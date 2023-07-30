@@ -1,7 +1,8 @@
 package com.marcoantonioaav.lobogames;
 
+import android.annotation.SuppressLint;
+import android.view.MotionEvent;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.ViewCompat;
 
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
@@ -20,11 +21,12 @@ import com.marcoantonioaav.lobogames.move.Movement;
 import com.marcoantonioaav.lobogames.player.Human;
 import com.marcoantonioaav.lobogames.player.agent.MinimaxAgent;
 import com.marcoantonioaav.lobogames.player.Player;
-import com.marcoantonioaav.lobogames.ui.BoardButtonDelegate;
+import com.marcoantonioaav.lobogames.position.Position;
 import com.marcoantonioaav.lobogames.ui.BoardView;
 
 import java.util.Objects;
 
+// TODO: Acessibility
 public class GameActivity extends AppCompatActivity {
     private BoardView boardView;
     private Button[][] buttons;
@@ -52,7 +54,6 @@ public class GameActivity extends AppCompatActivity {
         } else {
             player2 = new MinimaxAgent(Player.PLAYER_2, (String) this.getIntent().getExtras().get(PreGameActivity.DIFFICULTY));
         }
-        setUpButtons();
 
         // board
         boardView = findViewById(R.id.boardView);
@@ -60,6 +61,8 @@ public class GameActivity extends AppCompatActivity {
         boardView.setPlayer1Color(getSharedPreferences(SettingsActivity.SETTINGS, MODE_PRIVATE).getInt(SettingsActivity.PLAYER_1_COLOR, Color.GREEN));
         boardView.setPlayer2Color(getSharedPreferences(SettingsActivity.SETTINGS, MODE_PRIVATE).getInt(SettingsActivity.PLAYER_2_COLOR, Color.RED));
         boardView.setCursorColor(getSharedPreferences(SettingsActivity.SETTINGS, MODE_PRIVATE).getInt(SettingsActivity.CURSOR_COLOR, Color.BLUE));
+        setupTouchListener();
+
 
         // game name
         gameName = findViewById(R.id.gameName);
@@ -80,39 +83,36 @@ public class GameActivity extends AppCompatActivity {
         new Thread(GameActivity.this::gameLoop).start();
     }
 
-    private void setUpButtons() {
-        final Button[][] buttons3x3 = new Button[][]{
-                {findViewById(R.id.A1_3x3), findViewById(R.id.A2_3x3), findViewById(R.id.A3_3x3)},
-                {findViewById(R.id.B1_3x3), findViewById(R.id.B2_3x3), findViewById(R.id.B3_3x3)},
-                {findViewById(R.id.C1_3x3), findViewById(R.id.C2_3x3), findViewById(R.id.C3_3x3)}
-        };
-        final Button[][] buttons5x5 = new Button[][]{
-                {findViewById(R.id.A1_5x5), findViewById(R.id.A2_5x5), findViewById(R.id.A3_5x5), findViewById(R.id.A4_5x5), findViewById(R.id.A5_5x5)},
-                {findViewById(R.id.B1_5x5), findViewById(R.id.B2_5x5), findViewById(R.id.B3_5x5), findViewById(R.id.B4_5x5), findViewById(R.id.B5_5x5)},
-                {findViewById(R.id.C1_5x5), findViewById(R.id.C2_5x5), findViewById(R.id.C3_5x5), findViewById(R.id.C4_5x5), findViewById(R.id.C5_5x5)},
-                {findViewById(R.id.D1_5x5), findViewById(R.id.D2_5x5), findViewById(R.id.D3_5x5), findViewById(R.id.D4_5x5), findViewById(R.id.D5_5x5)},
-                {findViewById(R.id.E1_5x5), findViewById(R.id.E2_5x5), findViewById(R.id.E3_5x5), findViewById(R.id.E4_5x5), findViewById(R.id.E5_5x5)}
-        };
+    // TODO: https://stackoverflow.com/questions/47107105/android-button-has-setontouchlistener-called-on-it-but-does-not-override-perform
+    @SuppressLint("ClickableViewAccessibility")
+    private void setupTouchListener() {
+        boardView.setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_DOWN){
+                int x = (int) event.getX();
+                int y = (int) event.getY();
 
-        if (this.game.getBoard().getWidth() == 3) {
-            buttons = buttons3x3;
-            for (final int x : new int[]{0, 1, 2})
-                for (final int y : new int[]{0, 1, 2}) {
-                    buttons[x][y].setVisibility(View.VISIBLE);
-                    buttons[x][y].setOnClickListener(view -> setCursorByClick(x, y));
+                for (Position position: this.boardView.getBoard().getPositions()) {
+                    if (checkInsideCircle(position, x, y)) {
+                        // TODO: Fix this
+                        int matrixX = Integer.parseInt(position.getLabel().split("x")[0]);
+                        int matrixY = Integer.parseInt(position.getLabel().split("x")[1]);
+                        setCursorByClick(matrixX,matrixY);
+                    }
                 }
-        } else {
-            buttons = buttons5x5;
-            for (final int x : new int[]{0, 1, 2, 3, 4})
-                for (final int y : new int[]{0, 1, 2, 3, 4}) {
-                    buttons[x][y].setVisibility(View.VISIBLE);
-                    buttons[x][y].setOnClickListener(view -> setCursorByClick(x, y));
-                    if (x > 0)
-                        ViewCompat.setAccessibilityDelegate(buttons[x][y], new BoardButtonDelegate(buttons[x - 1][y]));
-                    else if (y != 4)
-                        ViewCompat.setAccessibilityDelegate(buttons[x][y], new BoardButtonDelegate(buttons[0][y + 1]));
-                }
-        }
+            }
+            boardView.performClick();
+            return true;
+        });
+    }
+
+    // TODO: Move all this stuff to inside the board view
+    private boolean checkInsideCircle(Position position, int xTouch, int yTouch) {
+        float  radius = this.boardView.getPositionRadius();
+        double centerX = position.getCoordinate().x();
+        double centerY = position.getCoordinate().y();
+        double distanceX = xTouch - centerX;
+        double distanceY = yTouch - centerY;
+        return (distanceX * distanceX) + (distanceY * distanceY) <= radius * radius;
     }
 
     private void setCursorByClick(int x, int y) {
@@ -120,11 +120,12 @@ public class GameActivity extends AppCompatActivity {
             Player player = Player.selectPlayerById(player1, player2, turn);
             if (player instanceof Human) {
                 ((Human) player).setCursor(x, y);
-                buttons[x][y].announceForAccessibility("Selecionado " + Movement.positionToString(x, y));
+                // buttons[x][y].announceForAccessibility("Selecionado " + Movement.positionToString(x, y));
                 boardView.drawSelectedPosition(x, y);
             }
         }
     }
+
 
     private void gameLoop() {
         while (true) {
@@ -153,15 +154,15 @@ public class GameActivity extends AppCompatActivity {
         showTurn();
         Player currentPlayer = Player.selectPlayerById(player1, player2, turn);
         if (currentPlayer instanceof Human) {
-            runOnUiThread(this::updateButtonsDescription);
+            // runOnUiThread(this::updateButtonsDescription);
         }
     }
 
-    private void updateButtonsDescription() {
-        for (int x = 0; x < this.game.getBoard().getWidth(); x++)
-            for (int y = 0; y < this.game.getBoard().getHeight(); y++)
-                buttons[x][y].setContentDescription(Movement.positionToString(x, y) + ": " + Player.getName(this.game.getBoard().valueAt(x, y)));
-    }
+//    private void updateButtonsDescription() {
+//        for (int x = 0; x < this.game.getBoard().getWidth(); x++)
+//            for (int y = 0; y < this.game.getBoard().getHeight(); y++)
+//                buttons[x][y].setContentDescription(Movement.positionToString(x, y) + ": " + Player.getName(this.game.getBoard().valueAt(x, y)));
+//    }
 
     private void endGame() {
         isGameRunning = false;
@@ -171,7 +172,7 @@ public class GameActivity extends AppCompatActivity {
     private void initializeGame() {
         turn = Player.getRandomId();
         showTurn();
-        updateButtonsDescription();
+        // updateButtonsDescription();
         game.restart();
         boardView.setBoard(game.getBoard());
         boardView.draw();
