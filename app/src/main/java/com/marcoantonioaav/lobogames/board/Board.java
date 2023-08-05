@@ -2,6 +2,7 @@ package com.marcoantonioaav.lobogames.board;
 
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.move.Movement;
@@ -15,13 +16,9 @@ public abstract class Board {
     protected final Drawable image;
     protected final double paddingPercentage;
     protected final double positionRadiusScale;
-    private int imageWidth = 0;
-    private int imageHeight = 0;
 
     protected Board(Drawable image, double paddingPercentage, double positionRadiusScale) {
         this.image = image;
-        this.imageWidth = 655;
-        this.imageHeight =  655;
         this.paddingPercentage = paddingPercentage;
         this.positionRadiusScale = positionRadiusScale;
     }
@@ -44,6 +41,8 @@ public abstract class Board {
      */
     public List<Position> getPositions() {
         Rect bounds = image.getBounds();
+        int imageWidth = ((BitmapDrawable) image).getBitmap().getWidth();
+        int imageHeight =  ((BitmapDrawable) image).getBitmap().getHeight();
         List<Position> positions = this.doGetPositions();
         for (Position position : positions) {
             Coordinate coord = new Coordinate(
