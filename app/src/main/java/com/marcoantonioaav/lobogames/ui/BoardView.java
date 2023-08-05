@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -14,14 +15,14 @@ import com.marcoantonioaav.lobogames.board.MatrixBoard;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.move.Movement;
 import com.marcoantonioaav.lobogames.player.Player;
+import com.marcoantonioaav.lobogames.position.Coordinate;
 import com.marcoantonioaav.lobogames.position.Position;
 
 public class BoardView extends View {
-    private int selectedX = Movement.OUT_OF_BOARD;
-    private int selectedY = Movement.OUT_OF_BOARD;
+    private int cursorColor = Color.BLUE;
+    private Position selectedPosition = new Position(new Coordinate(Movement.OUT_OF_BOARD, Movement.OUT_OF_BOARD), "Out of Board");
     private int player1Color = Color.GREEN;
     private int player2Color = Color.RED;
-    private int cursorColor = Color.BLUE;
     private final Paint paint = new Paint();
 
     private Board board;
@@ -40,38 +41,6 @@ public class BoardView extends View {
         super(context, attrs, defStyleAttr);
     }
 
-    public Board getBoard() {
-        return this.board; // TODO: remove this
-    }
-
-    public void setBoard(MatrixBoard board) {
-        this.board = board;
-    }
-
-    public void resizeToScreenSize() {
-        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) getLayoutParams();
-        layoutParams.width = getResources().getDisplayMetrics().widthPixels;
-        layoutParams.height = getResources().getDisplayMetrics().widthPixels;
-        setLayoutParams(layoutParams);
-    }
-
-    public void draw() {
-        invalidate();
-    }
-
-    public void drawSelectedPosition(int selectedX, int selectedY) {
-        this.selectedX = selectedX;
-        this.selectedY = selectedY;
-        invalidate();
-    }
-
-    public void drawMove(Move move) {
-        this.selectedX = Movement.OUT_OF_BOARD;
-        this.selectedY = Movement.OUT_OF_BOARD;
-        this.currentMove = move;
-        invalidate();
-    }
-
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -83,6 +52,22 @@ public class BoardView extends View {
             postInvalidateDelayed(300);
         }
     }
+
+    public void draw() {
+        invalidate();
+    }
+
+    // TODO: Is this necessary?
+    public void drawSelectedPosition() {
+        invalidate();
+    }
+
+    public void drawMove(Move move) {
+        this.selectedPosition = new Position(new Coordinate(Movement.OUT_OF_BOARD, Movement.OUT_OF_BOARD), "Out of Board");
+        this.currentMove = move;
+        invalidate();
+    }
+
 
     public void drawBoardImage(Canvas canvas) {
         board.fitImageToCanvas(canvas);
@@ -100,6 +85,13 @@ public class BoardView extends View {
         }
     }
 
+    public void resizeToScreenSize() {
+        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) getLayoutParams();
+        layoutParams.width = getResources().getDisplayMetrics().widthPixels;
+        layoutParams.height = getResources().getDisplayMetrics().widthPixels;
+        setLayoutParams(layoutParams);
+    }
+
     public float getPositionRadius() {
         return (float) (getWidth() * this.board.getPositionRadiusScale());
     }
@@ -112,6 +104,25 @@ public class BoardView extends View {
         return Color.GRAY;
     }
 
+    public Position getSelectedPosition() {
+        return this.selectedPosition;
+    }
+
+    private int getPrimaryColor() {
+        int nightModeFlags = getContext().getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES)
+            return Color.WHITE;
+        return Color.BLACK;
+    }
+
+    public void setBoard(MatrixBoard board) {
+        this.board = board;
+    }
+
+    public void setCursorColor(int cursorColor) {
+        this.cursorColor = cursorColor;
+    }
+
     public void setPlayer1Color(int player1Color) {
         this.player1Color = player1Color;
     }
@@ -120,14 +131,35 @@ public class BoardView extends View {
         this.player2Color = player2Color;
     }
 
-    public void setCursorColor(int cursorColor) {
-        this.cursorColor = cursorColor;
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            int x = (int) event.getX();
+            int y = (int) event.getY();
+
+            for (Position position : this.board.getPositions()) {
+                if (checkInsideCircle(position, x, y)) {
+                    this.selectedPosition = position;
+                }
+            }
+            performClick();
+            return true;
+        }
+        return false;
     }
 
-    private int getPrimaryColor() {
-        int nightModeFlags = getContext().getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-        if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES)
-            return Color.WHITE;
-        return Color.BLACK;
+    private boolean checkInsideCircle(Position position, int xTouch, int yTouch) {
+        float  radius = getPositionRadius();
+        double centerX = position.getCoordinate().x();
+        double centerY = position.getCoordinate().y();
+        double distanceX = xTouch - centerX;
+        double distanceY = yTouch - centerY;
+        return (distanceX * distanceX) + (distanceY * distanceY) <= radius * radius;
+    }
+
+    @Override
+    public boolean performClick() {
+        super.performClick();
+        return true;
     }
 }
