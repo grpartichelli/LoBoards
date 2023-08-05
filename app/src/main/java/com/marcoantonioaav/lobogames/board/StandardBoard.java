@@ -14,8 +14,14 @@ public class StandardBoard extends Board {
     private final List<Position> positions;
     private final List<Line> lines;
 
-    public StandardBoard(Drawable image, List<Position> positions, List<Line> lines) {
-        super(image);
+    public StandardBoard(
+            Drawable image,
+            double paddingPercentage,
+            double positionRadiusScale,
+            List<Position> positions,
+            List<Line> lines
+    ) {
+        super(image, paddingPercentage, positionRadiusScale);
         this.positions = positions;
         this.lines = lines;
     }
@@ -43,7 +49,13 @@ public class StandardBoard extends Board {
 
     @Override
     public Board copy() {
-        return new StandardBoard(this.image, new ArrayList<>(this.positions), new ArrayList<>(this.lines));
+        return new StandardBoard(
+                this.image,
+                this.paddingPercentage,
+                this.positionRadiusScale,
+                new ArrayList<>(this.positions),
+                new ArrayList<>(this.lines)
+        );
     }
 
     @Override

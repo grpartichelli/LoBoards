@@ -8,15 +8,22 @@ import com.marcoantonioaav.lobogames.move.Movement;
 import com.marcoantonioaav.lobogames.position.Coordinate;
 import com.marcoantonioaav.lobogames.position.Line;
 import com.marcoantonioaav.lobogames.position.Position;
-import com.marcoantonioaav.lobogames.testconstants.Standard3X3Board;
 
 import java.util.List;
 
 public abstract class Board {
-    protected Drawable image;
+    protected final Drawable image;
+    protected final double paddingPercentage;
+    protected final double positionRadiusScale;
+    private int imageWidth = 0;
+    private int imageHeight = 0;
 
-    protected Board(Drawable image) {
+    protected Board(Drawable image, double paddingPercentage, double positionRadiusScale) {
         this.image = image;
+        this.imageWidth = 655;
+        this.imageHeight =  655;
+        this.paddingPercentage = paddingPercentage;
+        this.positionRadiusScale = positionRadiusScale;
     }
 
     public abstract void applyMove(Move move);
@@ -40,8 +47,8 @@ public abstract class Board {
         List<Position> positions = this.doGetPositions();
         for (Position position : positions) {
             Coordinate coord = new Coordinate(
-                    (int) ((((float)position.getCoordinate().x() / Standard3X3Board.IMAGE_WIDTH) * bounds.width()) + bounds.left),
-                    (int) ((((float)position.getCoordinate().y() / Standard3X3Board.IMAGE_HEIGHT) * bounds.height()) + bounds.top)
+                    (int) ((((float)position.getCoordinate().x() / imageWidth) * bounds.width()) + bounds.left),
+                    (int) ((((float)position.getCoordinate().y() / imageHeight) * bounds.height()) + bounds.top)
             );
             position.setCoordinate(coord);
         }
@@ -49,7 +56,7 @@ public abstract class Board {
     }
 
     public double getPositionRadiusScale() {
-        return Standard3X3Board.POSITION_RADIUS_SCALE;
+        return positionRadiusScale;
     }
 
     public List<Line> getLines() {
@@ -67,10 +74,10 @@ public abstract class Board {
     public void fitImageToCanvas(Canvas canvas) {
         Rect canvasBounds = canvas.getClipBounds();
         Rect imageBounds = new Rect(
-                (int) (canvasBounds.right * Standard3X3Board.PADDING_PERCENTAGE),
-                (int) (canvasBounds.bottom * Standard3X3Board.PADDING_PERCENTAGE),
-                (int) (canvasBounds.right * (1 - Standard3X3Board.PADDING_PERCENTAGE)),
-                (int) (canvasBounds.bottom * (1 - Standard3X3Board.PADDING_PERCENTAGE))
+                (int) (canvasBounds.right * paddingPercentage),
+                (int) (canvasBounds.bottom * paddingPercentage),
+                (int) (canvasBounds.right * (1 - paddingPercentage)),
+                (int) (canvasBounds.bottom * (1 - paddingPercentage))
         );
         this.image.setBounds(imageBounds);
     }

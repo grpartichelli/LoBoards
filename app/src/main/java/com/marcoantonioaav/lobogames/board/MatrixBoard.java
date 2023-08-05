@@ -7,7 +7,6 @@ import com.marcoantonioaav.lobogames.move.Movement;
 import com.marcoantonioaav.lobogames.player.Player;
 import com.marcoantonioaav.lobogames.position.Line;
 import com.marcoantonioaav.lobogames.position.Position;
-import com.marcoantonioaav.lobogames.testconstants.Standard3X3Board;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,8 +15,13 @@ import java.util.Objects;
 public class MatrixBoard extends Board {
     private final int[][] matrix;
 
-    public MatrixBoard(int[][] matrix, Drawable image) {
-        super(image);
+    public MatrixBoard(
+        Drawable image,
+        double paddingPercentage,
+        double positionRadiusScale,
+        int[][] matrix
+    ) {
+        super(image, paddingPercentage, positionRadiusScale);
         this.matrix = matrix;
     }
 
@@ -50,7 +54,7 @@ public class MatrixBoard extends Board {
         for (int x = 0; x < getWidth(); x++) {
             System.arraycopy(this.matrix[x], 0, newBoardMatrix[x], 0, getHeight());
         }
-        return new MatrixBoard(newBoardMatrix, this.image);
+        return new MatrixBoard(this.image, this.paddingPercentage, this.positionRadiusScale, newBoardMatrix);
     }
 
     @Override
@@ -71,7 +75,7 @@ public class MatrixBoard extends Board {
         List<Position> positions = new ArrayList<>();
         for (int x = 0; x < getWidth(); x++) {
             for (int y = 0; y < getHeight(); y++) {
-                Position position = Objects.requireNonNull(Standard3X3Board.POSITIONS_3X3.get(Pair.create(x, y))).copy();
+                Position position = Objects.requireNonNull(Matrix3X3BoardFactory.POSITIONS_3X3.get(Pair.create(x, y))).copy();
                 position.setOccupiedBy(this.matrix[x][y]);
                 positions.add(position);
             }

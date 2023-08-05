@@ -4,7 +4,7 @@ import com.marcoantonioaav.lobogames.board.MatrixBoard;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.player.Player;
 import com.marcoantonioaav.lobogames.player.agent.MinimaxAgent;
-import com.marcoantonioaav.lobogames.testconstants.Standard3X3Board;
+import com.marcoantonioaav.lobogames.board.Matrix3X3BoardFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,7 +32,7 @@ public class Tapatan extends MatrixGame {
                 {Player.PLAYER_2, Player.EMPTY, Player.PLAYER_1},
                 {Player.PLAYER_1, Player.EMPTY, Player.PLAYER_2}
         };
-        return new MatrixBoard(matrix, Standard3X3Board.IMAGE);
+        return Matrix3X3BoardFactory.from(matrix);
     }
 
     @Override

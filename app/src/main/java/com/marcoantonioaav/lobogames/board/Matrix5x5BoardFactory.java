@@ -1,4 +1,4 @@
-package com.marcoantonioaav.lobogames.testconstants;
+package com.marcoantonioaav.lobogames.board;
 
 import android.graphics.drawable.Drawable;
 import android.util.Pair;
@@ -11,13 +11,14 @@ import com.marcoantonioaav.lobogames.position.Position;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Standard3X3Board {
-    public static final int IMAGE_HEIGHT = 655;
-    public static final int IMAGE_WIDTH = 655;
-    public static final Drawable IMAGE = ContextCompat.getDrawable(LoBoGames.getAppContext(), R.drawable._3x3);
-    public static final double PADDING_PERCENTAGE = 0.05;
-    public static final double POSITION_RADIUS_SCALE = (double) 1 / 12;
+public class Matrix5x5BoardFactory {
+    private static final int IMAGE_HEIGHT = 655;
+    private static final int IMAGE_WIDTH = 655;
+    private static final Drawable IMAGE = ContextCompat.getDrawable(LoBoGames.getAppContext(), R.drawable._5x5);
+    private static final double PADDING_PERCENTAGE = 0.1;
+    private static final double POSITION_RADIUS_SCALE = (double) 1 / 12;
     public static final Map<Pair<Integer, Integer>, Position> POSITIONS_3X3 = new HashMap<>();
+
     static {
         POSITIONS_3X3.put(Pair.create(0, 2), new Position(new Coordinate(36, 50), "0x2"));
         POSITIONS_3X3.put(Pair.create(1, 2), new Position(new Coordinate(327, 50), "1x2"));
@@ -30,5 +31,17 @@ public class Standard3X3Board {
         POSITIONS_3X3.put(Pair.create(2, 0), new Position(new Coordinate(618, 596), "2x0"));
     } // NOTE: Flipped Y axis
     // TODO: Update labels
+
+    public static MatrixBoard from(int[][] matrix) {
+        if (matrix.length != 5) {
+            throw new IllegalArgumentException("Expected matrix of width 5");
+        }
+        return new MatrixBoard(
+                IMAGE,
+                PADDING_PERCENTAGE,
+                POSITION_RADIUS_SCALE,
+                matrix
+        );
+    }
 }
 
