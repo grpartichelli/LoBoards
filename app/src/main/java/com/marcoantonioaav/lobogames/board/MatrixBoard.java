@@ -1,28 +1,33 @@
 package com.marcoantonioaav.lobogames.board;
 
 import android.graphics.drawable.Drawable;
-import android.util.Pair;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.move.Movement;
 import com.marcoantonioaav.lobogames.player.Player;
+import com.marcoantonioaav.lobogames.position.Coordinate;
 import com.marcoantonioaav.lobogames.position.Line;
 import com.marcoantonioaav.lobogames.position.Position;
+import com.marcoantonioaav.lobogames.utils.TwoWayMap;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 public class MatrixBoard extends Board {
     private final int[][] matrix;
+    // NOTE: Used to map between matrix X and Y coordinates and board image positions
+    private final TwoWayMap<Coordinate, Position> positionMapper;
 
     public MatrixBoard(
-        Drawable image,
-        double paddingPercentage,
-        double positionRadiusScale,
-        int[][] matrix
+            Drawable image,
+            double paddingPercentage,
+            double positionRadiusScale,
+            int[][] matrix,
+            TwoWayMap<Coordinate, Position> positionMapper
     ) {
         super(image, paddingPercentage, positionRadiusScale);
         this.matrix = matrix;
+        this.positionMapper = positionMapper;
     }
 
     @Override
@@ -54,7 +59,13 @@ public class MatrixBoard extends Board {
         for (int x = 0; x < getWidth(); x++) {
             System.arraycopy(this.matrix[x], 0, newBoardMatrix[x], 0, getHeight());
         }
-        return new MatrixBoard(this.image, this.paddingPercentage, this.positionRadiusScale, newBoardMatrix);
+        return new MatrixBoard(
+                this.image,
+                this.paddingPercentage,
+                this.positionRadiusScale,
+                newBoardMatrix,
+                positionMapper
+        );
     }
 
     @Override
@@ -69,13 +80,14 @@ public class MatrixBoard extends Board {
         }
         return count;
     }
-
+    // TODO: Think about the scaling issue
+    // TODO: Add 5x5 board
     @Override
     public List<Position> doGetPositions() {
         List<Position> positions = new ArrayList<>();
         for (int x = 0; x < getWidth(); x++) {
             for (int y = 0; y < getHeight(); y++) {
-                Position position = Objects.requireNonNull(Matrix3X3BoardFactory.POSITIONS_3X3.get(Pair.create(x, y))).copy();
+                Position position = mapMatrixCoordinatesToPosition(x, y).copy();
                 position.setOccupiedBy(this.matrix[x][y]);
                 positions.add(position);
             }
@@ -85,7 +97,15 @@ public class MatrixBoard extends Board {
 
     @Override
     public List<Line> doGetLines() {
-        return null;
+        return Collections.emptyList();
+    }
+
+    public Coordinate mapPositionToMatrixCoordinate(Position position) {
+        return positionMapper.getBackward(position);
+    }
+
+    public Position mapMatrixCoordinatesToPosition(int x, int y) {
+        return positionMapper.getForward(new Coordinate(x, y));
     }
 
     public boolean isOnLimits(int x, int y) {

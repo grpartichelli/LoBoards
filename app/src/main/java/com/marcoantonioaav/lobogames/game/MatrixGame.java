@@ -3,7 +3,7 @@ package com.marcoantonioaav.lobogames.game;
 import com.marcoantonioaav.lobogames.board.Board;
 import com.marcoantonioaav.lobogames.board.MatrixBoard;
 import com.marcoantonioaav.lobogames.move.Move;
-import com.marcoantonioaav.lobogames.move.Movement;
+import com.marcoantonioaav.lobogames.position.Coordinate;
 import com.marcoantonioaav.lobogames.position.Position;
 
 public abstract class MatrixGame extends Game {
@@ -23,20 +23,9 @@ public abstract class MatrixGame extends Game {
 
     @Override
     public Move getPlayerMove(Position startPosition, Position endPosition, int playerId) {
-        int lastX = Movement.OUT_OF_BOARD;
-        int lastY = Movement.OUT_OF_BOARD;
-        int x = Movement.OUT_OF_BOARD;
-        int y = Movement.OUT_OF_BOARD;
-
-        if (!startPosition.getLabel().isEmpty()) {
-            lastX = Integer.parseInt(startPosition.getLabel().split("x")[0]);
-            lastY = Integer.parseInt(startPosition.getLabel().split("x")[1]);
-        }
-        if (!endPosition.getLabel().isEmpty()) {
-            x = Integer.parseInt(endPosition.getLabel().split("x")[0]);
-            y = Integer.parseInt(endPosition.getLabel().split("x")[1]);
-        }
-        return getPlayerMove(lastX, lastY, x, y, playerId);
+        Coordinate startCoordinate = this.board.mapPositionToMatrixCoordinate(startPosition);
+        Coordinate endCoordinate = this.board.mapPositionToMatrixCoordinate(endPosition);
+        return getPlayerMove(startCoordinate.x(), startCoordinate.y(), endCoordinate.x(), endCoordinate.y(), playerId);
     }
 
     public abstract Move getPlayerMove(int startX, int startY, int endX, int endY, int playerId);
