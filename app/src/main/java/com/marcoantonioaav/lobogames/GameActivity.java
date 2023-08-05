@@ -55,7 +55,7 @@ public class GameActivity extends AppCompatActivity {
         boardView.setPlayer1Color(getSharedPreferences(SettingsActivity.SETTINGS, MODE_PRIVATE).getInt(SettingsActivity.PLAYER_1_COLOR, Color.GREEN));
         boardView.setPlayer2Color(getSharedPreferences(SettingsActivity.SETTINGS, MODE_PRIVATE).getInt(SettingsActivity.PLAYER_2_COLOR, Color.RED));
         boardView.setCursorColor(getSharedPreferences(SettingsActivity.SETTINGS, MODE_PRIVATE).getInt(SettingsActivity.CURSOR_COLOR, Color.BLUE));
-        boardView.setOnClickListener(view -> setCursorByClick(boardView.getSelectedPosition()));
+        boardView.setOnClickListener(view -> setCursorByClick());
 
         // game name
         gameName = findViewById(R.id.gameName);
@@ -76,7 +76,7 @@ public class GameActivity extends AppCompatActivity {
         new Thread(GameActivity.this::gameLoop).start();
     }
 
-    private void setCursorByClick(Position position) {
+    private void setCursorByClick() {
         int matrixX = Integer.parseInt(boardView.getSelectedPosition().getLabel().split("x")[0]);
         int matrixY = Integer.parseInt(boardView.getSelectedPosition().getLabel().split("x")[1]);
         if (isGameRunning) {
@@ -85,11 +85,9 @@ public class GameActivity extends AppCompatActivity {
                 ((Human) player).setCursor(matrixX, matrixY);
                 // TODO: Acessibility
                 // buttons[x][y].announceForAccessibility("Selecionado " + Movement.positionToString(x, y));
-                // boardView.drawSelectedPosition(matrixX, matrixY);
             }
         }
     }
-
 
     private void gameLoop() {
         while (true) {
