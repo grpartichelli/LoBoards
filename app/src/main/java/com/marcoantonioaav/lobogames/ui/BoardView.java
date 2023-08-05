@@ -108,6 +108,7 @@ public class BoardView extends View {
         return this.selectedPosition;
     }
 
+    // TODO: Add dark mode board?
     private int getPrimaryColor() {
         int nightModeFlags = getContext().getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
         if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES)
