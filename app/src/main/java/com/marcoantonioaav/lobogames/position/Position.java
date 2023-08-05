@@ -1,13 +1,17 @@
 package com.marcoantonioaav.lobogames.position;
 
 import androidx.annotation.Nullable;
-import com.marcoantonioaav.lobogames.player.Player;
+import com.marcoantonioaav.lobogames.move.Movement;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class Position {
+
+    public static Position instanceOutOfBounds() {
+        return new Position(new Coordinate(Movement.OUT_OF_BOARD, Movement.OUT_OF_BOARD), "");
+    }
 
     private List<Position> connectedPositions = new ArrayList<>();
     private Coordinate coordinate;

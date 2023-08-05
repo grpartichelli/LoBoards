@@ -9,7 +9,7 @@ import com.marcoantonioaav.lobogames.testconstants.Standard3X3Board;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class TicTacToe extends Game<MatrixBoard> {
+public class TicTacToe extends MatrixGame {
 
     public TicTacToe() {
         super();
@@ -36,7 +36,7 @@ public class TicTacToe extends Game<MatrixBoard> {
     }
 
     @Override
-    public Game<MatrixBoard> newInstance() {
+    public Game newInstance() {
         return new TicTacToe();
     }
 

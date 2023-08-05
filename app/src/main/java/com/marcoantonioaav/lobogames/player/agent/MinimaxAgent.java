@@ -24,7 +24,7 @@ public class MinimaxAgent extends Agent {
     public MinimaxAgent(int player, String difficulty) { super(player, difficulty); }
 
     @Override
-    public Move selectMove(Game<?> game) {
+    public Move selectMove(Game game) {
         List<Move> moves = game.getLegalMoves(getId());
         if(moves.isEmpty())
             return null;
@@ -85,13 +85,13 @@ public class MinimaxAgent extends Agent {
         return MIN + ((value - valueMin)*(MAX - MIN)) / (valueMax - valueMin);
     }
 
-    private float minimax(Game<?> game, int depth, float alpha, float beta, boolean isMaximizing) {
+    private float minimax(Game game, int depth, float alpha, float beta, boolean isMaximizing) {
         if(depth == 0 || game.isTerminalState())
             return evaluate(game, isMaximizing);
         if(isMaximizing) {
             float maxValue = MIN;
             for(Move move : game.getLegalMoves(getId())) {
-                Game<?> newGame = game.copy();
+                Game newGame = game.copy();
                 newGame.getBoard().applyMove(move);
                 float newValue = minimax(newGame, depth - 1, alpha, beta, false);
                 maxValue = Math.max(maxValue, newValue);
@@ -104,7 +104,7 @@ public class MinimaxAgent extends Agent {
         else {
             float minValue = MAX;
             for(Move move : game.getLegalMoves(getOpponent())) {
-                Game<?> newGame = game.copy();
+                Game newGame = game.copy();
                 newGame.getBoard().applyMove(move);
                 float newValue = minimax(newGame, depth - 1, alpha, beta, true);
                 minValue = Math.min(minValue, newValue);
@@ -116,7 +116,7 @@ public class MinimaxAgent extends Agent {
         }
     }
 
-    private float evaluate(Game<?> game, boolean isMaximizing) {
+    private float evaluate(Game game, boolean isMaximizing) {
         if(game.isTerminalState())
             return evaluateTerminalState(game, getId());
         int turn = getId();
@@ -125,7 +125,7 @@ public class MinimaxAgent extends Agent {
         return game.getHeuristicEvaluationOf(getId(), turn);
     }
 
-    public static float evaluateWithPlayouts(Game<?> game, int player, int turn) {
+    public static float evaluateWithPlayouts(Game game, int player, int turn) {
         float evaluation = 0f;
         for(int p = 0; p < EVALUATION_PLAYOUTS; p++)
             evaluation += makePlayout(game, player, turn);
@@ -135,7 +135,7 @@ public class MinimaxAgent extends Agent {
     private static float makePlayout(Game game, int player, int turn) {
         int currentPlayer = turn;
         int depth = 0;
-        Game<?> copyGame = game.copy();
+        Game copyGame = game.copy();
         while(!copyGame.isTerminalState() && depth < MAX_PLAYOUT_DEPTH) {
             List<Move> legalMoves = copyGame.getLegalMoves(currentPlayer);
             if(legalMoves.isEmpty())
@@ -147,7 +147,7 @@ public class MinimaxAgent extends Agent {
         return evaluateTerminalState(copyGame, player);
     }
 
-    private static float evaluateTerminalState(Game<?> game, int player) {
+    private static float evaluateTerminalState(Game game, int player) {
         if(game.isVictory(player))
             return MAX;
         if(game.isVictory(getOpponentOf(player)))

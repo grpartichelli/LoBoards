@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Alquerque extends Game<MatrixBoard> {
+public class Alquerque extends MatrixGame {
 
     public Alquerque() {
         super();
@@ -44,7 +44,7 @@ public class Alquerque extends Game<MatrixBoard> {
     }
 
     @Override
-    public Game<MatrixBoard> newInstance() {
+    public Game newInstance() {
         return new Alquerque();
     }
 

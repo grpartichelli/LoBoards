@@ -27,7 +27,7 @@ public class GameActivity extends AppCompatActivity {
     private TextView gameName, status;
     private Button playAgain, back;
 
-    private Game<MatrixBoard> game;
+    private Game game;
     private int turn;
     private Player player1;
     private Player player2;
@@ -77,12 +77,13 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void setCursorByClick() {
-        int matrixX = Integer.parseInt(boardView.getSelectedPosition().getLabel().split("x")[0]);
-        int matrixY = Integer.parseInt(boardView.getSelectedPosition().getLabel().split("x")[1]);
         if (isGameRunning) {
             Player player = Player.selectPlayerById(player1, player2, turn);
             if (player instanceof Human) {
-                ((Human) player).setCursor(matrixX, matrixY);
+                ((Human) player).setCursor(this.boardView.getSelectedPosition());
+                if (!player.isReady()) {
+                    boardView.drawSelectedPosition();
+                }
                 // TODO: Acessibility
                 // buttons[x][y].announceForAccessibility("Selecionado " + Movement.positionToString(x, y));
             }

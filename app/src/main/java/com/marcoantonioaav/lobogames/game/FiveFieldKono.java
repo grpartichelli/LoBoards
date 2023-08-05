@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class FiveFieldKono extends Game<MatrixBoard> {
+public class FiveFieldKono extends MatrixGame {
 
     public FiveFieldKono() {
         super();
@@ -43,7 +43,7 @@ public class FiveFieldKono extends Game<MatrixBoard> {
     }
 
     @Override
-    public Game<MatrixBoard> newInstance() {
+    public Game newInstance() {
         return new FiveFieldKono();
     }
 

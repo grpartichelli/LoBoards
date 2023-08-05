@@ -24,9 +24,9 @@ public abstract class Agent extends Player {
     public boolean isReady() { return true; }
 
     @Override
-    public final Move getMove(Game<?> game) {
+    public final Move getMove(Game game) {
         return selectMove(game);
     }
 
-    public abstract Move selectMove(Game<?> game);
+    public abstract Move selectMove(Game game);
 }

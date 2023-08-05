@@ -1,20 +1,16 @@
 package com.marcoantonioaav.lobogames.game;
 
-import android.graphics.drawable.Drawable;
-import androidx.core.content.ContextCompat;
-import com.marcoantonioaav.lobogames.application.LoBoGames;
 import com.marcoantonioaav.lobogames.board.MatrixBoard;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.player.Player;
 import com.marcoantonioaav.lobogames.player.agent.MinimaxAgent;
 import com.marcoantonioaav.lobogames.testconstants.Standard3X3Board;
-import com.marcoantonioaav.lobogames.testconstants.TestConstants;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Tapatan extends Game<MatrixBoard> {
+public class Tapatan extends MatrixGame {
     public Tapatan() {
         super();
     }
@@ -40,7 +36,7 @@ public class Tapatan extends Game<MatrixBoard> {
     }
 
     @Override
-    public Game<MatrixBoard> newInstance() {
+    public Game newInstance() {
         return new Tapatan();
     }
 

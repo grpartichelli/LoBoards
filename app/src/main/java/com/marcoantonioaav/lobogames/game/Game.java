@@ -3,36 +3,30 @@ package com.marcoantonioaav.lobogames.game;
 import com.marcoantonioaav.lobogames.board.Board;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.player.Player;
+import com.marcoantonioaav.lobogames.position.Position;
 
 import java.util.List;
 
-public abstract class Game<T extends Board> {
-
-    protected T board;
+public abstract class Game {
 
     protected Game() {
-        board = getInitialBoard();
+        restart();
     }
 
-    public T getBoard() {
-        return board;
-    }
-
-    public void setBoard(T board) {
-        this.board = board;
-    }
+    public abstract Board getBoard();
+    public abstract void setBoard(Board board);
 
     public abstract String getName();
 
-    public abstract T getInitialBoard();
+    public abstract Board getInitialBoard();
 
     public abstract String getRules();
 
-    public abstract Game<T> newInstance();
+    public abstract Game newInstance();
 
-    public Game<T> copy() {
-        Game<T> newGame = this.newInstance();
-        T newBoard = (T) this.getBoard().copy();
+    public Game copy() {
+        Game newGame = this.newInstance();
+        Board newBoard = this.getBoard().copy();
         newGame.setBoard(newBoard);
         return newGame;
     }
@@ -45,7 +39,7 @@ public abstract class Game<T extends Board> {
 
     public abstract List<Move> getLegalMoves(int playerId);
 
-    public abstract Move getPlayerMove(int startX, int startY, int endX, int endY, int playerId);
+    public abstract Move getPlayerMove(Position startPosition, Position endPosition, int playerId);
 
     /**
      * Método que retorna a avaliação heurística de um estado do jogo,
@@ -63,6 +57,6 @@ public abstract class Game<T extends Board> {
     }
 
     public void restart() {
-        this.board = getInitialBoard();
+        setBoard(getInitialBoard());
     }
 }

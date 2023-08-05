@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class TsoroYematatu extends Game<MatrixBoard> {
+public class TsoroYematatu extends MatrixGame {
 
     public TsoroYematatu() {
         super();
@@ -43,7 +43,7 @@ public class TsoroYematatu extends Game<MatrixBoard> {
     }
 
     @Override
-    public Game<MatrixBoard> newInstance() {
+    public Game newInstance() {
         return new TsoroYematatu();
     }
 

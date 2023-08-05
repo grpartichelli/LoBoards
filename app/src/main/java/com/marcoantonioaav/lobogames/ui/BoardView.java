@@ -11,16 +11,13 @@ import android.view.View;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import com.marcoantonioaav.lobogames.board.Board;
-import com.marcoantonioaav.lobogames.board.MatrixBoard;
 import com.marcoantonioaav.lobogames.move.Move;
-import com.marcoantonioaav.lobogames.move.Movement;
 import com.marcoantonioaav.lobogames.player.Player;
-import com.marcoantonioaav.lobogames.position.Coordinate;
 import com.marcoantonioaav.lobogames.position.Position;
 
 public class BoardView extends View {
     private int cursorColor = Color.BLUE;
-    private Position selectedPosition = new Position(new Coordinate(Movement.OUT_OF_BOARD, Movement.OUT_OF_BOARD), "Out of Board");
+    private Position selectedPosition = Position.instanceOutOfBounds();
     private int player1Color = Color.GREEN;
     private int player2Color = Color.RED;
     private final Paint paint = new Paint();
@@ -58,13 +55,17 @@ public class BoardView extends View {
     }
 
     public void drawMove(Move move) {
-        this.selectedPosition = new Position(new Coordinate(Movement.OUT_OF_BOARD, Movement.OUT_OF_BOARD), "Out of Board");
+        this.selectedPosition = Position.instanceOutOfBounds();
         this.currentMove = move;
         invalidate();
     }
 
+    public void drawSelectedPosition() {
+        invalidate();
+    }
 
-    public void drawBoardImage(Canvas canvas) {
+
+    private void drawBoardImage(Canvas canvas) {
         board.fitImageToCanvas(canvas);
         board.getImage().draw(canvas);
     }
@@ -130,7 +131,7 @@ public class BoardView extends View {
         return Color.BLACK;
     }
 
-    public void setBoard(MatrixBoard board) {
+    public void setBoard(Board board) {
         this.board = board;
     }
 
@@ -175,7 +176,6 @@ public class BoardView extends View {
     @Override
     public boolean performClick() {
         super.performClick();
-        invalidate();
         return true;
     }
 }

@@ -1,14 +1,13 @@
 package com.marcoantonioaav.lobogames.player;
 
+import com.marcoantonioaav.lobogames.game.Game;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.move.Movement;
-import com.marcoantonioaav.lobogames.game.Game;
+import com.marcoantonioaav.lobogames.position.Position;
 
 public class Human extends Player {
-    private int lastCursorX = Movement.OUT_OF_BOARD;
-    private int lastCursorY = Movement.OUT_OF_BOARD;
-    private int cursorX = Movement.OUT_OF_BOARD;
-    private int cursorY = Movement.OUT_OF_BOARD;
+    private Position lastCursor = Position.instanceOutOfBounds();
+    private Position cursor = Position.instanceOutOfBounds();
 
     private boolean ready = false;
 
@@ -24,21 +23,17 @@ public class Human extends Player {
     @Override
     public Move getMove(Game game) {
         ready = false;
-        return game.getPlayerMove(lastCursorX, lastCursorY, cursorX, cursorY, getId());
+        return game.getPlayerMove(lastCursor, cursor, getId());
     }
 
-    public void setCursor(int x, int y) {
-        this.lastCursorX = this.cursorX;
-        this.lastCursorY = this.cursorY;
-        this.cursorX = x;
-        this.cursorY = y;
+    public void setCursor(Position position) {
+        this.lastCursor = this.cursor;
+        this.cursor = position;
         ready = true;
     }
 
     public void clearCursor() {
-        this.lastCursorX = Movement.OUT_OF_BOARD;
-        this.lastCursorY = Movement.OUT_OF_BOARD;
-        this.cursorX = Movement.OUT_OF_BOARD;
-        this.cursorY = Movement.OUT_OF_BOARD;
+        this.lastCursor = Position.instanceOutOfBounds();
+        this.cursor = Position.instanceOutOfBounds();
     }
 }
