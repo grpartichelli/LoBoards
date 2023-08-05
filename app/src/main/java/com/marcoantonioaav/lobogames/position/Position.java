@@ -1,9 +1,11 @@
 package com.marcoantonioaav.lobogames.position;
 
+import androidx.annotation.Nullable;
 import com.marcoantonioaav.lobogames.player.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Position {
 
@@ -50,5 +52,21 @@ public class Position {
         newPosition.setOccupiedBy(this.getOccupiedBy());
         newPosition.setConnectedPositions(new ArrayList<>(connectedPositions));
         return newPosition;
+    }
+
+    @Override
+    public boolean equals(@Nullable @org.jetbrains.annotations.Nullable Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (!(obj instanceof Position)) {
+            return false;
+        }
+        return this.coordinate.equals(((Position) obj).getCoordinate());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.coordinate.x(), this.coordinate.y());
     }
 }

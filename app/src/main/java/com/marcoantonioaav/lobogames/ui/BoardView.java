@@ -45,7 +45,7 @@ public class BoardView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         drawBoardImage(canvas);
-        drawPieces(canvas);
+        drawPositions(canvas);
         if (currentMove != null && !currentMove.movements.isEmpty()) {
             this.board.applyMovement(currentMove.movements.get(0));
             currentMove.movements.remove(0);
@@ -54,11 +54,6 @@ public class BoardView extends View {
     }
 
     public void draw() {
-        invalidate();
-    }
-
-    // TODO: Is this necessary?
-    public void drawSelectedPosition() {
         invalidate();
     }
 
@@ -74,13 +69,22 @@ public class BoardView extends View {
         board.getImage().draw(canvas);
     }
 
-    private void drawPieces(Canvas canvas) {
-        float radius = getPositionRadius();
+    private void drawPositions(Canvas canvas) {
+        float positionRadius = getPositionRadius();
+        float positionBorderRadius = getPositionBorderRadius();
+        float selectedPositionBorderRadius = getSelectedPositionBorderRadius();
 
         for (Position position: this.board.getPositions()) {
             if (position.getOccupiedBy() != Player.EMPTY) {
+                if (selectedPosition.equals(position)) {
+                    paint.setColor(cursorColor);
+                    canvas.drawCircle(position.getCoordinate().x(), position.getCoordinate().y(), selectedPositionBorderRadius, paint);
+                } else {
+                    paint.setColor(getPrimaryColor());
+                    canvas.drawCircle(position.getCoordinate().x(), position.getCoordinate().y(), positionBorderRadius, paint);
+                }
                 paint.setColor(getPlayerColor(position.getOccupiedBy()));
-                canvas.drawCircle(position.getCoordinate().x(), position.getCoordinate().y(), radius, paint);
+                canvas.drawCircle(position.getCoordinate().x(), position.getCoordinate().y(), positionRadius, paint);
             }
         }
     }
@@ -94,6 +98,16 @@ public class BoardView extends View {
 
     public float getPositionRadius() {
         return (float) (getWidth() * this.board.getPositionRadiusScale());
+    }
+
+    public float getPositionBorderRadius() {
+        // NOTE: slightly bigger than radius, shows as a ring around all positions
+        return (float) (getWidth() * this.board.getPositionRadiusScale() * 1.08);
+    }
+
+    public float getSelectedPositionBorderRadius() {
+        // NOTE: slightly bigger than radius, shows as a ring around the selected position
+        return (float) (getWidth() * this.board.getPositionRadiusScale() * 1.11);
     }
 
     public int getPlayerColor(int playerId) {
@@ -161,6 +175,7 @@ public class BoardView extends View {
     @Override
     public boolean performClick() {
         super.performClick();
+        invalidate();
         return true;
     }
 }
