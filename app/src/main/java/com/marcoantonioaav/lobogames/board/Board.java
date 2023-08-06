@@ -27,7 +27,15 @@ public abstract class Board {
 
     public abstract void applyMovement(Movement movement);
 
-    public abstract int countPlayerPieces(int playerId);
+    public int countPlayerPieces(int playerId) {
+        int count = 0;
+        for (Position position : this.getPositions()) {
+            if (position.getOccupiedBy() == playerId) {
+                count++;
+            }
+        }
+        return count;
+    }
 
     public abstract Board copy();
 

@@ -71,6 +71,7 @@ public class MatrixBoard extends Board {
 
     @Override
     public int countPlayerPieces(int playerId) {
+        // NOTE: Overridden for performance
         int count = 0;
         for (int x = 0; x < getWidth(); x++) {
             for (int y = 0; y < getHeight(); y++) {
