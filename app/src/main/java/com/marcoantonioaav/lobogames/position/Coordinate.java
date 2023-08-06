@@ -41,4 +41,8 @@ public class Coordinate {
     public int hashCode() {
         return Objects.hash(this.x, this.y);
     }
+
+    public Coordinate copy() {
+        return new Coordinate(x, y);
+    }
 }
