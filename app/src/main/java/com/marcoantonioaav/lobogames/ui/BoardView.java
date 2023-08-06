@@ -66,7 +66,7 @@ public class BoardView extends View {
 
 
     private void drawBoardImage(Canvas canvas) {
-        board.fitImageToCanvas(canvas);
+        board.scaleToCanvas(canvas);
         board.getImage().draw(canvas);
     }
 

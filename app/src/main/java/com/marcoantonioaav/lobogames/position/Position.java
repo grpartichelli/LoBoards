@@ -15,12 +15,12 @@ public class Position {
 
     private List<Position> connectedPositions = new ArrayList<>();
     private Coordinate coordinate;
-    private final String label;
+    private final String identifier;
     private int occupiedBy;
 
-    public Position(Coordinate coordinate, String label) {
+    public Position(Coordinate coordinate, String identifier) {
         this.coordinate = coordinate;
-        this.label = label;
+        this.identifier = identifier;
     }
 
     public Coordinate getCoordinate() {
@@ -31,8 +31,8 @@ public class Position {
         this.coordinate = coordinate;
     }
 
-    public String getLabel() {
-        return label;
+    public String getIdentifier() {
+        return identifier;
     }
 
     public int getOccupiedBy() {
@@ -51,13 +51,6 @@ public class Position {
         this.connectedPositions = connectedPositions;
     }
 
-    public Position copy() {
-        Position newPosition = new Position(new Coordinate(this.coordinate.x(), this.coordinate.y()), this.label);
-        newPosition.setOccupiedBy(this.getOccupiedBy());
-        newPosition.setConnectedPositions(new ArrayList<>(connectedPositions));
-        return newPosition;
-    }
-
     @Override
     public boolean equals(@Nullable @org.jetbrains.annotations.Nullable Object obj) {
         if (obj == null) {
@@ -66,11 +59,11 @@ public class Position {
         if (!(obj instanceof Position)) {
             return false;
         }
-        return this.coordinate.equals(((Position) obj).getCoordinate());
+        return this.getIdentifier().equals(((Position) obj).identifier);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.coordinate.x(), this.coordinate.y());
+        return Objects.hash(this.identifier);
     }
 }

@@ -69,25 +69,11 @@ public class MatrixBoard extends Board {
     }
 
     @Override
-    public int countPlayerPieces(int playerId) {
-        int count = 0;
-        for (int x = 0; x < getWidth(); x++) {
-            for (int y = 0; y < getHeight(); y++) {
-                if (this.matrix[x][y] == playerId) {
-                    count++;
-                }
-            }
-        }
-        return count;
-    }
-    // TODO: Think about the scaling issue
-    // TODO: Add 5x5 board
-    @Override
-    public List<Position> doGetPositions() {
+    public List<Position> getPositions() {
         List<Position> positions = new ArrayList<>();
         for (int x = 0; x < getWidth(); x++) {
             for (int y = 0; y < getHeight(); y++) {
-                Position position = mapMatrixCoordinatesToPosition(x, y).copy();
+                Position position = mapMatrixCoordinatesToPosition(x, y);
                 position.setOccupiedBy(this.matrix[x][y]);
                 positions.add(position);
             }
@@ -96,7 +82,7 @@ public class MatrixBoard extends Board {
     }
 
     @Override
-    public List<Line> doGetLines() {
+    public List<Line> getLines() {
         return Collections.emptyList();
     }
 
@@ -106,6 +92,13 @@ public class MatrixBoard extends Board {
 
     public Position mapMatrixCoordinatesToPosition(int x, int y) {
         return positionMapper.getForward(new Coordinate(x, y));
+    }
+
+    @Override
+    public void updateCoordinateOfPosition(Position position, Coordinate newCoordinate) {
+        Coordinate currentMatrixCoordinate = this.positionMapper.getBackward(position);
+        position.setCoordinate(newCoordinate);
+        this.positionMapper.put(currentMatrixCoordinate, position);
     }
 
     public boolean isOnLimits(int x, int y) {

@@ -1,11 +1,9 @@
 package com.marcoantonioaav.lobogames.board;
 
 import android.graphics.drawable.Drawable;
-import android.util.Pair;
 import androidx.core.content.ContextCompat;
 import com.marcoantonioaav.lobogames.R;
 import com.marcoantonioaav.lobogames.application.LoBoGames;
-import com.marcoantonioaav.lobogames.move.Movement;
 import com.marcoantonioaav.lobogames.position.Coordinate;
 import com.marcoantonioaav.lobogames.position.Position;
 import com.marcoantonioaav.lobogames.utils.TwoWayMap;

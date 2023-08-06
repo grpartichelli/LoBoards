@@ -3,15 +3,18 @@ package com.marcoantonioaav.lobogames.board;
 import android.graphics.drawable.Drawable;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.move.Movement;
+import com.marcoantonioaav.lobogames.position.Coordinate;
 import com.marcoantonioaav.lobogames.position.Line;
 import com.marcoantonioaav.lobogames.position.Position;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class StandardBoard extends Board {
 
-    private final List<Position> positions;
+    private final Map<String, Position> positionsMap = new HashMap<>();
     private final List<Line> lines;
 
     public StandardBoard(
@@ -22,7 +25,9 @@ public class StandardBoard extends Board {
             List<Line> lines
     ) {
         super(image, paddingPercentage, positionRadiusScale);
-        this.positions = positions;
+        for (Position position: positions) {
+            this.positionsMap.put(position.getIdentifier(), position);
+        }
         this.lines = lines;
     }
 
@@ -36,16 +41,6 @@ public class StandardBoard extends Board {
         // TODO: Apply movement
     }
 
-    @Override
-    public int countPlayerPieces(int playerId) {
-        int count = 0;
-        for (Position position: this.positions) {
-            if (position.getOccupiedBy() == playerId) {
-                count++;
-            }
-        }
-        return count;
-    }
 
     @Override
     public Board copy() {
@@ -53,18 +48,24 @@ public class StandardBoard extends Board {
                 this.image,
                 this.paddingPercentage,
                 this.positionRadiusScale,
-                new ArrayList<>(this.positions),
+                new ArrayList<>(this.positionsMap.values()),
                 new ArrayList<>(this.lines)
         );
     }
 
     @Override
-    public List<Position> doGetPositions() {
-        return this.positions;
+    public List<Line> getLines() {
+        return this.lines;
     }
 
     @Override
-    public List<Line> doGetLines() {
-        return this.lines;
+    public List<Position> getPositions() {
+        return new ArrayList<>(this.positionsMap.values());
+    }
+
+    @Override
+    public void updateCoordinateOfPosition(Position position, Coordinate newCoordinate) {
+        position.setCoordinate(newCoordinate);
+        positionsMap.put(position.getIdentifier(), position);
     }
 }
