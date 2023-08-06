@@ -2,6 +2,7 @@ package com.marcoantonioaav.lobogames.position;
 
 import androidx.annotation.Nullable;
 import com.marcoantonioaav.lobogames.move.Movement;
+import com.marcoantonioaav.lobogames.player.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +17,7 @@ public class Position {
     private List<Position> connectedPositions = new ArrayList<>();
     private Coordinate coordinate;
     private final String identifier;
-    private int occupiedBy;
+    private int occupiedBy = Player.EMPTY;
 
     public Position(Coordinate coordinate, String identifier) {
         this.coordinate = coordinate;
@@ -49,6 +50,13 @@ public class Position {
 
     public void setConnectedPositions(List<Position> connectedPositions) {
         this.connectedPositions = connectedPositions;
+    }
+
+    public Position copy() {
+        Position newPosition = new Position(new Coordinate(this.coordinate.x(), this.coordinate.y()), this.identifier);
+        newPosition.setOccupiedBy(this.getOccupiedBy());
+        newPosition.setConnectedPositions(new ArrayList<>(connectedPositions));
+        return newPosition;
     }
 
     @Override

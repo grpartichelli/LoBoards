@@ -54,6 +54,17 @@ public class StandardBoard extends Board {
     }
 
     @Override
+    public int countPlayerPieces(int playerId) {
+        int count = 0;
+        for (Position position : this.getPositions()) {
+            if (position.getOccupiedBy() == playerId) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    @Override
     public List<Line> getLines() {
         return this.lines;
     }

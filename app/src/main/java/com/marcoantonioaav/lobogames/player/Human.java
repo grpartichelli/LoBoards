@@ -31,9 +31,4 @@ public class Human extends Player {
         this.cursor = position;
         ready = true;
     }
-
-    public void clearCursor() {
-        this.lastCursor = Position.instanceOutOfBounds();
-        this.cursor = Position.instanceOutOfBounds();
-    }
 }

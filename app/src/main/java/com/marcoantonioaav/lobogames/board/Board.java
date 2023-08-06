@@ -16,7 +16,6 @@ public abstract class Board {
     protected final Drawable image;
     protected final double paddingPercentage;
     protected final double positionRadiusScale;
-    private Rect previousImageBounds = new Rect();
 
     protected Board(Drawable image, double paddingPercentage, double positionRadiusScale) {
         this.image = image;
@@ -28,15 +27,7 @@ public abstract class Board {
 
     public abstract void applyMovement(Movement movement);
 
-    public int countPlayerPieces(int playerId) {
-        int count = 0;
-        for (Position position : this.getPositions()) {
-            if (position.getOccupiedBy() == playerId) {
-                count++;
-            }
-        }
-        return count;
-    }
+    public abstract int countPlayerPieces(int playerId);
 
     public abstract Board copy();
 

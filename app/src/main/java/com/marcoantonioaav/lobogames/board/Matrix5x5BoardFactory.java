@@ -13,8 +13,8 @@ public class Matrix5x5BoardFactory {
     private Matrix5x5BoardFactory(){}
 
     private static final Drawable IMAGE = ContextCompat.getDrawable(LoBoGames.getAppContext(), R.drawable._5x5);
-    private static final double PADDING_PERCENTAGE = 0.04;
-    private static final double POSITION_RADIUS_SCALE = (double) 1 / 18;
+    private static final double PADDING_PERCENTAGE = 0.05;
+    private static final double POSITION_RADIUS_SCALE = (double) 1 / 20;
     public static final TwoWayMap<Coordinate, Position> POSITION_MAPPER = new TwoWayMap<>();
 
     static {

@@ -81,9 +81,6 @@ public class GameActivity extends AppCompatActivity {
             Player player = Player.selectPlayerById(player1, player2, turn);
             if (player instanceof Human) {
                 ((Human) player).setCursor(this.boardView.getSelectedPosition());
-                if (!player.isReady()) {
-                    boardView.drawSelectedPosition();
-                }
                 // TODO: Acessibility
                 // buttons[x][y].announceForAccessibility("Selecionado " + Movement.positionToString(x, y));
             }
@@ -98,8 +95,11 @@ public class GameActivity extends AppCompatActivity {
                     Move move = player.getMove(game);
                     if (game.isLegalMove(move)) {
                         makeMove(move);
-                        if (game.isTerminalState())
+                        if (game.isTerminalState()) {
                             endGame();
+                        }
+                    } else {
+                        boardView.drawSelectedPosition();
                     }
                 }
             }

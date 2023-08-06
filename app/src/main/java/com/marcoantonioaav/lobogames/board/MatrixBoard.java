@@ -53,6 +53,7 @@ public class MatrixBoard extends Board {
         }
     }
 
+
     @Override
     public MatrixBoard copy() {
         int[][] newBoardMatrix = new int[this.matrix[0].length][this.matrix.length];
@@ -66,6 +67,19 @@ public class MatrixBoard extends Board {
                 newBoardMatrix,
                 positionMapper
         );
+    }
+
+    @Override
+    public int countPlayerPieces(int playerId) {
+        int count = 0;
+        for (int x = 0; x < getWidth(); x++) {
+            for (int y = 0; y < getHeight(); y++) {
+                if (this.matrix[x][y] == playerId) {
+                    count++;
+                }
+            }
+        }
+        return count;
     }
 
     @Override
@@ -87,11 +101,11 @@ public class MatrixBoard extends Board {
     }
 
     public Coordinate mapPositionToMatrixCoordinate(Position position) {
-        return positionMapper.getBackward(position);
+        return positionMapper.getBackward(position).copy();
     }
 
     public Position mapMatrixCoordinatesToPosition(int x, int y) {
-        return positionMapper.getForward(new Coordinate(x, y));
+        return positionMapper.getForward(new Coordinate(x, y)).copy();
     }
 
     @Override
