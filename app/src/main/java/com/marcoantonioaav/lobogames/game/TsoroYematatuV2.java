@@ -10,9 +10,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class TsoroYematatu extends MatrixGame {
+public class TsoroYematatuV2 extends MatrixGame {
 
-    public TsoroYematatu() {
+    public TsoroYematatuV2() {
         super();
     }
 
@@ -40,7 +40,7 @@ public class TsoroYematatu extends MatrixGame {
 
     @Override
     public Game newInstance() {
-        return new TsoroYematatu();
+        return new TsoroYematatuV2();
     }
 
     @Override

@@ -32,7 +32,7 @@ public class PreGameActivity extends AppCompatActivity {
         put(new TicTacToe().getName(), new TicTacToe());
         put(new Alquerque().getName(), new Alquerque());
         put(new FiveFieldKono().getName(), new FiveFieldKono());
-        put(new TsoroYematatu().getName(), new TsoroYematatu());
+        put(new TsoroYematatuV2().getName(), new TsoroYematatuV2());
     }};
 
     @Override

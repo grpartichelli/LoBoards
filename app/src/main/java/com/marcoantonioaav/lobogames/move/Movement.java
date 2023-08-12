@@ -1,6 +1,5 @@
 package com.marcoantonioaav.lobogames.move;
 
-import com.marcoantonioaav.lobogames.board.Board;
 import com.marcoantonioaav.lobogames.board.MatrixBoard;
 import com.marcoantonioaav.lobogames.player.Player;
 
