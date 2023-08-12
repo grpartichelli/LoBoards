@@ -1,7 +1,6 @@
 package com.marcoantonioaav.lobogames.position;
 
 import androidx.annotation.Nullable;
-import com.marcoantonioaav.lobogames.move.Movement;
 import com.marcoantonioaav.lobogames.player.Player;
 
 import java.util.ArrayList;
@@ -10,18 +9,18 @@ import java.util.Objects;
 
 public class Position {
 
-    public static Position instanceOutOfBounds() {
-        return new Position(new Coordinate(Movement.OUT_OF_BOARD, Movement.OUT_OF_BOARD), "");
+    public static Position instanceOutOfBoard() {
+        return new Position(Coordinate.instanceOutOfBounds(), "");
     }
 
     private List<Position> connectedPositions = new ArrayList<>();
     private Coordinate coordinate;
-    private final String identifier;
+    private final String label;
     private int occupiedBy = Player.EMPTY;
 
-    public Position(Coordinate coordinate, String identifier) {
+    public Position(Coordinate coordinate, String label) {
         this.coordinate = coordinate;
-        this.identifier = identifier;
+        this.label = label;
     }
 
     public Coordinate getCoordinate() {
@@ -32,8 +31,8 @@ public class Position {
         this.coordinate = coordinate;
     }
 
-    public String getIdentifier() {
-        return identifier;
+    public String getLabel() {
+        return label;
     }
 
     public int getOccupiedBy() {
@@ -53,7 +52,7 @@ public class Position {
     }
 
     public Position copy() {
-        Position newPosition = new Position(new Coordinate(this.coordinate.x(), this.coordinate.y()), this.identifier);
+        Position newPosition = new Position(new Coordinate(this.coordinate.x(), this.coordinate.y()), this.label);
         newPosition.setOccupiedBy(this.getOccupiedBy());
         newPosition.setConnectedPositions(new ArrayList<>(connectedPositions));
         return newPosition;
@@ -67,11 +66,15 @@ public class Position {
         if (!(obj instanceof Position)) {
             return false;
         }
-        return this.getIdentifier().equals(((Position) obj).identifier);
+        return this.getLabel().equals(((Position) obj).label);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.identifier);
+        return Objects.hash(this.label);
+    }
+
+    public boolean isOutOfBoard() {
+        return this.coordinate.equals(Coordinate.instanceOutOfBounds());
     }
 }

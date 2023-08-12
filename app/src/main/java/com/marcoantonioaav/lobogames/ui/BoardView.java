@@ -17,7 +17,7 @@ import com.marcoantonioaav.lobogames.position.Position;
 
 public class BoardView extends View {
     private int cursorColor = Color.BLUE;
-    private Position selectedPosition = Position.instanceOutOfBounds();
+    private Position selectedPosition = Position.instanceOutOfBoard();
     private int player1Color = Color.GREEN;
     private int player2Color = Color.RED;
     private final Paint paint = new Paint();
@@ -55,7 +55,7 @@ public class BoardView extends View {
     }
 
     public void drawMove(Move move) {
-        this.selectedPosition = Position.instanceOutOfBounds();
+        this.selectedPosition = Position.instanceOutOfBoard();
         this.currentMove = move;
         invalidate();
     }

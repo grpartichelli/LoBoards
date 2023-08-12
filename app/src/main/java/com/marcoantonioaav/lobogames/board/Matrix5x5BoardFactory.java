@@ -18,7 +18,7 @@ public class Matrix5x5BoardFactory {
     public static final TwoWayMap<Coordinate, Position> POSITION_MAPPER = new TwoWayMap<>();
 
     static {
-        POSITION_MAPPER.put(Coordinate.instanceOutOfBounds(), Position.instanceOutOfBounds());
+        POSITION_MAPPER.put(Coordinate.instanceOutOfBounds(), Position.instanceOutOfBoard());
 
         POSITION_MAPPER.put(new Coordinate(0, 4), new Position(new Coordinate(34, 36), "0x4"));
         POSITION_MAPPER.put(new Coordinate(1, 4), new Position(new Coordinate(284, 36), "1x4"));

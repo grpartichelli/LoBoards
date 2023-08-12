@@ -18,7 +18,7 @@ public class Matrix3X3BoardFactory {
     public static final TwoWayMap<Coordinate, Position> POSITION_MAPPER = new TwoWayMap<>();
 
     static {
-        POSITION_MAPPER.put(Coordinate.instanceOutOfBounds(), Position.instanceOutOfBounds());
+        POSITION_MAPPER.put(Coordinate.instanceOutOfBounds(), Position.instanceOutOfBoard());
 
         POSITION_MAPPER.put(new Coordinate(0, 2), new Position(new Coordinate(36, 50), "0x2"));
         POSITION_MAPPER.put(new Coordinate(1, 2), new Position(new Coordinate(327, 50), "1x2"));

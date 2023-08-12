@@ -20,7 +20,7 @@ public class Move {
         this.playerId = playerId;
     }
 
-    public Move(ArrayList<Movement> movements, int playerId) {
+    public Move(List<Movement> movements, int playerId) {
         this.movements = movements;
         this.playerId = playerId;
     }

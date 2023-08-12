@@ -26,7 +26,7 @@ public class StandardBoard extends Board {
     ) {
         super(image, paddingPercentage, positionRadiusScale);
         for (Position position: positions) {
-            this.positionsMap.put(position.getIdentifier(), position);
+            this.positionsMap.put(position.getLabel(), position);
         }
         this.lines = lines;
     }
@@ -66,6 +66,6 @@ public class StandardBoard extends Board {
     @Override
     public void updateCoordinateOfPosition(Position position, Coordinate newCoordinate) {
         position.setCoordinate(newCoordinate);
-        positionsMap.put(position.getIdentifier(), position);
+        positionsMap.put(position.getLabel(), position);
     }
 }

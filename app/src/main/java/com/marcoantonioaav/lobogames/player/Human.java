@@ -2,12 +2,11 @@ package com.marcoantonioaav.lobogames.player;
 
 import com.marcoantonioaav.lobogames.game.Game;
 import com.marcoantonioaav.lobogames.move.Move;
-import com.marcoantonioaav.lobogames.move.Movement;
 import com.marcoantonioaav.lobogames.position.Position;
 
 public class Human extends Player {
-    private Position lastCursor = Position.instanceOutOfBounds();
-    private Position cursor = Position.instanceOutOfBounds();
+    private Position lastCursor = Position.instanceOutOfBoard();
+    private Position cursor = Position.instanceOutOfBoard();
 
     private boolean ready = false;
 
