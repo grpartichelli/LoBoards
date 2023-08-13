@@ -1,7 +1,7 @@
 package com.marcoantonioaav.lobogames.board;
 
 import android.graphics.drawable.Drawable;
-import com.marcoantonioaav.lobogames.move.Move;
+import com.marcoantonioaav.lobogames.move.MatrixMovement;
 import com.marcoantonioaav.lobogames.move.Movement;
 import com.marcoantonioaav.lobogames.player.Player;
 import com.marcoantonioaav.lobogames.position.Coordinate;
@@ -28,29 +28,6 @@ public class MatrixBoard extends Board {
         super(image, paddingPercentage, positionRadiusScale);
         this.matrix = matrix;
         this.positionMapper = positionMapper;
-    }
-
-    @Override
-    public void applyMove(Move move) {
-        if (move == null) {
-            return;
-        }
-        for (Movement movement : move.movements) {
-            applyMovement(movement);
-        }
-    }
-
-    @Override
-    public void applyMovement(Movement movement) {
-        if (movement == null) {
-            return;
-        }
-        if (movement.startX != Movement.OUT_OF_BOARD && movement.startY != Movement.OUT_OF_BOARD) {
-            this.matrix[movement.startX][movement.startY] = Player.EMPTY;
-        }
-        if (movement.endX != Movement.OUT_OF_BOARD && movement.endY != Movement.OUT_OF_BOARD) {
-            this.matrix[movement.endX][movement.endY] = movement.piece;
-        }
     }
 
 
@@ -89,7 +66,7 @@ public class MatrixBoard extends Board {
         for (int x = 0; x < getWidth(); x++) {
             for (int y = 0; y < getHeight(); y++) {
                 Position position = mapMatrixCoordinatesToPosition(x, y);
-                position.setOccupiedBy(this.matrix[x][y]);
+                position.setPlayerId(this.matrix[x][y]);
                 positions.add(position);
             }
         }
@@ -116,6 +93,12 @@ public class MatrixBoard extends Board {
         this.positionMapper.put(currentMatrixCoordinate, position);
     }
 
+    @Override
+    public void updatePlayerIdOfPosition(Position position, int playerId) {
+        Coordinate currentMatrixCoordinate = this.positionMapper.getBackward(position);
+        this.matrix[currentMatrixCoordinate.x()][currentMatrixCoordinate.y()] = playerId;
+    }
+
     public boolean isOnLimits(int x, int y) {
         return x >= 0 && y >= 0 && x < getWidth() && y < getHeight();
     }
@@ -126,6 +109,10 @@ public class MatrixBoard extends Board {
 
     public int getWidth() {
         return this.matrix.length;
+    }
+
+    public TwoWayMap<Coordinate, Position> getPositionMapper() {
+        return positionMapper;
     }
 
     public int valueAt(int x, int y) {

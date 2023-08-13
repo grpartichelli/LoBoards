@@ -1,7 +1,7 @@
 package com.marcoantonioaav.lobogames.game;
 
-import com.marcoantonioaav.lobogames.board.Matrix5x5BoardFactory;
 import com.marcoantonioaav.lobogames.board.MatrixBoard;
+import com.marcoantonioaav.lobogames.move.MatrixMove;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.player.Player;
 import com.marcoantonioaav.lobogames.player.agent.MinimaxAgent;
@@ -9,6 +9,7 @@ import com.marcoantonioaav.lobogames.board.Matrix3X3BoardFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class TicTacToe extends MatrixGame {
 
@@ -83,16 +84,16 @@ public class TicTacToe extends MatrixGame {
     }
 
     @Override
-    public boolean isLegalMove(Move move) {
-        return move.movements.size() == 1 && move.movements.get(0).isInsertion(this.board);
+    public boolean isLegalMatrixMove(MatrixMove move) {
+        return move.getMatrixMovements().size() == 1 && move.getMatrixMovements().get(0).isInsertion(this.board);
     }
 
     @Override
-    public ArrayList<Move> getLegalMoves(int playerId) {
-        ArrayList<Move> moves = new ArrayList<>();
+    public List<MatrixMove> getLegalMatrixMoves(int playerId) {
+        ArrayList<MatrixMove> moves = new ArrayList<>();
         for (int x = 0; x < 3; x++) {
             for (int y = 0; y < 3; y++) {
-                Move newMove = new Move(x, y, playerId);
+                MatrixMove newMove = new MatrixMove(x, y, playerId, this.board.getPositionMapper());
                 if (isLegalMove(newMove))
                     moves.add(newMove);
             }
@@ -102,8 +103,8 @@ public class TicTacToe extends MatrixGame {
     }
 
     @Override
-    public Move getPlayerMove(int startX, int startY, int endX, int endY, int playerId) {
-        return new Move(endX, endY, playerId);
+    public MatrixMove getPlayerMatrixMove(int startX, int startY, int endX, int endY, int playerId) {
+        return new MatrixMove(endX, endY, playerId, this.board.getPositionMapper());
     }
 
     @Override

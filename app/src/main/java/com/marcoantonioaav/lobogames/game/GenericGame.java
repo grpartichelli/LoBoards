@@ -1,10 +1,10 @@
 package com.marcoantonioaav.lobogames.game;
 
 import com.marcoantonioaav.lobogames.board.Board;
-import com.marcoantonioaav.lobogames.board.StandardBoard;
+import com.marcoantonioaav.lobogames.board.GenericBoard;
 
-public abstract class StandardGame extends Game {
-    protected StandardBoard board;
+public abstract class GenericGame extends Game {
+    protected GenericBoard board;
 
     @Override
     public Board getBoard() {
@@ -13,8 +13,8 @@ public abstract class StandardGame extends Game {
 
     @Override
     public void setBoard(Board board) {
-        if (board instanceof StandardBoard) {
-            this.board = (StandardBoard) board;
+        if (board instanceof GenericBoard) {
+            this.board = (GenericBoard) board;
         }
     }
 }

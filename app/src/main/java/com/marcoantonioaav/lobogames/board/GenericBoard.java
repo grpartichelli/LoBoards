@@ -1,8 +1,8 @@
 package com.marcoantonioaav.lobogames.board;
 
 import android.graphics.drawable.Drawable;
-import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.move.Movement;
+import com.marcoantonioaav.lobogames.player.Player;
 import com.marcoantonioaav.lobogames.position.Coordinate;
 import com.marcoantonioaav.lobogames.position.Line;
 import com.marcoantonioaav.lobogames.position.Position;
@@ -12,12 +12,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class StandardBoard extends Board {
+public class GenericBoard extends Board {
 
     private final Map<String, Position> positionsMap = new HashMap<>();
     private final List<Line> lines;
 
-    public StandardBoard(
+    public GenericBoard(
             Drawable image,
             double paddingPercentage,
             double positionRadiusScale,
@@ -31,20 +31,19 @@ public class StandardBoard extends Board {
         this.lines = lines;
     }
 
-    @Override
-    public void applyMove(Move move) {
-        // TODO: Apply move
-    }
 
     @Override
     public void applyMovement(Movement movement) {
-        // TODO: Apply movement
+        if (movement.getStartPosition().isOutOfBoard()) {
+            Position currentStartPosition = this.positionsMap.get(movement.getStartPosition());
+            currentStartPosition.setPlayerId(Player.EMPTY);
+        }
     }
 
 
     @Override
     public Board copy() {
-        return new StandardBoard(
+        return new GenericBoard(
                 this.image,
                 this.paddingPercentage,
                 this.positionRadiusScale,
@@ -66,6 +65,12 @@ public class StandardBoard extends Board {
     @Override
     public void updateCoordinateOfPosition(Position position, Coordinate newCoordinate) {
         position.setCoordinate(newCoordinate);
+        positionsMap.put(position.getLabel(), position);
+    }
+
+    @Override
+    public void updatePlayerIdOfPosition(Position position, int playerId) {
+        position.setPlayerId(playerId);
         positionsMap.put(position.getLabel(), position);
     }
 }

@@ -16,7 +16,7 @@ public class Position {
     private List<Position> connectedPositions = new ArrayList<>();
     private Coordinate coordinate;
     private final String label;
-    private int occupiedBy = Player.EMPTY;
+    private int playerId = Player.EMPTY;
 
     public Position(Coordinate coordinate, String label) {
         this.coordinate = coordinate;
@@ -35,12 +35,12 @@ public class Position {
         return label;
     }
 
-    public int getOccupiedBy() {
-        return this.occupiedBy;
+    public int getPlayerId() {
+        return this.playerId;
     }
 
-    public void setOccupiedBy(int occupiedBy) {
-        this.occupiedBy = occupiedBy;
+    public void setPlayerId(int playerId) {
+        this.playerId = playerId;
     }
 
     public List<Position> getConnectedPositions() {
@@ -53,7 +53,7 @@ public class Position {
 
     public Position copy() {
         Position newPosition = new Position(new Coordinate(this.coordinate.x(), this.coordinate.y()), this.label);
-        newPosition.setOccupiedBy(this.getOccupiedBy());
+        newPosition.setPlayerId(this.getPlayerId());
         newPosition.setConnectedPositions(new ArrayList<>(connectedPositions));
         return newPosition;
     }

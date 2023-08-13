@@ -1,6 +1,7 @@
 package com.marcoantonioaav.lobogames.game;
 
 import com.marcoantonioaav.lobogames.board.MatrixBoard;
+import com.marcoantonioaav.lobogames.move.MatrixMove;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.player.Player;
 import com.marcoantonioaav.lobogames.player.agent.MinimaxAgent;
@@ -102,24 +103,24 @@ public class TsoroYematatuV2 extends MatrixGame {
     }
 
     @Override
-    public boolean isLegalMove(Move move) {
-        if (this.board.countPlayerPieces(move.playerId) < 4)
-            return move.movements.size() == 1 && move.movements.get(0).isInsertion(board);
-        return move.movements.size() == 1 && move.movements.get(0).isAdjacentInlineMovement(board);
+    public boolean isLegalMatrixMove(MatrixMove move) {
+        if (this.board.countPlayerPieces(move.getPlayerId()) < 4)
+            return move.getMatrixMovements().size() == 1 && move.getMatrixMovements().get(0).isInsertion(board);
+        return move.getMatrixMovements().size() == 1 && move.getMatrixMovements().get(0).isAdjacentInlineMovement(board);
     }
 
     @Override
-    public List<Move> getLegalMoves(int playerId) {
+    public List<MatrixMove> getLegalMatrixMoves(int playerId) {
         if (this.board.countPlayerPieces(playerId) < 4)
             return getLegalInsertionMoves(playerId);
         return getLegalMovementMoves(playerId);
     }
 
-    protected List<Move> getLegalInsertionMoves(int playerId) {
-        List<Move> moves = new ArrayList<>();
+    protected List<MatrixMove> getLegalInsertionMoves(int playerId) {
+        List<MatrixMove> moves = new ArrayList<>();
         for (int x = 0; x < this.board.getWidth(); x++) {
             for (int y = 0; y < this.board.getHeight(); y++) {
-                Move newMove = new Move(x, y, playerId);
+                MatrixMove newMove = new MatrixMove(x, y, playerId, this.board.getPositionMapper());
                 if (isLegalMove(newMove))
                     moves.add(newMove);
             }
@@ -128,14 +129,14 @@ public class TsoroYematatuV2 extends MatrixGame {
         return moves;
     }
 
-    private List<Move> getLegalMovementMoves(int playerId) {
-        List<Move> moves = new ArrayList<>();
+    private List<MatrixMove> getLegalMovementMoves(int playerId) {
+        List<MatrixMove> moves = new ArrayList<>();
         for (int x = 0; x < this.board.getWidth(); x++) {
             for (int y = 0; y < this.board.getHeight(); y++) {
                 if (this.board.valueAt(x, y) == playerId) {
                     for (int[] eightRegion : new int[][]{{0, 1}, {1, 1}, {1, 0}, {0, -1}, {-1, -1}, {-1, 0}, {1, -1}, {-1, 1}})
                         if (this.board.isOnLimits(x + eightRegion[0], y + eightRegion[1])) {
-                            Move newMove = new Move(x, y, x + eightRegion[0], y + eightRegion[1], playerId);
+                            MatrixMove newMove = new MatrixMove(x, y, x + eightRegion[0], y + eightRegion[1], playerId, this.board.getPositionMapper());
                             if (isLegalMove(newMove))
                                 moves.add(newMove);
                         }
@@ -147,10 +148,10 @@ public class TsoroYematatuV2 extends MatrixGame {
     }
 
     @Override
-    public Move getPlayerMove(int startX, int startY, int endX, int endY, int playerId) {
+    public MatrixMove getPlayerMatrixMove(int startX, int startY, int endX, int endY, int playerId) {
         if (this.board.countPlayerPieces(playerId) < 4)
-            return new Move(endX, endY, playerId);
-        else return new Move(startX, startY, endX, endY, playerId);
+            return new MatrixMove(endX, endY, playerId, this.board.getPositionMapper());
+        else return new MatrixMove(startX, startY, endX, endY, playerId, this.board.getPositionMapper());
     }
 
     @Override

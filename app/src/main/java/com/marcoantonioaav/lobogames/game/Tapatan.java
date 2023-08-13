@@ -1,6 +1,7 @@
 package com.marcoantonioaav.lobogames.game;
 
 import com.marcoantonioaav.lobogames.board.MatrixBoard;
+import com.marcoantonioaav.lobogames.move.MatrixMove;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.player.Player;
 import com.marcoantonioaav.lobogames.player.agent.MinimaxAgent;
@@ -53,19 +54,19 @@ public class Tapatan extends MatrixGame {
     }
 
     @Override
-    public boolean isLegalMove(Move move) {
-        return move.movements.size() == 1 && move.movements.get(0).isAdjacentInlineMovement(this.board);
+    public boolean isLegalMatrixMove(MatrixMove move) {
+        return move.getMatrixMovements().size() == 1 && move.getMatrixMovements().get(0).isAdjacentInlineMovement(this.board);
     }
 
     @Override
-    public List<Move> getLegalMoves(int playerId) {
-        List<Move> moves = new ArrayList<>();
+    public List<MatrixMove> getLegalMatrixMoves(int playerId) {
+        List<MatrixMove> moves = new ArrayList<>();
         for (int x = 0; x < this.board.getWidth(); x++)
             for (int y = 0; y < this.board.getHeight(); y++)
                 if (this.board.valueAt(x, y) == playerId)
                     for (int[] eightRegion : new int[][]{{0, 1}, {1, 1}, {1, 0}, {0, -1}, {-1, -1}, {-1, 0}, {1, -1}, {-1, 1}})
                         if (this.board.isOnLimits(x + eightRegion[0], y + eightRegion[1])) {
-                            Move newMove = new Move(x, y, x + eightRegion[0], y + eightRegion[1], playerId);
+                            MatrixMove newMove = new MatrixMove(x, y, x + eightRegion[0], y + eightRegion[1], playerId, this.board.getPositionMapper());
                             if (isLegalMove(newMove))
                                 moves.add(newMove);
                         }
@@ -74,8 +75,8 @@ public class Tapatan extends MatrixGame {
     }
 
     @Override
-    public Move getPlayerMove(int startX, int startY, int endX, int endY, int playerId) {
-        return new Move(startX, startY, endX, endY, playerId);
+    public MatrixMove getPlayerMatrixMove(int startX, int startY, int endX, int endY, int playerId) {
+        return new MatrixMove(startX, startY, endX, endY, playerId, this.board.getPositionMapper());
     }
 
     @Override

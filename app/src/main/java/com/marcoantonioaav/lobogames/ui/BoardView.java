@@ -43,9 +43,9 @@ public class BoardView extends View {
         super.onDraw(canvas);
         drawBoardImage(canvas);
         drawPositions(canvas);
-        if (currentMove != null && !currentMove.movements.isEmpty()) {
-            this.board.applyMovement(currentMove.movements.get(0));
-            currentMove.movements.remove(0);
+        if (currentMove != null && !currentMove.getMovements().isEmpty()) {
+            this.board.applyMovement(currentMove.getMovements().get(0));
+            currentMove.removeMomentByIndex(0);
             postInvalidateDelayed(300);
         }
     }
@@ -76,7 +76,7 @@ public class BoardView extends View {
         float selectedPositionBorderRadius = getSelectedPositionBorderRadius();
 
         for (Position position: this.board.getPositions()) {
-            if (position.getOccupiedBy() != Player.EMPTY) {
+            if (position.getPlayerId() != Player.EMPTY) {
                 if (selectedPosition.equals(position)) {
                     paint.setColor(cursorColor);
                     canvas.drawCircle(position.getCoordinate().x(), position.getCoordinate().y(), selectedPositionBorderRadius, paint);
@@ -84,7 +84,7 @@ public class BoardView extends View {
                     paint.setColor(getPrimaryColor());
                     canvas.drawCircle(position.getCoordinate().x(), position.getCoordinate().y(), positionBorderRadius, paint);
                 }
-                paint.setColor(getPlayerColor(position.getOccupiedBy()));
+                paint.setColor(getPlayerColor(position.getPlayerId()));
                 canvas.drawCircle(position.getCoordinate().x(), position.getCoordinate().y(), positionRadius, paint);
             }
         }

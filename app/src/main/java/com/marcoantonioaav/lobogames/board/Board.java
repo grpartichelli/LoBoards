@@ -6,6 +6,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.move.Movement;
+import com.marcoantonioaav.lobogames.player.Player;
 import com.marcoantonioaav.lobogames.position.Coordinate;
 import com.marcoantonioaav.lobogames.position.Line;
 import com.marcoantonioaav.lobogames.position.Position;
@@ -23,14 +24,34 @@ public abstract class Board {
         this.positionRadiusScale = positionRadiusScale;
     }
 
-    public abstract void applyMove(Move move);
 
-    public abstract void applyMovement(Movement movement);
+    public void applyMove(Move move) {
+        if (move == null) {
+            return;
+        }
+        for (Movement movement : move.getMovements()) {
+            applyMovement(movement);
+        }
+    }
+
+    public void applyMovement(Movement movement) {
+        if (movement == null) {
+            return;
+        }
+
+        if (!movement.getStartPosition().isOutOfBoard()) {
+            updatePlayerIdOfPosition(movement.getStartPosition(), Player.EMPTY);
+        }
+
+        if (!movement.getEndPosition().isOutOfBoard()) {
+            updatePlayerIdOfPosition(movement.getEndPosition(), movement.getPlayerId());
+        }
+    }
 
     public int countPlayerPieces(int playerId) {
         int count = 0;
         for (Position position : this.getPositions()) {
-            if (position.getOccupiedBy() == playerId) {
+            if (position.getPlayerId() == playerId) {
                 count++;
             }
         }
@@ -81,4 +102,5 @@ public abstract class Board {
     }
 
     public abstract void updateCoordinateOfPosition(Position position, Coordinate newCoordinate);
+    public abstract void updatePlayerIdOfPosition(Position position, int playerId);
 }

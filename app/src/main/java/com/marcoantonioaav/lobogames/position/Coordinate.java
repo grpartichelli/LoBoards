@@ -1,13 +1,14 @@
 package com.marcoantonioaav.lobogames.position;
 
 import androidx.annotation.Nullable;
+import com.marcoantonioaav.lobogames.move.MatrixMovement;
 import com.marcoantonioaav.lobogames.move.Movement;
 
 import java.util.Objects;
 
 public class Coordinate {
     public static Coordinate instanceOutOfBounds() {
-        return new Coordinate(Movement.OUT_OF_BOARD, Movement.OUT_OF_BOARD);
+        return new Coordinate(Movement.OUT_OF_BOARD, MatrixMovement.OUT_OF_BOARD);
     }
 
     private final int x;
