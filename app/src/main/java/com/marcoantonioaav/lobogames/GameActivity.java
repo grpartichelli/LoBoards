@@ -138,7 +138,7 @@ public class GameActivity extends AppCompatActivity {
         showTurn();
         // updateButtonsDescription();
         game.restart();
-        boardView.setBoard(game.getBoard());
+        boardView.setBoard(game.getBoard().copy());
         boardView.draw();
         isGameRunning = true;
     }

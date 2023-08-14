@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-// TODO: Fix animation
 public class Alquerque extends MatrixGame {
 
     public Alquerque() {
