@@ -6,7 +6,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
 import android.view.View;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -66,7 +65,7 @@ public class BoardView extends View {
 
 
     private void drawBoardImage(Canvas canvas) {
-        board.scaleToCanvas(canvas);
+        board.scaleToLayoutParams(this.getLayoutParams());
         board.getImage().draw(canvas);
     }
 
@@ -147,35 +146,35 @@ public class BoardView extends View {
         this.player2Color = player2Color;
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            int x = (int) event.getX();
-            int y = (int) event.getY();
-
-            for (Position position : this.board.getPositions()) {
-                if (checkInsideCircle(position, x, y)) {
-                    this.selectedPosition = position;
-                }
-            }
-            performClick();
-            return true;
-        }
-        return false;
-    }
-
-    private boolean checkInsideCircle(Position position, int xTouch, int yTouch) {
-        float  radius = getPositionRadius();
-        double centerX = position.getCoordinate().x();
-        double centerY = position.getCoordinate().y();
-        double distanceX = xTouch - centerX;
-        double distanceY = yTouch - centerY;
-        return (distanceX * distanceX) + (distanceY * distanceY) <= radius * radius;
-    }
-
-    @Override
-    public boolean performClick() {
-        super.performClick();
-        return true;
-    }
+//    @Override
+//    public boolean onTouchEvent(MotionEvent event) {
+//        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+//            int x = (int) event.getX();
+//            int y = (int) event.getY();
+//
+//            for (Position position : this.board.getPositions()) {
+//                if (checkInsideCircle(position, x, y)) {
+//                    this.selectedPosition = position;
+//                    performClick();
+//                    return true;
+//                }
+//            }
+//        }
+//        return false;
+//    }
+//
+//    private boolean checkInsideCircle(Position position, int xTouch, int yTouch) {
+//        float  radius = getPositionRadius();
+//        double centerX = position.getCoordinate().x();
+//        double centerY = position.getCoordinate().y();
+//        double distanceX = xTouch - centerX;
+//        double distanceY = yTouch - centerY;
+//        return (distanceX * distanceX) + (distanceY * distanceY) <= radius * radius;
+//    }
+//
+//    @Override
+//    public boolean performClick() {
+//        super.performClick();
+//        return true;
+//    }
 }

@@ -1,9 +1,9 @@
 package com.marcoantonioaav.lobogames.board;
 
-import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.view.ViewGroup;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.move.Movement;
 import com.marcoantonioaav.lobogames.player.Player;
@@ -73,34 +73,33 @@ public abstract class Board {
     }
 
     /**
-     * Adds padding and scales the image and positions making it fit inside the canvas bounds
+     * Adds padding and scales the image and positions making it fit inside the layout params bounds
      * This is needed because the image size changes according to the users screen
      **/
-    public void scaleToCanvas(Canvas canvas) {
-        Rect canvasBounds = canvas.getClipBounds();
-        Rect newImageBounds = new Rect(
-                (int) (canvasBounds.right * paddingPercentage),
-                (int) (canvasBounds.bottom * paddingPercentage),
-                (int) (canvasBounds.right * (1 - paddingPercentage)),
-                (int) (canvasBounds.bottom * (1 - paddingPercentage))
-        );
+    public void scaleToLayoutParams(ViewGroup.LayoutParams layoutParams) {
+        double left = layoutParams.width * paddingPercentage;
+        double top = layoutParams.height * paddingPercentage;
+        double right = layoutParams.width * (1 - paddingPercentage);
+        double bottom = layoutParams.height * (1 - paddingPercentage);
+        Rect newImageBounds = new Rect((int) left, (int) top, (int) right, (int) bottom);
 
         if (newImageBounds.equals(this.image.getBounds())) {
             return;
         }
 
         this.image.setBounds(newImageBounds);
-        int imageWidth = ((BitmapDrawable) image).getBitmap().getWidth();
-        int imageHeight = ((BitmapDrawable) image).getBitmap().getHeight();
+        double imageWidth = ((BitmapDrawable) image).getBitmap().getWidth();
+        double imageHeight = ((BitmapDrawable) image).getBitmap().getHeight();
         for (Position position : this.getPositions()) {
-            Coordinate coordinate = new Coordinate(
-                    (int) ((((float) position.getCoordinate().x() / imageWidth) * newImageBounds.width()) + newImageBounds.left),
-                    (int) ((((float) position.getCoordinate().y() / imageHeight) * newImageBounds.height()) + newImageBounds.top)
-            );
-            updateCoordinateOfPosition(position, coordinate);
+            double currentX  = position.getCoordinate().x();
+            double currentY = position.getCoordinate().y();
+            int newX = (int) (((currentX / imageWidth) * (right - left)) + left);
+            int newY = (int) (((currentY / imageHeight) * (bottom - top)) + top);
+            updateCoordinateOfPosition(position, new Coordinate(newX, newY));
         }
     }
 
     public abstract void updateCoordinateOfPosition(Position position, Coordinate newCoordinate);
+
     public abstract void updatePlayerIdOfPosition(Position position, int playerId);
 }

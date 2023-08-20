@@ -2,15 +2,16 @@ package com.marcoantonioaav.lobogames;
 
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
-import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
-import com.marcoantonioaav.lobogames.board.MatrixBoard;
 import com.marcoantonioaav.lobogames.game.Game;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.player.Human;
@@ -19,11 +20,12 @@ import com.marcoantonioaav.lobogames.player.agent.MinimaxAgent;
 import com.marcoantonioaav.lobogames.position.Position;
 import com.marcoantonioaav.lobogames.ui.BoardView;
 
+import java.util.List;
 import java.util.Objects;
 
 public class GameActivity extends AppCompatActivity {
     private BoardView boardView;
-    private Button[][] buttons;
+    private List<Button> buttons;
     private TextView gameName, status;
     private Button playAgain, back;
 
@@ -55,7 +57,6 @@ public class GameActivity extends AppCompatActivity {
         boardView.setPlayer1Color(getSharedPreferences(SettingsActivity.SETTINGS, MODE_PRIVATE).getInt(SettingsActivity.PLAYER_1_COLOR, Color.GREEN));
         boardView.setPlayer2Color(getSharedPreferences(SettingsActivity.SETTINGS, MODE_PRIVATE).getInt(SettingsActivity.PLAYER_2_COLOR, Color.RED));
         boardView.setCursorColor(getSharedPreferences(SettingsActivity.SETTINGS, MODE_PRIVATE).getInt(SettingsActivity.CURSOR_COLOR, Color.BLUE));
-        boardView.setOnClickListener(view -> setCursorByClick());
 
         // game name
         gameName = findViewById(R.id.gameName);
@@ -81,8 +82,7 @@ public class GameActivity extends AppCompatActivity {
             Player player = Player.selectPlayerById(player1, player2, turn);
             if (player instanceof Human) {
                 ((Human) player).setCursor(this.boardView.getSelectedPosition());
-                // TODO: Acessibility
-                // buttons[x][y].announceForAccessibility("Selecionado " + Movement.positionToString(x, y));
+                runOnUiThread(() -> boardView.announceForAccessibility("Selecionado " +  this.boardView.getSelectedPosition().getLabel()));
             }
         }
     }
@@ -117,16 +117,34 @@ public class GameActivity extends AppCompatActivity {
         showTurn();
         Player currentPlayer = Player.selectPlayerById(player1, player2, turn);
         if (currentPlayer instanceof Human) {
-            // runOnUiThread(this::updateButtonsDescription);
+             runOnUiThread(this::updateButtonsDescription);
         }
     }
 
+    private void createButtons() {
+//        this.game.getBoard().scaleToLayoutParams(this.boardView.getLayoutParams());
+//        for (Position position: this.game.getBoard().getPositions()) {
+//            Button button = new Button(this);
+//            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+//                    ViewGroup.LayoutParams.WRAP_CONTENT,
+//                    ViewGroup.LayoutParams.WRAP_CONTENT
+//            );
+//            layoutParams.leftMargin = position.getCoordinate().x();
+//            layoutParams.topMargin = position.getCoordinate().y();
+//            button.setOnClickListener(view -> setCursorByClick());
+//            this.boardView.addView(button, layoutParams);
+//        }
+        //updateButtonsDescription();
+    }
+
     // TODO: Acessibility
-//    private void updateButtonsDescription() {
-//        for (int x = 0; x < this.game.getBoard().getWidth(); x++)
-//            for (int y = 0; y < this.game.getBoard().getHeight(); y++)
-//                buttons[x][y].setContentDescription(Movement.positionToString(x, y) + ": " + Player.getName(this.game.getBoard().valueAt(x, y)));
-//    }
+    private void updateButtonsDescription() {
+        for (Button button: buttons) {
+            // label?
+            button.setContentDescription("/");
+            // Movement.positionToString(x, y) + ": " + Player.getName(this.game.getBoard().valueAt(x, y))
+        }
+    }
 
     private void endGame() {
         isGameRunning = false;
@@ -134,12 +152,12 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void initializeGame() {
-        turn = Player.getRandomId();
-        showTurn();
-        // updateButtonsDescription();
         game.restart();
         boardView.setBoard(game.getBoard().copy());
+        turn = Player.getRandomId();
+        showTurn();
         boardView.draw();
+        createButtons();
         isGameRunning = true;
     }
 
