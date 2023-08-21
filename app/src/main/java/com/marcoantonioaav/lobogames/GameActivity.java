@@ -4,20 +4,24 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+import com.marcoantonioaav.lobogames.application.LoBoGames;
 import com.marcoantonioaav.lobogames.game.Game;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.player.Human;
 import com.marcoantonioaav.lobogames.player.Player;
 import com.marcoantonioaav.lobogames.player.agent.MinimaxAgent;
 import com.marcoantonioaav.lobogames.position.Position;
+import com.marcoantonioaav.lobogames.ui.BoardButtonDelegate;
 import com.marcoantonioaav.lobogames.ui.BoardView;
 
 import java.util.List;
@@ -122,19 +126,32 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void createButtons() {
-//        this.game.getBoard().scaleToLayoutParams(this.boardView.getLayoutParams());
-//        for (Position position: this.game.getBoard().getPositions()) {
-//            Button button = new Button(this);
-//            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-//                    ViewGroup.LayoutParams.WRAP_CONTENT,
-//                    ViewGroup.LayoutParams.WRAP_CONTENT
-//            );
-//            layoutParams.leftMargin = position.getCoordinate().x();
-//            layoutParams.topMargin = position.getCoordinate().y();
-//            button.setOnClickListener(view -> setCursorByClick());
-//            this.boardView.addView(button, layoutParams);
-//        }
-        //updateButtonsDescription();
+        this.boardView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                boardView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                RelativeLayout buttonsLayout = findViewById(R.id.buttonsLayout);
+                double radius = boardView.getPositionBorderRadius();
+                double diameter = radius * 2.0;
+                game.getBoard().scaleToLayoutParams(boardView.getLayoutParams());
+                for (Position position: game.getBoard().getPositions()) {
+                    Button button = new Button(LoBoGames.getAppContext());
+                    RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                            ViewGroup.LayoutParams.WRAP_CONTENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT
+                    );
+                    layoutParams.height = (int) diameter;
+                    layoutParams.width = (int) diameter;
+                    layoutParams.leftMargin = position.getCoordinate().x() - (int) radius;
+                    layoutParams.topMargin = position.getCoordinate().y() - (int) radius;
+                    // TODO: Delegate
+                    //button.setAccessibilityDelegate(new BoardButtonDelegate());
+                    button.setOnClickListener(view -> setCursorByClick());
+                    buttonsLayout.addView(button, layoutParams);
+                    updateButtonsDescription();
+                }
+            }
+        });
     }
 
     // TODO: Acessibility

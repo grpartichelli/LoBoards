@@ -7,8 +7,11 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import com.marcoantonioaav.lobogames.R;
 import com.marcoantonioaav.lobogames.board.Board;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.player.Player;
@@ -90,7 +93,7 @@ public class BoardView extends View {
     }
 
     public void resizeToScreenSize() {
-        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) getLayoutParams();
+        ViewGroup.LayoutParams layoutParams = getLayoutParams();
         layoutParams.width = getResources().getDisplayMetrics().widthPixels;
         layoutParams.height = getResources().getDisplayMetrics().widthPixels;
         setLayoutParams(layoutParams);
