@@ -22,7 +22,7 @@ public abstract class Movement {
     @Override
     public String toString() {
         if (getStartPosition().isOutOfBoard()) {
-            return getStartPosition().getLabel();
+            return getEndPosition().getLabel();
         }
         if (getEndPosition().isOutOfBoard()) {
             return "";

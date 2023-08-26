@@ -10,17 +10,23 @@ import java.util.Objects;
 public class Position {
 
     public static Position instanceOutOfBoard() {
-        return new Position(Coordinate.instanceOutOfBounds(), "");
+        return new Position(Coordinate.instanceOutOfBounds(), "", -1);
     }
 
     private List<Position> connectedPositions = new ArrayList<>();
     private Coordinate coordinate;
     private final String label;
     private int playerId = Player.EMPTY;
+    private final int accessibilityOrder;
 
-    public Position(Coordinate coordinate, String label) {
+    public Position(Coordinate coordinate, String label, int accessibilityOrder) {
         this.coordinate = coordinate;
         this.label = label;
+        this.accessibilityOrder = accessibilityOrder;
+    }
+
+    public int getAccessibilityOrder() {
+        return accessibilityOrder;
     }
 
     public Coordinate getCoordinate() {
@@ -52,7 +58,7 @@ public class Position {
     }
 
     public Position copy() {
-        Position newPosition = new Position(new Coordinate(this.coordinate.x(), this.coordinate.y()), this.label);
+        Position newPosition = new Position(new Coordinate(this.coordinate.x(), this.coordinate.y()), this.label, this.accessibilityOrder);
         newPosition.setPlayerId(this.getPlayerId());
         newPosition.setConnectedPositions(new ArrayList<>(connectedPositions));
         return newPosition;

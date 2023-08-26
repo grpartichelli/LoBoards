@@ -20,19 +20,18 @@ public class Matrix3X3BoardFactory {
     static {
         POSITION_MAPPER.put(Coordinate.instanceOutOfBounds(), Position.instanceOutOfBoard());
 
-        POSITION_MAPPER.put(new Coordinate(0, 2), new Position(new Coordinate(36, 50), "0x2"));
-        POSITION_MAPPER.put(new Coordinate(1, 2), new Position(new Coordinate(327, 50), "1x2"));
-        POSITION_MAPPER.put(new Coordinate(2, 2), new Position(new Coordinate(618, 50), "2x2"));
+        POSITION_MAPPER.put(new Coordinate(0, 2), new Position(new Coordinate(36, 50), "3A", 0));
+        POSITION_MAPPER.put(new Coordinate(1, 2), new Position(new Coordinate(327, 50), "3B", 1));
+        POSITION_MAPPER.put(new Coordinate(2, 2), new Position(new Coordinate(618, 50), "3C",2));
 
-        POSITION_MAPPER.put(new Coordinate(0, 1), new Position(new Coordinate(36, 323), "0x1"));
-        POSITION_MAPPER.put(new Coordinate(1, 1), new Position(new Coordinate(327, 323), "1x1"));
-        POSITION_MAPPER.put(new Coordinate(2, 1), new Position(new Coordinate(618, 323), "2x1"));
+        POSITION_MAPPER.put(new Coordinate(0, 1), new Position(new Coordinate(36, 323), "2A", 3));
+        POSITION_MAPPER.put(new Coordinate(1, 1), new Position(new Coordinate(327, 323), "2B",4));
+        POSITION_MAPPER.put(new Coordinate(2, 1), new Position(new Coordinate(618, 323), "2C",5));
 
-        POSITION_MAPPER.put(new Coordinate(0, 0), new Position(new Coordinate(36, 596), "0x0"));
-        POSITION_MAPPER.put(new Coordinate(1, 0), new Position(new Coordinate(327, 596), "1x0"));
-        POSITION_MAPPER.put(new Coordinate(2, 0), new Position(new Coordinate(618, 596), "2x0"));
-
-    } // TODO: Update labels
+        POSITION_MAPPER.put(new Coordinate(0, 0), new Position(new Coordinate(36, 596), "1A",6));
+        POSITION_MAPPER.put(new Coordinate(1, 0), new Position(new Coordinate(327, 596), "1B",7));
+        POSITION_MAPPER.put(new Coordinate(2, 0), new Position(new Coordinate(618, 596), "1C",8));
+    }
 
     public static MatrixBoard from(int[][] matrix) {
         if (matrix.length != 3) {

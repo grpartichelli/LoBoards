@@ -2,19 +2,17 @@ package com.marcoantonioaav.lobogames;
 
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
-import android.graphics.Rect;
 import android.graphics.Typeface;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
-import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.ViewCompat;
 import com.marcoantonioaav.lobogames.application.LoBoGames;
 import com.marcoantonioaav.lobogames.game.Game;
 import com.marcoantonioaav.lobogames.move.Move;
@@ -22,16 +20,20 @@ import com.marcoantonioaav.lobogames.player.Human;
 import com.marcoantonioaav.lobogames.player.Player;
 import com.marcoantonioaav.lobogames.player.agent.MinimaxAgent;
 import com.marcoantonioaav.lobogames.position.Position;
+
 import com.marcoantonioaav.lobogames.ui.BoardButtonDelegate;
 import com.marcoantonioaav.lobogames.ui.BoardView;
 
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class GameActivity extends AppCompatActivity {
     private BoardView boardView;
-    private List<Button> buttons = new ArrayList<>();
+    private final Map<Position, Button> positionButtonsMap = new HashMap<>();
     private TextView gameName, status;
     private Button playAgain, back;
 
@@ -63,6 +65,7 @@ public class GameActivity extends AppCompatActivity {
         boardView.setPlayer1Color(getSharedPreferences(SettingsActivity.SETTINGS, MODE_PRIVATE).getInt(SettingsActivity.PLAYER_1_COLOR, Color.GREEN));
         boardView.setPlayer2Color(getSharedPreferences(SettingsActivity.SETTINGS, MODE_PRIVATE).getInt(SettingsActivity.PLAYER_2_COLOR, Color.RED));
         boardView.setCursorColor(getSharedPreferences(SettingsActivity.SETTINGS, MODE_PRIVATE).getInt(SettingsActivity.CURSOR_COLOR, Color.BLUE));
+        setUpButtons();
 
         // game name
         gameName = findViewById(R.id.gameName);
@@ -83,15 +86,58 @@ public class GameActivity extends AppCompatActivity {
         new Thread(GameActivity.this::gameLoop).start();
     }
 
+
+    private void setUpButtons() {
+        this.boardView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                boardView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                RelativeLayout buttonsLayout = findViewById(R.id.buttonsLayout);
+                double buttonSize = boardView.getSelectedPositionBorderRadius() * 2.5;
+                game.getBoard().scaleToLayoutParams(boardView.getLayoutParams());
+                Button previousButton = null;
+
+                for (Position position:  getPositionsSortedByAccessibility()) {
+                    Button button = new Button(LoBoGames.getAppContext());
+                    RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                            ViewGroup.LayoutParams.WRAP_CONTENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT
+                    );
+                    layoutParams.height = (int) (buttonSize);
+                    layoutParams.width = (int) (buttonSize);
+                    layoutParams.leftMargin = position.getCoordinate().x() - (int) (buttonSize / 2);
+                    layoutParams.topMargin = position.getCoordinate().y() - (int) (buttonSize / 2);
+                    button.setOnClickListener(view -> setCursorByClick(position));
+                    button.setBackgroundColor(Color.TRANSPARENT);
+                    buttonsLayout.addView(button, layoutParams);
+                    positionButtonsMap.put(position, button);
+                    if (previousButton != null) {
+                        ViewCompat.setAccessibilityDelegate(button, new BoardButtonDelegate(previousButton));
+                    }
+                    previousButton = button;
+                }
+                updateButtonsDescription();
+            }
+        });
+    }
+
     private void setCursorByClick(Position selectedPosition) {
         if (isGameRunning) {
             Player player = Player.selectPlayerById(player1, player2, turn);
             if (player instanceof Human) {
                 ((Human) player).setCursor(selectedPosition);
                 boardView.setSelectedPosition(selectedPosition);
-                runOnUiThread(() -> boardView.announceForAccessibility("Selecionado " +  selectedPosition));
+                runOnUiThread(() -> boardView.announceForAccessibility("Selecionado " +  selectedPosition.getLabel()));
             }
         }
+    }
+
+    public List<Position> getPositionsSortedByAccessibility() {
+        List<Position> accessibilitySortedPositions = game.getBoard().getPositions();
+        Collections.sort(
+                accessibilitySortedPositions,
+                (p1, p2) -> p1.getAccessibilityOrder() - p2.getAccessibilityOrder());
+        return accessibilitySortedPositions;
     }
 
     private void gameLoop() {
@@ -128,42 +174,14 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-    private void createButtons() {
-        this.boardView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                boardView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                RelativeLayout buttonsLayout = findViewById(R.id.buttonsLayout);
-                double buttonSize = boardView.getSelectedPositionBorderRadius() * 2.5;
-                game.getBoard().scaleToLayoutParams(boardView.getLayoutParams());
-                for (Position position: game.getBoard().getPositions()) {
-                    Button button = new Button(LoBoGames.getAppContext());
-                    RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-                            ViewGroup.LayoutParams.WRAP_CONTENT,
-                            ViewGroup.LayoutParams.WRAP_CONTENT
-                    );
-                    layoutParams.height = (int) (buttonSize);
-                    layoutParams.width = (int) (buttonSize);
-                    layoutParams.leftMargin = position.getCoordinate().x() - (int) (buttonSize / 2);
-                    layoutParams.topMargin = position.getCoordinate().y() - (int) (buttonSize / 2);
-                    // TODO: Delegate
-                    //button.setAccessibilityDelegate(new BoardButtonDelegate());
-                    button.setOnClickListener(view -> setCursorByClick(position));
-                    button.setBackgroundColor(Color.TRANSPARENT);
-                    buttonsLayout.addView(button, layoutParams);
-                    buttons.add(button);
-                }
-                updateButtonsDescription();
-            }
-        });
-    }
-
-    // TODO: Acessibility
     private void updateButtonsDescription() {
-        for (Button button: buttons) {
-            // label?
-            button.setContentDescription("/");
-            // Movement.positionToString(x, y) + ": " + Player.getName(this.game.getBoard().valueAt(x, y))
+        for (Position position : this.game.getBoard().getPositions()) {
+            Button button = positionButtonsMap.get(position);
+            if (button == null) {
+                throw new IllegalStateException("Non existing button for position: " + position.getLabel());
+            }
+            button.setContentDescription(position.getLabel() + ": " + Player.getName(position.getPlayerId()));
+            positionButtonsMap.put(position, button);
         }
     }
 
@@ -177,9 +195,7 @@ public class GameActivity extends AppCompatActivity {
         boardView.setBoard(game.getBoard().copy());
         turn = Player.getRandomId();
         showTurn();
-        boardView.draw();
-        createButtons();
-        isGameRunning = true;
+        boardView.draw();isGameRunning = true;
     }
 
     private void showTurn() {
