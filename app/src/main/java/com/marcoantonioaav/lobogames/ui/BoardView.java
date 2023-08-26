@@ -121,9 +121,6 @@ public class BoardView extends View {
         return Color.GRAY;
     }
 
-    public Position getSelectedPosition() {
-        return this.selectedPosition;
-    }
 
     // TODO: Add dark mode board?
     private int getPrimaryColor() {
@@ -141,6 +138,10 @@ public class BoardView extends View {
         this.cursorColor = cursorColor;
     }
 
+    public Position setSelectedPosition(Position selectedPosition) {
+        return this.selectedPosition = selectedPosition;
+    }
+
     public void setPlayer1Color(int player1Color) {
         this.player1Color = player1Color;
     }
@@ -148,36 +149,4 @@ public class BoardView extends View {
     public void setPlayer2Color(int player2Color) {
         this.player2Color = player2Color;
     }
-
-//    @Override
-//    public boolean onTouchEvent(MotionEvent event) {
-//        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-//            int x = (int) event.getX();
-//            int y = (int) event.getY();
-//
-//            for (Position position : this.board.getPositions()) {
-//                if (checkInsideCircle(position, x, y)) {
-//                    this.selectedPosition = position;
-//                    performClick();
-//                    return true;
-//                }
-//            }
-//        }
-//        return false;
-//    }
-//
-//    private boolean checkInsideCircle(Position position, int xTouch, int yTouch) {
-//        float  radius = getPositionRadius();
-//        double centerX = position.getCoordinate().x();
-//        double centerY = position.getCoordinate().y();
-//        double distanceX = xTouch - centerX;
-//        double distanceY = yTouch - centerY;
-//        return (distanceX * distanceX) + (distanceY * distanceY) <= radius * radius;
-//    }
-//
-//    @Override
-//    public boolean performClick() {
-//        super.performClick();
-//        return true;
-//    }
 }

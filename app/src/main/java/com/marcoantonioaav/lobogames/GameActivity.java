@@ -8,6 +8,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
@@ -24,12 +25,13 @@ import com.marcoantonioaav.lobogames.position.Position;
 import com.marcoantonioaav.lobogames.ui.BoardButtonDelegate;
 import com.marcoantonioaav.lobogames.ui.BoardView;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class GameActivity extends AppCompatActivity {
     private BoardView boardView;
-    private List<Button> buttons;
+    private List<Button> buttons = new ArrayList<>();
     private TextView gameName, status;
     private Button playAgain, back;
 
@@ -81,12 +83,13 @@ public class GameActivity extends AppCompatActivity {
         new Thread(GameActivity.this::gameLoop).start();
     }
 
-    private void setCursorByClick() {
+    private void setCursorByClick(Position selectedPosition) {
         if (isGameRunning) {
             Player player = Player.selectPlayerById(player1, player2, turn);
             if (player instanceof Human) {
-                ((Human) player).setCursor(this.boardView.getSelectedPosition());
-                runOnUiThread(() -> boardView.announceForAccessibility("Selecionado " +  this.boardView.getSelectedPosition().getLabel()));
+                ((Human) player).setCursor(selectedPosition);
+                boardView.setSelectedPosition(selectedPosition);
+                runOnUiThread(() -> boardView.announceForAccessibility("Selecionado " +  selectedPosition));
             }
         }
     }
@@ -131,8 +134,7 @@ public class GameActivity extends AppCompatActivity {
             public void onGlobalLayout() {
                 boardView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 RelativeLayout buttonsLayout = findViewById(R.id.buttonsLayout);
-                double radius = boardView.getPositionBorderRadius();
-                double diameter = radius * 2.0;
+                double buttonSize = boardView.getSelectedPositionBorderRadius() * 2.5;
                 game.getBoard().scaleToLayoutParams(boardView.getLayoutParams());
                 for (Position position: game.getBoard().getPositions()) {
                     Button button = new Button(LoBoGames.getAppContext());
@@ -140,16 +142,18 @@ public class GameActivity extends AppCompatActivity {
                             ViewGroup.LayoutParams.WRAP_CONTENT,
                             ViewGroup.LayoutParams.WRAP_CONTENT
                     );
-                    layoutParams.height = (int) diameter;
-                    layoutParams.width = (int) diameter;
-                    layoutParams.leftMargin = position.getCoordinate().x() - (int) radius;
-                    layoutParams.topMargin = position.getCoordinate().y() - (int) radius;
+                    layoutParams.height = (int) (buttonSize);
+                    layoutParams.width = (int) (buttonSize);
+                    layoutParams.leftMargin = position.getCoordinate().x() - (int) (buttonSize / 2);
+                    layoutParams.topMargin = position.getCoordinate().y() - (int) (buttonSize / 2);
                     // TODO: Delegate
                     //button.setAccessibilityDelegate(new BoardButtonDelegate());
-                    button.setOnClickListener(view -> setCursorByClick());
+                    button.setOnClickListener(view -> setCursorByClick(position));
+                    button.setBackgroundColor(Color.TRANSPARENT);
                     buttonsLayout.addView(button, layoutParams);
-                    updateButtonsDescription();
+                    buttons.add(button);
                 }
+                updateButtonsDescription();
             }
         });
     }
