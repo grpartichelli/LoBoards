@@ -32,8 +32,8 @@ public class GenericPongHauKiBoardFactory {
         topLeft.addAllConnectedPositions(Arrays.asList(bottomLeft, center));
         topRight.addAllConnectedPositions(Arrays.asList(bottomRight, center));
         center.addAllConnectedPositions(Arrays.asList(topLeft, topRight, bottomLeft, bottomRight));
-        bottomLeft.addAllConnectedPositions(Arrays.asList(topLeft, center));
-        bottomRight.addAllConnectedPositions(Arrays.asList(topRight, center));
+        bottomLeft.addAllConnectedPositions(Arrays.asList(topLeft, center, bottomRight));
+        bottomRight.addAllConnectedPositions(Arrays.asList(topRight, center, bottomLeft));
 
         positions.addAll(Arrays.asList(topLeft, topRight, center, bottomLeft, bottomRight));
     }

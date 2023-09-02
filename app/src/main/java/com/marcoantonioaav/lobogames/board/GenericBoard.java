@@ -42,16 +42,6 @@ public class GenericBoard extends Board {
         this.lines = lines;
     }
 
-
-    @Override
-    public void applyMovement(Movement movement) {
-        if (movement.getStartPosition().isOutOfBoard()) {
-            Position currentStartPosition = this.positionsMap.get(movement.getStartPosition());
-            currentStartPosition.setPlayerId(Player.EMPTY);
-        }
-    }
-
-
     @Override
     public Board copy() {
         return new GenericBoard(

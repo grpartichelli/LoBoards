@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public class Position {
 
@@ -83,5 +84,37 @@ public class Position {
 
     public boolean isOutOfBoard() {
         return this.coordinate.equals(Coordinate.instanceOutOfBounds());
+    }
+
+    public boolean hasAnyEmptyConnectedPositions() {
+        for (Position connectedPosition: this.connectedPositions) {
+            if (connectedPosition.getPlayerId() == Player.EMPTY) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isConnectedTo(Position other) {
+        for (Position connectedPosition: this.connectedPositions) {
+            if (connectedPosition.equals(other)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public List<Position> findAllConnectedPositionsForPlayerId(int playerId) {
+        List<Position> connectedPositionsOfPlayer = new ArrayList<>();
+        for (Position connectedPosition: this.connectedPositions) {
+            if (connectedPosition.getPlayerId() == playerId) {
+                connectedPositionsOfPlayer.add(connectedPosition);
+            }
+        }
+        return connectedPositionsOfPlayer;
+    }
+
+    public List<Position> findAllEmptyConnectedPosition() {
+        return findAllConnectedPositionsForPlayerId(Player.EMPTY);
     }
 }
