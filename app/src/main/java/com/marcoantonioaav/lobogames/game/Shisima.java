@@ -18,18 +18,11 @@ public class Shisima extends GenericGame {
 
     @Override
     public Board getInitialBoard() {
-//        return GenericCircularBoardFactory.from(
-//                Arrays.asList(
-//                        Player.PLAYER_1, Player.EMPTY, Player.PLAYER_2,
-//                        Player.PLAYER_2, Player.EMPTY, Player.PLAYER_1,
-//                        Player.PLAYER_1, Player.EMPTY, Player.PLAYER_2
-//                ));
-
         return GenericCircularBoardFactory.from(
                 Arrays.asList(
-                        Player.EMPTY, Player.EMPTY, Player.EMPTY,
-                        Player.EMPTY, Player.EMPTY, Player.EMPTY,
-                        Player.EMPTY, Player.EMPTY, Player.EMPTY
+                        Player.PLAYER_1, Player.EMPTY, Player.PLAYER_2,
+                        Player.PLAYER_2, Player.EMPTY, Player.PLAYER_1,
+                        Player.PLAYER_1, Player.EMPTY, Player.PLAYER_2
                 ));
     }
 

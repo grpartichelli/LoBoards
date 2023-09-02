@@ -21,11 +21,8 @@ public class PongHauKi extends GenericGame {
 
     @Override
     public Board getInitialBoard() {
-//        return GenericPongHauKiBoardFactory.from(
-//                Arrays.asList(Player.PLAYER_1, Player.PLAYER_2, Player.EMPTY, Player.PLAYER_2, Player.PLAYER_1)
-//        );
         return GenericPongHauKiBoardFactory.from(
-                Arrays.asList(Player.EMPTY, Player.EMPTY, Player.EMPTY, Player.EMPTY, Player.EMPTY)
+                Arrays.asList(Player.PLAYER_1, Player.PLAYER_2, Player.EMPTY, Player.PLAYER_2, Player.PLAYER_1)
         );
     }
 
