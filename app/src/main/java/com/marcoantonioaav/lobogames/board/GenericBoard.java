@@ -24,7 +24,18 @@ public class GenericBoard extends Board {
             List<Position> positions,
             List<Line> lines
     ) {
-        super(image, paddingPercentage, positionRadiusScale);
+        this(image, paddingPercentage, paddingPercentage, positionRadiusScale, positions, lines);
+    }
+
+    public GenericBoard(
+            Drawable image,
+            double paddingPercentageHorizontal,
+            double paddingPercentageVertical,
+            double positionRadiusScale,
+            List<Position> positions,
+            List<Line> lines
+    ) {
+        super(image, paddingPercentageHorizontal, paddingPercentageVertical, positionRadiusScale);
         for (Position position: positions) {
             this.positionsMap.put(position.getLabel(), position);
         }
@@ -45,7 +56,8 @@ public class GenericBoard extends Board {
     public Board copy() {
         return new GenericBoard(
                 this.image,
-                this.paddingPercentage,
+                this.paddingPercentageHorizontal,
+                this.paddingPercentageVertical,
                 this.positionRadiusScale,
                 new ArrayList<>(this.positionsMap.values()),
                 new ArrayList<>(this.lines)

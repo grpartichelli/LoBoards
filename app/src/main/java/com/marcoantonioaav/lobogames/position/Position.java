@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 import com.marcoantonioaav.lobogames.player.Player;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -13,7 +14,7 @@ public class Position {
         return new Position(Coordinate.instanceOutOfBounds(), "", -1);
     }
 
-    private List<Position> connectedPositions = new ArrayList<>();
+    private final List<Position> connectedPositions = new ArrayList<>();
     private Coordinate coordinate;
     private final String label;
     private int playerId = Player.EMPTY;
@@ -49,18 +50,18 @@ public class Position {
         this.playerId = playerId;
     }
 
-    public List<Position> getConnectedPositions() {
-        return connectedPositions;
+    public void addAllConnectedPositions(Collection<? extends Position> positions) {
+        this.connectedPositions.addAll(positions);
     }
 
-    public void setConnectedPositions(List<Position> connectedPositions) {
-        this.connectedPositions = connectedPositions;
+    public void addConnectedPosition(Position position) {
+        this.connectedPositions.add(position);
     }
 
     public Position copy() {
         Position newPosition = new Position(new Coordinate(this.coordinate.x(), this.coordinate.y()), this.label, this.accessibilityOrder);
         newPosition.setPlayerId(this.getPlayerId());
-        newPosition.setConnectedPositions(new ArrayList<>(connectedPositions));
+        newPosition.addAllConnectedPositions(new ArrayList<>(connectedPositions));
         return newPosition;
     }
 

@@ -25,11 +25,21 @@ public class MatrixBoard extends Board {
             int[][] matrix,
             TwoWayMap<Coordinate, Position> positionMapper
     ) {
-        super(image, paddingPercentage, positionRadiusScale);
+        this(image, paddingPercentage, paddingPercentage, positionRadiusScale, matrix, positionMapper);
+    }
+
+    public MatrixBoard(
+            Drawable image,
+            double paddingPercentageHorizontal,
+            double paddingPercentageVertical,
+            double positionRadiusScale,
+            int[][] matrix,
+            TwoWayMap<Coordinate, Position> positionMapper
+    ) {
+        super(image, paddingPercentageHorizontal, paddingPercentageVertical, positionRadiusScale);
         this.matrix = matrix;
         this.positionMapper = positionMapper;
     }
-
 
     @Override
     public MatrixBoard copy() {
@@ -39,7 +49,8 @@ public class MatrixBoard extends Board {
         }
         return new MatrixBoard(
                 this.image,
-                this.paddingPercentage,
+                this.paddingPercentageHorizontal,
+                this.paddingPercentageVertical,
                 this.positionRadiusScale,
                 newBoardMatrix,
                 positionMapper

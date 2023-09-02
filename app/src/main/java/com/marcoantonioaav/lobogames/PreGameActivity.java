@@ -33,6 +33,8 @@ public class PreGameActivity extends AppCompatActivity {
         put(new Alquerque().getName(), new Alquerque());
         put(new FiveFieldKono().getName(), new FiveFieldKono());
         put(new TsoroYematatuV2().getName(), new TsoroYematatuV2());
+        put(new PongHauKi().getName(), new PongHauKi());
+        put(new Shisima().getName(), new Shisima());
     }};
 
     @Override

@@ -15,12 +15,22 @@ import java.util.List;
 
 public abstract class Board {
     protected final Drawable image;
-    protected final double paddingPercentage;
+    protected final double paddingPercentageHorizontal;
+    protected final double paddingPercentageVertical;
     protected final double positionRadiusScale;
 
     protected Board(Drawable image, double paddingPercentage, double positionRadiusScale) {
+        this(image, paddingPercentage, paddingPercentage, positionRadiusScale);
+    }
+
+    protected Board(
+            Drawable image,
+            double paddingPercentageHorizontal,
+            double paddingPercentageVertical,
+            double positionRadiusScale) {
         this.image = image;
-        this.paddingPercentage = paddingPercentage;
+        this.paddingPercentageHorizontal = paddingPercentageHorizontal;
+        this.paddingPercentageVertical = paddingPercentageVertical;
         this.positionRadiusScale = positionRadiusScale;
     }
 
@@ -77,10 +87,10 @@ public abstract class Board {
      * This is needed because the image size changes according to the users screen
      **/
     public void scaleToLayoutParams(ViewGroup.LayoutParams layoutParams) {
-        double left = layoutParams.width * paddingPercentage;
-        double top = layoutParams.height * paddingPercentage;
-        double right = layoutParams.width * (1 - paddingPercentage);
-        double bottom = layoutParams.height * (1 - paddingPercentage);
+        double left = layoutParams.width * paddingPercentageHorizontal;
+        double top = layoutParams.height * paddingPercentageVertical;
+        double right = layoutParams.width * (1 - paddingPercentageHorizontal);
+        double bottom = layoutParams.height * (1 - paddingPercentageVertical);
         Rect newImageBounds = new Rect((int) left, (int) top, (int) right, (int) bottom);
 
         if (newImageBounds.equals(this.image.getBounds())) {
