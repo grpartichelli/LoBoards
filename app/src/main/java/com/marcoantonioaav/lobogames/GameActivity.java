@@ -95,6 +95,7 @@ public class GameActivity extends AppCompatActivity {
                 RelativeLayout buttonsLayout = findViewById(R.id.buttonsLayout);
                 double buttonSize = boardView.getSelectedPositionBorderRadius() * 2.5;
                 game.getBoard().scaleToLayoutParams(boardView.getLayoutParams());
+                boardView.setBoard(game.getBoard().copy());
                 Button previousButton = null;
 
                 for (Position position:  getPositionsSortedByAccessibility()) {
@@ -195,7 +196,8 @@ public class GameActivity extends AppCompatActivity {
         boardView.setBoard(game.getBoard().copy());
         turn = Player.getRandomId();
         showTurn();
-        boardView.draw();isGameRunning = true;
+        boardView.draw();
+        isGameRunning = true;
     }
 
     private void showTurn() {

@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 public class Position {
 
@@ -60,7 +59,7 @@ public class Position {
     }
 
     public Position copy() {
-        Position newPosition = new Position(new Coordinate(this.coordinate.x(), this.coordinate.y()), this.label, this.accessibilityOrder);
+        Position newPosition = new Position(this.coordinate.copy(), this.label, this.accessibilityOrder);
         newPosition.setPlayerId(this.getPlayerId());
         newPosition.addAllConnectedPositions(new ArrayList<>(connectedPositions));
         return newPosition;

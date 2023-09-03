@@ -1,8 +1,6 @@
 package com.marcoantonioaav.lobogames.board;
 
 import android.graphics.drawable.Drawable;
-import com.marcoantonioaav.lobogames.move.Movement;
-import com.marcoantonioaav.lobogames.player.Player;
 import com.marcoantonioaav.lobogames.position.Coordinate;
 import com.marcoantonioaav.lobogames.position.Line;
 import com.marcoantonioaav.lobogames.position.Position;
@@ -44,12 +42,16 @@ public class GenericBoard extends Board {
 
     @Override
     public Board copy() {
+        List<Position> copiedPositions = new ArrayList<>();
+        for (Position position: this.positionsMap.values()) {
+            copiedPositions.add(position.copy());
+        }
         return new GenericBoard(
                 this.image,
                 this.paddingPercentageHorizontal,
                 this.paddingPercentageVertical,
                 this.positionRadiusScale,
-                new ArrayList<>(this.positionsMap.values()),
+                copiedPositions,
                 new ArrayList<>(this.lines)
         );
     }
@@ -66,13 +68,15 @@ public class GenericBoard extends Board {
 
     @Override
     public void updateCoordinateOfPosition(Position position, Coordinate newCoordinate) {
-        position.setCoordinate(newCoordinate);
-        positionsMap.put(position.getLabel(), position);
+        Position positionToUpdate = positionsMap.get(position.getLabel());
+        positionToUpdate.setCoordinate(newCoordinate);
+        positionsMap.put(positionToUpdate.getLabel(), positionToUpdate);
     }
 
     @Override
     public void updatePlayerIdOfPosition(Position position, int playerId) {
-        position.setPlayerId(playerId);
-        positionsMap.put(position.getLabel(), position);
+        Position positionToUpdate = positionsMap.get(position.getLabel());
+        positionToUpdate.setPlayerId(playerId);
+        positionsMap.put(positionToUpdate.getLabel(), positionToUpdate);
     }
 }
