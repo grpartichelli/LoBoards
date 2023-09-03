@@ -68,7 +68,6 @@ public class BoardView extends View {
 
 
     private void drawBoardImage(Canvas canvas) {
-        // board.scaleToLayoutParams(this.getLayoutParams());
         board.getImage().draw(canvas);
     }
 
