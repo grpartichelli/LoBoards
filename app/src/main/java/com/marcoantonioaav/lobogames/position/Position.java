@@ -11,18 +11,18 @@ import java.util.Objects;
 public class Position {
 
     public static Position instanceOutOfBoard() {
-        return new Position(Coordinate.instanceOutOfBounds(), "", -1);
+        return new Position(Coordinate.instanceOutOfBoard(), "", -1);
     }
 
-    private final List<Position> connectedPositions = new ArrayList<>();
+    private List<String> connectedPositionsIds = new ArrayList<>();
     private Coordinate coordinate;
-    private final String label;
+    private final String id;
     private int playerId = Player.EMPTY;
     private final int accessibilityOrder;
 
-    public Position(Coordinate coordinate, String label, int accessibilityOrder) {
+    public Position(Coordinate coordinate, String id, int accessibilityOrder) {
         this.coordinate = coordinate;
-        this.label = label;
+        this.id = id;
         this.accessibilityOrder = accessibilityOrder;
     }
 
@@ -38,8 +38,8 @@ public class Position {
         this.coordinate = coordinate;
     }
 
-    public String getLabel() {
-        return label;
+    public String getId() {
+        return id;
     }
 
     public int getPlayerId() {
@@ -51,17 +51,25 @@ public class Position {
     }
 
     public void addAllConnectedPositions(Collection<? extends Position> positions) {
-        this.connectedPositions.addAll(positions);
+        List<String> positionsIds = new ArrayList<>();
+        for (Position position: positions) {
+            positionsIds.add(position.getId());
+        }
+        this.connectedPositionsIds.addAll(positionsIds);
     }
 
-    public void addConnectedPosition(Position position) {
-        this.connectedPositions.add(position);
+    public List<String> getConnectedPositionsIds() {
+        return connectedPositionsIds;
+    }
+
+    public void setConnectedPositionsIds(List<String> connectedPositionsIds) {
+        this.connectedPositionsIds = connectedPositionsIds;
     }
 
     public Position copy() {
-        Position newPosition = new Position(this.coordinate.copy(), this.label, this.accessibilityOrder);
+        Position newPosition = new Position(this.coordinate.copy(), this.id, this.accessibilityOrder);
         newPosition.setPlayerId(this.getPlayerId());
-        newPosition.addAllConnectedPositions(new ArrayList<>(connectedPositions));
+        newPosition.setConnectedPositionsIds(new ArrayList<>(this.getConnectedPositionsIds()));
         return newPosition;
     }
 
@@ -73,47 +81,24 @@ public class Position {
         if (!(obj instanceof Position)) {
             return false;
         }
-        return this.getLabel().equals(((Position) obj).label);
+        return this.getId().equals(((Position) obj).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.label);
+        return Objects.hash(this.id);
     }
 
     public boolean isOutOfBoard() {
-        return this.coordinate.equals(Coordinate.instanceOutOfBounds());
-    }
-
-    public boolean hasAnyEmptyConnectedPositions() {
-        for (Position connectedPosition: this.connectedPositions) {
-            if (connectedPosition.getPlayerId() == Player.EMPTY) {
-                return true;
-            }
-        }
-        return false;
+        return this.coordinate.equals(Coordinate.instanceOutOfBoard());
     }
 
     public boolean isConnectedTo(Position other) {
-        for (Position connectedPosition: this.connectedPositions) {
-            if (connectedPosition.equals(other)) {
+        for (String connectedPositionId: this.connectedPositionsIds) {
+            if (connectedPositionId.equals(other.getId())) {
                 return true;
             }
         }
         return false;
-    }
-
-    public List<Position> findAllConnectedPositionsForPlayerId(int playerId) {
-        List<Position> connectedPositionsOfPlayer = new ArrayList<>();
-        for (Position connectedPosition: this.connectedPositions) {
-            if (connectedPosition.getPlayerId() == playerId) {
-                connectedPositionsOfPlayer.add(connectedPosition);
-            }
-        }
-        return connectedPositionsOfPlayer;
-    }
-
-    public List<Position> findAllEmptyConnectedPosition() {
-        return findAllConnectedPositionsForPlayerId(Player.EMPTY);
     }
 }

@@ -4,22 +4,28 @@ import com.marcoantonioaav.lobogames.position.Position;
 
 public class GenericMovement extends Movement {
 
-    private final Position startPosition;
-    private final Position endPosition;
+    private final String startPositionId;
+    private final String endPositionId;
+
+    public GenericMovement(String startPositionId, String endPositionId, int playerId) {
+        super(playerId);
+        this.startPositionId = startPositionId;
+        this.endPositionId= endPositionId;
+    }
 
     public GenericMovement(Position startPosition, Position endPosition, int playerId) {
         super(playerId);
-        this.startPosition = startPosition;
-        this.endPosition = endPosition;
+        this.startPositionId = startPosition.getId();
+        this.endPositionId= endPosition.getId();
     }
 
     @Override
-    public Position getStartPosition() {
-        return startPosition;
+    public String getStartPositionId() {
+        return startPositionId;
     }
 
     @Override
-    public Position getEndPosition() {
-        return endPosition;
+    public String getEndPositionId() {
+        return endPositionId;
     }
 }

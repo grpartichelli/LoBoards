@@ -1,9 +1,6 @@
 package com.marcoantonioaav.lobogames.move;
 
 import com.marcoantonioaav.lobogames.board.MatrixBoard;
-import com.marcoantonioaav.lobogames.position.Coordinate;
-import com.marcoantonioaav.lobogames.position.Position;
-import com.marcoantonioaav.lobogames.utils.TwoWayMap;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,19 +8,19 @@ import java.util.List;
 public class MatrixMove extends Move {
     private final List<MatrixMovement> movements;
 
-    public MatrixMove(int x, int y, int playerId, TwoWayMap<Coordinate, Position> positionMapper) {
+    public MatrixMove(int x, int y, int playerId) {
         super(playerId);
         movements = new ArrayList<>();
-        movements.add(new MatrixMovement(x, y, playerId, positionMapper));
+        movements.add(new MatrixMovement(x, y, playerId));
     }
 
-    public MatrixMove(int startX, int startY, int endX, int endY, int playerId, TwoWayMap<Coordinate, Position> positionMapper) {
+    public MatrixMove(int startX, int startY, int endX, int endY, int playerId) {
         super(playerId);
         movements = new ArrayList<>();
-        movements.add(new MatrixMovement(startX, startY, endX, endY, playerId, positionMapper));
+        movements.add(new MatrixMovement(startX, startY, endX, endY, playerId));
     }
 
-    public MatrixMove(List<MatrixMovement> movements, int playerId, TwoWayMap<Coordinate, Position> positionMapper) {
+    public MatrixMove(List<MatrixMovement> movements, int playerId) {
         super(playerId);
         this.movements = movements;
     }

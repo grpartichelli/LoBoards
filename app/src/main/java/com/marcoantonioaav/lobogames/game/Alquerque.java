@@ -97,7 +97,7 @@ public class Alquerque extends MatrixGame {
                 if (this.board.valueAt(x, y) == player)
                     for (int[] eightRegion : new int[][]{{0, 1}, {1, 1}, {1, 0}, {0, -1}, {-1, -1}, {-1, 0}, {1, -1}, {-1, 1}})
                         if (this.board.isOnLimits(x + eightRegion[0], y + eightRegion[1])) {
-                            MatrixMove newMove = new MatrixMove(x, y, x + eightRegion[0], y + eightRegion[1], player, this.board.getPositionMapper());
+                            MatrixMove newMove = new MatrixMove(x, y, x + eightRegion[0], y + eightRegion[1], player);
                             if (isLegalMove(newMove))
                                 moves.add(newMove);
                         }
@@ -115,7 +115,7 @@ public class Alquerque extends MatrixGame {
                         ArrayList<MatrixMovement> movementsWithRemovals = new ArrayList<>(movementSequence);
                         for (MatrixMovement movement : movementSequence)
                             movementsWithRemovals.add(MatrixMovement.getRemovalFor(movement));
-                        MatrixMove move = new MatrixMove(movementsWithRemovals, player, this.board.getPositionMapper());
+                        MatrixMove move = new MatrixMove(movementsWithRemovals, player);
                         if (move.getRemovalCount(this.board) == bestEliminationCount)
                             moves.add(move);
                         else if (move.getRemovalCount(this.board) > bestEliminationCount) {
@@ -133,7 +133,7 @@ public class Alquerque extends MatrixGame {
         for (int[] eightRegion : new int[][]{{0, 2}, {2, 2}, {2, 0}, {0, -2}, {-2, -2}, {-2, 0}, {2, -2}, {-2, 2}}) {
             int newX = lastX + eightRegion[0], newY = lastY + eightRegion[1];
             if (board.isOnLimits(newX, newY)) {
-                MatrixMovement movement = new MatrixMovement(lastX, lastY, newX, newY, player, this.board.getPositionMapper());
+                MatrixMovement movement = new MatrixMovement(lastX, lastY, newX, newY, player);
                 int[] newEliminationSpot = new int[]{MatrixMovement.getRemovalFor(movement).getStartX(), MatrixMovement.getRemovalFor(movement).getStartY()};
                 if (movement.isAdjacentInlineOpponentJump(board) && !containsTuple(newEliminationSpot, eliminationSpots)) {
                     ArrayList<int[]> newEliminationSpots = new ArrayList<>(eliminationSpots);

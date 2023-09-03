@@ -93,7 +93,7 @@ public class TicTacToe extends MatrixGame {
         ArrayList<MatrixMove> moves = new ArrayList<>();
         for (int x = 0; x < 3; x++) {
             for (int y = 0; y < 3; y++) {
-                MatrixMove newMove = new MatrixMove(x, y, playerId, this.board.getPositionMapper());
+                MatrixMove newMove = new MatrixMove(x, y, playerId);
                 if (isLegalMove(newMove))
                     moves.add(newMove);
             }
@@ -104,7 +104,7 @@ public class TicTacToe extends MatrixGame {
 
     @Override
     public MatrixMove getPlayerMatrixMove(int startX, int startY, int endX, int endY, int playerId) {
-        return new MatrixMove(endX, endY, playerId, this.board.getPositionMapper());
+        return new MatrixMove(endX, endY, playerId);
     }
 
     @Override

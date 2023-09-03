@@ -45,7 +45,7 @@ public class PongHauKi extends GenericGame {
 
         for (Position position : board.getPositions()) {
             if (position.getPlayerId() == opponentPlayerId
-            && position.hasAnyEmptyConnectedPositions()
+            && this.board.hasAnyEmptyConnectedPositions(position)
             ) {
                 return false;
             }
@@ -61,11 +61,14 @@ public class PongHauKi extends GenericGame {
     @Override
     public boolean isLegalMove(Move move) {
         for (Movement movement : move.getMovements()) {
-            if (movement.getStartPosition().isOutOfBoard()
-                || movement.getEndPosition().isOutOfBoard()
-                || !movement.getStartPosition().isConnectedTo(movement.getEndPosition())
-                || movement.getStartPosition().getPlayerId() != movement.getPlayerId()
-                || movement.getEndPosition().getPlayerId() != Player.EMPTY
+            Position startPosition = this.board.findPositionById(movement.getStartPositionId());
+            Position endPosition = this.board.findPositionById(movement.getEndPositionId());
+
+            if (startPosition.isOutOfBoard()
+                || endPosition.isOutOfBoard()
+                || !startPosition.isConnectedTo(endPosition)
+                || startPosition.getPlayerId() != movement.getPlayerId()
+                || endPosition.getPlayerId() != Player.EMPTY
             ) {
                 return false;
             }
@@ -78,7 +81,7 @@ public class PongHauKi extends GenericGame {
         List<Move> moves = new ArrayList<>();
         for (Position position : board.getPositions()) {
             if (position.getPlayerId() == playerId) {
-                for (Position emptyConnectedPosition : position.findAllEmptyConnectedPosition()) {
+                for (Position emptyConnectedPosition : this.board.findEmptyConnectedPositions(position)) {
                     GenericMovement movement = new GenericMovement(position, emptyConnectedPosition, playerId);
                     moves.add(new GenericMove(playerId, new ArrayList<>(Collections.singletonList(movement))));
                 }
@@ -90,9 +93,12 @@ public class PongHauKi extends GenericGame {
     // TODO: Fix computer
 
     @Override
-    public Move getPlayerMove(Position startPosition, Position endPosition, int playerId) {
+    public Move getPlayerMove(String startPositionId, String endPositionId, int playerId) {
+        Position startPosition = this.board.findPositionById(startPositionId);
+        Position endPosition = this.board.findPositionById(endPositionId);
+
         if (!startPosition.isConnectedTo(endPosition)) {
-            List<Position> possibleStarts = endPosition.findAllConnectedPositionsForPlayerId(playerId);
+            List<Position> possibleStarts = this.board.findConnectedPositionsForPlayerId(endPosition, playerId);
             if (possibleStarts.size() == 1) {
                 startPosition = possibleStarts.get(0);
             }

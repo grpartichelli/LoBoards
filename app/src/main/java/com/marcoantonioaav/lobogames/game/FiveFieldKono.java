@@ -95,7 +95,7 @@ public class FiveFieldKono extends MatrixGame {
                 if (this.board.valueAt(x, y) == playerId)
                     for (int[] eightRegion : new int[][]{{0, 1}, {1, 1}, {1, 0}, {0, -1}, {-1, -1}, {-1, 0}, {1, -1}, {-1, 1}})    // Can be reduced to only the diagonals to improve efficiency, but the movement style may be changed to lines eventually
                         if (this.board.isOnLimits(x + eightRegion[0], y + eightRegion[1])) {
-                            MatrixMove newMove = new MatrixMove(x, y, x + eightRegion[0], y + eightRegion[1], playerId, this.board.getPositionMapper());
+                            MatrixMove newMove = new MatrixMove(x, y, x + eightRegion[0], y + eightRegion[1], playerId);
                             if (isLegalMove(newMove))
                                 moves.add(newMove);
                         }
@@ -105,7 +105,7 @@ public class FiveFieldKono extends MatrixGame {
 
     @Override
     public MatrixMove getPlayerMatrixMove(int startX, int startY, int endX, int endY, int playerId) {
-        return new MatrixMove(startX, startY, endX, endY, playerId, this.board.getPositionMapper());
+        return new MatrixMove(startX, startY, endX, endY, playerId);
     }
 
     @Override

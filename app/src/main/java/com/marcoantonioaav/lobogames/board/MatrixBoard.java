@@ -1,31 +1,29 @@
 package com.marcoantonioaav.lobogames.board;
 
 import android.graphics.drawable.Drawable;
-import com.marcoantonioaav.lobogames.move.MatrixMovement;
 import com.marcoantonioaav.lobogames.move.Movement;
 import com.marcoantonioaav.lobogames.player.Player;
 import com.marcoantonioaav.lobogames.position.Coordinate;
 import com.marcoantonioaav.lobogames.position.Line;
 import com.marcoantonioaav.lobogames.position.Position;
-import com.marcoantonioaav.lobogames.utils.TwoWayMap;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public class MatrixBoard extends Board {
     private final int[][] matrix;
-    // NOTE: Used to map between matrix X and Y coordinates and board image positions
-    private final TwoWayMap<Coordinate, Position> positionMapper;
+    private final Map<Coordinate, Coordinate> coordinateMapper;
 
     public MatrixBoard(
             Drawable image,
             double paddingPercentage,
             double positionRadiusScale,
             int[][] matrix,
-            TwoWayMap<Coordinate, Position> positionMapper
+            Map<Coordinate, Coordinate> coordinateMapper
     ) {
-        this(image, paddingPercentage, paddingPercentage, positionRadiusScale, matrix, positionMapper);
+        this(image, paddingPercentage, paddingPercentage, positionRadiusScale, matrix, coordinateMapper);
     }
 
     public MatrixBoard(
@@ -34,11 +32,29 @@ public class MatrixBoard extends Board {
             double paddingPercentageVertical,
             double positionRadiusScale,
             int[][] matrix,
-            TwoWayMap<Coordinate, Position> positionMapper
+            Map<Coordinate, Coordinate> coordinateMapper
     ) {
         super(image, paddingPercentageHorizontal, paddingPercentageVertical, positionRadiusScale);
         this.matrix = matrix;
-        this.positionMapper = positionMapper;
+        this.coordinateMapper = coordinateMapper;
+    }
+
+    @Override
+    public void applyMovement(Movement movement) {
+        if (movement == null) {
+            return;
+        }
+
+        Coordinate start = MatrixPositionFieldsConverter.resolveMatrixCoordinate(movement.getStartPositionId());
+        Coordinate end = MatrixPositionFieldsConverter.resolveMatrixCoordinate(movement.getEndPositionId());
+
+        if (!start.equals(Coordinate.instanceOutOfBoard())) {
+            this.matrix[start.x()][start.y()] = Player.EMPTY;
+        }
+
+        if (!end.equals(Coordinate.instanceOutOfBoard())) {
+            this.matrix[end.x()][end.y()] = movement.getPlayerId();
+        }
     }
 
     @Override
@@ -53,7 +69,7 @@ public class MatrixBoard extends Board {
                 this.paddingPercentageVertical,
                 this.positionRadiusScale,
                 newBoardMatrix,
-                positionMapper
+                coordinateMapper
         );
     }
 
@@ -76,7 +92,12 @@ public class MatrixBoard extends Board {
         List<Position> positions = new ArrayList<>();
         for (int x = 0; x < getWidth(); x++) {
             for (int y = 0; y < getHeight(); y++) {
-                Position position = mapMatrixCoordinatesToPosition(x, y);
+                Coordinate coord = new Coordinate(x,y);
+                Position position = new Position(
+                        coordinateMapper.get(coord),
+                        MatrixPositionFieldsConverter.resolvePositionId(coord),
+                        MatrixPositionFieldsConverter.resolveAccessibilityOrder(coord)
+                );
                 position.setPlayerId(this.matrix[x][y]);
                 positions.add(position);
             }
@@ -89,25 +110,9 @@ public class MatrixBoard extends Board {
         return Collections.emptyList();
     }
 
-    public Coordinate mapPositionToMatrixCoordinate(Position position) {
-        return positionMapper.getBackward(position).copy();
-    }
-
-    public Position mapMatrixCoordinatesToPosition(int x, int y) {
-        return positionMapper.getForward(new Coordinate(x, y)).copy();
-    }
-
-    @Override
-    public void updateCoordinateOfPosition(Position position, Coordinate newCoordinate) {
-        Coordinate currentMatrixCoordinate = this.positionMapper.getBackward(position);
-        position.setCoordinate(newCoordinate);
-        this.positionMapper.put(currentMatrixCoordinate, position);
-    }
-
-    @Override
-    public void updatePlayerIdOfPosition(Position position, int playerId) {
-        Coordinate currentMatrixCoordinate = this.positionMapper.getBackward(position);
-        this.matrix[currentMatrixCoordinate.x()][currentMatrixCoordinate.y()] = playerId;
+    public void updateCoordinate(Position position, Coordinate newCoordinate) {
+        Coordinate matrixCoord = MatrixPositionFieldsConverter.resolveMatrixCoordinate(position.getId());
+        coordinateMapper.put(matrixCoord, newCoordinate);
     }
 
     public boolean isOnLimits(int x, int y) {
@@ -120,10 +125,6 @@ public class MatrixBoard extends Board {
 
     public int getWidth() {
         return this.matrix.length;
-    }
-
-    public TwoWayMap<Coordinate, Position> getPositionMapper() {
-        return positionMapper;
     }
 
     public int valueAt(int x, int y) {

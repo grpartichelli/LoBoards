@@ -7,7 +7,7 @@ import com.marcoantonioaav.lobogames.move.Movement;
 import java.util.Objects;
 
 public class Coordinate {
-    public static Coordinate instanceOutOfBounds() {
+    public static Coordinate instanceOutOfBoard() {
         return new Coordinate(Movement.OUT_OF_BOARD, MatrixMovement.OUT_OF_BOARD);
     }
 

@@ -25,7 +25,6 @@ import com.marcoantonioaav.lobogames.ui.BoardButtonDelegate;
 import com.marcoantonioaav.lobogames.ui.BoardView;
 
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,7 +64,6 @@ public class GameActivity extends AppCompatActivity {
         boardView.setPlayer1Color(getSharedPreferences(SettingsActivity.SETTINGS, MODE_PRIVATE).getInt(SettingsActivity.PLAYER_1_COLOR, Color.GREEN));
         boardView.setPlayer2Color(getSharedPreferences(SettingsActivity.SETTINGS, MODE_PRIVATE).getInt(SettingsActivity.PLAYER_2_COLOR, Color.RED));
         boardView.setCursorColor(getSharedPreferences(SettingsActivity.SETTINGS, MODE_PRIVATE).getInt(SettingsActivity.CURSOR_COLOR, Color.BLUE));
-        setUpButtons();
 
         // game name
         gameName = findViewById(R.id.gameName);
@@ -88,6 +86,12 @@ public class GameActivity extends AppCompatActivity {
 
 
     private void setUpButtons() {
+
+        RelativeLayout buttonsLayout = findViewById(R.id.buttonsLayout);
+        for (Button button: positionButtonsMap.values()) {
+            buttonsLayout.removeView(button);
+        }
+
         this.boardView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
@@ -128,7 +132,7 @@ public class GameActivity extends AppCompatActivity {
             if (player instanceof Human) {
                 ((Human) player).setCursor(selectedPosition);
                 boardView.setSelectedPosition(selectedPosition);
-                runOnUiThread(() -> boardView.announceForAccessibility("Selecionado " +  selectedPosition.getLabel()));
+                runOnUiThread(() -> boardView.announceForAccessibility("Selecionado " +  selectedPosition.getId()));
             }
         }
     }
@@ -179,9 +183,9 @@ public class GameActivity extends AppCompatActivity {
         for (Position position : this.game.getBoard().getPositions()) {
             Button button = positionButtonsMap.get(position);
             if (button == null) {
-                throw new IllegalStateException("Non existing button for position: " + position.getLabel());
+                throw new IllegalStateException("Non existing button for position: " + position.getId());
             }
-            button.setContentDescription(position.getLabel() + ": " + Player.getName(position.getPlayerId()));
+            button.setContentDescription(position.getId() + ": " + Player.getName(position.getPlayerId()));
             positionButtonsMap.put(position, button);
         }
     }
@@ -194,7 +198,8 @@ public class GameActivity extends AppCompatActivity {
     private void initializeGame() {
         game.restart();
         boardView.setBoard(game.getBoard().copy());
-        turn = Player.getRandomId();
+        setUpButtons();
+        turn = Player.PLAYER_1;
         showTurn();
         isGameRunning = true;
     }

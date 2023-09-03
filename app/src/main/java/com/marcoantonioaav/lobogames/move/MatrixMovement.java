@@ -1,46 +1,42 @@
 package com.marcoantonioaav.lobogames.move;
 
 import com.marcoantonioaav.lobogames.board.MatrixBoard;
+import com.marcoantonioaav.lobogames.board.MatrixPositionFieldsConverter;
 import com.marcoantonioaav.lobogames.player.Player;
 import com.marcoantonioaav.lobogames.position.Coordinate;
-import com.marcoantonioaav.lobogames.position.Position;
-import com.marcoantonioaav.lobogames.utils.TwoWayMap;
 
 public class MatrixMovement extends Movement {
     // NOTE: Used to map between matrix X and Y coordinates and board image positions
-    private final TwoWayMap<Coordinate, Position> positionMapper;
     private final int startX;
     private final int startY;
     private final int endX;
     private final int endY;
 
 
-    public MatrixMovement(int x, int y, int playerId, TwoWayMap<Coordinate, Position> positionMapper) {
+    public MatrixMovement(int x, int y, int playerId) {
         super(playerId);
         this.startX = OUT_OF_BOARD;
         this.startY = OUT_OF_BOARD;
         this.endX = x;
         this.endY = y;
-        this.positionMapper = positionMapper;
     }
 
-    public MatrixMovement(int startX, int startY, int endX, int endY, int playerId, TwoWayMap<Coordinate, Position> positionMapper) {
+    public MatrixMovement(int startX, int startY, int endX, int endY, int playerId) {
         super(playerId);
         this.startX = startX;
         this.startY = startY;
         this.endX = endX;
         this.endY = endY;
-        this.positionMapper = positionMapper;
     }
 
     @Override
-    public Position getStartPosition() {
-        return positionMapper.getForward(new Coordinate(startX, startY));
+    public String getStartPositionId() {
+        return MatrixPositionFieldsConverter.resolvePositionId(new Coordinate(startX, startY));
     }
 
     @Override
-    public Position getEndPosition() {
-        return positionMapper.getForward(new Coordinate(endX, endY));
+    public String getEndPositionId() {
+        return MatrixPositionFieldsConverter.resolvePositionId(new Coordinate(endX, endY));
     }
 
     public int getStartX() {
@@ -101,7 +97,7 @@ public class MatrixMovement extends Movement {
                 (jump.startY + jump.endY) / 2,
                 Movement.OUT_OF_BOARD,
                 Movement.OUT_OF_BOARD,
-                Player.getOpponentOf(jump.getPlayerId()), jump.positionMapper);
+                Player.getOpponentOf(jump.getPlayerId()));
     }
 
     public boolean isInsertion(MatrixBoard board) {

@@ -3,7 +3,6 @@ package com.marcoantonioaav.lobogames.game;
 import com.marcoantonioaav.lobogames.board.Board;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.player.Player;
-import com.marcoantonioaav.lobogames.position.Position;
 
 import java.util.List;
 
@@ -39,7 +38,7 @@ public abstract class Game {
 
     public abstract List<Move> getLegalMoves(int playerId);
 
-    public abstract Move getPlayerMove(Position startPosition, Position endPosition, int playerId);
+    public abstract Move getPlayerMove(String startPositionId, String endPositionId, int playerId);
 
     /**
      * Método que retorna a avaliação heurística de um estado do jogo,

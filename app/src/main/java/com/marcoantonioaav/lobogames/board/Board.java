@@ -6,7 +6,6 @@ import android.graphics.drawable.Drawable;
 import android.view.ViewGroup;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.move.Movement;
-import com.marcoantonioaav.lobogames.player.Player;
 import com.marcoantonioaav.lobogames.position.Coordinate;
 import com.marcoantonioaav.lobogames.position.Line;
 import com.marcoantonioaav.lobogames.position.Position;
@@ -44,19 +43,7 @@ public abstract class Board {
         }
     }
 
-    public void applyMovement(Movement movement) {
-        if (movement == null) {
-            return;
-        }
-
-        if (!movement.getStartPosition().isOutOfBoard()) {
-            updatePlayerIdOfPosition(movement.getStartPosition(), Player.EMPTY);
-        }
-
-        if (!movement.getEndPosition().isOutOfBoard()) {
-            updatePlayerIdOfPosition(movement.getEndPosition(), movement.getPlayerId());
-        }
-    }
+    public abstract void applyMovement(Movement movement);
 
     public int countPlayerPieces(int playerId) {
         int count = 0;
@@ -105,11 +92,9 @@ public abstract class Board {
             double currentY = position.getCoordinate().y();
             int newX = (int) (((currentX / imageWidth) * (right - left)) + left);
             int newY = (int) (((currentY / imageHeight) * (bottom - top)) + top);
-            updateCoordinateOfPosition(position, new Coordinate(newX, newY));
+            updateCoordinate(position, new Coordinate(newX, newY));
         }
     }
 
-    public abstract void updateCoordinateOfPosition(Position position, Coordinate newCoordinate);
-
-    public abstract void updatePlayerIdOfPosition(Position position, int playerId);
+    public abstract void updateCoordinate(Position position, Coordinate newCoordinate);
 }

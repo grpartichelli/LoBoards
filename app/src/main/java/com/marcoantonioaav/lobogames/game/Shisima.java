@@ -58,7 +58,7 @@ public class Shisima extends GenericGame {
     }
 
     @Override
-    public Move getPlayerMove(Position startPosition, Position endPosition, int playerId) {
+    public Move getPlayerMove(String startPositionId, String endPositionId, int playerId) {
         return null;
     }
 

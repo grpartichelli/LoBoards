@@ -1,6 +1,8 @@
 package com.marcoantonioaav.lobogames.board;
 
 import android.graphics.drawable.Drawable;
+import com.marcoantonioaav.lobogames.move.Movement;
+import com.marcoantonioaav.lobogames.player.Player;
 import com.marcoantonioaav.lobogames.position.Coordinate;
 import com.marcoantonioaav.lobogames.position.Line;
 import com.marcoantonioaav.lobogames.position.Position;
@@ -35,9 +37,30 @@ public class GenericBoard extends Board {
     ) {
         super(image, paddingPercentageHorizontal, paddingPercentageVertical, positionRadiusScale);
         for (Position position: positions) {
-            this.positionsMap.put(position.getLabel(), position);
+            this.positionsMap.put(position.getId(), position);
         }
+        this.positionsMap.put("", Position.instanceOutOfBoard());
         this.lines = lines;
+    }
+
+    @Override
+    public void applyMovement(Movement movement) {
+        if (movement == null) {
+            return;
+        }
+
+        Position startPosition = this.findPositionById(movement.getStartPositionId());
+        Position endPosition = this.findPositionById(movement.getEndPositionId());
+
+        if (!startPosition.isOutOfBoard()) {
+            startPosition.setPlayerId(Player.EMPTY);
+            this.positionsMap.put(startPosition.getId(), startPosition);
+        }
+
+        if (!endPosition.isOutOfBoard()) {
+            endPosition.setPlayerId(movement.getPlayerId());
+            this.positionsMap.put(endPosition.getId(), endPosition);
+        }
     }
 
     @Override
@@ -67,16 +90,39 @@ public class GenericBoard extends Board {
     }
 
     @Override
-    public void updateCoordinateOfPosition(Position position, Coordinate newCoordinate) {
-        Position positionToUpdate = positionsMap.get(position.getLabel());
+    public void updateCoordinate(Position position, Coordinate newCoordinate) {
+        Position positionToUpdate = positionsMap.get(position.getId());
         positionToUpdate.setCoordinate(newCoordinate);
-        positionsMap.put(positionToUpdate.getLabel(), positionToUpdate);
+        positionsMap.put(positionToUpdate.getId(), positionToUpdate);
     }
 
-    @Override
-    public void updatePlayerIdOfPosition(Position position, int playerId) {
-        Position positionToUpdate = positionsMap.get(position.getLabel());
-        positionToUpdate.setPlayerId(playerId);
-        positionsMap.put(positionToUpdate.getLabel(), positionToUpdate);
+    public boolean hasAnyEmptyConnectedPositions(Position position) {
+        for (String connectedPositionId: position.getConnectedPositionsIds()) {
+            Position connectedPosition = this.positionsMap.get(connectedPositionId);
+            if (connectedPosition.getPlayerId() == Player.EMPTY) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    public List<Position> findConnectedPositionsForPlayerId(Position position, int playerId) {
+        List<Position> connectedPositionsOfPlayer = new ArrayList<>();
+        for (String connectedPositionId: position.getConnectedPositionsIds()) {
+            Position connectedPosition = positionsMap.get(connectedPositionId);
+            if (connectedPosition.getPlayerId() == playerId) {
+                connectedPositionsOfPlayer.add(connectedPosition);
+            }
+        }
+        return connectedPositionsOfPlayer;
+    }
+
+    public List<Position> findEmptyConnectedPositions(Position position) {
+        return findConnectedPositionsForPlayerId(position, Player.EMPTY);
+    }
+
+    public Position findPositionById(String id) {
+        return this.positionsMap.get(id);
     }
 }

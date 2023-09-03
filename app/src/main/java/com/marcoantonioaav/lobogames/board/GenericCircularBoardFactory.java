@@ -7,7 +7,6 @@ import com.marcoantonioaav.lobogames.R;
 import com.marcoantonioaav.lobogames.application.LoBoGames;
 import com.marcoantonioaav.lobogames.position.Coordinate;
 import com.marcoantonioaav.lobogames.position.Position;
-import com.marcoantonioaav.lobogames.utils.TwoWayMap;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,7 +22,7 @@ public class GenericCircularBoardFactory {
     private static final double PADDING_PERCENTAGE_HORIZONTAL = 0.05;
     private static final double PADDING_PERCENTAGE_VERTICAL = 0.08;
     private static final double POSITION_RADIUS_SCALE = (double) 1 / 18;
-    private static final List<Position> positions = new ArrayList<>();
+    private static final List<Position> POSITIONS = new ArrayList<>();
 
     static {
         Position topLeft = new Position(new Coordinate(188,153), "cima esquerda", 0);
@@ -48,16 +47,19 @@ public class GenericCircularBoardFactory {
         top.addAllConnectedPositions(Arrays.asList(bottomLeft, center, bottomRight));
         bottomRight.addAllConnectedPositions(Arrays.asList(bottom, center, right));
 
-        positions.addAll(Arrays.asList(topLeft, top, topRight, left, center, right, bottomLeft, bottom, bottomRight));
+        POSITIONS.addAll(Arrays.asList(topLeft, top, topRight, left, center, right, bottomLeft, bottom, bottomRight));
     }
 
     public static GenericBoard from(List<Integer> initialPlayerIds) {
-        if (initialPlayerIds.size() != positions.size()) {
-            throw new IllegalArgumentException("Expected initial playerIds of size " + positions.size());
+        if (initialPlayerIds.size() != POSITIONS.size()) {
+            throw new IllegalArgumentException("Expected initial playerIds of size " + POSITIONS.size());
         }
 
-        for (int i = 0; i < positions.size(); i++) {
-            positions.get(i).setPlayerId(initialPlayerIds.get(i));
+        List<Position> positions = new ArrayList<>();
+        for (int i = 0; i < POSITIONS.size(); i++) {
+            Position position = POSITIONS.get(i).copy();
+            position.setPlayerId(initialPlayerIds.get(i));
+            positions.add(position);
         }
 
         return new GenericBoard(
