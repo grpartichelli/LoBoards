@@ -125,4 +125,14 @@ public class GenericBoard extends Board {
     public Position findPositionById(String id) {
         return this.positionsMap.get(id);
     }
+
+    public List<String> findAllPositionsIdsForPlayerId(int playerId) {
+        List<String> positionsForPlayerId = new ArrayList<>();
+        for (Position position: positionsMap.values()) {
+            if (position.getPlayerId() == playerId) {
+                positionsForPlayerId.add(position.getId());
+            }
+        }
+        return positionsForPlayerId;
+    }
 }

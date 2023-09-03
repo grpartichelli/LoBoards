@@ -16,7 +16,6 @@ public class GenericPongHauKiBoardFactory {
 
     private GenericPongHauKiBoardFactory(){}
 
-    private static final Drawable IMAGE = ContextCompat.getDrawable(LoBoGames.getAppContext(), R.drawable.pong_hau_ki);
     private static final double PADDING_PERCENTAGE_HORIZONTAL = 0.05;
     private static final double PADDING_PERCENTAGE_VERTICAL = 0.25;
     private static final double POSITION_RADIUS_SCALE = (double) 1 / 20;
@@ -51,7 +50,7 @@ public class GenericPongHauKiBoardFactory {
         }
 
         return new GenericBoard(
-                IMAGE,
+                ContextCompat.getDrawable(LoBoGames.getAppContext(), R.drawable.pong_hau_ki),
                 PADDING_PERCENTAGE_HORIZONTAL,
                 PADDING_PERCENTAGE_VERTICAL,
                 POSITION_RADIUS_SCALE,
