@@ -196,7 +196,6 @@ public class GameActivity extends AppCompatActivity {
         boardView.setBoard(game.getBoard().copy());
         turn = Player.getRandomId();
         showTurn();
-        boardView.draw();
         isGameRunning = true;
     }
 

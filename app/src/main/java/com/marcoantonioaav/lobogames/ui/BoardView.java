@@ -52,10 +52,6 @@ public class BoardView extends View {
         }
     }
 
-    public void draw() {
-        invalidate();
-    }
-
     public void drawMove(Move move) {
         this.selectedPosition = Position.instanceOutOfBoard();
         this.currentMove = move;
@@ -131,6 +127,7 @@ public class BoardView extends View {
 
     public void setBoard(Board board) {
         this.board = board;
+        invalidate();
     }
 
     public void setCursorColor(int cursorColor) {
