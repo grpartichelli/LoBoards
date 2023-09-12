@@ -26,6 +26,7 @@ public class BoardView extends View {
 
     private Board board;
     private Move currentMove;
+    private int currentMovementIndex = 0;
 
 
     public BoardView(Context context) {
@@ -45,10 +46,12 @@ public class BoardView extends View {
         super.onDraw(canvas);
         drawBoardImage(canvas);
         drawPositions(canvas);
-        if (currentMove != null && !currentMove.getMovements().isEmpty()) {
-            this.board.applyMovement(currentMove.getMovements().get(0));
-            currentMove.removeMomentByIndex(0);
+        if (currentMove != null && currentMovementIndex < currentMove.getMovements().size()) {
+            this.board.applyMovement(currentMove.getMovements().get(currentMovementIndex));
+            currentMovementIndex++;
             postInvalidateDelayed(300);
+        } else {
+            currentMovementIndex = 0;
         }
     }
 
@@ -128,6 +131,11 @@ public class BoardView extends View {
     public void setBoard(Board board) {
         this.board = board;
         invalidate();
+    }
+
+    public void reset() {
+        currentMovementIndex = 0;
+        currentMove = null;
     }
 
     public void setCursorColor(int cursorColor) {

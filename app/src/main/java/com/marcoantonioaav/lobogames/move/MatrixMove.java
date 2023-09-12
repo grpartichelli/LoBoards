@@ -34,11 +34,6 @@ public class MatrixMove extends Move {
         return movements;
     }
 
-    @Override
-    public void removeMomentByIndex(int index) {
-        this.movements.remove(index);
-    }
-
     public int getRemovalCount(MatrixBoard board) {
         int count = 0;
         for(MatrixMovement movement : movements)

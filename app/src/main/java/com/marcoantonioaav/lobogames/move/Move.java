@@ -13,7 +13,6 @@ public abstract class Move {
     }
 
     public abstract List<Movement> getMovements();
-    public abstract void removeMomentByIndex(int index);
 
     @NotNull
     @Override

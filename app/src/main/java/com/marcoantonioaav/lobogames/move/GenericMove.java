@@ -16,12 +16,6 @@ public class GenericMove extends Move {
         return new ArrayList<>(this.movements);
     }
 
-    @Override
-    public void removeMomentByIndex(int index) {
-        this.movements.remove(index);
-    }
-
-
     public void addMovement(GenericMovement movement) {
         this.movements.add(movement);
     }

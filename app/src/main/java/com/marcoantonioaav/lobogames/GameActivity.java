@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
@@ -18,6 +19,7 @@ import com.marcoantonioaav.lobogames.game.Game;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.player.Human;
 import com.marcoantonioaav.lobogames.player.Player;
+import com.marcoantonioaav.lobogames.player.ReplayPlayer;
 import com.marcoantonioaav.lobogames.player.agent.MinimaxAgent;
 import com.marcoantonioaav.lobogames.position.Position;
 
@@ -42,6 +44,11 @@ public class GameActivity extends AppCompatActivity {
     private Player player2;
     private boolean isGameRunning;
 
+    private boolean isReplay;
+    private final ReplayPlayer replayPlayer1 = new ReplayPlayer(Player.PLAYER_1);
+    private final ReplayPlayer replayPlayer2= new ReplayPlayer(Player.PLAYER_2);
+    private Button replay;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,12 +58,7 @@ public class GameActivity extends AppCompatActivity {
 
         game = PreGameActivity.GAMES.get(this.getIntent().getExtras().get(PreGameActivity.GAME_NAME));
         setTitle(game.getName());
-        player1 = new Human(Player.PLAYER_1);
-        if ((boolean) this.getIntent().getExtras().get(PreGameActivity.IS_MULTIPLAYER)) {
-            player2 = new Human(Player.PLAYER_2);
-        } else {
-            player2 = new MinimaxAgent(Player.PLAYER_2, (String) this.getIntent().getExtras().get(PreGameActivity.DIFFICULTY));
-        }
+        updatePlayers();
 
         // board
         boardView = findViewById(R.id.boardView);
@@ -72,9 +74,19 @@ public class GameActivity extends AppCompatActivity {
         // status
         status = findViewById(R.id.status);
 
+        // replay
+        replay = findViewById(R.id.replay);
+        replay.setOnClickListener(view -> {
+            isReplay = true;
+            initializeGame();
+        });
+
         // play again
         playAgain = findViewById(R.id.playAgain);
-        playAgain.setOnClickListener(view -> initializeGame());
+        playAgain.setOnClickListener(view -> {
+            isReplay = false;
+            initializeGame();
+        });
 
         // back
         back = findViewById(R.id.back);
@@ -84,6 +96,14 @@ public class GameActivity extends AppCompatActivity {
         new Thread(GameActivity.this::gameLoop).start();
     }
 
+    private void updatePlayers() {
+        player1 = new Human(Player.PLAYER_1);
+        if ((boolean) this.getIntent().getExtras().get(PreGameActivity.IS_MULTIPLAYER)) {
+            player2 = new Human(Player.PLAYER_2);
+        } else {
+            player2 = new MinimaxAgent(Player.PLAYER_2, (String) this.getIntent().getExtras().get(PreGameActivity.DIFFICULTY));
+        }
+    }
 
     private void setUpButtons() {
 
@@ -154,6 +174,7 @@ public class GameActivity extends AppCompatActivity {
                     if (game.isLegalMove(move)) {
                         makeMove(move);
                         if (game.isTerminalState()) {
+                            runOnUiThread(() -> replay.setVisibility(View.VISIBLE));
                             endGame();
                         }
                     } else {
@@ -168,6 +189,14 @@ public class GameActivity extends AppCompatActivity {
         if (move == null) {
             return;
         }
+        if (!isReplay) {
+            if (move.getPlayerId() == Player.PLAYER_1) {
+                replayPlayer1.addMove(move);
+            } else {
+                replayPlayer2.addMove(move );
+            }
+        }
+
         game.getBoard().applyMove(move);
         runOnUiThread(() -> boardView.announceForAccessibility(move.toString()));
         runOnUiThread(() -> boardView.drawMove(move));
@@ -196,12 +225,29 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void initializeGame() {
+        handleReplay();
         game.restart();
+        boardView.reset();
         boardView.setBoard(game.getBoard().copy());
         setUpButtons();
         turn = Player.PLAYER_1;
         showTurn();
         isGameRunning = true;
+    }
+
+    private void handleReplay() {
+        runOnUiThread(() -> replay.setVisibility(View.INVISIBLE));
+        replayPlayer1.reset();
+        replayPlayer2.reset();
+
+        if (isReplay) {
+            player1 = replayPlayer1;
+            player2 = replayPlayer2;
+        } else {
+            replayPlayer1.clearMoves();
+            replayPlayer2.clearMoves();
+            updatePlayers();
+        }
     }
 
     private void showTurn() {

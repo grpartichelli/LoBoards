@@ -54,10 +54,10 @@ public class Shisima extends GenericGame {
                 || positionIds.containsAll(
                         Arrays.asList(GenericCircularBoardFactory.TOP_LEFT, GenericCircularBoardFactory.BOTTOM_RIGHT))
                 || positionIds.containsAll(
-                        Arrays.asList(GenericCircularBoardFactory.TOP_RIGHT, GenericCircularBoardFactory.BOTTOM_LEFT)))
+                        Arrays.asList(GenericCircularBoardFactory.TOP_RIGHT, GenericCircularBoardFactory.BOTTOM_LEFT))
                 || positionIds.containsAll(
                 Arrays.asList(GenericCircularBoardFactory.LEFT, GenericCircularBoardFactory.RIGHT)
-        );
+        ));
 
     }
 
