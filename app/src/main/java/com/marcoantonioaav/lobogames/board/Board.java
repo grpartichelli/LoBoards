@@ -56,7 +56,6 @@ public abstract class Board {
     }
 
     public abstract Board copy();
-
     public abstract List<Line> getLines();
 
     public abstract List<Position> getPositions();
@@ -97,4 +96,6 @@ public abstract class Board {
     }
 
     public abstract void updateCoordinate(Position position, Coordinate newCoordinate);
+
+    public abstract Position findPositionById(String positionId);
 }

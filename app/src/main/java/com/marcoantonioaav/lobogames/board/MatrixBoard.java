@@ -92,17 +92,23 @@ public class MatrixBoard extends Board {
         List<Position> positions = new ArrayList<>();
         for (int x = 0; x < getWidth(); x++) {
             for (int y = 0; y < getHeight(); y++) {
-                Coordinate coord = new Coordinate(x,y);
-                Position position = new Position(
-                        coordinateMapper.get(coord),
-                        MatrixPositionFieldsConverter.resolvePositionId(coord),
-                        MatrixPositionFieldsConverter.resolveAccessibilityOrder(coord)
-                );
-                position.setPlayerId(this.matrix[x][y]);
-                positions.add(position);
+                positions.add(createPositionFromMatrixCoordinate(new Coordinate(x,y)));
             }
         }
         return positions;
+    }
+
+    private Position createPositionFromMatrixCoordinate(Coordinate coord) {
+        if (coord.equals(Coordinate.instanceOutOfBoard())) {
+            return Position.instanceOutOfBoard();
+        }
+        Position position = new Position(
+                coordinateMapper.get(coord),
+                MatrixPositionFieldsConverter.resolvePositionId(coord),
+                MatrixPositionFieldsConverter.resolveAccessibilityOrder(coord)
+        );
+        position.setPlayerId(this.matrix[coord.x()][coord.y()]);
+        return  position;
     }
 
     @Override
@@ -129,5 +135,10 @@ public class MatrixBoard extends Board {
 
     public int valueAt(int x, int y) {
         return this.matrix[x][y];
+    }
+
+    @Override
+    public Position findPositionById(String positionId) {
+        return createPositionFromMatrixCoordinate(MatrixPositionFieldsConverter.resolveMatrixCoordinate(positionId));
     }
 }

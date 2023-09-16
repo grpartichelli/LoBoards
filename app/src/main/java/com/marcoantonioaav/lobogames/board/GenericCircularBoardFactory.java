@@ -35,7 +35,7 @@ public class GenericCircularBoardFactory {
 
     static {
         Position topLeft = new Position(new Coordinate(188,153), TOP_LEFT, 0);
-        Position top = new Position(new Coordinate(485, 0), TOP, 1);
+        Position top = new Position(new Coordinate(485, 50), TOP, 1);
         Position topRight = new Position(new Coordinate(777, 152), TOP_RIGHT, 2);
         Position left = new Position(new Coordinate(46, 441), LEFT, 3);
         Position center = new Position(new Coordinate(485, 438), CENTER, 4);
@@ -53,7 +53,7 @@ public class GenericCircularBoardFactory {
         right.addAllConnectedPositions(Arrays.asList(topRight, center, bottomRight));
 
         bottomLeft.addAllConnectedPositions(Arrays.asList(left, center, bottom));
-        top.addAllConnectedPositions(Arrays.asList(bottomLeft, center, bottomRight));
+        bottom.addAllConnectedPositions(Arrays.asList(bottomLeft, center, bottomRight));
         bottomRight.addAllConnectedPositions(Arrays.asList(bottom, center, right));
 
         POSITIONS.addAll(Arrays.asList(topLeft, top, topRight, left, center, right, bottomLeft, bottom, bottomRight));

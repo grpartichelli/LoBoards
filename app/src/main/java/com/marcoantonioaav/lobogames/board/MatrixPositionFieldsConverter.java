@@ -6,7 +6,7 @@ public class MatrixPositionFieldsConverter {
 
     public static Coordinate resolveMatrixCoordinate(String positionId) {
         if (positionId.isEmpty()) {
-            return  Coordinate.instanceOutOfBoard();
+            return Coordinate.instanceOutOfBoard();
         }
         int x = positionId.charAt(0) - 65;
         int y = (positionId.charAt(1) - '0') - 1;
