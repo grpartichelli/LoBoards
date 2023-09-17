@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.move.Movement;
 import com.marcoantonioaav.lobogames.position.Coordinate;
-import com.marcoantonioaav.lobogames.position.Line;
 import com.marcoantonioaav.lobogames.position.Position;
 
 import java.util.List;
@@ -56,7 +55,6 @@ public abstract class Board {
     }
 
     public abstract Board copy();
-    public abstract List<Line> getLines();
 
     public abstract List<Position> getPositions();
 
@@ -93,9 +91,13 @@ public abstract class Board {
             int newY = (int) (((currentY / imageHeight) * (bottom - top)) + top);
             updateCoordinate(position, new Coordinate(newX, newY));
         }
+        updateCoordinatesBetween(imageWidth, imageHeight, left, top, right, bottom);
     }
 
     public abstract void updateCoordinate(Position position, Coordinate newCoordinate);
 
+    public abstract void updateCoordinatesBetween(double imageWidth, double imageHeight, double left, double top, double right, double bottom);
+
+    public abstract List<Coordinate> findCoordinatesBetween(Position startPosition, Position endPosition);
     public abstract Position findPositionById(String positionId);
 }

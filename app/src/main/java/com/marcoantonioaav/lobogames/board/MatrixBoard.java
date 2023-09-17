@@ -4,11 +4,10 @@ import android.graphics.drawable.Drawable;
 import com.marcoantonioaav.lobogames.move.Movement;
 import com.marcoantonioaav.lobogames.player.Player;
 import com.marcoantonioaav.lobogames.position.Coordinate;
-import com.marcoantonioaav.lobogames.position.Line;
 import com.marcoantonioaav.lobogames.position.Position;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -111,14 +110,15 @@ public class MatrixBoard extends Board {
         return  position;
     }
 
-    @Override
-    public List<Line> getLines() {
-        return Collections.emptyList();
-    }
-
     public void updateCoordinate(Position position, Coordinate newCoordinate) {
         Coordinate matrixCoord = MatrixPositionFieldsConverter.resolveMatrixCoordinate(position.getId());
         coordinateMapper.put(matrixCoord, newCoordinate);
+    }
+
+
+    @Override
+    public void updateCoordinatesBetween(double imageWidth, double imageHeight, double left, double top, double right, double bottom) {
+        // no-op, considers that all connections on matrix boards are straight lines
     }
 
     public boolean isOnLimits(int x, int y) {
@@ -135,6 +135,12 @@ public class MatrixBoard extends Board {
 
     public int valueAt(int x, int y) {
         return this.matrix[x][y];
+    }
+
+    @Override
+    public List<Coordinate> findCoordinatesBetween(Position startPosition, Position endPosition) {
+        // considers that all connections on matrix boards are straight lines
+        return Arrays.asList(startPosition.getCoordinate(), endPosition.getCoordinate());
     }
 
     @Override

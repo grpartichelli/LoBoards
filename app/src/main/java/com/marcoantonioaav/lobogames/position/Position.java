@@ -3,9 +3,6 @@ package com.marcoantonioaav.lobogames.position;
 import androidx.annotation.Nullable;
 import com.marcoantonioaav.lobogames.player.Player;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
 
 public class Position {
@@ -14,7 +11,6 @@ public class Position {
         return new Position(Coordinate.instanceOutOfBoard(), "", -1);
     }
 
-    private List<String> connectedPositionsIds = new ArrayList<>();
     private Coordinate coordinate;
     private final String id;
     private int playerId = Player.EMPTY;
@@ -50,26 +46,9 @@ public class Position {
         this.playerId = playerId;
     }
 
-    public void addAllConnectedPositions(Collection<? extends Position> positions) {
-        List<String> positionsIds = new ArrayList<>();
-        for (Position position: positions) {
-            positionsIds.add(position.getId());
-        }
-        this.connectedPositionsIds.addAll(positionsIds);
-    }
-
-    public List<String> getConnectedPositionsIds() {
-        return connectedPositionsIds;
-    }
-
-    public void setConnectedPositionsIds(List<String> connectedPositionsIds) {
-        this.connectedPositionsIds = connectedPositionsIds;
-    }
-
     public Position copy() {
         Position newPosition = new Position(this.coordinate.copy(), this.id, this.accessibilityOrder);
         newPosition.setPlayerId(this.getPlayerId());
-        newPosition.setConnectedPositionsIds(new ArrayList<>(this.getConnectedPositionsIds()));
         return newPosition;
     }
 
@@ -91,14 +70,5 @@ public class Position {
 
     public boolean isOutOfBoard() {
         return this.coordinate.equals(Coordinate.instanceOutOfBoard());
-    }
-
-    public boolean isConnectedTo(Position other) {
-        for (String connectedPositionId: this.connectedPositionsIds) {
-            if (connectedPositionId.equals(other.getId())) {
-                return true;
-            }
-        }
-        return false;
     }
 }

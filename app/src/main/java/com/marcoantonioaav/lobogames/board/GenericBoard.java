@@ -3,11 +3,12 @@ package com.marcoantonioaav.lobogames.board;
 import android.graphics.drawable.Drawable;
 import com.marcoantonioaav.lobogames.move.Movement;
 import com.marcoantonioaav.lobogames.player.Player;
+import com.marcoantonioaav.lobogames.position.Connection;
 import com.marcoantonioaav.lobogames.position.Coordinate;
-import com.marcoantonioaav.lobogames.position.Line;
 import com.marcoantonioaav.lobogames.position.Position;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,17 +16,7 @@ import java.util.Map;
 public class GenericBoard extends Board {
 
     private final Map<String, Position> positionsMap = new HashMap<>();
-    private final List<Line> lines;
-
-    public GenericBoard(
-            Drawable image,
-            double paddingPercentage,
-            double positionRadiusScale,
-            List<Position> positions,
-            List<Line> lines
-    ) {
-        this(image, paddingPercentage, paddingPercentage, positionRadiusScale, positions, lines);
-    }
+    private final List<Connection> connections = new ArrayList<>();
 
     public GenericBoard(
             Drawable image,
@@ -33,14 +24,14 @@ public class GenericBoard extends Board {
             double paddingPercentageVertical,
             double positionRadiusScale,
             List<Position> positions,
-            List<Line> lines
+            List<Connection> connections
     ) {
         super(image, paddingPercentageHorizontal, paddingPercentageVertical, positionRadiusScale);
         for (Position position: positions) {
             this.positionsMap.put(position.getId(), position);
         }
         this.positionsMap.put("", Position.instanceOutOfBoard());
-        this.lines = lines;
+        this.connections.addAll(connections);
     }
 
     @Override
@@ -69,19 +60,18 @@ public class GenericBoard extends Board {
         for (Position position: this.positionsMap.values()) {
             copiedPositions.add(position.copy());
         }
+        List<Connection> copiedConnections =  new ArrayList<>();
+        for (Connection connection: this.connections) {
+            copiedConnections.add(connection.copy());
+        }
         return new GenericBoard(
                 this.image,
                 this.paddingPercentageHorizontal,
                 this.paddingPercentageVertical,
                 this.positionRadiusScale,
                 copiedPositions,
-                new ArrayList<>(this.lines)
+                copiedConnections
         );
-    }
-
-    @Override
-    public List<Line> getLines() {
-        return this.lines;
     }
 
     @Override
@@ -96,21 +86,50 @@ public class GenericBoard extends Board {
         positionsMap.put(positionToUpdate.getId(), positionToUpdate);
     }
 
-    public boolean hasAnyEmptyConnectedPositions(Position position) {
-        for (String connectedPositionId: position.getConnectedPositionsIds()) {
-            Position connectedPosition = this.positionsMap.get(connectedPositionId);
-            if (connectedPosition.getPlayerId() == Player.EMPTY) {
+    @Override
+    public void updateCoordinatesBetween(double imageWidth, double imageHeight, double left, double top, double right, double bottom) {
+        for (Connection connection: connections) {
+            List<Coordinate> newCoordinatesBetween = new ArrayList<>();
+            for (Coordinate coordinate: connection.getCoordinatesBetween()) {
+                double currentX = coordinate.x();
+                double currentY = coordinate.y();
+                int newX = (int) (((currentX / imageWidth) * (right - left)) + left);
+                int newY = (int) (((currentY / imageHeight) * (bottom - top)) + top);
+                newCoordinatesBetween.add(new Coordinate(newX, newY));
+            }
+            connection.getCoordinatesBetween().clear();
+            connection.getCoordinatesBetween().addAll(newCoordinatesBetween);
+        }
+    }
+
+    @Override
+    public List<Coordinate> findCoordinatesBetween(Position startPosition, Position endPosition) {
+        for (Connection connection: connections) {
+            if (connection.getStartPositionId().equals(startPosition.getId())) {
+                return connection.getCoordinatesBetween();
+            }
+        }
+        return Arrays.asList(startPosition.getCoordinate(), endPosition.getCoordinate());
+    }
+
+    public boolean areConnected(Position position, Position otherPosition) {
+        for (Connection connection: connections) {
+            if (connection.getStartPositionId().equals(position.getId()) && connection.getEndPositionId().equals(otherPosition.getId())
+            || connection.getStartPositionId().equals(otherPosition.getId()) && connection.getEndPositionId().equals(position.getId())) {
                 return true;
             }
         }
         return false;
     }
 
-
     public List<Position> findConnectedPositionsForPlayerId(Position position, int playerId) {
         List<Position> connectedPositionsOfPlayer = new ArrayList<>();
-        for (String connectedPositionId: position.getConnectedPositionsIds()) {
-            Position connectedPosition = positionsMap.get(connectedPositionId);
+        for (Connection connection: connections) {
+            if (!connection.getStartPositionId().equals(position.getId())) {
+                continue;
+            }
+
+            Position connectedPosition = positionsMap.get(connection.getEndPositionId());
             if (connectedPosition.getPlayerId() == playerId) {
                 connectedPositionsOfPlayer.add(connectedPosition);
             }
@@ -120,6 +139,10 @@ public class GenericBoard extends Board {
 
     public List<Position> findEmptyConnectedPositions(Position position) {
         return findConnectedPositionsForPlayerId(position, Player.EMPTY);
+    }
+
+    public boolean hasAnyEmptyConnectedPositions(Position position) {
+        return !findEmptyConnectedPositions(position).isEmpty();
     }
 
     public Position findPositionById(String id) {

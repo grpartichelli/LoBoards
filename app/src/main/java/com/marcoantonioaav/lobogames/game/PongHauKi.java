@@ -66,7 +66,7 @@ public class PongHauKi extends GenericGame {
 
             if (startPosition.isOutOfBoard()
                 || endPosition.isOutOfBoard()
-                || !startPosition.isConnectedTo(endPosition)
+                || !this.board.areConnected(startPosition, endPosition)
                 || startPosition.getPlayerId() != movement.getPlayerId()
                 || endPosition.getPlayerId() != Player.EMPTY
             ) {
@@ -95,7 +95,7 @@ public class PongHauKi extends GenericGame {
         Position startPosition = this.board.findPositionById(startPositionId);
         Position endPosition = this.board.findPositionById(endPositionId);
 
-        if (!startPosition.isConnectedTo(endPosition)) {
+        if (!this.board.areConnected(startPosition, endPosition)) {
             List<Position> possibleStarts = this.board.findConnectedPositionsForPlayerId(endPosition, playerId);
             if (possibleStarts.size() == 1) {
                 startPosition = possibleStarts.get(0);

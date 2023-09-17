@@ -3,6 +3,7 @@ package com.marcoantonioaav.lobogames.board;
 import androidx.core.content.ContextCompat;
 import com.marcoantonioaav.lobogames.R;
 import com.marcoantonioaav.lobogames.application.LoBoGames;
+import com.marcoantonioaav.lobogames.position.Connection;
 import com.marcoantonioaav.lobogames.position.Coordinate;
 import com.marcoantonioaav.lobogames.position.Position;
 
@@ -19,11 +20,12 @@ public class GenericCircularBoardFactory {
     private static final double PADDING_PERCENTAGE_HORIZONTAL = 0.05;
     private static final double PADDING_PERCENTAGE_VERTICAL = 0.08;
     private static final double POSITION_RADIUS_SCALE = (double) 1 / 18;
+    private static final List<Connection> CONNECTIONS = new ArrayList<>();
     private static final List<Position> POSITIONS = new ArrayList<>();
 
     public static final String TOP_LEFT = "cima esquerda";
     public static final String TOP = "cima";
-    public static final String TOP_RIGHT= "cima direita";
+    public static final String TOP_RIGHT = "cima direita";
 
     public static final String LEFT = "esquerda";
     public static final String CENTER = "centro";
@@ -34,7 +36,7 @@ public class GenericCircularBoardFactory {
     public static final String BOTTOM_RIGHT = "baixo direita";
 
     static {
-        Position topLeft = new Position(new Coordinate(188,153), TOP_LEFT, 0);
+        Position topLeft = new Position(new Coordinate(188, 153), TOP_LEFT, 0);
         Position top = new Position(new Coordinate(485, 50), TOP, 1);
         Position topRight = new Position(new Coordinate(777, 152), TOP_RIGHT, 2);
         Position left = new Position(new Coordinate(46, 441), LEFT, 3);
@@ -44,19 +46,25 @@ public class GenericCircularBoardFactory {
         Position bottom = new Position(new Coordinate(484, 843), BOTTOM, 5);
         Position bottomRight = new Position(new Coordinate(775, 725), BOTTOM_RIGHT, 7);
 
-        topLeft.addAllConnectedPositions(Arrays.asList(left, center, top));
-        top.addAllConnectedPositions(Arrays.asList(topLeft, center, topRight));
-        topRight.addAllConnectedPositions(Arrays.asList(top, center, right));
-
-        left.addAllConnectedPositions(Arrays.asList(topLeft, center, bottomLeft));
-        center.addAllConnectedPositions(Arrays.asList(topLeft, left, topRight, bottomLeft, right, bottomRight, bottom, top));
-        right.addAllConnectedPositions(Arrays.asList(topRight, center, bottomRight));
-
-        bottomLeft.addAllConnectedPositions(Arrays.asList(left, center, bottom));
-        bottom.addAllConnectedPositions(Arrays.asList(bottomLeft, center, bottomRight));
-        bottomRight.addAllConnectedPositions(Arrays.asList(bottom, center, right));
-
         POSITIONS.addAll(Arrays.asList(topLeft, top, topRight, left, center, right, bottomLeft, bottom, bottomRight));
+
+        CONNECTIONS.addAll(Arrays.asList(
+            new Connection(topLeft, left), new Connection(topLeft, center), new Connection(topLeft, top),
+            new Connection(top, topLeft), new Connection(top, center), new Connection(top, topRight),
+            new Connection(topRight, top), new Connection(topRight, center), new Connection(topRight, right),
+
+            new Connection(bottomLeft, left), new Connection(bottomLeft, center), new Connection(bottomLeft, bottom),
+            new Connection(bottom, bottomLeft), new Connection(bottom, center), new Connection(bottom, bottomRight),
+            new Connection(bottomRight, bottom), new Connection(bottomRight, center), new Connection(bottomRight, right),
+
+            new Connection(left, topLeft), new Connection(left, center), new Connection(left, bottomLeft),
+            new Connection(right, topRight), new Connection(right, center), new Connection(right, bottomRight),
+
+            new Connection(center, topLeft), new Connection(center, top), new Connection(center, topRight),
+            new Connection(center, left), new Connection(center, right),
+            new Connection(center, bottomLeft), new Connection(center, bottom), new Connection(center, bottomRight)
+            )
+        );
     }
 
     public static GenericBoard from(List<Integer> initialPlayerIds) {
@@ -71,13 +79,18 @@ public class GenericCircularBoardFactory {
             positions.add(position);
         }
 
+        List<Connection> connections = new ArrayList<>();
+        for (Connection connection : CONNECTIONS) {
+            connections.add(connection.copy());
+        }
+
         return new GenericBoard(
                 ContextCompat.getDrawable(LoBoGames.getAppContext(), R.drawable.circular_board),
                 PADDING_PERCENTAGE_HORIZONTAL,
                 PADDING_PERCENTAGE_VERTICAL,
                 POSITION_RADIUS_SCALE,
                 positions,
-                Collections.emptyList()
+                connections
         );
     }
 }
