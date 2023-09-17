@@ -8,12 +8,8 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import com.marcoantonioaav.lobogames.R;
 import com.marcoantonioaav.lobogames.board.Board;
-import com.marcoantonioaav.lobogames.move.GenericMovement;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.move.Movement;
 import com.marcoantonioaav.lobogames.player.Player;
@@ -29,13 +25,15 @@ public class BoardView extends View {
     private int player1Color = Color.GREEN;
     private int player2Color = Color.RED;
     private final Paint paint = new Paint();
-
     private Board board;
+
     private final List<Movement> movements = new ArrayList<>();
     private int currentMovementIndex = 0;
-    private Position movingPosition = Position.instanceOutOfBoard();
-    private int i = 0;
-    private static final int MAX_I = 30;
+
+    private int currentAnimationStep = 0;
+    private static final int ANIMATION_DURATION_IN_MS = 300;
+    private static final int ANIMATION_STEPS_TOTAL = 30;
+    private Position animatingPosition = Position.instanceOutOfBoard();
 
     public BoardView(Context context) {
         super(context);
@@ -55,38 +53,49 @@ public class BoardView extends View {
         drawBoardImage(canvas);
         drawPositions(canvas);
 
-        // TODO: Refactor this
         if (currentMovementIndex < movements.size()) {
             Movement movement = movements.get(currentMovementIndex);
-
             Position startPosition = board.findPositionById(movement.getStartPositionId());
             Position endPosition = board.findPositionById(movement.getEndPositionId());
 
-            double progress = i / (double) MAX_I;
-            double startX = startPosition.getCoordinate().x();
-            double endX = endPosition.getCoordinate().x();
-            int movingPositionX = (int) (startX + ((endX - startX) * progress));
-
-            double startY = startPosition.getCoordinate().y();
-            double endY = endPosition.getCoordinate().y();
-            int movingPositionY = (int) (startY + ((endY - startY) * progress));
-
-            movingPosition = new Position(
-                    new Coordinate(movingPositionX, movingPositionY),
-                    startPosition.getId(),
-                    startPosition.getAccessibilityOrder()
-            );
-            movingPosition.setPlayerId(startPosition.getPlayerId());
-
-            i++;
-            if (i >= MAX_I) {
-                movingPosition = Position.instanceOutOfBoard();
+            if (startPosition.isOutOfBoard()) {
+                // no animating necessary
                 this.board.applyMovement(movement);
                 currentMovementIndex++;
-                i = 0;
+                postInvalidateDelayed(ANIMATION_DURATION_IN_MS);
+                return;
             }
-            postInvalidateDelayed(10);
+
+            animatingPosition = calculateAnimatingPosition(startPosition, endPosition);
+            if (ANIMATION_STEPS_TOTAL <= currentAnimationStep) {
+                this.board.applyMovement(movement);
+                currentMovementIndex++;
+                currentAnimationStep = 0;
+                animatingPosition = Position.instanceOutOfBoard();
+            } else {
+                currentAnimationStep++;
+            }
+            postInvalidateDelayed(ANIMATION_DURATION_IN_MS / ANIMATION_STEPS_TOTAL);
         }
+    }
+
+    private Position calculateAnimatingPosition(Position startPosition, Position endPosition) {
+        double progress = currentAnimationStep / (double) ANIMATION_STEPS_TOTAL;
+        double startX = startPosition.getCoordinate().x();
+        double endX = endPosition.getCoordinate().x();
+        int movingPositionX = (int) (startX + ((endX - startX) * progress));
+
+        double startY = startPosition.getCoordinate().y();
+        double endY = endPosition.getCoordinate().y();
+        int movingPositionY = (int) (startY + ((endY - startY) * progress));
+
+        Position newAnimatingPosition = new Position(
+                new Coordinate(movingPositionX, movingPositionY),
+                startPosition.getId(),
+                startPosition.getAccessibilityOrder()
+        );
+        newAnimatingPosition.setPlayerId(startPosition.getPlayerId());
+        return newAnimatingPosition;
     }
 
     public void drawMove(Move move) {
@@ -109,7 +118,7 @@ public class BoardView extends View {
         float selectedPositionBorderRadius = getSelectedPositionBorderRadius();
 
         for (Position position: this.board.getPositions()) {
-            position = movingPosition.equals(position) ? movingPosition : position;
+            position = animatingPosition.equals(position) ? animatingPosition : position;
 
             if (position.getPlayerId() != Player.EMPTY) {
                 // paint position border
@@ -172,6 +181,8 @@ public class BoardView extends View {
     }
 
     public void reset() {
+        animatingPosition = Position.instanceOutOfBoard();
+        currentAnimationStep = 0;
         currentMovementIndex = 0;
         movements.clear();
     }

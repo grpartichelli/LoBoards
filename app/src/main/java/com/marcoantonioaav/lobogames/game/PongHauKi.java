@@ -90,8 +90,6 @@ public class PongHauKi extends GenericGame {
         return moves;
     }
 
-    // TODO: Fix computer
-
     @Override
     public Move getPlayerMove(String startPositionId, String endPositionId, int playerId) {
         Position startPosition = this.board.findPositionById(startPositionId);

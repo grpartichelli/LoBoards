@@ -49,7 +49,7 @@ public class GenericCircularBoardFactory {
         topRight.addAllConnectedPositions(Arrays.asList(top, center, right));
 
         left.addAllConnectedPositions(Arrays.asList(topLeft, center, bottomLeft));
-        center.addAllConnectedPositions(Arrays.asList(left, right));
+        center.addAllConnectedPositions(Arrays.asList(topLeft, left, topRight, bottomLeft, right, bottomRight, bottom, top));
         right.addAllConnectedPositions(Arrays.asList(topRight, center, bottomRight));
 
         bottomLeft.addAllConnectedPositions(Arrays.asList(left, center, bottom));
