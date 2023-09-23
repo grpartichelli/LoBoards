@@ -87,7 +87,7 @@ public class GenericBoard extends Board {
     }
 
     @Override
-    public void scaleCoordinatesBetween(double imageWidth, double imageHeight, double left, double top, double right, double bottom) {
+    public void updateCoordinatesBetween(double imageWidth, double imageHeight, double left, double top, double right, double bottom) {
         for (Connection connection: connections) {
             List<Coordinate> newCoordinatesBetween = new ArrayList<>();
             for (Coordinate coordinate: connection.getCoordinatesBetween()) {

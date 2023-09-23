@@ -92,11 +92,7 @@ public class BoardView extends View {
                 currentCoordinatePairProgress
         );
 
-        Position newAnimatingPosition = new Position(
-                animatingCoordinate,
-                startPosition.getId(),
-                startPosition.getAccessibilityOrder()
-        );
+        Position newAnimatingPosition = new Position(animatingCoordinate, startPosition.getId(), startPosition.getAccessibilityOrder());
         newAnimatingPosition.setPlayerId(startPosition.getPlayerId());
         return newAnimatingPosition;
     }
