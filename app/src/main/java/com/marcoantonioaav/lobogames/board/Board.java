@@ -91,12 +91,12 @@ public abstract class Board {
             int newY = (int) (((currentY / imageHeight) * (bottom - top)) + top);
             updateCoordinate(position, new Coordinate(newX, newY));
         }
-        updateCoordinatesBetween(imageWidth, imageHeight, left, top, right, bottom);
+        scaleCoordinatesBetween(imageWidth, imageHeight, left, top, right, bottom);
     }
 
     public abstract void updateCoordinate(Position position, Coordinate newCoordinate);
 
-    public abstract void updateCoordinatesBetween(double imageWidth, double imageHeight, double left, double top, double right, double bottom);
+    public abstract void scaleCoordinatesBetween(double imageWidth, double imageHeight, double left, double top, double right, double bottom);
 
     public abstract List<Coordinate> findCoordinatesBetween(Position startPosition, Position endPosition);
     public abstract Position findPositionById(String positionId);

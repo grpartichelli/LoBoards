@@ -117,7 +117,7 @@ public class MatrixBoard extends Board {
 
 
     @Override
-    public void updateCoordinatesBetween(double imageWidth, double imageHeight, double left, double top, double right, double bottom) {
+    public void scaleCoordinatesBetween(double imageWidth, double imageHeight, double left, double top, double right, double bottom) {
         // no-op, considers that all connections on matrix boards are straight lines
     }
 

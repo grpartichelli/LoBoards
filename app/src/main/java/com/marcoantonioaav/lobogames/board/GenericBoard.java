@@ -87,7 +87,7 @@ public class GenericBoard extends Board {
     }
 
     @Override
-    public void updateCoordinatesBetween(double imageWidth, double imageHeight, double left, double top, double right, double bottom) {
+    public void scaleCoordinatesBetween(double imageWidth, double imageHeight, double left, double top, double right, double bottom) {
         for (Connection connection: connections) {
             List<Coordinate> newCoordinatesBetween = new ArrayList<>();
             for (Coordinate coordinate: connection.getCoordinatesBetween()) {
@@ -105,7 +105,8 @@ public class GenericBoard extends Board {
     @Override
     public List<Coordinate> findCoordinatesBetween(Position startPosition, Position endPosition) {
         for (Connection connection: connections) {
-            if (connection.getStartPositionId().equals(startPosition.getId())) {
+            if (connection.getStartPositionId().equals(startPosition.getId()) 
+            && connection.getEndPositionId().equals(endPosition.getId())) {
                 return connection.getCoordinatesBetween();
             }
         }

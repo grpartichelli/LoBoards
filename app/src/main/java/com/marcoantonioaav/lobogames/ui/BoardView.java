@@ -66,13 +66,13 @@ public class BoardView extends View {
                 return;
             }
 
-            animatingPosition = calculateAnimatingPosition(startPosition, endPosition);
             if (ANIMATION_STEPS_TOTAL <= currentAnimationStep) {
                 this.board.applyMovement(movement);
                 currentMovementIndex++;
-                currentAnimationStep = 0;
                 animatingPosition = Position.instanceOutOfBoard();
+                currentAnimationStep = 0;
             } else {
+                animatingPosition = calculateAnimatingPosition(startPosition, endPosition);
                 currentAnimationStep++;
             }
             postInvalidateDelayed(ANIMATION_DURATION_IN_MS / ANIMATION_STEPS_TOTAL);
@@ -80,22 +80,41 @@ public class BoardView extends View {
     }
 
     private Position calculateAnimatingPosition(Position startPosition, Position endPosition) {
-        double progress = currentAnimationStep / (double) ANIMATION_STEPS_TOTAL;
-        double startX = startPosition.getCoordinate().x();
-        double endX = endPosition.getCoordinate().x();
-        int movingPositionX = (int) (startX + ((endX - startX) * progress));
+        List<Coordinate> coordinatesBetween = this.board.findCoordinatesBetween(startPosition, endPosition);
+        double numberOfStepsPerCoordinatePair = (double) ANIMATION_STEPS_TOTAL / (coordinatesBetween.size() - 1);
 
-        double startY = startPosition.getCoordinate().y();
-        double endY = endPosition.getCoordinate().y();
-        int movingPositionY = (int) (startY + ((endY - startY) * progress));
+        int currentCoordinatePairStartIndex = (int) (currentAnimationStep / numberOfStepsPerCoordinatePair);
+        double currentCoordinatePairProgress = (currentAnimationStep % numberOfStepsPerCoordinatePair) / numberOfStepsPerCoordinatePair;
+
+        Coordinate animatingCoordinate = calculateCoordinateBetweenCoordinatePairByProgress(
+                coordinatesBetween.get(currentCoordinatePairStartIndex),
+                coordinatesBetween.get(currentCoordinatePairStartIndex + 1),
+                currentCoordinatePairProgress
+        );
 
         Position newAnimatingPosition = new Position(
-                new Coordinate(movingPositionX, movingPositionY),
+                animatingCoordinate,
                 startPosition.getId(),
                 startPosition.getAccessibilityOrder()
         );
         newAnimatingPosition.setPlayerId(startPosition.getPlayerId());
         return newAnimatingPosition;
+    }
+
+    private Coordinate calculateCoordinateBetweenCoordinatePairByProgress(
+            Coordinate startCoordinate,
+            Coordinate endCoordinate,
+            double progress
+    ) {
+        double startX = startCoordinate.x();
+        double endX = endCoordinate.x();
+        int progressPositionX = (int) (startX + ((endX - startX) * progress));
+
+        double startY = startCoordinate.y();
+        double endY = endCoordinate.y();
+        int progressPositionY = (int) (startY + ((endY - startY) * progress));
+
+        return new Coordinate(progressPositionX, progressPositionY);
     }
 
     public void drawMove(Move move) {
