@@ -45,4 +45,13 @@ public class Connection {
         }
         return new Connection(startPositionId, endPositionId, copiedCoordinates);
     }
+
+    public Connection reverseCopy() {
+        List<Coordinate> reversedCopiedCoordinates = new ArrayList<>();
+
+        for (int i = coordinatesBetween.size() - 1; i >= 0; i--) {
+            reversedCopiedCoordinates.add(coordinatesBetween.get(i).copy());
+        }
+        return new Connection(endPositionId, startPositionId, reversedCopiedCoordinates);
+    }
 }

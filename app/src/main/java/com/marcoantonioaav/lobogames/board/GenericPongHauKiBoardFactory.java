@@ -30,14 +30,10 @@ public class GenericPongHauKiBoardFactory {
 
         POSITIONS.addAll(Arrays.asList(topLeft, topRight, center, bottomLeft, bottomRight));
         CONNECTIONS.addAll(Arrays.asList(
-                        new Connection(topLeft, bottomLeft), new Connection(topLeft, center),
-                        new Connection(topRight, bottomRight), new Connection(topRight, center),
-
-                        new Connection(bottomLeft, topLeft), new Connection(bottomLeft, center), new Connection(bottomLeft, bottomRight),
-                        new Connection(bottomRight, topRight), new Connection(bottomRight, center), new Connection(bottomRight, bottomLeft),
-
-                        new Connection(center, topLeft), new Connection(center, topRight),
-                        new Connection(center, bottomLeft), new Connection(center, bottomRight)
+                        new Connection(topLeft, center), new Connection(topRight, center),
+                        new Connection(bottomLeft, center), new Connection(bottomRight, center),
+                        new Connection(topLeft, bottomLeft), new Connection(topRight, bottomRight),
+                        new Connection(bottomLeft, bottomRight)
                 )
         );
     }
@@ -57,6 +53,7 @@ public class GenericPongHauKiBoardFactory {
         List<Connection> connections = new ArrayList<>();
         for (Connection connection : CONNECTIONS) {
             connections.add(connection.copy());
+            connections.add(connection.reverseCopy());
         }
 
         return new GenericBoard(

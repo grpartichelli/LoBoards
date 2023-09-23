@@ -35,6 +35,7 @@ public class PreGameActivity extends AppCompatActivity {
         put(new TsoroYematatuV2().getName(), new TsoroYematatuV2());
         put(new PongHauKi().getName(), new PongHauKi());
         put(new Shisima().getName(), new Shisima());
+        put(new WatermelonChess().getName(), new WatermelonChess());
     }};
 
     @Override

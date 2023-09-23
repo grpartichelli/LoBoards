@@ -49,20 +49,15 @@ public class GenericCircularBoardFactory {
         POSITIONS.addAll(Arrays.asList(topLeft, top, topRight, left, center, right, bottomLeft, bottom, bottomRight));
 
         CONNECTIONS.addAll(Arrays.asList(
-            new Connection(topLeft, left), new Connection(topLeft, center), new Connection(topLeft, top),
-            new Connection(top, topLeft), new Connection(top, center), new Connection(top, topRight),
-            new Connection(topRight, top), new Connection(topRight, center), new Connection(topRight, right),
+            new Connection(topLeft, left), new Connection(topLeft, top),
+            new Connection(topRight, top), new Connection(topRight, right),
 
-            new Connection(bottomLeft, left), new Connection(bottomLeft, center), new Connection(bottomLeft, bottom),
-            new Connection(bottom, bottomLeft), new Connection(bottom, center), new Connection(bottom, bottomRight),
-            new Connection(bottomRight, bottom), new Connection(bottomRight, center), new Connection(bottomRight, right),
+            new Connection(bottomLeft, left), new Connection(bottomLeft, bottom),
+            new Connection(bottomRight, bottom), new Connection(bottomRight, right),
 
-            new Connection(left, topLeft), new Connection(left, center), new Connection(left, bottomLeft),
-            new Connection(right, topRight), new Connection(right, center), new Connection(right, bottomRight),
-
-            new Connection(center, topLeft), new Connection(center, top), new Connection(center, topRight),
-            new Connection(center, left), new Connection(center, right),
-            new Connection(center, bottomLeft), new Connection(center, bottom), new Connection(center, bottomRight)
+            new Connection(left, center), new Connection(right, center),
+            new Connection(bottom, center), new Connection(bottomLeft, center), new Connection(bottomRight, center),
+            new Connection(top, center), new Connection(topLeft, center), new Connection(topRight, center)
             )
         );
     }
@@ -82,6 +77,7 @@ public class GenericCircularBoardFactory {
         List<Connection> connections = new ArrayList<>();
         for (Connection connection : CONNECTIONS) {
             connections.add(connection.copy());
+            connections.add(connection.reverseCopy());
         }
 
         return new GenericBoard(
