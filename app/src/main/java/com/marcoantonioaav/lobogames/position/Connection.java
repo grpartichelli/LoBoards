@@ -11,13 +11,16 @@ public class Connection {
 
     public Connection(Position startPosition, Position endPosition) {
         // constructor used for straight lines
-        this(startPosition, endPosition, Arrays.asList(startPosition.getCoordinate().copy(), endPosition.getCoordinate().copy()));
+        this(startPosition, endPosition, new ArrayList<>());
     }
 
     public Connection(Position startPosition, Position endPosition, List<Coordinate> coordinatesBetween) {
         this.startPositionId = startPosition.getId();
         this.endPositionId = endPosition.getId();
-        this.coordinatesBetween = coordinatesBetween;
+        List<Coordinate> coordinates = new ArrayList<>(coordinatesBetween);
+        coordinates.add(0, startPosition.getCoordinate().copy());
+        coordinates.add(endPosition.getCoordinate().copy());
+        this.coordinatesBetween = coordinates;
     }
 
     private Connection(String startPositionId, String endPositionId, List<Coordinate> coordinatesBetween) {
