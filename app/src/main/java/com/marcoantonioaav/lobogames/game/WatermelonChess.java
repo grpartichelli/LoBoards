@@ -99,6 +99,7 @@ public class WatermelonChess extends GenericGame {
     }
 
     private List<GenericMovement> calculateAllMovements(GenericMovement movement) {
+        Position startPosition = this.board.findPositionById(movement.getStartPositionId());
         Position endPosition = this.board.findPositionById(movement.getEndPositionId());
         List<Position> connectedEnemyPositions = this.board.findConnectedPositionsWithPlayerId(
                 endPosition,
@@ -109,7 +110,10 @@ public class WatermelonChess extends GenericGame {
         for (Position enemyPosition: connectedEnemyPositions) {
             boolean shouldAddMovement = true;
             for (Position connectedPositionToEnemy: this.board.findConnectedPositions(enemyPosition)) {
-                if (connectedPositionToEnemy.getPlayerId() != movement.getPlayerId() && !connectedPositionToEnemy.equals(endPosition)) {
+                if ((connectedPositionToEnemy.getPlayerId() != movement.getPlayerId()
+                    && !connectedPositionToEnemy.equals(endPosition))
+                    || connectedPositionToEnemy.equals(startPosition)
+                ) {
                     shouldAddMovement = false;
                     break;
                 }
@@ -124,6 +128,10 @@ public class WatermelonChess extends GenericGame {
 
     @Override
     public float getHeuristicEvaluationOf(int playerId, int turn) {
-        return MinimaxAgent.evaluateWithPlayouts(this, playerId, turn);
+        int playerPieces = this.board.countPlayerPieces(playerId);
+        int opponentPieces = this.board.countPlayerPieces(Player.getOpponentOf(playerId));
+        int maxPieceCount = 12;
+        return MinimaxAgent.normalizeToEvaluationLimits(playerPieces - opponentPieces, -maxPieceCount, maxPieceCount);
+
     }
 }
