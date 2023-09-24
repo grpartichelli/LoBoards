@@ -1,6 +1,7 @@
 package com.marcoantonioaav.lobogames.game;
 
 import com.marcoantonioaav.lobogames.board.Board;
+import com.marcoantonioaav.lobogames.board.GenericBoard;
 import com.marcoantonioaav.lobogames.board.GenericWatermelonChessBoardFactory;
 import com.marcoantonioaav.lobogames.move.GenericMove;
 import com.marcoantonioaav.lobogames.move.GenericMovement;
@@ -12,7 +13,6 @@ import com.marcoantonioaav.lobogames.position.Position;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class WatermelonChess extends GenericGame {
@@ -47,16 +47,7 @@ public class WatermelonChess extends GenericGame {
 
     @Override
     public boolean isVictory(int playerId) {
-        int opponentPlayerId = Player.getOpponentOf(playerId);
-
-        for (Position position : board.getPositions()) {
-            if (position.getPlayerId() == opponentPlayerId
-            && this.board.hasAnyEmptyConnectedPositions(position)
-            ) {
-                return false;
-            }
-        }
-        return true;
+        return !this.board.hasAnyPositionsWithPlayerId(Player.getOpponentOf(playerId));
     }
 
     @Override
@@ -66,20 +57,15 @@ public class WatermelonChess extends GenericGame {
 
     @Override
     public boolean isLegalMove(Move move) {
-        for (Movement movement : move.getMovements()) {
-            Position startPosition = this.board.findPositionById(movement.getStartPositionId());
-            Position endPosition = this.board.findPositionById(movement.getEndPositionId());
+        Movement movement = move.getMovements().get(0);
+        Position startPosition = this.board.findPositionById(movement.getStartPositionId());
+        Position endPosition = this.board.findPositionById(movement.getEndPositionId());
 
-            if (startPosition.isOutOfBoard()
-                || endPosition.isOutOfBoard()
-                || !this.board.areConnected(startPosition, endPosition)
-                || startPosition.getPlayerId() != movement.getPlayerId()
-                || endPosition.getPlayerId() != Player.EMPTY
-            ) {
-                return false;
-            }
-        }
-        return true;
+        return !startPosition.isOutOfBoard()
+                && !endPosition.isOutOfBoard()
+                && this.board.areConnected(startPosition, endPosition)
+                && startPosition.getPlayerId() == movement.getPlayerId()
+                && endPosition.getPlayerId() == Player.EMPTY;
     }
 
     @Override
@@ -89,7 +75,7 @@ public class WatermelonChess extends GenericGame {
             if (position.getPlayerId() == playerId) {
                 for (Position emptyConnectedPosition : this.board.findEmptyConnectedPositions(position)) {
                     GenericMovement movement = new GenericMovement(position, emptyConnectedPosition, playerId);
-                    moves.add(new GenericMove(playerId, new ArrayList<>(Collections.singletonList(movement))));
+                    moves.add(new GenericMove(playerId, calculateAllMovements(movement)));
                 }
             }
         }
@@ -102,13 +88,38 @@ public class WatermelonChess extends GenericGame {
         Position endPosition = this.board.findPositionById(endPositionId);
 
         if (!this.board.areConnected(startPosition, endPosition)) {
-            List<Position> possibleStarts = this.board.findConnectedPositionsForPlayerId(endPosition, playerId);
+            List<Position> possibleStarts = this.board.findConnectedPositionsWithPlayerId(endPosition, playerId);
             if (possibleStarts.size() == 1) {
                 startPosition = possibleStarts.get(0);
             }
         }
+
         GenericMovement movement = new GenericMovement(startPosition, endPosition, playerId);
-        return new GenericMove(playerId, new ArrayList<>(Collections.singletonList(movement)));
+        return new GenericMove(playerId, calculateAllMovements(movement));
+    }
+
+    private List<GenericMovement> calculateAllMovements(GenericMovement movement) {
+        Position endPosition = this.board.findPositionById(movement.getEndPositionId());
+        List<Position> connectedEnemyPositions = this.board.findConnectedPositionsWithPlayerId(
+                endPosition,
+                Player.getOpponentOf(movement.getPlayerId())
+        );
+        List<GenericMovement> movements = new ArrayList<>();
+        movements.add(movement);
+        for (Position enemyPosition: connectedEnemyPositions) {
+            boolean shouldAddMovement = true;
+            for (Position connectedPositionToEnemy: this.board.findConnectedPositions(enemyPosition)) {
+                if (connectedPositionToEnemy.getPlayerId() != movement.getPlayerId() && !connectedPositionToEnemy.equals(endPosition)) {
+                    shouldAddMovement = false;
+                    break;
+                }
+            }
+
+            if (shouldAddMovement) {
+                movements.add(new GenericMovement(enemyPosition, Position.instanceOutOfBoard(), movement.getPlayerId()));
+            }
+        }
+        return movements;
     }
 
     @Override

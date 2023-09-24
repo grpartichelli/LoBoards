@@ -123,7 +123,18 @@ public class GenericBoard extends Board {
         return false;
     }
 
-    public List<Position> findConnectedPositionsForPlayerId(Position position, int playerId) {
+    public List<Position> findConnectedPositions(Position position) {
+        List<Position> connectedPositionsOfPlayer = new ArrayList<>();
+        for (Connection connection: connections) {
+            if (!connection.getStartPositionId().equals(position.getId())) {
+                continue;
+            }
+            connectedPositionsOfPlayer.add(positionsMap.get(connection.getEndPositionId()));
+        }
+        return connectedPositionsOfPlayer;
+    }
+
+    public List<Position> findConnectedPositionsWithPlayerId(Position position, int playerId) {
         List<Position> connectedPositionsOfPlayer = new ArrayList<>();
         for (Connection connection: connections) {
             if (!connection.getStartPositionId().equals(position.getId())) {
@@ -139,18 +150,14 @@ public class GenericBoard extends Board {
     }
 
     public List<Position> findEmptyConnectedPositions(Position position) {
-        return findConnectedPositionsForPlayerId(position, Player.EMPTY);
-    }
-
-    public boolean hasAnyEmptyConnectedPositions(Position position) {
-        return !findEmptyConnectedPositions(position).isEmpty();
+        return findConnectedPositionsWithPlayerId(position, Player.EMPTY);
     }
 
     public Position findPositionById(String id) {
         return this.positionsMap.get(id);
     }
 
-    public List<String> findAllPositionsIdsForPlayerId(int playerId) {
+    public List<String> findAllPositionsIdsWithPlayerId(int playerId) {
         List<String> positionsForPlayerId = new ArrayList<>();
         for (Position position: positionsMap.values()) {
             if (position.getPlayerId() == playerId) {
@@ -158,5 +165,18 @@ public class GenericBoard extends Board {
             }
         }
         return positionsForPlayerId;
+    }
+
+    public boolean hasAnyEmptyConnectedPositions(Position position) {
+        return !findEmptyConnectedPositions(position).isEmpty();
+    }
+
+    public boolean hasAnyPositionsWithPlayerId(int playerId) {
+        for (Position position: positionsMap.values()) {
+            if (position.getPlayerId() == playerId) {
+                return  true;
+            }
+        }
+        return false;
     }
 }
