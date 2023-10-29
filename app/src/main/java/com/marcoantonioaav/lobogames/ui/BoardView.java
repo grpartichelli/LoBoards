@@ -165,7 +165,7 @@ public class BoardView extends View {
 
     public float getPositionBorderRadius() {
         // NOTE: slightly bigger than radius, shows as a ring around all positions
-        return (float) (getWidth() * this.board.getPositionRadiusScale() * 1.08);
+        return (float) (getWidth() * this.board.getPositionRadiusScale() * 1.09);
     }
 
     public float getSelectedPositionBorderRadius() {
