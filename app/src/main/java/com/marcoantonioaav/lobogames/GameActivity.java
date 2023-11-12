@@ -1,5 +1,6 @@
 package com.marcoantonioaav.lobogames;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -34,6 +35,8 @@ import com.marcoantonioaav.lobogames.ui.BoardView;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -131,6 +134,25 @@ public class GameActivity extends AppCompatActivity {
 
         } catch (Exception e) {
             log(e.getMessage());
+        }
+
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("text/plain");
+        startActivityForResult(intent, 32);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 32){
+            try (InputStream stream = getContentResolver().openInputStream(data.getData())) {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+                String line = reader.readLine();
+                log(line);
+            } catch (Exception e) {
+                log(e.getMessage());
+            }
         }
     }
 
