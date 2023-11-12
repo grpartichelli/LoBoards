@@ -1,11 +1,16 @@
 package com.marcoantonioaav.lobogames;
 
 import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -15,6 +20,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.ViewCompat;
 import com.marcoantonioaav.lobogames.application.LoBoGames;
+import com.marcoantonioaav.lobogames.board.GenericBoard;
 import com.marcoantonioaav.lobogames.game.Game;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.player.Human;
@@ -25,7 +31,12 @@ import com.marcoantonioaav.lobogames.position.Position;
 
 import com.marcoantonioaav.lobogames.ui.BoardButtonDelegate;
 import com.marcoantonioaav.lobogames.ui.BoardView;
+import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -105,8 +116,31 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
+
+    private void readTextFile() {
+
+        try (InputStream stream = getAssets().open("boards/tsoro-yematatu-lobogames-config.txt")) {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+            String line = reader.readLine();
+            JSONObject object = new JSONObject(line);
+            String encodedImage = object.getString("imageUrl").split(",")[1];
+
+            byte[] decodedString = Base64.decode(encodedImage, Base64.DEFAULT);
+            Bitmap imageBitMap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            game.getBoard().setImage(new BitmapDrawable(getResources(), imageBitMap));
+
+        } catch (Exception e) {
+            log(e.getMessage());
+        }
+    }
+
+    private void log(String message) {
+        Log.d("TEST", message);
+    }
+
     private void setUpButtons() {
 
+        readTextFile();
         RelativeLayout buttonsLayout = findViewById(R.id.buttonsLayout);
         for (Button button: positionButtonsMap.values()) {
             buttonsLayout.removeView(button);
