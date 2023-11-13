@@ -1,10 +1,9 @@
 package com.marcoantonioaav.lobogames.game;
 
 import com.marcoantonioaav.lobogames.board.Board;
-import com.marcoantonioaav.lobogames.board.GenericBoard;
-import com.marcoantonioaav.lobogames.board.GenericWatermelonChessBoardFactory;
-import com.marcoantonioaav.lobogames.move.GenericMove;
-import com.marcoantonioaav.lobogames.move.GenericMovement;
+import com.marcoantonioaav.lobogames.board.WatermelonChessBoardFactory;
+import com.marcoantonioaav.lobogames.move.StandardMove;
+import com.marcoantonioaav.lobogames.move.StandardMovement;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.move.Movement;
 import com.marcoantonioaav.lobogames.player.Player;
@@ -15,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class WatermelonChess extends GenericGame {
+public class WatermelonChess extends StandardGame {
     @Override
     public String getName() {
         return "Watermelon Chess";
@@ -23,7 +22,7 @@ public class WatermelonChess extends GenericGame {
 
     @Override
     public Board getInitialBoard() {
-        return GenericWatermelonChessBoardFactory.from(
+        return WatermelonChessBoardFactory.from(
                 Arrays.asList(
                         Player.PLAYER_1, Player.PLAYER_1, Player.PLAYER_1, Player.PLAYER_1,
                         Player.PLAYER_1, Player.EMPTY, Player.PLAYER_1,
@@ -74,8 +73,8 @@ public class WatermelonChess extends GenericGame {
         for (Position position : board.getPositions()) {
             if (position.getPlayerId() == playerId) {
                 for (Position emptyConnectedPosition : this.board.findEmptyConnectedPositions(position)) {
-                    GenericMovement movement = new GenericMovement(position, emptyConnectedPosition, playerId);
-                    moves.add(new GenericMove(playerId, calculateAllMovements(movement)));
+                    StandardMovement movement = new StandardMovement(position, emptyConnectedPosition, playerId);
+                    moves.add(new StandardMove(playerId, calculateAllMovements(movement)));
                 }
             }
         }
@@ -94,18 +93,18 @@ public class WatermelonChess extends GenericGame {
             }
         }
 
-        GenericMovement movement = new GenericMovement(startPosition, endPosition, playerId);
-        return new GenericMove(playerId, calculateAllMovements(movement));
+        StandardMovement movement = new StandardMovement(startPosition, endPosition, playerId);
+        return new StandardMove(playerId, calculateAllMovements(movement));
     }
 
-    private List<GenericMovement> calculateAllMovements(GenericMovement movement) {
+    private List<StandardMovement> calculateAllMovements(StandardMovement movement) {
         Position startPosition = this.board.findPositionById(movement.getStartPositionId());
         Position endPosition = this.board.findPositionById(movement.getEndPositionId());
         List<Position> connectedEnemyPositions = this.board.findConnectedPositionsWithPlayerId(
                 endPosition,
                 Player.getOpponentOf(movement.getPlayerId())
         );
-        List<GenericMovement> movements = new ArrayList<>();
+        List<StandardMovement> movements = new ArrayList<>();
         movements.add(movement);
         for (Position enemyPosition: connectedEnemyPositions) {
             boolean shouldAddMovement = true;
@@ -120,7 +119,7 @@ public class WatermelonChess extends GenericGame {
             }
 
             if (shouldAddMovement) {
-                movements.add(new GenericMovement(enemyPosition, Position.instanceOutOfBoard(), movement.getPlayerId()));
+                movements.add(new StandardMovement(enemyPosition, Position.instanceOutOfBoard(), movement.getPlayerId()));
             }
         }
         return movements;

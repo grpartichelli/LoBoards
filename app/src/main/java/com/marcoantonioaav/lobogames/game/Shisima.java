@@ -1,9 +1,9 @@
 package com.marcoantonioaav.lobogames.game;
 
 import com.marcoantonioaav.lobogames.board.Board;
-import com.marcoantonioaav.lobogames.board.GenericCircularBoardFactory;
-import com.marcoantonioaav.lobogames.move.GenericMove;
-import com.marcoantonioaav.lobogames.move.GenericMovement;
+import com.marcoantonioaav.lobogames.board.CircularBoardFactory;
+import com.marcoantonioaav.lobogames.move.StandardMove;
+import com.marcoantonioaav.lobogames.move.StandardMovement;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.move.Movement;
 import com.marcoantonioaav.lobogames.player.Player;
@@ -17,7 +17,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class Shisima extends GenericGame {
+public class Shisima extends StandardGame {
     @Override
     public String getName() {
         return "Shisima";
@@ -25,7 +25,7 @@ public class Shisima extends GenericGame {
 
     @Override
     public Board getInitialBoard() {
-        return GenericCircularBoardFactory.from(
+        return CircularBoardFactory.from(
                 Arrays.asList(
                         Player.PLAYER_1, Player.EMPTY, Player.PLAYER_2,
                         Player.PLAYER_2, Player.EMPTY, Player.PLAYER_1,
@@ -48,15 +48,15 @@ public class Shisima extends GenericGame {
     public boolean isVictory(int playerId) {
         Set<String> positionIds = new HashSet<>(this.board.findAllPositionsIdsWithPlayerId(playerId));
 
-        return positionIds.contains(GenericCircularBoardFactory.CENTER)
+        return positionIds.contains(CircularBoardFactory.CENTER)
                 && (positionIds.containsAll(
-                        Arrays.asList(GenericCircularBoardFactory.TOP, GenericCircularBoardFactory.BOTTOM))
+                        Arrays.asList(CircularBoardFactory.TOP, CircularBoardFactory.BOTTOM))
                 || positionIds.containsAll(
-                        Arrays.asList(GenericCircularBoardFactory.TOP_LEFT, GenericCircularBoardFactory.BOTTOM_RIGHT))
+                        Arrays.asList(CircularBoardFactory.TOP_LEFT, CircularBoardFactory.BOTTOM_RIGHT))
                 || positionIds.containsAll(
-                        Arrays.asList(GenericCircularBoardFactory.TOP_RIGHT, GenericCircularBoardFactory.BOTTOM_LEFT))
+                        Arrays.asList(CircularBoardFactory.TOP_RIGHT, CircularBoardFactory.BOTTOM_LEFT))
                 || positionIds.containsAll(
-                Arrays.asList(GenericCircularBoardFactory.LEFT, GenericCircularBoardFactory.RIGHT)
+                Arrays.asList(CircularBoardFactory.LEFT, CircularBoardFactory.RIGHT)
         ));
 
     }
@@ -85,8 +85,8 @@ public class Shisima extends GenericGame {
         for (Position position : board.getPositions()) {
             if (position.getPlayerId() == playerId) {
                 for (Position emptyConnectedPosition : this.board.findEmptyConnectedPositions(position)) {
-                    GenericMovement movement = new GenericMovement(position, emptyConnectedPosition, playerId);
-                    moves.add(new GenericMove(playerId, new ArrayList<>(Collections.singletonList(movement))));
+                    StandardMovement movement = new StandardMovement(position, emptyConnectedPosition, playerId);
+                    moves.add(new StandardMove(playerId, new ArrayList<>(Collections.singletonList(movement))));
                 }
             }
         }
@@ -104,8 +104,8 @@ public class Shisima extends GenericGame {
                 startPosition = possibleStarts.get(0);
             }
         }
-        GenericMovement movement = new GenericMovement(startPosition, endPosition, playerId);
-        return new GenericMove(playerId, new ArrayList<>(Collections.singletonList(movement)));
+        StandardMovement movement = new StandardMovement(startPosition, endPosition, playerId);
+        return new StandardMove(playerId, new ArrayList<>(Collections.singletonList(movement)));
     }
 
     @Override

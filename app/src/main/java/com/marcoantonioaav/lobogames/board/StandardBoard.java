@@ -13,12 +13,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GenericBoard extends Board {
+public class StandardBoard extends Board {
 
     private final Map<String, Position> positionsMap = new HashMap<>();
     private final List<Connection> connections = new ArrayList<>();
 
-    public GenericBoard(
+    public StandardBoard(
             Drawable image,
             double paddingPercentageHorizontal,
             double paddingPercentageVertical,
@@ -64,7 +64,7 @@ public class GenericBoard extends Board {
         for (Connection connection: this.connections) {
             copiedConnections.add(connection.copy());
         }
-        return new GenericBoard(
+        return new StandardBoard(
                 this.image,
                 this.paddingPercentageHorizontal,
                 this.paddingPercentageVertical,

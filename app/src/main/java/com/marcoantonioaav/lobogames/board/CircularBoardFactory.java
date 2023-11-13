@@ -9,12 +9,11 @@ import com.marcoantonioaav.lobogames.position.Position;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
-public class GenericCircularBoardFactory {
+public class CircularBoardFactory {
 
-    private GenericCircularBoardFactory() {
+    private CircularBoardFactory() {
     }
 
     private static final double PADDING_PERCENTAGE_HORIZONTAL = 0.05;
@@ -62,7 +61,7 @@ public class GenericCircularBoardFactory {
         );
     }
 
-    public static GenericBoard from(List<Integer> initialPlayerIds) {
+    public static StandardBoard from(List<Integer> initialPlayerIds) {
         if (initialPlayerIds.size() != POSITIONS.size()) {
             throw new IllegalArgumentException("Expected initial playerIds of size " + POSITIONS.size());
         }
@@ -80,7 +79,7 @@ public class GenericCircularBoardFactory {
             connections.add(connection.reverseCopy());
         }
 
-        return new GenericBoard(
+        return new StandardBoard(
                 ContextCompat.getDrawable(LoBoGames.getAppContext(), R.drawable.circular_board),
                 PADDING_PERCENTAGE_HORIZONTAL,
                 PADDING_PERCENTAGE_VERTICAL,

@@ -11,9 +11,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class GenericWatermelonChessBoardFactory {
+public class WatermelonChessBoardFactory {
 
-    private GenericWatermelonChessBoardFactory() {
+    private WatermelonChessBoardFactory() {
     }
 
     private static final double PADDING_PERCENTAGE = 0.03;
@@ -322,7 +322,7 @@ public class GenericWatermelonChessBoardFactory {
         ));
     }
 
-    public static GenericBoard from(List<Integer> initialPlayerIds) {
+    public static StandardBoard from(List<Integer> initialPlayerIds) {
         if (initialPlayerIds.size() != POSITIONS.size()) {
             throw new IllegalArgumentException("Expected initial playerIds of size " + POSITIONS.size());
         }
@@ -340,7 +340,7 @@ public class GenericWatermelonChessBoardFactory {
             connections.add(connection.reverseCopy());
         }
 
-        return new GenericBoard(
+        return new StandardBoard(
                 ContextCompat.getDrawable(LoBoGames.getAppContext(), R.drawable.watermelon_chess),
                 PADDING_PERCENTAGE,
                 PADDING_PERCENTAGE,

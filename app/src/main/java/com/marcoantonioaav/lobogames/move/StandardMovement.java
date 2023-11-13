@@ -2,18 +2,18 @@ package com.marcoantonioaav.lobogames.move;
 
 import com.marcoantonioaav.lobogames.position.Position;
 
-public class GenericMovement extends Movement {
+public class StandardMovement extends Movement {
 
     private final String startPositionId;
     private final String endPositionId;
 
-    public GenericMovement(String startPositionId, String endPositionId, int playerId) {
+    public StandardMovement(String startPositionId, String endPositionId, int playerId) {
         super(playerId);
         this.startPositionId = startPositionId;
         this.endPositionId= endPositionId;
     }
 
-    public GenericMovement(Position startPosition, Position endPosition, int playerId) {
+    public StandardMovement(Position startPosition, Position endPosition, int playerId) {
         super(playerId);
         this.startPositionId = startPosition.getId();
         this.endPositionId= endPosition.getId();

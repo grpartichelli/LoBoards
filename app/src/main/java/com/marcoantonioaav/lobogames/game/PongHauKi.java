@@ -1,9 +1,9 @@
 package com.marcoantonioaav.lobogames.game;
 
 import com.marcoantonioaav.lobogames.board.Board;
-import com.marcoantonioaav.lobogames.board.GenericPongHauKiBoardFactory;
-import com.marcoantonioaav.lobogames.move.GenericMove;
-import com.marcoantonioaav.lobogames.move.GenericMovement;
+import com.marcoantonioaav.lobogames.board.PongHauKiBoardFactory;
+import com.marcoantonioaav.lobogames.move.StandardMove;
+import com.marcoantonioaav.lobogames.move.StandardMovement;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.move.Movement;
 import com.marcoantonioaav.lobogames.player.Player;
@@ -15,7 +15,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class PongHauKi extends GenericGame {
+public class PongHauKi extends StandardGame {
     @Override
     public String getName() {
         return "Pong Hau K'i";
@@ -23,7 +23,7 @@ public class PongHauKi extends GenericGame {
 
     @Override
     public Board getInitialBoard() {
-        return GenericPongHauKiBoardFactory.from(
+        return PongHauKiBoardFactory.from(
                 Arrays.asList(Player.PLAYER_1, Player.PLAYER_2, Player.EMPTY, Player.PLAYER_2, Player.PLAYER_1)
         );
     }
@@ -77,8 +77,8 @@ public class PongHauKi extends GenericGame {
         for (Position position : board.getPositions()) {
             if (position.getPlayerId() == playerId) {
                 for (Position emptyConnectedPosition : this.board.findEmptyConnectedPositions(position)) {
-                    GenericMovement movement = new GenericMovement(position, emptyConnectedPosition, playerId);
-                    moves.add(new GenericMove(playerId, new ArrayList<>(Collections.singletonList(movement))));
+                    StandardMovement movement = new StandardMovement(position, emptyConnectedPosition, playerId);
+                    moves.add(new StandardMove(playerId, new ArrayList<>(Collections.singletonList(movement))));
                 }
             }
         }
@@ -96,8 +96,8 @@ public class PongHauKi extends GenericGame {
                 startPosition = possibleStarts.get(0);
             }
         }
-        GenericMovement movement = new GenericMovement(startPosition, endPosition, playerId);
-        return new GenericMove(playerId, new ArrayList<>(Collections.singletonList(movement)));
+        StandardMovement movement = new StandardMovement(startPosition, endPosition, playerId);
+        return new StandardMove(playerId, new ArrayList<>(Collections.singletonList(movement)));
     }
 
     @Override

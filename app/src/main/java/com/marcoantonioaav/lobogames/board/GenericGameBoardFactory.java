@@ -11,9 +11,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class GenericPongHauKiBoardFactory {
+public class GenericGameBoardFactory {
 
-    private GenericPongHauKiBoardFactory(){}
+    private GenericGameBoardFactory() {}
 
     private static final double PADDING_PERCENTAGE_HORIZONTAL = 0.05;
     private static final double PADDING_PERCENTAGE_VERTICAL = 0.25;
@@ -38,15 +38,10 @@ public class GenericPongHauKiBoardFactory {
         );
     }
 
-    public static GenericBoard from(List<Integer> initialPlayerIds) {
-        if (initialPlayerIds.size() != POSITIONS.size()) {
-            throw new IllegalArgumentException("Expected initial playerIds of size " + POSITIONS.size());
-        }
-
+    public static StandardBoard fromConfigFile(String filePath) {
         List<Position> positions = new ArrayList<>();
         for (int i = 0; i < POSITIONS.size(); i++) {
             Position position = POSITIONS.get(i).copy();
-            position.setPlayerId(initialPlayerIds.get(i));
             positions.add(position);
         }
 
@@ -56,7 +51,7 @@ public class GenericPongHauKiBoardFactory {
             connections.add(connection.reverseCopy());
         }
 
-        return new GenericBoard(
+        return new StandardBoard(
                 ContextCompat.getDrawable(LoBoGames.getAppContext(), R.drawable.pong_hau_ki),
                 PADDING_PERCENTAGE_HORIZONTAL,
                 PADDING_PERCENTAGE_VERTICAL,

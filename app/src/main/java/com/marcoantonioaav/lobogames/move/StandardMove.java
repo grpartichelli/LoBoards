@@ -3,10 +3,10 @@ package com.marcoantonioaav.lobogames.move;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GenericMove extends Move {
-    private final List<GenericMovement> movements;
+public class StandardMove extends Move {
+    private final List<StandardMovement> movements;
 
-    public GenericMove(int playerId, List<GenericMovement> movements) {
+    public StandardMove(int playerId, List<StandardMovement> movements) {
         super(playerId);
         this.movements = movements;
     }
@@ -16,7 +16,7 @@ public class GenericMove extends Move {
         return new ArrayList<>(this.movements);
     }
 
-    public void addMovement(GenericMovement movement) {
+    public void addMovement(StandardMovement movement) {
         this.movements.add(movement);
     }
 }
