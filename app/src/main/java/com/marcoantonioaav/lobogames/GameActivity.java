@@ -120,50 +120,27 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
+//        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+//        intent.setType("text/plain");
+//        startActivityForResult(intent, 32);
 
-    private void readTextFile() {
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+//    {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if(requestCode == 32){
+//            try (InputStream stream = getContentResolver().openInputStream(data.getData())) {
+//                BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+//                String line = reader.readLine();
+//                log(line);
+//            } catch (Exception e) {
+//                log(e.getMessage());
+//            }
+//        }
+//    }
 
-        try (InputStream stream = getAssets().open("boards/tsoro-yematatu-lobogames-config.txt")) {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-            String line = reader.readLine();
-            JSONObject object = new JSONObject(line);
-            String encodedImage = object.getString("imageUrl").split(",")[1];
-
-            byte[] decodedString = Base64.decode(encodedImage, Base64.DEFAULT);
-            Bitmap imageBitMap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-            game.getBoard().setImage(new BitmapDrawable(getResources(), imageBitMap));
-
-        } catch (Exception e) {
-            log(e.getMessage());
-        }
-
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("text/plain");
-        startActivityForResult(intent, 32);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 32){
-            try (InputStream stream = getContentResolver().openInputStream(data.getData())) {
-                BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-                String line = reader.readLine();
-                log(line);
-            } catch (Exception e) {
-                log(e.getMessage());
-            }
-        }
-    }
-
-    private void log(String message) {
-        Log.d("TEST", message);
-    }
 
     private void setUpButtons() {
-
-        readTextFile();
         RelativeLayout buttonsLayout = findViewById(R.id.buttonsLayout);
         for (Button button: positionButtonsMap.values()) {
             buttonsLayout.removeView(button);

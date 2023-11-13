@@ -20,6 +20,16 @@ public class StandardBoard extends Board {
 
     public StandardBoard(
             Drawable image,
+            double paddingPercentage,
+            double positionRadiusScale,
+            List<Position> positions,
+            List<Connection> connections
+    ) {
+        this(image, paddingPercentage, paddingPercentage, positionRadiusScale, positions, connections);
+    }
+
+    public StandardBoard(
+            Drawable image,
             double paddingPercentageHorizontal,
             double paddingPercentageVertical,
             double positionRadiusScale,

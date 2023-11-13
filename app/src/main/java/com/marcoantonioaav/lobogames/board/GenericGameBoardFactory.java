@@ -1,12 +1,21 @@
 package com.marcoantonioaav.lobogames.board;
 
-import androidx.core.content.ContextCompat;
-import com.marcoantonioaav.lobogames.R;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.util.Base64;
 import com.marcoantonioaav.lobogames.application.LoBoGames;
+import com.marcoantonioaav.lobogames.exceptions.FailedToReadFileException;
 import com.marcoantonioaav.lobogames.position.Connection;
 import com.marcoantonioaav.lobogames.position.Coordinate;
 import com.marcoantonioaav.lobogames.position.Position;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -15,49 +24,42 @@ public class GenericGameBoardFactory {
 
     private GenericGameBoardFactory() {}
 
-    private static final double PADDING_PERCENTAGE_HORIZONTAL = 0.05;
-    private static final double PADDING_PERCENTAGE_VERTICAL = 0.25;
-    private static final double POSITION_RADIUS_SCALE = (double) 1 / 20;
-    private static final List<Connection> CONNECTIONS = new ArrayList<>();
-    private static final List<Position> POSITIONS = new ArrayList<>();
-
-    static {
-        Position topLeft = new Position(new Coordinate(70, 70), "cima esquerda", 0);
-        Position topRight = new Position(new Coordinate(1537,70), "cima direita", 1);
-        Position center = new Position(new Coordinate(805,421), "centro", 2);
-        Position bottomLeft = new Position(new Coordinate(70,773), "baixo esquerda", 3);
-        Position bottomRight = new Position(new Coordinate(1537,770), "baixo direita", 4);
-
-        POSITIONS.addAll(Arrays.asList(topLeft, topRight, center, bottomLeft, bottomRight));
-        CONNECTIONS.addAll(Arrays.asList(
-                        new Connection(topLeft, center), new Connection(topRight, center),
-                        new Connection(bottomLeft, center), new Connection(bottomRight, center),
-                        new Connection(topLeft, bottomLeft), new Connection(topRight, bottomRight),
-                        new Connection(bottomLeft, bottomRight)
-                )
-        );
-    }
+    private static final double PADDING_PERCENTAGE = 0.0;
 
     public static StandardBoard fromConfigFile(String filePath) {
-        List<Position> positions = new ArrayList<>();
-        for (int i = 0; i < POSITIONS.size(); i++) {
-            Position position = POSITIONS.get(i).copy();
-            positions.add(position);
-        }
 
-        List<Connection> connections = new ArrayList<>();
-        for (Connection connection : CONNECTIONS) {
-            connections.add(connection.copy());
-            connections.add(connection.reverseCopy());
-        }
+        try (InputStream stream = LoBoGames.getAppContext().getAssets().open(filePath)) {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+            String line = reader.readLine();
+            JSONObject object = new JSONObject(line);
 
-        return new StandardBoard(
-                ContextCompat.getDrawable(LoBoGames.getAppContext(), R.drawable.pong_hau_ki),
-                PADDING_PERCENTAGE_HORIZONTAL,
-                PADDING_PERCENTAGE_VERTICAL,
-                POSITION_RADIUS_SCALE,
-                positions,
-                connections
-        );
+            double positionRadiusScale = readPositionRadiusScale(object);
+            Drawable image = readImage(object);
+            List<Position> positions = readPositions(object, image);
+            List<Connection> connections = readConnections(positions);
+
+            return new StandardBoard(image, PADDING_PERCENTAGE, positionRadiusScale, positions, connections);
+        } catch (Exception e) {
+            throw new FailedToReadFileException();
+        }
+    }
+
+    private static double readPositionRadiusScale(JSONObject object) throws JSONException {
+        return object.getDouble("positionRadiusScale");
+    }
+
+    private static Drawable readImage(JSONObject object) throws JSONException {
+        String encodedImage = object.getString("imageUrl").split(",")[1];
+        byte[] decodedString = Base64.decode(encodedImage, Base64.DEFAULT);
+        Bitmap imageBitMap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        return new BitmapDrawable(LoBoGames.getAppContext().getResources(), imageBitMap);
+    }
+
+    private static List<Position> readPositions(JSONObject object, Drawable image) throws JSONException {
+        return new ArrayList<>();
+    }
+
+    private static List<Connection> readConnections(List<Position> positions) {
+        return new ArrayList<>();
     }
 }
