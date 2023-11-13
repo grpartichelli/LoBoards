@@ -10,6 +10,7 @@ import com.marcoantonioaav.lobogames.exceptions.FailedToReadFileException;
 import com.marcoantonioaav.lobogames.position.Connection;
 import com.marcoantonioaav.lobogames.position.Coordinate;
 import com.marcoantonioaav.lobogames.position.Position;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -34,7 +35,7 @@ public class GenericGameBoardFactory {
             JSONObject object = new JSONObject(line);
 
             double positionRadiusScale = readPositionRadiusScale(object);
-            Drawable image = readImage(object);
+            BitmapDrawable image = readImage(object);
             List<Position> positions = readPositions(object, image);
             List<Connection> connections = readConnections(positions);
 
@@ -48,18 +49,46 @@ public class GenericGameBoardFactory {
         return object.getDouble("positionRadiusScale");
     }
 
-    private static Drawable readImage(JSONObject object) throws JSONException {
+    private static BitmapDrawable readImage(JSONObject object) throws JSONException {
         String encodedImage = object.getString("imageUrl").split(",")[1];
         byte[] decodedString = Base64.decode(encodedImage, Base64.DEFAULT);
         Bitmap imageBitMap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
         return new BitmapDrawable(LoBoGames.getAppContext().getResources(), imageBitMap);
     }
 
-    private static List<Position> readPositions(JSONObject object, Drawable image) throws JSONException {
-        return new ArrayList<>();
+    private static List<Position> readPositions(JSONObject object, BitmapDrawable image) throws JSONException {
+        JSONArray jsonArray = object.getJSONArray("positions");
+        List<Position> positions = new ArrayList<>();
+        int width = image.getIntrinsicWidth();
+        int height = image.getIntrinsicHeight();
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject positionObject = jsonArray.getJSONObject(i);
+            String id = positionObject.getString("id");
+
+            JSONObject lengthPercentages = positionObject.getJSONObject("lengthPercentage");
+            double heightPercentage = lengthPercentages.getDouble("height");
+            double widthPercentage = lengthPercentages.getDouble("width");
+
+            int x = (int) (width * widthPercentage);
+            int y = (int) (height * heightPercentage);
+
+            Coordinate coordinate = new Coordinate(x, y);
+            positions.add(new Position(coordinate, id, i));
+        }
+        return positions;
     }
 
     private static List<Connection> readConnections(List<Position> positions) {
-        return new ArrayList<>();
+        List<Connection> connections = new ArrayList<>();
+        for (Position position: positions) {
+            for (Position otherPosition: positions) {
+                if (position.equals(otherPosition)) {
+                    continue;
+                }
+                connections.add(new Connection(position, otherPosition));
+            }
+        }
+        return connections;
     }
 }
