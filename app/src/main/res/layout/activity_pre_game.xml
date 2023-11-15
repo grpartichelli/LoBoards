@@ -28,6 +28,33 @@
         android:textSize="20sp" />
 
     <RadioGroup
+            android:id="@+id/numberOfPlayersChooser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
+            android:checkedButton="@id/radioMultiplayer"
+            android:contentDescription="Número de Jogadores"
+            android:orientation="horizontal">
+
+        <RadioButton
+                android:id="@+id/radioMultiplayer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:text="Multijogador"
+                android:textSize="20sp" />
+
+        <RadioButton
+                android:id="@+id/radioSingleplayer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:text="Um jogador"
+                android:textSize="20sp" />
+    </RadioGroup>
+
+
+    <RadioGroup
         android:id="@+id/difficultyChooser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

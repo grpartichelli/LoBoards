@@ -6,13 +6,12 @@ import android.os.Bundle;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button singleplayer, multiplayer, howToPlay, settings, about;
+    private Button boards, games, replays, howToPlay, settings, about;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,22 +20,27 @@ public class MainActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Objects.requireNonNull(getSupportActionBar()).hide();
 
-        singleplayer = findViewById(R.id.buttonSingleplayer);
-        singleplayer.setOnClickListener(view -> openPreGameActivity(false));
-        multiplayer = findViewById(R.id.buttonMultiplayer);
-        multiplayer.setOnClickListener(view -> openPreGameActivity(true));
+        boards = findViewById(R.id.buttonBoards);
+        boards.setOnClickListener(view -> openPreGameActivity());
+
+        games = findViewById(R.id.buttonGames);
+        games.setOnClickListener(view -> openPreGameActivity());
+
+        replays = findViewById(R.id.buttonReplays);
+        replays.setOnClickListener(view -> openPreGameActivity());
+
         howToPlay = findViewById(R.id.buttonHowToPlay);
         howToPlay.setOnClickListener(view -> openHowToPlayActivity());
+
         settings = findViewById(R.id.buttonSettings);
         settings.setOnClickListener(view -> openSettingsActivity());
+
         about = findViewById(R.id.buttonAbout);
         about.setOnClickListener(view -> openAboutActivity());
     }
 
-    private void openPreGameActivity(boolean isMultiplayer) {
-        Intent intent = new Intent(this, PreGameActivity.class);
-        intent.putExtra(PreGameActivity.IS_MULTIPLAYER, isMultiplayer);
-        startActivity(intent);
+    private void openPreGameActivity() {
+        startActivity(new Intent(this, PreGameActivity.class));
     }
 
     private void openHowToPlayActivity() { startActivity(new Intent(this, HowToPlayActivity.class)); }

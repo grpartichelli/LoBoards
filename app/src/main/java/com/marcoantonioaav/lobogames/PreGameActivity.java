@@ -15,19 +15,18 @@ import com.marcoantonioaav.lobogames.game.*;
 import com.marcoantonioaav.lobogames.player.agent.Agent;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class PreGameActivity extends AppCompatActivity {
     private Spinner gameSpinner;
-    private RadioGroup difficultyChooser;
+    private RadioGroup difficultyChooser, numberOfPlayersChooser;
     private Button play;
-
-    private boolean isMultiplayer;
 
     public static final String GAME_NAME = "GAME_NAME";
     public static final String IS_MULTIPLAYER = "IS_MULTIPLAYER";
     public static final String DIFFICULTY = "DIFFICULTY";
-    public static final HashMap<String, Game> GAMES = new HashMap<String, Game>() {{
+    public static final Map<String, Game> GAMES = new HashMap<String, Game>() {{
         put(new GenericGame().getName(), new GenericGame());
         put(new Tapatan().getName(), new Tapatan());
         put(new TicTacToe().getName(), new TicTacToe());
@@ -46,16 +45,15 @@ public class PreGameActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Objects.requireNonNull(getSupportActionBar()).hide();
 
-        isMultiplayer = (boolean) this.getIntent().getExtras().get(IS_MULTIPLAYER);
-
         gameSpinner = findViewById(R.id.gameSpinner);
         ArrayAdapter ad = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, GAMES.keySet().toArray());
         ad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         gameSpinner.setAdapter(ad);
 
         difficultyChooser = findViewById(R.id.difficultyChooser);
-        if(isMultiplayer)
-            difficultyChooser.setVisibility(View.INVISIBLE);
+        numberOfPlayersChooser = findViewById(R.id.numberOfPlayersChooser);
+        numberOfPlayersChooser.setOnCheckedChangeListener((radioGroup, i) -> updateDifficultyChooserVisibility());
+        updateDifficultyChooserVisibility();
 
         play = findViewById(R.id.play);
         play.setOnClickListener(view -> openGameActivity());
@@ -64,19 +62,31 @@ public class PreGameActivity extends AppCompatActivity {
     private void openGameActivity() {
         Intent intent = new Intent(this, GameActivity.class);
         intent.putExtra(GAME_NAME, (String) gameSpinner.getSelectedItem());
-        intent.putExtra(IS_MULTIPLAYER, isMultiplayer);
-        intent.putExtra(DIFFICULTY, getCheckedDifficulty());
+        intent.putExtra(IS_MULTIPLAYER, getIsMultiplayer());
+        intent.putExtra(DIFFICULTY, getDifficulty());
 
         startActivity(intent);
         finish();
     }
 
-    private String getCheckedDifficulty() {
+    private String getDifficulty() {
         int buttonId = difficultyChooser.getCheckedRadioButtonId();
         if(buttonId == R.id.radioMedium)
             return Agent.MEDIUM_DIFFICULTY;
         if(buttonId == R.id.radioHard)
             return Agent.HARD_DIFFICULTY;
         return Agent.EASY_DIFFICULTY;
+    }
+
+    private boolean getIsMultiplayer() {
+        return numberOfPlayersChooser.getCheckedRadioButtonId() == R.id.radioMultiplayer;
+    }
+
+    private void updateDifficultyChooserVisibility() {
+        if (getIsMultiplayer()) {
+            difficultyChooser.setVisibility(View.INVISIBLE);
+        } else {
+            difficultyChooser.setVisibility(View.VISIBLE);
+        }
     }
 }

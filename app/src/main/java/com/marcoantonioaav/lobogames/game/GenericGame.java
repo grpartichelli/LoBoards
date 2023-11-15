@@ -26,7 +26,7 @@ public class GenericGame extends StandardGame {
 
     @Override
     public Board getInitialBoard() {
-        return GenericGameBoardFactory.fromConfigFile("boards/tsoro-yematatu-lobogames-config.txt");
+        return GenericGameBoardFactory.fromConfigFile("boards/square-lobogames-config.txt");
     }
 
     @Override

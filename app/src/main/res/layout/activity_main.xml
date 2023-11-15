@@ -12,26 +12,34 @@
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="wrap_content"
-            android:layout_height="200dp"
+            android:layout_height="180dp"
             android:layout_marginBottom="20dp"
             android:contentDescription="@string/app_name"
             app:srcCompat="@drawable/lobogames" />
 
         <Button
-            android:id="@+id/buttonSingleplayer"
+            android:id="@+id/buttonGames"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:text="Um Jogador"
+            android:text="Jogos"
             android:textSize="20sp" />
 
         <Button
-            android:id="@+id/buttonMultiplayer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:text="Multijogador"
-            android:textSize="20sp" />
+                android:id="@+id/buttonBoards"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="Tabuleiros"
+                android:textSize="20sp" />
+
+        <Button
+                android:id="@+id/buttonReplays"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="Replays"
+                android:textSize="20sp" />
 
         <Button
             android:id="@+id/buttonHowToPlay"
