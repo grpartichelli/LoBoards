@@ -121,26 +121,6 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-//        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-//        intent.setType("text/plain");
-//        startActivityForResult(intent, 32);
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-//    {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if(requestCode == 32){
-//            try (InputStream stream = getContentResolver().openInputStream(data.getData())) {
-//                BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-//                String line = reader.readLine();
-//                log(line);
-//            } catch (Exception e) {
-//                log(e.getMessage());
-//            }
-//        }
-//    }
-
-
     private void setUpButtons() {
         RelativeLayout buttonsLayout = findViewById(R.id.buttonsLayout);
         for (Button button: positionButtonsMap.values()) {

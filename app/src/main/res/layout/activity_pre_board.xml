@@ -7,6 +7,7 @@
               android:orientation="vertical"
               tools:context=".PreBoardActivity">
 
+
     <TextView
             android:id="@+id/gameSpinnerLabel"
             android:layout_width="match_parent"
@@ -31,6 +32,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Jogar"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:layout_marginBottom="20dp"
+    />
+
+    <Button
+            android:id="@+id/importBoard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Importar Tabuleiro"
+            android:textSize="20sp"
+    />
 
 </LinearLayout>

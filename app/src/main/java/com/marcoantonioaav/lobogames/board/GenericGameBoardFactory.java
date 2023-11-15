@@ -1,13 +1,12 @@
 package com.marcoantonioaav.lobogames.board;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.Base64;
 import com.marcoantonioaav.lobogames.application.LoBoGames;
-import com.marcoantonioaav.lobogames.board.StandardBoard;
 import com.marcoantonioaav.lobogames.exceptions.FailedToReadFileException;
-import com.marcoantonioaav.lobogames.game.GenericGame;
 import com.marcoantonioaav.lobogames.position.Connection;
 import com.marcoantonioaav.lobogames.position.Coordinate;
 import com.marcoantonioaav.lobogames.position.Position;
@@ -16,6 +15,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -30,9 +31,20 @@ public class GenericGameBoardFactory {
     public static List<StandardBoard> createAll() {
         List<StandardBoard> boards = new ArrayList<>();
         try {
-            String[] files = LoBoGames.getAppContext().getAssets().list("boards");
-            for (String file: files) {
-                boards.add(fromConfigFile("boards/" + file));
+            Context context = LoBoGames.getAppContext();
+
+            for (String file: context.getAssets().list("boards")) {
+                boards.add(fromAsset("boards/" + file));
+            }
+
+            for (File file: context.getFilesDir().listFiles()) {
+                if (!file.getName().equals("boards")) {
+                    continue;
+                }
+
+                for (File importedFilePaths: file.listFiles()) {
+                    boards.add(fromFilePath(importedFilePaths.getPath()));
+                }
             }
         } catch (Exception e) {
             throw new FailedToReadFileException();
@@ -40,25 +52,37 @@ public class GenericGameBoardFactory {
         return boards;
     }
 
-    private static StandardBoard fromConfigFile(String filePath) {
-
+    public static StandardBoard fromAsset(String filePath) {
         try (InputStream stream = LoBoGames.getAppContext().getAssets().open(filePath)) {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-            String line = reader.readLine();
-            JSONObject object = new JSONObject(line);
-
-            double positionRadiusScale = readPositionRadiusScale(object);
-            String name = readName(object);
-            BitmapDrawable image = readImage(object);
-            List<Position> positions = readPositions(object, image);
-            List<Connection> connections = readConnections(positions);
-
-            StandardBoard board = new StandardBoard(image, PADDING_PERCENTAGE, positionRadiusScale, positions, connections);
-            board.setName(name);
-            return board;
+            return processFileStream(stream);
         } catch (Exception e) {
             throw new FailedToReadFileException();
         }
+    }
+
+    public static StandardBoard fromFilePath(String filePath) {
+        File myFile = new File(filePath);
+        try (InputStream stream = new FileInputStream(myFile)) {
+            return processFileStream(stream);
+        } catch (Exception e) {
+            throw new FailedToReadFileException();
+        }
+    }
+
+    private static StandardBoard processFileStream(InputStream stream) throws Exception {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+        String line = reader.readLine();
+        JSONObject object = new JSONObject(line);
+
+        double positionRadiusScale = readPositionRadiusScale(object);
+        String name = readName(object);
+        BitmapDrawable image = readImage(object);
+        List<Position> positions = readPositions(object, image);
+        List<Connection> connections = readConnections(positions);
+
+        StandardBoard board = new StandardBoard(image, PADDING_PERCENTAGE, positionRadiusScale, positions, connections);
+        board.setName(name);
+        return board;
     }
 
     private static double readPositionRadiusScale(JSONObject object) throws JSONException {
