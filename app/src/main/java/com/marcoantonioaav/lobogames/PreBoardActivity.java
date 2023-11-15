@@ -16,13 +16,10 @@ import java.util.Map;
 import java.util.Objects;
 
 public class PreBoardActivity extends AppCompatActivity {
-    private Spinner gameSpinner;
+    private Spinner boardSpinner;
     private Button play;
 
-    public static final String GAME_NAME = "GAME_NAME";
-    public static final String IS_MULTIPLAYER = "IS_MULTIPLAYER";
-
-    private static final Map<String, Board> BOARDS = new HashMap<String, Board>() {{
+    public static final Map<String, Board> BOARDS = new HashMap<String, Board>() {{
          for (StandardBoard board : GenericGameBoardFactory.createAll()) {
              put(board.getName(), board);
          }
@@ -35,10 +32,10 @@ public class PreBoardActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Objects.requireNonNull(getSupportActionBar()).hide();
 
-        gameSpinner = findViewById(R.id.gameSpinner);
+        boardSpinner = findViewById(R.id.gameSpinner);
         ArrayAdapter ad = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, BOARDS.keySet().toArray());
         ad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        gameSpinner.setAdapter(ad);
+        boardSpinner.setAdapter(ad);
 
         play = findViewById(R.id.play);
         play.setOnClickListener(view -> openGameActivity());
@@ -46,8 +43,8 @@ public class PreBoardActivity extends AppCompatActivity {
 
     private void openGameActivity() {
         Intent intent = new Intent(this, GameActivity.class);
-        intent.putExtra(GAME_NAME, (String) gameSpinner.getSelectedItem());
-        intent.putExtra(IS_MULTIPLAYER, true);
+        intent.putExtra(GameActivity.BOARD_NAME, (String) boardSpinner.getSelectedItem());
+        intent.putExtra(GameActivity.IS_MULTIPLAYER, true);
 
         startActivity(intent);
         finish();

@@ -1,18 +1,11 @@
 package com.marcoantonioaav.lobogames;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
-import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -22,25 +15,18 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.ViewCompat;
 import com.marcoantonioaav.lobogames.application.LoBoGames;
-import com.marcoantonioaav.lobogames.board.StandardBoard;
+import com.marcoantonioaav.lobogames.board.Board;
 import com.marcoantonioaav.lobogames.game.Game;
+import com.marcoantonioaav.lobogames.game.GenericGame;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.player.Human;
 import com.marcoantonioaav.lobogames.player.Player;
 import com.marcoantonioaav.lobogames.player.ReplayPlayer;
 import com.marcoantonioaav.lobogames.player.agent.MinimaxAgent;
 import com.marcoantonioaav.lobogames.position.Position;
-
 import com.marcoantonioaav.lobogames.ui.BoardButtonDelegate;
 import com.marcoantonioaav.lobogames.ui.BoardView;
-import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -48,9 +34,14 @@ import java.util.Map;
 import java.util.Objects;
 
 public class GameActivity extends AppCompatActivity {
+    public static final String GAME_NAME = "GAME_NAME";
+    public static final String BOARD_NAME = "BOARD_NAME";
+    public static final String IS_MULTIPLAYER = "IS_MULTIPLAYER";
+    public static final String DIFFICULTY = "DIFFICULTY";
+
     private BoardView boardView;
     private final Map<Position, Button> positionButtonsMap = new HashMap<>();
-    private TextView gameName, status;
+    private TextView gameNameTextView, statusTextView;
     private Button playAgain, back;
 
     private Game game;
@@ -71,7 +62,17 @@ public class GameActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Objects.requireNonNull(getSupportActionBar()).hide();
 
-        game = PreGameActivity.GAMES.get(this.getIntent().getExtras().get(PreGameActivity.GAME_NAME));
+        String gameName = (String) this.getIntent().getExtras().get(GAME_NAME);
+        if (gameName == null) {
+            String boardName = (String) this.getIntent().getExtras().get(BOARD_NAME);
+            Board board = PreBoardActivity.BOARDS.get(boardName);
+            game = new GenericGame();
+            game.setBoard(board);
+        } else {
+            game = PreGameActivity.GAMES.get(gameName);
+        }
+
+
         setTitle(game.getName());
         updatePlayers();
 
@@ -83,11 +84,11 @@ public class GameActivity extends AppCompatActivity {
         boardView.setCursorColor(getSharedPreferences(SettingsActivity.SETTINGS, MODE_PRIVATE).getInt(SettingsActivity.CURSOR_COLOR, Color.BLUE));
 
         // game name
-        gameName = findViewById(R.id.gameName);
-        gameName.setText(game.getName());
+        gameNameTextView = findViewById(R.id.gameName);
+        gameNameTextView.setText(game.getName());
 
         // status
-        status = findViewById(R.id.status);
+        statusTextView = findViewById(R.id.status);
 
         // replay
         replay = findViewById(R.id.replay);
@@ -113,10 +114,10 @@ public class GameActivity extends AppCompatActivity {
 
     private void updatePlayers() {
         player1 = new Human(Player.PLAYER_1);
-        if ((boolean) this.getIntent().getExtras().get(PreGameActivity.IS_MULTIPLAYER)) {
+        if ((boolean) this.getIntent().getExtras().get(IS_MULTIPLAYER)) {
             player2 = new Human(Player.PLAYER_2);
         } else {
-            player2 = new MinimaxAgent(Player.PLAYER_2, (String) this.getIntent().getExtras().get(PreGameActivity.DIFFICULTY));
+            player2 = new MinimaxAgent(Player.PLAYER_2, (String) this.getIntent().getExtras().get(DIFFICULTY));
         }
     }
 
@@ -287,9 +288,9 @@ public class GameActivity extends AppCompatActivity {
     private void showTurn() {
         String statusMessage = "Vez do " + Player.getName(turn);
         runOnUiThread(() -> {
-            status.setText(statusMessage);
-            status.announceForAccessibility(statusMessage);
-            status.setTextColor(boardView.getPlayerColor(turn));
+            statusTextView.setText(statusMessage);
+            statusTextView.announceForAccessibility(statusMessage);
+            statusTextView.setTextColor(boardView.getPlayerColor(turn));
         });
     }
 
@@ -306,12 +307,12 @@ public class GameActivity extends AppCompatActivity {
             resultText = "Empate";
             resultColor = boardView.getPlayerColor(Player.EMPTY);
         }
-        runOnUiThread(() -> status.announceForAccessibility(resultText));
+        runOnUiThread(() -> statusTextView.announceForAccessibility(resultText));
         SpannableString spanString = new SpannableString(resultText.toUpperCase());
         spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, spanString.length(), 0);
         runOnUiThread(() -> {
-            status.setText(spanString);
-            status.setTextColor(resultColor);
+            statusTextView.setText(spanString);
+            statusTextView.setTextColor(resultColor);
         });
     }
 }

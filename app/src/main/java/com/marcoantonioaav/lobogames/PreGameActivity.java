@@ -23,9 +23,6 @@ public class PreGameActivity extends AppCompatActivity {
     private RadioGroup difficultyChooser, numberOfPlayersChooser;
     private Button play;
 
-    public static final String GAME_NAME = "GAME_NAME";
-    public static final String IS_MULTIPLAYER = "IS_MULTIPLAYER";
-    public static final String DIFFICULTY = "DIFFICULTY";
     public static final Map<String, Game> GAMES = new HashMap<String, Game>() {{
         put(new GenericGame().getName(), new GenericGame());
         put(new Tapatan().getName(), new Tapatan());
@@ -61,9 +58,9 @@ public class PreGameActivity extends AppCompatActivity {
 
     private void openGameActivity() {
         Intent intent = new Intent(this, GameActivity.class);
-        intent.putExtra(GAME_NAME, (String) gameSpinner.getSelectedItem());
-        intent.putExtra(IS_MULTIPLAYER, getIsMultiplayer());
-        intent.putExtra(DIFFICULTY, getDifficulty());
+        intent.putExtra(GameActivity.GAME_NAME, (String) gameSpinner.getSelectedItem());
+        intent.putExtra(GameActivity.IS_MULTIPLAYER, getIsMultiplayer());
+        intent.putExtra(GameActivity.DIFFICULTY, getDifficulty());
 
         startActivity(intent);
         finish();
