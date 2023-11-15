@@ -1,7 +1,6 @@
 package com.marcoantonioaav.lobogames.game;
 
 import com.marcoantonioaav.lobogames.board.Board;
-import com.marcoantonioaav.lobogames.board.GenericGameBoardFactory;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.move.Movement;
 import com.marcoantonioaav.lobogames.move.StandardMove;
@@ -26,7 +25,7 @@ public class GenericGame extends StandardGame {
 
     @Override
     public Board getInitialBoard() {
-        return GenericGameBoardFactory.fromConfigFile("boards/square-lobogames-config.txt");
+        return board;
     }
 
     @Override

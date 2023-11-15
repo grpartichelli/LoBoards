@@ -3,10 +3,11 @@ package com.marcoantonioaav.lobogames.board;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.util.Base64;
 import com.marcoantonioaav.lobogames.application.LoBoGames;
+import com.marcoantonioaav.lobogames.board.StandardBoard;
 import com.marcoantonioaav.lobogames.exceptions.FailedToReadFileException;
+import com.marcoantonioaav.lobogames.game.GenericGame;
 import com.marcoantonioaav.lobogames.position.Connection;
 import com.marcoantonioaav.lobogames.position.Coordinate;
 import com.marcoantonioaav.lobogames.position.Position;
@@ -18,7 +19,6 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class GenericGameBoardFactory {
@@ -27,7 +27,20 @@ public class GenericGameBoardFactory {
 
     private static final double PADDING_PERCENTAGE = 0.0;
 
-    public static StandardBoard fromConfigFile(String filePath) {
+    public static List<StandardBoard> createAll() {
+        List<StandardBoard> boards = new ArrayList<>();
+        try {
+            String[] files = LoBoGames.getAppContext().getAssets().list("boards");
+            for (String file: files) {
+                boards.add(fromConfigFile("boards/" + file));
+            }
+        } catch (Exception e) {
+            throw new FailedToReadFileException();
+        }
+        return boards;
+    }
+
+    private static StandardBoard fromConfigFile(String filePath) {
 
         try (InputStream stream = LoBoGames.getAppContext().getAssets().open(filePath)) {
             BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
@@ -35,11 +48,14 @@ public class GenericGameBoardFactory {
             JSONObject object = new JSONObject(line);
 
             double positionRadiusScale = readPositionRadiusScale(object);
+            String name = readName(object);
             BitmapDrawable image = readImage(object);
             List<Position> positions = readPositions(object, image);
             List<Connection> connections = readConnections(positions);
 
-            return new StandardBoard(image, PADDING_PERCENTAGE, positionRadiusScale, positions, connections);
+            StandardBoard board = new StandardBoard(image, PADDING_PERCENTAGE, positionRadiusScale, positions, connections);
+            board.setName(name);
+            return board;
         } catch (Exception e) {
             throw new FailedToReadFileException();
         }
@@ -47,6 +63,10 @@ public class GenericGameBoardFactory {
 
     private static double readPositionRadiusScale(JSONObject object) throws JSONException {
         return object.getDouble("positionRadiusScale");
+    }
+
+    private static String readName(JSONObject object) throws JSONException {
+        return object.getString("name");
     }
 
     private static BitmapDrawable readImage(JSONObject object) throws JSONException {

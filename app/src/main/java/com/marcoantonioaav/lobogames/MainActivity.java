@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).hide();
 
         boards = findViewById(R.id.buttonBoards);
-        boards.setOnClickListener(view -> openPreGameActivity());
+        boards.setOnClickListener(view -> openPreBoardActivity());
 
         games = findViewById(R.id.buttonGames);
         games.setOnClickListener(view -> openPreGameActivity());
@@ -37,6 +37,10 @@ public class MainActivity extends AppCompatActivity {
 
         about = findViewById(R.id.buttonAbout);
         about.setOnClickListener(view -> openAboutActivity());
+    }
+
+    private void openPreBoardActivity() {
+        startActivity(new Intent(this, PreBoardActivity.class));
     }
 
     private void openPreGameActivity() {
