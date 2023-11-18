@@ -1,11 +1,19 @@
 package com.marcoantonioaav.lobogames;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Spinner;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import com.marcoantonioaav.lobogames.board.Board;
 import com.marcoantonioaav.lobogames.board.GenericGameBoardFactory;
@@ -18,20 +26,19 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 public class PreBoardActivity extends AppCompatActivity {
-    private Spinner boardSpinner;
+    private ListView listView;
     private Button play, importBoard;
+    private String selectedBoardName;
     private static final int IMPORT_FILE_CODE = 32;
 
-    public static final Map<String, Board> BOARDS = new HashMap<String, Board>() {{
-         for (StandardBoard board : GenericGameBoardFactory.createAll()) {
-             put(board.getName(), board);
-         }
-    }};
+    public static final List<StandardBoard> BOARDS = GenericGameBoardFactory.createAll();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,20 +47,33 @@ public class PreBoardActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Objects.requireNonNull(getSupportActionBar()).hide();
 
-        boardSpinner = findViewById(R.id.gameSpinner);
-        updateBoardSpinner();
+
+        createBoardList();
 
         play = findViewById(R.id.play);
         play.setOnClickListener(view -> openGameActivity());
+        play.setEnabled(false);
 
         importBoard = findViewById(R.id.importBoard);
         importBoard.setOnClickListener(view -> importFile());
     }
 
-    private void updateBoardSpinner() {
-        ArrayAdapter ad = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, BOARDS.keySet().toArray());
-        ad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        boardSpinner.setAdapter(ad);
+    private void createBoardList() {
+        if (listView != null) {
+            listView.setAdapter(null);
+        }
+        listView = findViewById(R.id.listView);
+        listView.addHeaderView(new View(getBaseContext()), null, true);
+        listView.addFooterView(new View(getBaseContext()), null, true);
+        BoardListAdapter adapter = new BoardListAdapter(this, R.layout.board_list_item, BOARDS);
+
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(
+                (AdapterView<?> ad, View v, int position, long id) -> {
+                    selectedBoardName = ((StandardBoard) listView.getItemAtPosition(position)).getName();
+                    play.setEnabled(true);
+                }
+        );
     }
 
     private void importFile() {
@@ -64,7 +84,7 @@ public class PreBoardActivity extends AppCompatActivity {
 
     private void openGameActivity() {
         Intent intent = new Intent(this, GameActivity.class);
-        intent.putExtra(GameActivity.BOARD_NAME, (String) boardSpinner.getSelectedItem());
+        intent.putExtra(GameActivity.BOARD_NAME, selectedBoardName);
         intent.putExtra(GameActivity.IS_MULTIPLAYER, true);
 
         startActivity(intent);
@@ -94,12 +114,64 @@ public class PreBoardActivity extends AppCompatActivity {
                 writer.flush();
                 writer.close();
 
-                BOARDS.put(boardName, GenericGameBoardFactory.fromFilePath(newFile.getPath()));
-                updateBoardSpinner();
-                boardSpinner.setSelection(BOARDS.size() - 1);
+
+                for(int i=0; i < BOARDS.size(); i++){
+                    if(BOARDS.get(i).getName().equals(boardName)){
+                        BOARDS.remove(i);
+                        break;
+                    }
+                }
+
+                BOARDS.add(0, GenericGameBoardFactory.fromFilePath(newFile.getPath()));
+                selectedBoardName = boardName;
+                createBoardList();
             } catch (Exception e) {
                 throw new FailedToReadFileException();
             }
         }
     }
+
+    static class BoardListAdapter extends ArrayAdapter<StandardBoard> {
+
+        private int resourceLayout;
+        private Context mContext;
+
+        public BoardListAdapter(Context context, int resource, List<StandardBoard> boards) {
+            super(context, resource, boards);
+            this.resourceLayout = resource;
+            this.mContext = context;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+
+            View view = convertView;
+
+            if (view == null) {
+                LayoutInflater layoutInflater = LayoutInflater.from(mContext);
+                view = layoutInflater.inflate(resourceLayout, null);
+            }
+
+            Board board = getItem(position);
+
+            if (board != null) {
+                TextView textView = view.findViewById(R.id.boardListItemTextView);
+
+                if (textView != null) {
+                    textView.setText(board.getName());
+                }
+
+
+                ImageView imageView = view.findViewById(R.id.boardListItemImageView);
+
+                if (imageView != null) {
+                    imageView.setImageDrawable(board.getImage());
+                }
+            }
+
+            return view;
+        }
+
+    }
 }
+

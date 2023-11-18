@@ -65,7 +65,7 @@ public class GameActivity extends AppCompatActivity {
         String gameName = (String) this.getIntent().getExtras().get(GAME_NAME);
         if (gameName == null) {
             String boardName = (String) this.getIntent().getExtras().get(BOARD_NAME);
-            Board board = PreBoardActivity.BOARDS.get(boardName);
+            Board board = findBoardFromName(boardName);
             game = new GenericGame();
             game.setBoard(board);
         } else {
@@ -110,6 +110,15 @@ public class GameActivity extends AppCompatActivity {
 
         initializeGame();
         new Thread(GameActivity.this::gameLoop).start();
+    }
+
+    private Board findBoardFromName(String boardName) {
+        for (Board board: PreBoardActivity.BOARDS) {
+            if (board.getName().equals(boardName)) {
+                return board;
+            }
+        }
+        return null;
     }
 
     private void updatePlayers() {
