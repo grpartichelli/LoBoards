@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -26,14 +25,11 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 public class PreBoardActivity extends AppCompatActivity {
-    private ListView listView;
+    private ListView boardListView;
     private Button play, importBoard;
     private String selectedBoardName;
     private static final int IMPORT_FILE_CODE = 32;
@@ -59,18 +55,18 @@ public class PreBoardActivity extends AppCompatActivity {
     }
 
     private void createBoardList() {
-        if (listView != null) {
-            listView.setAdapter(null);
+        if (boardListView != null) {
+            boardListView.setAdapter(null);
         }
-        listView = findViewById(R.id.listView);
-        listView.addHeaderView(new View(getBaseContext()), null, true);
-        listView.addFooterView(new View(getBaseContext()), null, true);
+        boardListView = findViewById(R.id.boardList);
+        boardListView.addHeaderView(new View(getBaseContext()), null, true);
+        boardListView.addFooterView(new View(getBaseContext()), null, true);
         BoardListAdapter adapter = new BoardListAdapter(this, R.layout.board_list_item, BOARDS);
 
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(
+        boardListView.setAdapter(adapter);
+        boardListView.setOnItemClickListener(
                 (AdapterView<?> ad, View v, int position, long id) -> {
-                    selectedBoardName = ((StandardBoard) listView.getItemAtPosition(position)).getName();
+                    selectedBoardName = ((StandardBoard) boardListView.getItemAtPosition(position)).getName();
                     play.setEnabled(true);
                 }
         );
@@ -131,7 +127,7 @@ public class PreBoardActivity extends AppCompatActivity {
         }
     }
 
-    static class BoardListAdapter extends ArrayAdapter<StandardBoard> {
+    private static class BoardListAdapter extends ArrayAdapter<StandardBoard> {
 
         private int resourceLayout;
         private Context mContext;

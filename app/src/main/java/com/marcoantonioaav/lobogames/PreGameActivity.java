@@ -1,5 +1,12 @@
 package com.marcoantonioaav.lobogames;
 
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -11,20 +18,23 @@ import android.widget.Button;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 
+import com.marcoantonioaav.lobogames.board.StandardBoard;
 import com.marcoantonioaav.lobogames.game.*;
 import com.marcoantonioaav.lobogames.player.agent.Agent;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 public class PreGameActivity extends AppCompatActivity {
-    private Spinner gameSpinner;
     private RadioGroup difficultyChooser, numberOfPlayersChooser;
     private Button play;
+    private ListView gameListView;
+    private String selectedGameName;
 
     public static final Map<String, Game> GAMES = new HashMap<String, Game>() {{
-        put(new GenericGame().getName(), new GenericGame());
         put(new Tapatan().getName(), new Tapatan());
         put(new TicTacToe().getName(), new TicTacToe());
         put(new Alquerque().getName(), new Alquerque());
@@ -42,23 +52,40 @@ public class PreGameActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Objects.requireNonNull(getSupportActionBar()).hide();
 
-        gameSpinner = findViewById(R.id.gameSpinner);
-        ArrayAdapter ad = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, GAMES.keySet().toArray());
-        ad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        gameSpinner.setAdapter(ad);
-
         difficultyChooser = findViewById(R.id.difficultyChooser);
         numberOfPlayersChooser = findViewById(R.id.numberOfPlayersChooser);
         numberOfPlayersChooser.setOnCheckedChangeListener((radioGroup, i) -> updateDifficultyChooserVisibility());
         updateDifficultyChooserVisibility();
 
+        createGameList();
+
         play = findViewById(R.id.play);
         play.setOnClickListener(view -> openGameActivity());
+        play.setEnabled(false);
+    }
+
+
+    private void createGameList() {
+        if (gameListView != null) {
+            gameListView.setAdapter(null);
+        }
+        gameListView = findViewById(R.id.gameListView);
+        gameListView.addHeaderView(new View(getBaseContext()), null, true);
+        gameListView.addFooterView(new View(getBaseContext()), null, true);
+        GameListAdapter adapter = new GameListAdapter(this, R.layout.board_list_item, new ArrayList<>(GAMES.values()));
+
+        gameListView.setAdapter(adapter);
+        gameListView.setOnItemClickListener(
+                (AdapterView<?> ad, View v, int position, long id) -> {
+                    selectedGameName = ((Game) gameListView.getItemAtPosition(position)).getName();
+                    play.setEnabled(true);
+                }
+        );
     }
 
     private void openGameActivity() {
         Intent intent = new Intent(this, GameActivity.class);
-        intent.putExtra(GameActivity.GAME_NAME, (String) gameSpinner.getSelectedItem());
+        intent.putExtra(GameActivity.GAME_NAME, selectedGameName);
         intent.putExtra(GameActivity.IS_MULTIPLAYER, getIsMultiplayer());
         intent.putExtra(GameActivity.DIFFICULTY, getDifficulty());
 
@@ -85,5 +112,48 @@ public class PreGameActivity extends AppCompatActivity {
         } else {
             difficultyChooser.setVisibility(View.VISIBLE);
         }
+    }
+
+    private static class GameListAdapter extends ArrayAdapter<Game> {
+
+        private int resourceLayout;
+        private Context mContext;
+
+        public GameListAdapter(Context context, int resource, List<Game> games) {
+            super(context, resource, games);
+            this.resourceLayout = resource;
+            this.mContext = context;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+
+            View view = convertView;
+
+            if (view == null) {
+                LayoutInflater layoutInflater = LayoutInflater.from(mContext);
+                view = layoutInflater.inflate(resourceLayout, null);
+            }
+
+            Game game = getItem(position);
+
+            if (game != null) {
+                TextView textView = view.findViewById(R.id.boardListItemTextView);
+
+                if (textView != null) {
+                    textView.setText(game.getName());
+                }
+
+
+                ImageView imageView = view.findViewById(R.id.boardListItemImageView);
+
+                if (imageView != null) {
+                    imageView.setImageDrawable(game.getBoard().getImage());
+                }
+            }
+
+            return view;
+        }
+
     }
 }
