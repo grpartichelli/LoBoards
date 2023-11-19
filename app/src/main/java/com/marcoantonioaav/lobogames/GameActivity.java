@@ -24,6 +24,7 @@ import com.marcoantonioaav.lobogames.player.Player;
 import com.marcoantonioaav.lobogames.player.ReplayPlayer;
 import com.marcoantonioaav.lobogames.player.agent.MinimaxAgent;
 import com.marcoantonioaav.lobogames.position.Position;
+import com.marcoantonioaav.lobogames.replay.Replay;
 import com.marcoantonioaav.lobogames.ui.BoardButtonDelegate;
 import com.marcoantonioaav.lobogames.ui.BoardView;
 
@@ -52,7 +53,7 @@ public class GameActivity extends AppCompatActivity {
 
     private boolean isReplay;
     private final ReplayPlayer replayPlayer1 = new ReplayPlayer(Player.PLAYER_1);
-    private final ReplayPlayer replayPlayer2= new ReplayPlayer(Player.PLAYER_2);
+    private final ReplayPlayer replayPlayer2 = new ReplayPlayer(Player.PLAYER_2);
     private Button replay;
 
     @Override
@@ -122,6 +123,9 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void updatePlayers() {
+        replayPlayer1.setReplay(new Replay(game));
+        replayPlayer2.setReplay(new Replay(game));
+
         player1 = new Human(Player.PLAYER_1);
         if ((boolean) this.getIntent().getExtras().get(IS_MULTIPLAYER)) {
             player2 = new Human(Player.PLAYER_2);

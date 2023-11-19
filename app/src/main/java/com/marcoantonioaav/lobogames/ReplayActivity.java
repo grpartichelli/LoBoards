@@ -26,7 +26,7 @@ import java.util.Objects;
 
 public class ReplayActivity extends AppCompatActivity {
     private ListView replayListView;
-    private Button play, importReplay;
+    private Button play, importReplay, back;
     private String selectedReplayName;
     private static final int IMPORT_FILE_CODE = 32;
 
@@ -39,7 +39,6 @@ public class ReplayActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Objects.requireNonNull(getSupportActionBar()).hide();
 
-
         createReplayList();
 
         play = findViewById(R.id.play);
@@ -48,6 +47,9 @@ public class ReplayActivity extends AppCompatActivity {
 
         importReplay = findViewById(R.id.importReplay);
         importReplay.setOnClickListener(view -> importFile());
+
+        back = findViewById(R.id.back);
+        back.setOnClickListener(view -> finish());
     }
 
     private void createReplayList() {

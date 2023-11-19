@@ -35,7 +35,7 @@
     />
 
     <LinearLayout
-        android:paddingTop="20dp"
+        android:paddingTop="10dp"
         android:paddingBottom="40dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -56,10 +56,19 @@
         <Button
                 android:id="@+id/importReplay"
                 android:layout_width="wrap_content"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:text="Importar Replay"
                 android:textSize="20sp"
+                android:layout_marginBottom="20dp"
+
         />
+
+        <Button
+                android:id="@+id/back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Voltar"
+                android:textSize="20sp" />
     </LinearLayout>
 
 

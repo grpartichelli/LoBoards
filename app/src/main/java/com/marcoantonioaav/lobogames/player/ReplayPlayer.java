@@ -1,14 +1,16 @@
 package com.marcoantonioaav.lobogames.player;
 
 import android.os.SystemClock;
+import com.marcoantonioaav.lobogames.board.Board;
 import com.marcoantonioaav.lobogames.game.Game;
 import com.marcoantonioaav.lobogames.move.Move;
+import com.marcoantonioaav.lobogames.replay.Replay;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReplayPlayer extends Player{
-    private final List<Move> moves = new ArrayList<>();
+public class ReplayPlayer extends Player {
+    private Replay replay;
     private int currentMoveIndex = 0;
 
     private long lastTime = 0;
@@ -19,15 +21,15 @@ public class ReplayPlayer extends Player{
     }
 
     public void addMove(Move move) {
-        moves.add(move);
+        replay.addMove(move);
     }
 
     @Override
     public Move getMove(Game game) {
-        if (moves.size() <= currentMoveIndex) {
+        if (replay.countMoves() <= currentMoveIndex) {
             throw new IllegalStateException("Replay player ran out of moves");
         }
-        Move move = moves.get(currentMoveIndex);
+        Move move = replay.findMove(currentMoveIndex);
         currentMoveIndex++;
         lastTime = 0;
         return move;
@@ -47,7 +49,15 @@ public class ReplayPlayer extends Player{
     }
 
     public void clearMoves() {
-        moves.clear();
+        replay.clearMoves();
+    }
+
+    public Replay getReplay() {
+        return replay;
+    }
+
+    public void setReplay(Replay replay) {
+        this.replay = replay;
     }
 
     public void reset() {
