@@ -154,6 +154,7 @@ public class BoardView extends View {
 
     public void resizeToScreenSize() {
         ViewGroup.LayoutParams layoutParams = getLayoutParams();
+        // TODO: thing about this
         layoutParams.width = getResources().getDisplayMetrics().widthPixels;
         layoutParams.height = getResources().getDisplayMetrics().widthPixels;
         setLayoutParams(layoutParams);

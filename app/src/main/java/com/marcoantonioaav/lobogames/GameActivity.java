@@ -84,7 +84,7 @@ public class GameActivity extends AppCompatActivity {
         boardView.setPlayer2Color(getSharedPreferences(SettingsActivity.SETTINGS, MODE_PRIVATE).getInt(SettingsActivity.PLAYER_2_COLOR, Color.RED));
         boardView.setCursorColor(getSharedPreferences(SettingsActivity.SETTINGS, MODE_PRIVATE).getInt(SettingsActivity.CURSOR_COLOR, Color.BLUE));
 
-        // game name
+//        // game name
         gameNameTextView = findViewById(R.id.gameName);
         gameNameTextView.setText(game.getName());
 
@@ -264,7 +264,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void handleReplay() {
-        runOnUiThread(() -> replay.setVisibility(View.INVISIBLE));
+        // runOnUiThread(() -> replay.setVisibility(View.INVISIBLE));
         replayPlayer1.reset();
         replayPlayer2.reset();
 
