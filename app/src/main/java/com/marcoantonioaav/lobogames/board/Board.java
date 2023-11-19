@@ -67,6 +67,10 @@ public abstract class Board {
         return image;
     }
 
+    public Drawable getImageCopy()  {
+        return image.getConstantState().newDrawable().mutate();
+    }
+
     public void setImage(Drawable image) {
         this.image = image;
     }

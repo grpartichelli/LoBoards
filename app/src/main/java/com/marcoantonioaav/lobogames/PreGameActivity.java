@@ -148,7 +148,8 @@ public class PreGameActivity extends AppCompatActivity {
                 ImageView imageView = view.findViewById(R.id.boardListItemImageView);
 
                 if (imageView != null) {
-                    imageView.setImageDrawable(game.getBoard().getImage());
+                    // NOTE: Must be a copy to avoid issues with resetting games
+                    imageView.setImageDrawable(game.getBoard().getImageCopy());
                 }
             }
 
