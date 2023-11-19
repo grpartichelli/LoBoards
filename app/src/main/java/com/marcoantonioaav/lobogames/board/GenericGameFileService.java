@@ -1,6 +1,7 @@
 package com.marcoantonioaav.lobogames.board;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -17,18 +18,44 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GenericGameBoardFactory {
+public class GenericGameFileService {
 
-    private GenericGameBoardFactory() {}
+    private GenericGameFileService() {}
 
     private static final double PADDING_PERCENTAGE = 0.0;
 
-    public static List<StandardBoard> createAll() {
+    public static StandardBoard createFromIntent(Intent intent) {
+        Context context = LoBoGames.getAppContext();
+        try (InputStream stream = context.getContentResolver().openInputStream(intent.getData())) {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+            String line = reader.readLine();
+            JSONObject object = new JSONObject(line);
+            String boardName = object.getString("name");
+            File dir = new File(context.getFilesDir(), "boards");
+
+            if(!dir.exists()){
+                dir.mkdir();
+            }
+
+            File newFile = new File(dir, boardName.toLowerCase().replaceAll(" ", "-") + "-lobogames-config.txt");
+            FileWriter writer = new FileWriter(newFile);
+            writer.append(line);
+            writer.flush();
+            writer.close();
+
+            return fromFilePath(newFile.getPath());
+        } catch (Exception e) {
+            throw new FailedToReadFileException();
+        }
+    }
+
+    public static List<StandardBoard> readAll() {
         List<StandardBoard> boards = new ArrayList<>();
         try {
             Context context = LoBoGames.getAppContext();
@@ -52,7 +79,7 @@ public class GenericGameBoardFactory {
         return boards;
     }
 
-    public static StandardBoard fromAsset(String filePath) {
+    private static StandardBoard fromAsset(String filePath) {
         try (InputStream stream = LoBoGames.getAppContext().getAssets().open(filePath)) {
             return processFileStream(stream);
         } catch (Exception e) {
@@ -60,7 +87,7 @@ public class GenericGameBoardFactory {
         }
     }
 
-    public static StandardBoard fromFilePath(String filePath) {
+    private static StandardBoard fromFilePath(String filePath) {
         File myFile = new File(filePath);
         try (InputStream stream = new FileInputStream(myFile)) {
             return processFileStream(stream);

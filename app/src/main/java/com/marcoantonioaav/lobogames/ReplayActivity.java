@@ -8,11 +8,13 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
-import com.marcoantonioaav.lobogames.board.GenericGameBoardFactory;
+import com.marcoantonioaav.lobogames.board.GenericGameFileService;
 import com.marcoantonioaav.lobogames.board.StandardBoard;
 import com.marcoantonioaav.lobogames.exceptions.FailedToReadFileException;
-import com.marcoantonioaav.lobogames.game.Game;
+import com.marcoantonioaav.lobogames.replay.Replay;
+import com.marcoantonioaav.lobogames.replay.ReplayFileService;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -26,11 +28,12 @@ import java.util.Objects;
 
 public class ReplayActivity extends AppCompatActivity {
     private ListView replayListView;
-    private Button play, importReplay, back;
+    private TextView replayEmptyStateView;
+    private Button play;
     private String selectedReplayName;
     private static final int IMPORT_FILE_CODE = 32;
 
-    public static final List<StandardBoard> REPLAYS = GenericGameBoardFactory.createAll();
+    public static final List<Replay> REPLAYS = ReplayFileService.readAll();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,17 +42,17 @@ public class ReplayActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Objects.requireNonNull(getSupportActionBar()).hide();
 
-        createReplayList();
-
         play = findViewById(R.id.play);
         play.setOnClickListener(view -> openGameActivity());
         play.setEnabled(false);
 
-        importReplay = findViewById(R.id.importReplay);
-        importReplay.setOnClickListener(view -> importFile());
+        replayEmptyStateView = findViewById(R.id.replayEmptyState);
+        replayEmptyStateView.setVisibility(View.INVISIBLE);
 
-        back = findViewById(R.id.back);
-        back.setOnClickListener(view -> finish());
+        findViewById(R.id.importReplay).setOnClickListener(view -> importFile());
+        findViewById(R.id.back).setOnClickListener(view -> finish());
+
+        createReplayList();
     }
 
     private void createReplayList() {
@@ -57,16 +60,19 @@ public class ReplayActivity extends AppCompatActivity {
             replayListView.setAdapter(null);
         }
         replayListView = findViewById(R.id.replayList);
+        if (REPLAYS.isEmpty()) {
+            replayListView.setVisibility(View.INVISIBLE);
+            replayEmptyStateView.setVisibility(View.VISIBLE);
+        }
         replayListView.addHeaderView(new View(getBaseContext()), null, true);
         replayListView.addFooterView(new View(getBaseContext()), null, true);
 
         List<String> replayNames = new ArrayList<>();
-        for(StandardBoard replay : REPLAYS){
+        for (Replay replay : REPLAYS) {
             replayNames.add(replay.getName());
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.replay_list_item, R.id.replayListTextView, replayNames);
-        //adapter.setDropDownViewResource(android.R.layout.activity_list_item);
         replayListView.setAdapter(adapter);
 
         replayListView.setOnItemClickListener(
@@ -92,43 +98,22 @@ public class ReplayActivity extends AppCompatActivity {
         finish();
     }
 
-
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == IMPORT_FILE_CODE) {
-            try (InputStream stream = getContentResolver().openInputStream(data.getData())) {
-                BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-                String line = reader.readLine();
-                JSONObject object = new JSONObject(line);
-                String boardName = object.getString("name");
-                File dir = new File(getFilesDir(), "boards");
+            Replay replay = ReplayFileService.createFromIntent(data);
 
-                if(!dir.exists()){
-                    dir.mkdir();
+            for (int i = 0; i < REPLAYS.size(); i++) {
+                if (REPLAYS.get(i).getName().equals(replay.getName())) {
+                    REPLAYS.remove(i);
+                    break;
                 }
-
-                File newFile = new File(dir, boardName.toLowerCase().replaceAll(" ", "-") + "-lobogames-config.txt");
-                FileWriter writer = new FileWriter(newFile);
-                writer.append(line);
-                writer.flush();
-                writer.close();
-
-
-                for(int i = 0; i < REPLAYS.size(); i++){
-                    if(REPLAYS.get(i).getName().equals(boardName)){
-                        REPLAYS.remove(i);
-                        break;
-                    }
-                }
-
-                REPLAYS.add(0, GenericGameBoardFactory.fromFilePath(newFile.getPath()));
-                selectedReplayName = boardName;
-                createReplayList();
-            } catch (Exception e) {
-                throw new FailedToReadFileException();
             }
+
+            REPLAYS.add(0, replay);
+            selectedReplayName = replay.getName();
+            createReplayList();
         }
     }
 }

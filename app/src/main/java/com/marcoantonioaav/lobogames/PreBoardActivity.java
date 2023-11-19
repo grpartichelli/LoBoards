@@ -15,26 +15,19 @@ import android.widget.ListView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import com.marcoantonioaav.lobogames.board.Board;
-import com.marcoantonioaav.lobogames.board.GenericGameBoardFactory;
+import com.marcoantonioaav.lobogames.board.GenericGameFileService;
 import com.marcoantonioaav.lobogames.board.StandardBoard;
-import com.marcoantonioaav.lobogames.exceptions.FailedToReadFileException;
-import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Objects;
 
 public class PreBoardActivity extends AppCompatActivity {
     private ListView boardListView;
-    private Button play, importBoard;
+    private Button play;
     private String selectedBoardName;
     private static final int IMPORT_FILE_CODE = 32;
 
-    public static final List<StandardBoard> BOARDS = GenericGameBoardFactory.createAll();
+    protected static final List<StandardBoard> BOARDS = GenericGameFileService.readAll();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,15 +36,13 @@ public class PreBoardActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Objects.requireNonNull(getSupportActionBar()).hide();
 
-
         createBoardList();
 
         play = findViewById(R.id.play);
         play.setOnClickListener(view -> openGameActivity());
         play.setEnabled(false);
 
-        importBoard = findViewById(R.id.importBoard);
-        importBoard.setOnClickListener(view -> importFile());
+        findViewById(R.id.importBoard).setOnClickListener(view -> importFile());
     }
 
     private void createBoardList() {
@@ -93,37 +84,18 @@ public class PreBoardActivity extends AppCompatActivity {
     {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == IMPORT_FILE_CODE) {
-            try (InputStream stream = getContentResolver().openInputStream(data.getData())) {
-                BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-                String line = reader.readLine();
-                JSONObject object = new JSONObject(line);
-                String boardName = object.getString("name");
-                File dir = new File(getFilesDir(), "boards");
+            StandardBoard board = GenericGameFileService.createFromIntent(data);
 
-                if(!dir.exists()){
-                    dir.mkdir();
+            for(int i=0; i < BOARDS.size(); i++){
+                if(BOARDS.get(i).getName().equals(board.getName())){
+                    BOARDS.remove(i);
+                    break;
                 }
-
-                File newFile = new File(dir, boardName.toLowerCase().replaceAll(" ", "-") + "-lobogames-config.txt");
-                FileWriter writer = new FileWriter(newFile);
-                writer.append(line);
-                writer.flush();
-                writer.close();
-
-
-                for(int i=0; i < BOARDS.size(); i++){
-                    if(BOARDS.get(i).getName().equals(boardName)){
-                        BOARDS.remove(i);
-                        break;
-                    }
-                }
-
-                BOARDS.add(0, GenericGameBoardFactory.fromFilePath(newFile.getPath()));
-                selectedBoardName = boardName;
-                createBoardList();
-            } catch (Exception e) {
-                throw new FailedToReadFileException();
             }
+
+            BOARDS.add(0, board);
+            selectedBoardName = board.getName();
+            createBoardList();
         }
     }
 
