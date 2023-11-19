@@ -15,14 +15,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0"
-            android:labelFor="@id/boardList"
+            android:labelFor="@id/replayList"
             android:gravity="center_horizontal|center_vertical"
             android:layout_marginBottom="5dp"
             android:textSize="20sp"
-            android:text="Selecionar Tabuleiro:"/>
+            android:text="Selecionar Replay:"/>
 
     <ListView
-            android:id="@+id/boardList"
+            android:id="@+id/replayList"
             android:paddingVertical="20dp"
             android:layout_width="fill_parent"
             android:layout_height="0dp"
@@ -48,16 +48,16 @@
                 android:id="@+id/play"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Jogar"
+                android:text="Ver Replay"
                 android:textSize="20sp"
                 android:layout_marginBottom="20dp"
         />
 
         <Button
-                android:id="@+id/importBoard"
+                android:id="@+id/importReplay"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
-                android:text="Importar Tabuleiro"
+                android:text="Importar Replay"
                 android:textSize="20sp"
         />
     </LinearLayout>

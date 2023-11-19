@@ -23,12 +23,12 @@
 
     <ListView
             android:id="@+id/gameListView"
-            android:padding="20dp"
+            android:paddingVertical="20dp"
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:layout_weight="100"
             android:divider="#000"
-            android:dividerHeight="1dp"
+            android:dividerHeight="2px"
             android:listSelector="#0f0"
             android:footerDividersEnabled="true"
             android:headerDividersEnabled="true"

@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         games.setOnClickListener(view -> openPreGameActivity());
 
         replays = findViewById(R.id.buttonReplays);
-        replays.setOnClickListener(view -> openPreGameActivity());
+        replays.setOnClickListener(view -> openReplayActivity());
 
         howToPlay = findViewById(R.id.buttonHowToPlay);
         howToPlay.setOnClickListener(view -> openHowToPlayActivity());
@@ -37,6 +37,10 @@ public class MainActivity extends AppCompatActivity {
 
         about = findViewById(R.id.buttonAbout);
         about.setOnClickListener(view -> openAboutActivity());
+    }
+
+    private void openReplayActivity() {
+        startActivity(new Intent(this, ReplayActivity.class));
     }
 
     private void openPreBoardActivity() {
