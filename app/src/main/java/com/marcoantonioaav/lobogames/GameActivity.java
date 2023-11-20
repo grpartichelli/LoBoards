@@ -40,6 +40,7 @@ public class GameActivity extends AppCompatActivity {
     public static final String IS_MULTIPLAYER = "IS_MULTIPLAYER";
     public static final String DIFFICULTY = "DIFFICULTY";
 
+    RelativeLayout buttonsLayout;
     private BoardView boardView;
     private final Map<Position, Button> positionButtonsMap = new HashMap<>();
     private TextView gameNameTextView, statusTextView;
@@ -77,14 +78,16 @@ public class GameActivity extends AppCompatActivity {
         setTitle(game.getName());
         updatePlayers();
 
+        // buttons
+        buttonsLayout = findViewById(R.id.buttonsLayout);
+
         // board
         boardView = findViewById(R.id.boardView);
-        boardView.resizeToScreenSize();
         boardView.setPlayer1Color(getSharedPreferences(SettingsActivity.SETTINGS, MODE_PRIVATE).getInt(SettingsActivity.PLAYER_1_COLOR, Color.GREEN));
         boardView.setPlayer2Color(getSharedPreferences(SettingsActivity.SETTINGS, MODE_PRIVATE).getInt(SettingsActivity.PLAYER_2_COLOR, Color.RED));
         boardView.setCursorColor(getSharedPreferences(SettingsActivity.SETTINGS, MODE_PRIVATE).getInt(SettingsActivity.CURSOR_COLOR, Color.BLUE));
 
-//        // game name
+        // game name
         gameNameTextView = findViewById(R.id.gameName);
         gameNameTextView.setText(game.getName());
 
@@ -135,7 +138,6 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void setUpButtons() {
-        RelativeLayout buttonsLayout = findViewById(R.id.buttonsLayout);
         for (Button button: positionButtonsMap.values()) {
             buttonsLayout.removeView(button);
         }
@@ -143,6 +145,10 @@ public class GameActivity extends AppCompatActivity {
         this.boardView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
+
+                int size = Math.min(buttonsLayout.getWidth(), buttonsLayout.getHeight());
+                boardView.resize(size);
+
                 boardView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 RelativeLayout buttonsLayout = findViewById(R.id.buttonsLayout);
                 double buttonSize = boardView.getSelectedPositionBorderRadius() * 2.5;

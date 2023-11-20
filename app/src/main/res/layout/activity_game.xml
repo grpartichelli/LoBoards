@@ -13,7 +13,7 @@
             android:layout_height="wrap_content"
             android:text="Game Name"
             android:textSize="24sp"
-            android:paddingTop="30dp"
+            android:paddingTop="20dp"
             android:layout_weight="0"
     />
 
@@ -32,6 +32,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="100"
             android:id="@+id/buttonsLayout"
+            android:background="#F00"
+            android:gravity="center_horizontal|center_vertical"
     >
         <com.marcoantonioaav.lobogames.ui.BoardView
                 android:id="@+id/boardView"
@@ -45,21 +47,18 @@
     <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:layout_weight="0"
-            android:visibility="gone"
+            android:paddingTop="10dp"
     >
         <Button
                 android:id="@+id/replay"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:contentDescription="Visualizar Replay"
-                android:paddingLeft="12dp"
-                android:paddingTop="2dp"
-                android:paddingRight="12dp"
-                android:paddingBottom="2dp"
                 android:text="Visualizar\nReplay"
                 android:textSize="16sp"
-                android:visibility="visible"
+                android:layout_marginRight="15dp"
         />
 
         <Button
@@ -67,87 +66,35 @@
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:contentDescription="Salvar Replay"
-                android:paddingLeft="12dp"
-                android:paddingTop="2dp"
-                android:paddingRight="12dp"
-                android:paddingBottom="2dp"
                 android:text="Salvar\nReplay"
                 android:textSize="16sp"
-                android:visibility="visible"
         />
     </LinearLayout>
-    <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:visibility="gone"
-
-    >
-        <Button
-
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:contentDescription="Visualizar Replay"
-                android:paddingLeft="12dp"
-                android:paddingTop="2dp"
-                android:paddingRight="12dp"
-                android:paddingBottom="2dp"
-                android:text="Visualizar\nReplay"
-                android:textSize="16sp"
-                android:visibility="visible"
-        />
-
-        <Button
-
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:contentDescription="Salvar Replay"
-                android:paddingLeft="12dp"
-                android:paddingTop="2dp"
-                android:paddingRight="12dp"
-                android:paddingBottom="2dp"
-                android:text="Salvar\nReplay"
-                android:textSize="16sp"
-                android:visibility="visible"
-        />
-    </LinearLayout>
-
 
     <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:layout_weight="0"
-            android:visibility="gone"
-
+            android:paddingBottom="10dp"
     >
         <Button
                 android:id="@+id/playAgain"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:contentDescription="Recomeçar jogo"
-                android:paddingLeft="12dp"
-                android:paddingTop="2dp"
-                android:paddingRight="12dp"
-                android:paddingBottom="2dp"
                 android:text="Recomeçar\nJogo"
                 android:textSize="16sp"
-                android:layout_marginBottom="24dp"
-        />
+                android:layout_marginRight="15dp"/>
 
         <Button
                 android:id="@+id/back"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:contentDescription="Voltar ao menu"
-                android:paddingLeft="12dp"
-                android:paddingTop="2dp"
-                android:paddingRight="12dp"
-                android:paddingBottom="2dp"
                 android:text="Voltar\nao menu"
                 android:textSize="16sp"
                 android:visibility="visible"
-                android:layout_marginBottom="24dp"
         />
     </LinearLayout>
-
 </LinearLayout>

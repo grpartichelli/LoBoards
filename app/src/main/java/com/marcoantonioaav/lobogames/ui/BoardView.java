@@ -8,7 +8,9 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import androidx.annotation.Nullable;
+import com.marcoantonioaav.lobogames.R;
 import com.marcoantonioaav.lobogames.board.Board;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.move.Movement;
@@ -34,6 +36,8 @@ public class BoardView extends View {
     private static final int ANIMATION_DURATION_IN_MS = 300;
     private static final int ANIMATION_STEPS_TOTAL = 30;
     private Position animatingPosition = Position.instanceOutOfBoard();
+    private int height;
+    private int width;
 
     public BoardView(Context context) {
         super(context);
@@ -152,11 +156,10 @@ public class BoardView extends View {
         }
     }
 
-    public void resizeToScreenSize() {
+    public void resize(int size) {
         ViewGroup.LayoutParams layoutParams = getLayoutParams();
-        // TODO: thing about this
-        layoutParams.width = getResources().getDisplayMetrics().widthPixels;
-        layoutParams.height = getResources().getDisplayMetrics().widthPixels;
+        layoutParams.width = size;
+        layoutParams.height = size;
         setLayoutParams(layoutParams);
     }
 
