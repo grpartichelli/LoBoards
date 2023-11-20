@@ -5,35 +5,41 @@
               android:layout_height="match_parent"
               android:gravity="center_horizontal|center_vertical"
               android:orientation="vertical"
-              android:textAlignment="center"
-
               tools:context=".GameActivity">
 
-    <TextView
-            android:id="@+id/gameName"
+    <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Game Name"
-            android:textSize="28sp"
-            android:layout_marginTop="20dp"
-            android:layout_weight="0"
-    />
+            android:layout_height="0dp"
+            android:layout_weight="100"
+            android:orientation="vertical"
+            android:gravity="center_horizontal|center_vertical"
+            android:paddingTop="20dp"
+    >
 
-    <TextView
-            android:id="@+id/status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="status"
-            android:textSize="20sp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_weight="0"
-    />
+        <TextView
+                android:id="@+id/gameName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Game Name"
+                android:textSize="24sp"
+                android:layout_weight="0"
+        />
+
+        <TextView
+                android:id="@+id/status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="status"
+                android:textSize="20sp"
+                android:layout_weight="0"
+        />
+    </LinearLayout>
+
 
     <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="100"
+            android:layout_weight="0"
             android:id="@+id/buttonsLayout"
             android:gravity="center_horizontal|center_vertical"
     >
@@ -46,57 +52,67 @@
 
 
     <LinearLayout
-            android:id="@+id/replayLayout"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_weight="0"
-            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            android:gravity="center_horizontal|center_vertical"
+            android:padding="20dp"
     >
-        <Button
-                android:id="@+id/replay"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:contentDescription="Visualizar Replay"
-                android:text="Visualizar\nReplay"
-                android:layout_marginRight="15dp"
-        />
 
-        <Button
-                android:id="@+id/replayTest"
-                android:layout_width="150dp"
+        <LinearLayout
+                android:id="@+id/replayLayout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:contentDescription="Salvar Replay"
-                android:text="Salvar\nReplay"
-        />
-    </LinearLayout>
+                android:orientation="horizontal"
+        >
+            <Button
+                    android:id="@+id/replay"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="50"
+                    android:textSize="16sp"
+                    android:contentDescription="Visualizar Replay"
+                    android:text="Visualizar\nReplay"
+                    android:layout_marginRight="15dp"
+            />
 
-    <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_weight="0"
-            android:layout_marginBottom="20dp"
-    >
-        <Button
-                android:id="@+id/playAgain"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:contentDescription="Recomeçar jogo"
-                android:text="Recomeçar\nJogo"
-                android:layout_marginRight="15dp"/>
+            <Button
+                    android:id="@+id/replayTest"
+                    android:layout_width="0dp"
+                    android:layout_weight="50"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:contentDescription="Salvar Replay"
+                    android:text="Salvar\nReplay"
+            />
+        </LinearLayout>
 
-        <Button
-                android:id="@+id/back"
-                android:layout_width="150dp"
+        <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:contentDescription="Voltar ao menu"
-                android:text="Voltar\nao menu"
-                android:visibility="visible"
-        />
+                android:orientation="horizontal"
+        >
+            <Button
+                    android:id="@+id/playAgain"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="50"
+                    android:textSize="16sp"
+                    android:contentDescription="Recomeçar jogo"
+                    android:text="Recomeçar\nJogo"
+                    android:layout_marginRight="15dp"/>
+
+            <Button
+                    android:id="@+id/back"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="50"
+                    android:textSize="16sp"
+                    android:contentDescription="Voltar ao menu"
+                    android:text="Voltar\nao menu"
+                    android:visibility="visible"
+            />
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>
