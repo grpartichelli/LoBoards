@@ -45,11 +45,12 @@
 
 
     <LinearLayout
+            android:id="@+id/replayLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_weight="0"
-            android:paddingTop="10dp"
+            android:paddingTop="15dp"
     >
         <Button
                 android:id="@+id/replay"
@@ -57,7 +58,6 @@
                 android:layout_height="wrap_content"
                 android:contentDescription="Visualizar Replay"
                 android:text="Visualizar\nReplay"
-                android:textSize="16sp"
                 android:layout_marginRight="15dp"
         />
 
@@ -67,7 +67,6 @@
                 android:layout_height="wrap_content"
                 android:contentDescription="Salvar Replay"
                 android:text="Salvar\nReplay"
-                android:textSize="16sp"
         />
     </LinearLayout>
 
@@ -76,7 +75,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_weight="0"
-            android:paddingBottom="10dp"
+            android:paddingBottom="15dp"
     >
         <Button
                 android:id="@+id/playAgain"
@@ -84,7 +83,6 @@
                 android:layout_height="wrap_content"
                 android:contentDescription="Recomeçar jogo"
                 android:text="Recomeçar\nJogo"
-                android:textSize="16sp"
                 android:layout_marginRight="15dp"/>
 
         <Button
@@ -93,7 +91,6 @@
                 android:layout_height="wrap_content"
                 android:contentDescription="Voltar ao menu"
                 android:text="Voltar\nao menu"
-                android:textSize="16sp"
                 android:visibility="visible"
         />
     </LinearLayout>

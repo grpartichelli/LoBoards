@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
@@ -55,7 +56,7 @@ public class GameActivity extends AppCompatActivity {
     private boolean isReplay;
     private final ReplayPlayer replayPlayer1 = new ReplayPlayer(Player.PLAYER_1);
     private final ReplayPlayer replayPlayer2 = new ReplayPlayer(Player.PLAYER_2);
-    private Button replay;
+    private LinearLayout replayLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,8 +96,8 @@ public class GameActivity extends AppCompatActivity {
         statusTextView = findViewById(R.id.status);
 
         // replay
-        replay = findViewById(R.id.replay);
-        replay.setOnClickListener(view -> {
+        replayLayout = findViewById(R.id.replayLayout);
+        findViewById(R.id.replay).setOnClickListener(view -> {
             isReplay = true;
             initializeGame();
         });
@@ -208,7 +209,7 @@ public class GameActivity extends AppCompatActivity {
                     if (game.isLegalMove(move)) {
                         makeMove(move);
                         if (game.isTerminalState()) {
-                            runOnUiThread(() -> replay.setVisibility(View.VISIBLE));
+                            setReplayVisibility(true);
                             endGame();
                         }
                     } else {
@@ -270,7 +271,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void handleReplay() {
-        // runOnUiThread(() -> replay.setVisibility(View.INVISIBLE));
+        setReplayVisibility(false);
         replayPlayer1.reset();
         replayPlayer2.reset();
 
@@ -282,6 +283,16 @@ public class GameActivity extends AppCompatActivity {
             replayPlayer2.clearMoves();
             updatePlayers();
         }
+    }
+
+    private void setReplayVisibility(boolean isReplayVisible) {
+        runOnUiThread(() -> {
+            if (isReplayVisible) {
+                replayLayout.setVisibility(View.VISIBLE);
+            } else {
+                replayLayout.setVisibility(View.INVISIBLE);
+            }
+        });
     }
 
     private void showTurn() {
