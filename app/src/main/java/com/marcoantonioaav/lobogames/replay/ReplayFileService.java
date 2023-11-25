@@ -7,8 +7,13 @@ import java.util.List;
 
 public class ReplayFileService {
 
+
     public static Replay createFromIntent(Intent intent) {
             return null;
+    }
+
+    public static void save(Replay replay) {
+
     }
 
     public static List<Replay> readAll() {

@@ -10,18 +10,9 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
-import com.marcoantonioaav.lobogames.board.GenericGameFileService;
-import com.marcoantonioaav.lobogames.board.StandardBoard;
-import com.marcoantonioaav.lobogames.exceptions.FailedToReadFileException;
 import com.marcoantonioaav.lobogames.replay.Replay;
 import com.marcoantonioaav.lobogames.replay.ReplayFileService;
-import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;

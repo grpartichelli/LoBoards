@@ -26,6 +26,7 @@ import com.marcoantonioaav.lobogames.player.ReplayPlayer;
 import com.marcoantonioaav.lobogames.player.agent.MinimaxAgent;
 import com.marcoantonioaav.lobogames.position.Position;
 import com.marcoantonioaav.lobogames.replay.Replay;
+import com.marcoantonioaav.lobogames.replay.ReplayFileService;
 import com.marcoantonioaav.lobogames.ui.BoardButtonDelegate;
 import com.marcoantonioaav.lobogames.ui.BoardView;
 
@@ -54,8 +55,7 @@ public class GameActivity extends AppCompatActivity {
     private boolean isGameRunning;
 
     private boolean isReplay;
-    private final ReplayPlayer replayPlayer1 = new ReplayPlayer(Player.PLAYER_1);
-    private final ReplayPlayer replayPlayer2 = new ReplayPlayer(Player.PLAYER_2);
+    private Replay replay;
     private LinearLayout replayLayout;
 
     @Override
@@ -97,10 +97,12 @@ public class GameActivity extends AppCompatActivity {
 
         // replay
         replayLayout = findViewById(R.id.replayLayout);
-        findViewById(R.id.replay).setOnClickListener(view -> {
+        findViewById(R.id.playReplay).setOnClickListener(view -> {
             isReplay = true;
             initializeGame();
         });
+        findViewById(R.id.saveReplay).setOnClickListener(view -> ReplayFileService.save(replay));
+
 
         // play again
         playAgain = findViewById(R.id.playAgain);
@@ -127,9 +129,6 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void updatePlayers() {
-        replayPlayer1.setReplay(new Replay(game));
-        replayPlayer2.setReplay(new Replay(game));
-
         player1 = new Human(Player.PLAYER_1);
         if ((boolean) this.getIntent().getExtras().get(IS_MULTIPLAYER)) {
             player2 = new Human(Player.PLAYER_2);
@@ -235,11 +234,7 @@ public class GameActivity extends AppCompatActivity {
             return;
         }
         if (!isReplay) {
-            if (move.getPlayerId() == Player.PLAYER_1) {
-                replayPlayer1.addMove(move);
-            } else {
-                replayPlayer2.addMove(move );
-            }
+            replay.addMove(move);
         }
 
         game.getBoard().applyMove(move);
@@ -281,16 +276,13 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void handleReplay() {
-        setReplayVisibility(true);
-        replayPlayer1.reset();
-        replayPlayer2.reset();
+        setReplayVisibility(false);
 
         if (isReplay) {
-            player1 = replayPlayer1;
-            player2 = replayPlayer2;
+            player1 = new ReplayPlayer(Player.PLAYER_1, replay);
+            player2 = new ReplayPlayer(Player.PLAYER_2, replay);
         } else {
-            replayPlayer1.clearMoves();
-            replayPlayer2.clearMoves();
+            replay = new Replay(game);
             updatePlayers();
         }
     }

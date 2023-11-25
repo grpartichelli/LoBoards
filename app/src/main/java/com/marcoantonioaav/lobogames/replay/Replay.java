@@ -21,17 +21,14 @@ public class Replay {
         moves.add(move);
     }
 
-    public void clearMoves() {
-        moves.clear();
-    }
-
-
-    public int countMoves() {
-        return moves.size();
-    }
-
-    public Move findMove(int moveIndex) {
-        return moves.get(moveIndex);
+    public List<Move> findMovesByPlayerId(int playerId) {
+        List<Move> moves = new ArrayList<>();
+        for (Move move : this.moves) {
+            if (move.getPlayerId() == playerId) {
+                moves.add(move);
+            }
+        }
+        return moves;
     }
 
     public String getName() {
