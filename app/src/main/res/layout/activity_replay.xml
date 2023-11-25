@@ -50,42 +50,86 @@
     />
 
     <LinearLayout
-        android:paddingTop="10dp"
-        android:paddingBottom="40dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0"
-        android:gravity="center_horizontal|center_vertical"
-        android:orientation="vertical"
+            android:paddingTop="10dp"
+            android:paddingBottom="40dp"
+            android:paddingHorizontal="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:gravity="center_horizontal|center_vertical"
+            android:orientation="vertical"
 
     >
-        <Button
-                android:id="@+id/play"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Ver Replay"
-                android:textSize="20sp"
-                android:layout_marginBottom="20dp"
-        />
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingVertical="10dp"
+                android:gravity="center_horizontal|center_vertical"
+                android:orientation="horizontal"
+        >
 
-        <Button
-                android:id="@+id/importReplay"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Importar Replay"
-                android:textSize="20sp"
-                android:layout_marginBottom="20dp"
+            <Button
+                    android:id="@+id/play"
+                    android:layout_width="0dp"
+                    android:layout_weight="50"
+                    android:layout_height="wrap_content"
+                    android:text="Ver"
+                    android:textSize="20sp"
+                    android:layout_marginRight="15dp"
+            />
+            <Button
+                    android:id="@+id/delete"
+                    android:layout_width="0dp"
+                    android:layout_weight="50"
+                    android:layout_height="wrap_content"
+                    android:text="Deletar"
+                    android:textSize="20sp"
+            />
+        </LinearLayout>
 
-        />
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="10dp"
+                android:gravity="center_horizontal|center_vertical"
+                android:orientation="horizontal"
+        >
 
+            <Button
+                    android:id="@+id/export"
+                    android:layout_width="0dp"
+                    android:layout_weight="50"
+                    android:layout_height="wrap_content"
+                    android:text="Exportar"
+                    android:textSize="20sp"
+                    android:layout_marginRight="15dp"
+            />
+
+            <Button
+                    android:id="@+id/importReplay"
+                    android:layout_width="0dp"
+                    android:layout_weight="50"
+                    android:layout_height="wrap_content"
+                    android:text="Importar"
+                    android:textSize="20sp"
+
+            />
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal|center_vertical"
+        >
         <Button
                 android:id="@+id/back"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Voltar"
-                android:textSize="20sp" />
+                android:text="Voltar ao menu"
+                android:textSize="20sp"
+        />
     </LinearLayout>
-
+    </LinearLayout>
 
 
 </LinearLayout>

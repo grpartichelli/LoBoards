@@ -112,7 +112,10 @@ public class GameActivity extends AppCompatActivity {
             isReplay = true;
             initializeGame();
         });
-        findViewById(R.id.saveReplay).setOnClickListener(view -> ReplayFileService.save(replay));
+        findViewById(R.id.saveReplay).setOnClickListener(view -> {
+            ReplayFileService.save(replay);
+            ReplayActivity.REPLAYS.add(0, replay);
+        });
 
 
         // play again
