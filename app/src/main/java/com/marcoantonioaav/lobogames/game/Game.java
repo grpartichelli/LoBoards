@@ -1,5 +1,6 @@
 package com.marcoantonioaav.lobogames.game;
 
+import androidx.annotation.Nullable;
 import com.marcoantonioaav.lobogames.board.Board;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.player.Player;
@@ -57,5 +58,18 @@ public abstract class Game {
 
     public void restart() {
         setBoard(getInitialBoard());
+    }
+
+    @Override
+    public boolean equals(@Nullable @org.jetbrains.annotations.Nullable Object obj) {
+        if (!(obj instanceof Game)) {
+            return false;
+        }
+        return this.getName().equals(((Game) obj).getName());
+    }
+
+    @Override
+    public int hashCode() {
+        return this.getName().hashCode();
     }
 }

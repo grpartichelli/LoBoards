@@ -16,6 +16,10 @@ public class StandardMove extends Move {
         return new ArrayList<>(this.movements);
     }
 
+    public List<StandardMovement> getStandardMovements() {
+        return new ArrayList<>(this.movements);
+    }
+
     public void addMovement(StandardMovement movement) {
         this.movements.add(movement);
     }

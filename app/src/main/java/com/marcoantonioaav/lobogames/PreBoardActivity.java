@@ -15,8 +15,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import com.marcoantonioaav.lobogames.board.Board;
-import com.marcoantonioaav.lobogames.board.GenericGameFileService;
+
 import com.marcoantonioaav.lobogames.board.StandardBoard;
+import com.marcoantonioaav.lobogames.game.GenericGameFileService;
 
 import java.util.List;
 import java.util.Objects;
