@@ -10,7 +10,7 @@
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="20"
+            android:layout_weight="15"
             android:orientation="vertical"
             android:gravity="center_horizontal|center_vertical"
             android:paddingTop="15dp"
@@ -39,60 +39,56 @@
     <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="80"
+            android:layout_weight="85"
             android:id="@+id/buttonsLayout"
-            android:gravity="center_horizontal|center_vertical"
     >
+
         <com.marcoantonioaav.lobogames.ui.BoardView
                 android:id="@+id/boardView"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
         />
-    </RelativeLayout>
-
-
-    <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:orientation="vertical"
-            android:gravity="center_horizontal|center_vertical"
-            android:padding="20dp"
-    >
 
         <LinearLayout
                 android:id="@+id/replayLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:layout_centerInParent="true"
+                android:gravity="center_horizontal"
         >
             <Button
                     android:id="@+id/replay"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="50"
                     android:textSize="16sp"
-                    android:contentDescription="Visualizar Replay"
-                    android:text="Visualizar\nReplay"
-                    android:layout_marginRight="15dp"
+                    android:contentDescription="Replay"
+                    android:text="Replay"
+                    android:layout_marginRight="40dp"
             />
 
             <Button
                     android:id="@+id/replayTest"
-                    android:layout_width="0dp"
-                    android:layout_weight="50"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
-                    android:contentDescription="Salvar Replay"
-                    android:text="Salvar\nReplay"
+                    android:contentDescription="Salvar"
+                    android:text="Salvar"
             />
         </LinearLayout>
+    </RelativeLayout>
 
-        <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-        >
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal|center_vertical"
+            android:paddingHorizontal="20dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="20dp"
+    >
             <Button
                     android:id="@+id/playAgain"
                     android:layout_width="0dp"
@@ -113,6 +109,5 @@
                     android:text="Voltar\nao menu"
                     android:visibility="visible"
             />
-        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

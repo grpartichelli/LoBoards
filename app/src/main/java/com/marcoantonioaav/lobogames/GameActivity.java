@@ -147,10 +147,20 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onGlobalLayout() {
 
-                int size = Math.min(buttonsLayout.getWidth(), buttonsLayout.getHeight());
-                boardView.resize(size);
+                int leftOffset = 0;
+                int topOffset = 0;
+                int width = buttonsLayout.getWidth();
+                int height = buttonsLayout.getHeight();
+                if (width > height) {
+                    boardView.resize(height);
+                    leftOffset = (width - height) / 2;
+                } else {
+                    boardView.resize(width);
+                    topOffset = (height - width) / 2;
+                }
 
                 boardView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+
                 RelativeLayout buttonsLayout = findViewById(R.id.buttonsLayout);
                 double buttonSize = boardView.getSelectedPositionBorderRadius() * 2.5;
                 game.getBoard().scaleToLayoutParams(boardView.getLayoutParams());
@@ -165,8 +175,8 @@ public class GameActivity extends AppCompatActivity {
                     );
                     layoutParams.height = (int) (buttonSize);
                     layoutParams.width = (int) (buttonSize);
-                    layoutParams.leftMargin = position.getCoordinate().x() - (int) (buttonSize / 2);
-                    layoutParams.topMargin = position.getCoordinate().y() - (int) (buttonSize / 2);
+                    layoutParams.leftMargin = leftOffset + position.getCoordinate().x() - (int) (buttonSize / 2);
+                    layoutParams.topMargin = topOffset + position.getCoordinate().y() - (int) (buttonSize / 2);
                     button.setOnClickListener(view -> setCursorByClick(position));
                     button.setBackgroundColor(Color.TRANSPARENT);
                     buttonsLayout.addView(button, layoutParams);
@@ -271,7 +281,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void handleReplay() {
-        setReplayVisibility(false);
+        setReplayVisibility(true);
         replayPlayer1.reset();
         replayPlayer2.reset();
 
