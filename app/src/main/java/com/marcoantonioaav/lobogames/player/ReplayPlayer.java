@@ -12,7 +12,7 @@ public class ReplayPlayer extends Player {
     private int currentMoveIndex = 0;
 
     private long lastTime = 0;
-    private static final double MOVE_DELAY_IN_SECONDS = 1.5;
+    private static final double MOVE_DELAY_IN_SECONDS = 1;
 
     public ReplayPlayer(int id, Replay replay) {
         super(id);

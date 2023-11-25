@@ -65,7 +65,7 @@
                     android:textSize="16sp"
                     android:contentDescription="Replay"
                     android:text="Replay"
-                    android:layout_marginRight="40dp"
+                    android:layout_marginRight="20dp"
             />
 
             <Button

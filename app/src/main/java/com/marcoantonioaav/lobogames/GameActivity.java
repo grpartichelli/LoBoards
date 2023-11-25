@@ -30,6 +30,7 @@ import com.marcoantonioaav.lobogames.replay.ReplayFileService;
 import com.marcoantonioaav.lobogames.ui.BoardButtonDelegate;
 import com.marcoantonioaav.lobogames.ui.BoardView;
 
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +38,7 @@ import java.util.Map;
 import java.util.Objects;
 
 public class GameActivity extends AppCompatActivity {
+    public static final String REPLAY_NAME = "REPLAY_NAME";
     public static final String GAME_NAME = "GAME_NAME";
     public static final String BOARD_NAME = "BOARD_NAME";
     public static final String IS_MULTIPLAYER = "IS_MULTIPLAYER";
@@ -66,8 +68,17 @@ public class GameActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).hide();
 
         String gameName = (String) this.getIntent().getExtras().get(GAME_NAME);
+        String boardName = (String) this.getIntent().getExtras().get(BOARD_NAME);
+        String replayName = (String) this.getIntent().getExtras().get(REPLAY_NAME);
+
+        if (replayName != null) {
+            replay = findReplayFromName(replayName);
+            gameName = replay.getGameName();
+            boardName = replay.getBoardName();
+            isReplay = true;
+        }
+
         if (gameName == null) {
-            String boardName = (String) this.getIntent().getExtras().get(BOARD_NAME);
             Board board = findBoardFromName(boardName);
             game = new GenericGame();
             game.setBoard(board);
@@ -123,6 +134,15 @@ public class GameActivity extends AppCompatActivity {
         for (Board board: PreBoardActivity.BOARDS) {
             if (board.getName().equals(boardName)) {
                 return board;
+            }
+        }
+        return null;
+    }
+
+    private Replay findReplayFromName(String replayName) {
+        for (Replay replay: ReplayActivity.REPLAYS) {
+            if (replay.getName().equals(replayName)) {
+                return replay;
             }
         }
         return null;
@@ -282,7 +302,7 @@ public class GameActivity extends AppCompatActivity {
             player1 = new ReplayPlayer(Player.PLAYER_1, replay);
             player2 = new ReplayPlayer(Player.PLAYER_2, replay);
         } else {
-            replay = new Replay(game);
+            replay = new Replay(game, Calendar.getInstance().getTime());
             updatePlayers();
         }
     }

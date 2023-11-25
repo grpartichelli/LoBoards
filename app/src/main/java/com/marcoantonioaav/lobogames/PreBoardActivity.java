@@ -28,7 +28,7 @@ public class PreBoardActivity extends AppCompatActivity {
     private String selectedBoardName;
     private static final int IMPORT_FILE_CODE = 32;
 
-    protected static final List<StandardBoard> BOARDS = GenericGameFileService.readAll();
+    public static final List<StandardBoard> BOARDS = GenericGameFileService.readAll();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

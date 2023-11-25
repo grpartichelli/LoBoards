@@ -38,7 +38,7 @@ public class ReplayActivity extends AppCompatActivity {
         play.setEnabled(false);
 
         replayEmptyStateView = findViewById(R.id.replayEmptyState);
-        replayEmptyStateView.setVisibility(View.INVISIBLE);
+        replayEmptyStateView.setVisibility(View.GONE);
 
         findViewById(R.id.importReplay).setOnClickListener(view -> importFile());
         findViewById(R.id.back).setOnClickListener(view -> finish());
@@ -52,7 +52,7 @@ public class ReplayActivity extends AppCompatActivity {
         }
         replayListView = findViewById(R.id.replayList);
         if (REPLAYS.isEmpty()) {
-            replayListView.setVisibility(View.INVISIBLE);
+            replayListView.setVisibility(View.GONE);
             replayEmptyStateView.setVisibility(View.VISIBLE);
         }
         replayListView.addHeaderView(new View(getBaseContext()), null, true);
@@ -82,7 +82,7 @@ public class ReplayActivity extends AppCompatActivity {
 
     private void openGameActivity() {
         Intent intent = new Intent(this, GameActivity.class);
-        intent.putExtra(GameActivity.BOARD_NAME, selectedReplayName);
+        intent.putExtra(GameActivity.REPLAY_NAME, selectedReplayName);
         intent.putExtra(GameActivity.IS_MULTIPLAYER, true);
 
         startActivity(intent);

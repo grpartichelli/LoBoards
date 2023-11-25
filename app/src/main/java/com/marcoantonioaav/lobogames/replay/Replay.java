@@ -4,23 +4,35 @@ import com.marcoantonioaav.lobogames.game.Game;
 import com.marcoantonioaav.lobogames.game.GenericGame;
 import com.marcoantonioaav.lobogames.move.Move;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 public class Replay {
     private final List<Move> moves = new ArrayList<>();
     private final Date date;
-    private final Game game;
+    private final String gameName;
+    private final String boardName;
 
-    public Replay(Game game) {
-        this.game = game;
-        this.date = Calendar.getInstance().getTime();
+    public Replay(Game game, Date date) {
+        this.gameName = game.getName();
+        this.boardName = game.getBoard().getName();
+        this.date = date;
+    }
+
+    public Replay(String gameName, String boardName,  Date date) {
+        this.gameName = gameName;
+        this.boardName = boardName;
+        this.date = date;
     }
 
     public void addMove(Move move) {
         moves.add(move);
+    }
+
+    public void addAllMoves(List<Move> moves) {
+        this.moves.addAll(moves);
     }
 
     public List<Move> findMovesByPlayerId(int playerId) {
@@ -33,20 +45,40 @@ public class Replay {
         return playerMoves;
     }
 
-    public Game getGame() {
-        return game;
+    public String getDateString() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        return sdf.format(date);
     }
 
+    public Date getDate() {
+        return date;
+    }
+
+    public String getGameName() {
+        return gameName;
+    }
+
+    public String getBoardName() {
+        return boardName;
+    }
+
+
     public String getName() {
-        String name = game.equals(new GenericGame())
-                ? game.getName()
-                : game.getBoard().getName();
-        name += " " + date.toString();
+        String name = new GenericGame().getName().equals(gameName)
+                ? boardName
+                : gameName;
+
+        name += " - " + getDateString();
         return name;
     }
 
+
     public String getFileName() {
-        return getName().toLowerCase().replaceAll(" ", "-") + "-lobogames-replay.txt";
+        return getName().toLowerCase()
+                .replace(" - ", "-")
+                .replaceAll(" ", "-")
+                .replaceAll("/", "-")
+                + "-lobogames-replay.txt";
     }
 
     public List<Move> getMoves() {
