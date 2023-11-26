@@ -20,7 +20,7 @@ import java.util.Objects;
 public class ReplayActivity extends AppCompatActivity {
     private ListView replayListView;
     private TextView replayEmptyStateView;
-    private Button play;
+    private Button play, delete,exportFile;
     private String selectedReplayName;
     private static final int IMPORT_FILE_CODE = 32;
 
@@ -36,6 +36,14 @@ public class ReplayActivity extends AppCompatActivity {
         play = findViewById(R.id.play);
         play.setOnClickListener(view -> openGameActivity());
         play.setEnabled(false);
+
+        delete = findViewById(R.id.delete);
+        delete.setOnClickListener(view -> deleteReplay());
+        delete.setEnabled(false);
+
+        exportFile = findViewById(R.id.export);
+        exportFile.setOnClickListener(view -> exportReplay());
+        exportFile.setEnabled(false);
 
         replayEmptyStateView = findViewById(R.id.replayEmptyState);
         replayEmptyStateView.setVisibility(View.GONE);
@@ -70,8 +78,32 @@ public class ReplayActivity extends AppCompatActivity {
                 (AdapterView<?> ad, View v, int position, long id) -> {
                     selectedReplayName = (String) replayListView.getItemAtPosition(position);
                     play.setEnabled(true);
+                    delete.setEnabled(true);
+                    exportFile.setEnabled(true);
                 }
         );
+    }
+
+    private void deleteReplay() {
+        for (int i = 0; i < REPLAYS.size(); i++) {
+            if (REPLAYS.get(i).getName().equals(selectedReplayName)) {
+                REPLAYS.remove(i);
+                break;
+            }
+        }
+    }
+
+    private void exportReplay() {
+        Replay replay = null;
+        for (Replay r : REPLAYS) {
+            if (r.getName().equals(selectedReplayName)) {
+                replay = r;
+                break;
+            }
+        }
+        if (replay != null) {
+            ReplayFileService.export(replay);
+        }
     }
 
     private void importFile() {
