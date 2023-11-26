@@ -96,9 +96,19 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="50"
                     android:textSize="16sp"
-                    android:contentDescription="Recomeçar jogo"
-                    android:text="Recomeçar\nJogo"
+                    android:contentDescription="Recomeçar partida"
+                    android:text="Recomeçar\nPartida"
                     android:layout_marginRight="15dp"/>
+
+        <Button
+                android:id="@+id/endGame"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="50"
+                android:textSize="16sp"
+                android:contentDescription="Terminar partida"
+                android:text="Terminar\nPartida"
+                android:layout_marginRight="15dp"/>
 
             <Button
                     android:id="@+id/back"

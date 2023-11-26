@@ -47,6 +47,8 @@ public class GameActivity extends AppCompatActivity {
     public static final String IS_MULTIPLAYER = "IS_MULTIPLAYER";
     public static final String DIFFICULTY = "DIFFICULTY";
 
+    Button playAgain, endGame;
+
     RelativeLayout buttonsLayout;
     private BoardView boardView;
     private final Map<Position, Button> positionButtonsMap = new HashMap<>();
@@ -115,7 +117,6 @@ public class GameActivity extends AppCompatActivity {
         statusTextView = findViewById(R.id.status);
 
         // replay
-
         replayButtonsLayout = findViewById(R.id.replayLayout);
 
         // buttons when coming from game/board activity
@@ -141,12 +142,13 @@ public class GameActivity extends AppCompatActivity {
 
 
         // play again
-        Button playAgain = findViewById(R.id.playAgain);
+        playAgain = findViewById(R.id.playAgain);
+        playAgain.setVisibility(isReplayMode || isBoardMode ? View.GONE : View.VISIBLE);
         playAgain.setOnClickListener(view -> {
             isReplayRunning = false;
+            togglePlayAgainAndEndGameButtonsVisibility();
             initializeGame();
         });
-        playAgain.setVisibility(isReplayMode ? View.GONE : View.VISIBLE);
 
         // back
         Button goBackToMenu = findViewById(R.id.back);
@@ -154,8 +156,24 @@ public class GameActivity extends AppCompatActivity {
         goBackToMenu.setVisibility(isReplayMode ? View.GONE : View.VISIBLE);
 
 
+        // buttons when coming from pre-board activity
+        endGame = findViewById(R.id.endGame);
+        endGame.setVisibility(isBoardMode ?  View.VISIBLE : View.GONE);
+        endGame.setOnClickListener(view -> {
+            togglePlayAgainAndEndGameButtonsVisibility();
+        });
+
+
         initializeGame();
         new Thread(GameActivity.this::gameLoop).start();
+    }
+
+    private void togglePlayAgainAndEndGameButtonsVisibility() {
+        if (!isBoardMode) {
+            return;
+        }
+        playAgain.setVisibility(playAgain.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+        endGame.setVisibility(endGame.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
     }
 
     private Board findBoardFromName(String boardName) {
