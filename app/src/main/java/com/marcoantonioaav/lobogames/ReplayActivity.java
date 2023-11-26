@@ -69,6 +69,9 @@ public class ReplayActivity extends AppCompatActivity {
         if (REPLAYS.isEmpty()) {
             replayListView.setVisibility(View.GONE);
             replayEmptyStateView.setVisibility(View.VISIBLE);
+        } else {
+            replayListView.setVisibility(View.VISIBLE);
+            replayEmptyStateView.setVisibility(View.GONE);
         }
 
 
@@ -104,6 +107,9 @@ public class ReplayActivity extends AppCompatActivity {
                             REPLAYS.remove(selectedReplayIndex);
                             ReplayFileService.delete(replay);
                             Toast.makeText(this, "Deleção realizada com sucesso", Toast.LENGTH_SHORT).show();
+                            play.setEnabled(false);
+                            delete.setEnabled(false);
+                            exportFile.setEnabled(false);
                             createReplayList();
                         })
                         .setNegativeButton("Cancelar", null).show();

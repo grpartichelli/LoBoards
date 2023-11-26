@@ -38,7 +38,14 @@ public class ReplayFileService {
     }
 
     public static Replay createFromIntent(Intent intent) {
-        return null;
+        Context context = LoBoGames.getAppContext();
+        try (InputStream stream = context.getContentResolver().openInputStream(intent.getData())) {
+            Replay replay = processFileStream(stream);
+            save(replay);
+            return replay;
+        } catch (Exception e) {
+            throw new FailedToReadFileException();
+        }
     }
 
     public static void delete(Replay replay) {
