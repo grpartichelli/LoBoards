@@ -6,7 +6,6 @@ import com.marcoantonioaav.lobogames.move.Movement;
 import com.marcoantonioaav.lobogames.move.StandardMove;
 import com.marcoantonioaav.lobogames.move.StandardMovement;
 import com.marcoantonioaav.lobogames.player.Player;
-import com.marcoantonioaav.lobogames.player.agent.MinimaxAgent;
 import com.marcoantonioaav.lobogames.position.Position;
 
 import java.util.ArrayList;
@@ -14,8 +13,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Game implementation that works for any board,
- * usually read from configuration files.
+ * Game implementation that works for any board by
+ * allowing most moves and not having any specific win condition
  */
 public class GenericGame extends StandardGame {
     @Override
@@ -30,8 +29,8 @@ public class GenericGame extends StandardGame {
 
     @Override
     public String getRules() {
-        // TODO: rules
-        return "";
+        // NOTE: this game doesn't implement this method because it has no specific rules
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -41,20 +40,13 @@ public class GenericGame extends StandardGame {
 
     @Override
     public boolean isVictory(int playerId) {
-        int opponentPlayerId = Player.getOpponentOf(playerId);
-
-        for (Position position : board.getPositions()) {
-            if (position.getPlayerId() == opponentPlayerId
-            && this.board.hasAnyEmptyConnectedPositions(position)
-            ) {
-                return false;
-            }
-        }
-        return true;
+        // NOTE: this game doesn't implement this method because the victory is set manually
+        return false;
     }
 
     @Override
     public boolean isDraw() {
+        // NOTE: this game doesn't implement this method because the victory is set manually
         return false;
     }
 
@@ -64,44 +56,30 @@ public class GenericGame extends StandardGame {
         Position startPosition = this.board.findPositionById(movement.getStartPositionId());
         Position endPosition = this.board.findPositionById(movement.getEndPositionId());
 
-        return !startPosition.isOutOfBoard()
-                && !endPosition.isOutOfBoard()
-                && this.board.areConnected(startPosition, endPosition)
-                && startPosition.getPlayerId() == movement.getPlayerId()
-                && endPosition.getPlayerId() == Player.EMPTY;
+        // TODO: Consider out of board
+        //      !startPosition.isOutOfBoard()
+        //      && !endPosition.isOutOfBoard())
+        //      && startPosition.getPlayerId() == movement.getPlayerId()
+        return endPosition.getPlayerId() == Player.EMPTY;
     }
 
     @Override
     public List<Move> getLegalMoves(int playerId) {
-        List<Move> moves = new ArrayList<>();
-        for (Position position : board.getPositions()) {
-            if (position.getPlayerId() == playerId) {
-                for (Position emptyConnectedPosition : this.board.findEmptyConnectedPositions(position)) {
-                    StandardMovement movement = new StandardMovement(position, emptyConnectedPosition, playerId);
-                    moves.add(new StandardMove(playerId, new ArrayList<>(Collections.singletonList(movement))));
-                }
-            }
-        }
-        return moves;
+        // NOTE: this game doesn't implement this method due to not being used by the AI
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public Move getPlayerMove(String startPositionId, String endPositionId, int playerId) {
         Position startPosition = this.board.findPositionById(startPositionId);
         Position endPosition = this.board.findPositionById(endPositionId);
-
-        if (!this.board.areConnected(startPosition, endPosition)) {
-            List<Position> possibleStarts = this.board.findConnectedPositionsWithPlayerId(endPosition, playerId);
-            if (possibleStarts.size() == 1) {
-                startPosition = possibleStarts.get(0);
-            }
-        }
         StandardMovement movement = new StandardMovement(startPosition, endPosition, playerId);
         return new StandardMove(playerId, new ArrayList<>(Collections.singletonList(movement)));
     }
 
     @Override
     public float getHeuristicEvaluationOf(int playerId, int turn) {
-        return MinimaxAgent.evaluateWithPlayouts(this, playerId, turn);
+        // NOTE: this game doesn't implement this method due to not being used by the AI
+        throw new UnsupportedOperationException();
     }
 }

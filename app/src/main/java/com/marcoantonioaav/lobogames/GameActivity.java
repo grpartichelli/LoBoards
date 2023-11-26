@@ -58,6 +58,8 @@ public class GameActivity extends AppCompatActivity {
     private Player player2;
     private boolean isGameRunning;
 
+    private boolean isBoardMode; // when it's a generic game
+
     private boolean isReplayMode; // when it comes from replay activity
     private boolean isReplayRunning;
     private Replay replay;
@@ -86,6 +88,7 @@ public class GameActivity extends AppCompatActivity {
             Board board = findBoardFromName(boardName);
             game = new GenericGame();
             game.setBoard(board);
+            isBoardMode = true;
         } else {
             game = PreGameActivity.GAMES.get(gameName);
         }
@@ -108,6 +111,7 @@ public class GameActivity extends AppCompatActivity {
         gameNameTextView.setText(game.getName());
 
         // status
+        findViewById(R.id.statusLayout).setVisibility(isBoardMode ? View.GONE : View.VISIBLE);
         statusTextView = findViewById(R.id.status);
 
         // replay
@@ -296,7 +300,11 @@ public class GameActivity extends AppCompatActivity {
         game.getBoard().applyMove(move);
         runOnUiThread(() -> boardView.announceForAccessibility(move.toString()));
         runOnUiThread(() -> boardView.drawMove(move));
-        turn = Player.getOpponentOf(turn);
+
+        if (!isBoardMode) {
+            turn = Player.getOpponentOf(turn);
+        }
+
         showTurn();
         Player currentPlayer = Player.selectPlayerById(player1, player2, turn);
         if (currentPlayer instanceof Human) {
