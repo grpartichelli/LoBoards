@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.ViewCompat;
 import com.marcoantonioaav.lobogames.application.LoBoGames;
@@ -36,6 +37,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+
+import static com.marcoantonioaav.lobogames.ReplayActivity.REPLAYS;
 
 public class GameActivity extends AppCompatActivity {
     public static final String REPLAY_NAME = "REPLAY_NAME";
@@ -120,10 +123,7 @@ public class GameActivity extends AppCompatActivity {
         playReplay.setVisibility(isReplayMode ? View.GONE : View.VISIBLE);
 
         Button saveReplay = findViewById(R.id.saveReplay);
-        saveReplay.setOnClickListener(view -> {
-            ReplayFileService.save(replay);
-            ReplayActivity.REPLAYS.add(0, replay);
-        });
+        saveReplay.setOnClickListener(view -> saveReplay());
         saveReplay.setVisibility(isReplayMode ? View.GONE : View.VISIBLE);
 
         // buttons when coming from replay activity
@@ -134,7 +134,6 @@ public class GameActivity extends AppCompatActivity {
         Button replayAgain = findViewById(R.id.replayAgain);
         replayAgain.setOnClickListener((view) -> initializeGame());
         replayAgain.setVisibility(isReplayMode ?  View.VISIBLE : View.GONE);
-
 
 
         // play again
@@ -165,12 +164,24 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private Replay findReplayFromName(String replayName) {
-        for (Replay replay: ReplayActivity.REPLAYS) {
+        for (Replay replay: REPLAYS) {
             if (replay.getName().equals(replayName)) {
                 return replay;
             }
         }
         return null;
+    }
+
+    private void saveReplay() {
+        for (int i = 0; i < REPLAYS.size(); i++) {
+            if (REPLAYS.get(i).getName().equals(replay.getName())) {
+                REPLAYS.remove(i);
+                break;
+            }
+        }
+        ReplayFileService.save(replay);
+        REPLAYS.add(0, replay);
+        Toast.makeText(this, "Replay salvo com sucesso", Toast.LENGTH_SHORT).show();
     }
 
     private void updatePlayers() {

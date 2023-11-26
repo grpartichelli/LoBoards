@@ -2,10 +2,12 @@ package com.marcoantonioaav.lobogames.replay;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Environment;
 import android.text.style.TabStopSpan;
 import android.util.Log;
 import com.marcoantonioaav.lobogames.application.LoBoGames;
 import com.marcoantonioaav.lobogames.exceptions.FailedToReadFileException;
+import com.marcoantonioaav.lobogames.exceptions.FailedToWriteFileException;
 import com.marcoantonioaav.lobogames.move.MatrixMove;
 import com.marcoantonioaav.lobogames.move.MatrixMovement;
 import com.marcoantonioaav.lobogames.move.Move;
@@ -39,8 +41,44 @@ public class ReplayFileService {
         return null;
     }
 
-    public static void export(Replay replay) {
+    public static void delete(Replay replay) {
+        File dir = new File(LoBoGames.getAppContext().getFilesDir(), REPLAYS_DIRECTORY);
+        File file = new File(dir, replay.getFileName());
+        file.delete();
+    }
 
+    public static void export(Replay replay) {
+        try {
+
+            Context context = LoBoGames.getAppContext();
+
+            for (File file : context.getFilesDir().listFiles()) {
+                if (!file.getName().equals("replays")) {
+                    continue;
+                }
+
+                for (File existingReplay : file.listFiles()) {
+                    if (existingReplay.getName().equals(replay.getFileName())) {
+                        try (InputStream stream = new FileInputStream(existingReplay)) {
+                            // obtains content from existing file
+                            BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+                            String line = reader.readLine();
+
+                            // writes to external dir
+                            File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+                            File newFile = new File(dir, replay.getFileName());
+                            FileWriter writer = new FileWriter(newFile);
+                            writer.append(line);
+                            writer.flush();
+                            writer.close();
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            Log.e("ReplayFileService", e.getMessage());
+            throw new FailedToWriteFileException();
+        }
     }
 
     public static void save(Replay replay) {
@@ -150,7 +188,7 @@ public class ReplayFileService {
     }
 
     private static Date getDate(JSONObject object) throws Exception {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         return sdf.parse(object.getString("date"));
     }
 

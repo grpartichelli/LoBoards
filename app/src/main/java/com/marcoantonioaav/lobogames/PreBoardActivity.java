@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.marcoantonioaav.lobogames.board.Board;
 
@@ -49,10 +50,12 @@ public class PreBoardActivity extends AppCompatActivity {
     private void createBoardList() {
         if (boardListView != null) {
             boardListView.setAdapter(null);
+        }  else {
+            boardListView = findViewById(R.id.boardList);
+            boardListView.addHeaderView(new View(getBaseContext()), null, true);
+            boardListView.addFooterView(new View(getBaseContext()), null, true);
         }
-        boardListView = findViewById(R.id.boardList);
-        boardListView.addHeaderView(new View(getBaseContext()), null, true);
-        boardListView.addFooterView(new View(getBaseContext()), null, true);
+
         BoardListAdapter adapter = new BoardListAdapter(this, R.layout.board_list_item, BOARDS);
 
         boardListView.setAdapter(adapter);
@@ -96,6 +99,7 @@ public class PreBoardActivity extends AppCompatActivity {
 
             BOARDS.add(0, board);
             selectedBoardName = board.getName();
+            Toast.makeText(this, "Tabuleiro importado com sucesso", Toast.LENGTH_SHORT).show();
             createBoardList();
         }
     }

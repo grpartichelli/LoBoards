@@ -68,10 +68,12 @@ public class PreGameActivity extends AppCompatActivity {
     private void createGameList() {
         if (gameListView != null) {
             gameListView.setAdapter(null);
+        } else {
+            gameListView = findViewById(R.id.gameListView);
+            gameListView.addHeaderView(new View(getBaseContext()), null, true);
+            gameListView.addFooterView(new View(getBaseContext()), null, true);
         }
-        gameListView = findViewById(R.id.gameListView);
-        gameListView.addHeaderView(new View(getBaseContext()), null, true);
-        gameListView.addFooterView(new View(getBaseContext()), null, true);
+
         GameListAdapter adapter = new GameListAdapter(this, R.layout.board_list_item, new ArrayList<>(GAMES.values()));
 
         gameListView.setAdapter(adapter);

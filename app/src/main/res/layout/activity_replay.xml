@@ -30,11 +30,11 @@
             android:paddingHorizontal="40dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0"
+            android:layout_weight="100"
             android:gravity="center_horizontal|center_vertical"
             android:layout_marginBottom="5dp"
             android:textSize="20sp"
-            android:text="Importe ou salve um replay para vê-los aqui."/>
+            android:text="Importe ou salve replays para vê-los aqui."/>
 
     <ListView
             android:id="@+id/replayList"
@@ -51,7 +51,7 @@
 
     <LinearLayout
             android:paddingTop="10dp"
-            android:paddingBottom="40dp"
+            android:paddingBottom="30dp"
             android:paddingHorizontal="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -63,7 +63,7 @@
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingVertical="10dp"
+                android:paddingVertical="8dp"
                 android:gravity="center_horizontal|center_vertical"
                 android:orientation="horizontal"
         >
@@ -90,7 +90,7 @@
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingBottom="10dp"
+                android:paddingBottom="8dp"
                 android:gravity="center_horizontal|center_vertical"
                 android:orientation="horizontal"
         >
@@ -100,7 +100,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="50"
                     android:layout_height="wrap_content"
-                    android:text="Exportar"
+                    android:text="Baixar"
                     android:textSize="20sp"
                     android:layout_marginRight="15dp"
             />

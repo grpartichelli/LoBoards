@@ -46,7 +46,7 @@ public class Replay {
     }
 
     public String getDateString() {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         return sdf.format(date);
     }
 
@@ -78,6 +78,7 @@ public class Replay {
                 .replace(" - ", "-")
                 .replaceAll(" ", "-")
                 .replaceAll("/", "-")
+                .replaceAll(":", "-")
                 + "-lobogames-replay.txt";
     }
 

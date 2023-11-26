@@ -1,5 +1,7 @@
 package com.marcoantonioaav.lobogames;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -9,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.marcoantonioaav.lobogames.replay.Replay;
 import com.marcoantonioaav.lobogames.replay.ReplayFileService;
@@ -57,14 +60,17 @@ public class ReplayActivity extends AppCompatActivity {
     private void createReplayList() {
         if (replayListView != null) {
             replayListView.setAdapter(null);
+        } else {
+            replayListView = findViewById(R.id.replayList);
+            replayListView.addHeaderView(new View(getBaseContext()), null, true);
+            replayListView.addFooterView(new View(getBaseContext()), null, true);
         }
-        replayListView = findViewById(R.id.replayList);
+
         if (REPLAYS.isEmpty()) {
             replayListView.setVisibility(View.GONE);
             replayEmptyStateView.setVisibility(View.VISIBLE);
         }
-        replayListView.addHeaderView(new View(getBaseContext()), null, true);
-        replayListView.addFooterView(new View(getBaseContext()), null, true);
+
 
         List<String> replayNames = new ArrayList<>();
         for (Replay replay : REPLAYS) {
@@ -86,8 +92,21 @@ public class ReplayActivity extends AppCompatActivity {
 
     private void deleteReplay() {
         for (int i = 0; i < REPLAYS.size(); i++) {
-            if (REPLAYS.get(i).getName().equals(selectedReplayName)) {
-                REPLAYS.remove(i);
+            Replay replay = REPLAYS.get(i);
+            if (replay.getName().equals(selectedReplayName)) {
+
+                int selectedReplayIndex = i;
+                new AlertDialog.Builder(this)
+                        .setTitle("Deleção do replay " + selectedReplayName)
+                        .setMessage("Você tem certeza que deseja continuar? Não será possível recuperá-lo.")
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setPositiveButton("Continuar", (dialog, whichButton) -> {
+                            REPLAYS.remove(selectedReplayIndex);
+                            ReplayFileService.delete(replay);
+                            Toast.makeText(this, "Deleção realizada com sucesso", Toast.LENGTH_SHORT).show();
+                            createReplayList();
+                        })
+                        .setNegativeButton("Cancelar", null).show();
                 break;
             }
         }
@@ -103,6 +122,7 @@ public class ReplayActivity extends AppCompatActivity {
         }
         if (replay != null) {
             ReplayFileService.export(replay);
+            Toast.makeText(this, "Replay baixado com sucesso", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -135,6 +155,7 @@ public class ReplayActivity extends AppCompatActivity {
 
             REPLAYS.add(0, replay);
             selectedReplayName = replay.getName();
+            Toast.makeText(this, "Replay importado com sucesso", Toast.LENGTH_SHORT).show();
             createReplayList();
         }
     }
