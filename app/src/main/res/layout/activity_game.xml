@@ -107,7 +107,29 @@
                     android:textSize="16sp"
                     android:contentDescription="Voltar ao menu"
                     android:text="Voltar\nao menu"
-                    android:visibility="visible"
             />
+
+            <Button
+                    android:id="@+id/goBackToReplay"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="50"
+                    android:textSize="16sp"
+                    android:contentDescription="Voltar para replays"
+                    android:text="Voltar \naos replays"
+
+                    android:layout_marginRight="15dp"
+            />
+
+            <Button
+                    android:id="@+id/replayAgain"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="50"
+                    android:textSize="16sp"
+                    android:contentDescription="Ver novamente"
+                    android:text="Ver \nnovamente"
+            />
+
     </LinearLayout>
 </LinearLayout>

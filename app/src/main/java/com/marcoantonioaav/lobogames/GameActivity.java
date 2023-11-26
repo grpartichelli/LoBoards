@@ -48,7 +48,6 @@ public class GameActivity extends AppCompatActivity {
     private BoardView boardView;
     private final Map<Position, Button> positionButtonsMap = new HashMap<>();
     private TextView gameNameTextView, statusTextView;
-    private Button playAgain, back;
 
     private Game game;
     private int turn;
@@ -56,9 +55,10 @@ public class GameActivity extends AppCompatActivity {
     private Player player2;
     private boolean isGameRunning;
 
-    private boolean isReplay;
+    private boolean isReplayMode; // when it comes from replay activity
+    private boolean isReplayRunning;
     private Replay replay;
-    private LinearLayout replayLayout;
+    private LinearLayout replayButtonsLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +75,8 @@ public class GameActivity extends AppCompatActivity {
             replay = findReplayFromName(replayName);
             gameName = replay.getGameName();
             boardName = replay.getBoardName();
-            isReplay = true;
+            isReplayRunning = true;
+            isReplayMode = true;
         }
 
         if (gameName == null) {
@@ -107,27 +108,48 @@ public class GameActivity extends AppCompatActivity {
         statusTextView = findViewById(R.id.status);
 
         // replay
-        replayLayout = findViewById(R.id.replayLayout);
-        findViewById(R.id.playReplay).setOnClickListener(view -> {
-            isReplay = true;
+
+        replayButtonsLayout = findViewById(R.id.replayLayout);
+
+        // buttons when coming from game/board activity
+        Button playReplay = findViewById(R.id.playReplay);
+        playReplay.setOnClickListener(view -> {
+            isReplayRunning = true;
             initializeGame();
         });
-        findViewById(R.id.saveReplay).setOnClickListener(view -> {
+        playReplay.setVisibility(isReplayMode ? View.GONE : View.VISIBLE);
+
+        Button saveReplay = findViewById(R.id.saveReplay);
+        saveReplay.setOnClickListener(view -> {
             ReplayFileService.save(replay);
             ReplayActivity.REPLAYS.add(0, replay);
         });
+        saveReplay.setVisibility(isReplayMode ? View.GONE : View.VISIBLE);
+
+        // buttons when coming from replay activity
+        Button goToReplay = findViewById(R.id.goBackToReplay);
+        goToReplay.setOnClickListener((view) -> finish());
+        goToReplay.setVisibility(isReplayMode ?  View.VISIBLE : View.GONE);
+
+        Button replayAgain = findViewById(R.id.replayAgain);
+        replayAgain.setOnClickListener((view) -> initializeGame());
+        replayAgain.setVisibility(isReplayMode ?  View.VISIBLE : View.GONE);
+
 
 
         // play again
-        playAgain = findViewById(R.id.playAgain);
+        Button playAgain = findViewById(R.id.playAgain);
         playAgain.setOnClickListener(view -> {
-            isReplay = false;
+            isReplayRunning = false;
             initializeGame();
         });
+        playAgain.setVisibility(isReplayMode ? View.GONE : View.VISIBLE);
 
         // back
-        back = findViewById(R.id.back);
-        back.setOnClickListener(view -> finish());
+        Button goBackToMenu = findViewById(R.id.back);
+        goBackToMenu.setOnClickListener(view -> finish());
+        goBackToMenu.setVisibility(isReplayMode ? View.GONE : View.VISIBLE);
+
 
         initializeGame();
         new Thread(GameActivity.this::gameLoop).start();
@@ -241,7 +263,7 @@ public class GameActivity extends AppCompatActivity {
                     if (game.isLegalMove(move)) {
                         makeMove(move);
                         if (game.isTerminalState()) {
-                            setReplayVisibility(true);
+                            setReplayButtonsVisibility(true);
                             endGame();
                         }
                     } else {
@@ -256,7 +278,7 @@ public class GameActivity extends AppCompatActivity {
         if (move == null) {
             return;
         }
-        if (!isReplay) {
+        if (!isReplayRunning) {
             replay.addMove(move);
         }
 
@@ -299,9 +321,9 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void handleReplay() {
-        setReplayVisibility(false);
+        setReplayButtonsVisibility(false);
 
-        if (isReplay) {
+        if (isReplayRunning) {
             player1 = new ReplayPlayer(Player.PLAYER_1, replay);
             player2 = new ReplayPlayer(Player.PLAYER_2, replay);
         } else {
@@ -310,12 +332,12 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-    private void setReplayVisibility(boolean isReplayVisible) {
+    private void setReplayButtonsVisibility(boolean areReplayButtonsVisible) {
         runOnUiThread(() -> {
-            if (isReplayVisible) {
-                replayLayout.setVisibility(View.VISIBLE);
+            if (areReplayButtonsVisible) {
+                replayButtonsLayout.setVisibility(View.VISIBLE);
             } else {
-                replayLayout.setVisibility(View.INVISIBLE);
+                replayButtonsLayout.setVisibility(View.INVISIBLE);
             }
         });
     }

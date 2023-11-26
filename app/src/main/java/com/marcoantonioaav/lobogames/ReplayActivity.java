@@ -86,7 +86,6 @@ public class ReplayActivity extends AppCompatActivity {
         intent.putExtra(GameActivity.IS_MULTIPLAYER, true);
 
         startActivity(intent);
-        finish();
     }
 
     @Override
