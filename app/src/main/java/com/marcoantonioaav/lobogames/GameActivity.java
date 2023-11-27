@@ -47,7 +47,14 @@ public class GameActivity extends AppCompatActivity {
     public static final String IS_MULTIPLAYER = "IS_MULTIPLAYER";
     public static final String DIFFICULTY = "DIFFICULTY";
 
-    Button restartGame, endGame, startGame, saveReplay, playReplay, restartReplay, goBackToMenu, goBackToReplay;
+    private Button goBackToMenu;
+    private Button saveReplay;
+    private Button playReplay;
+    private Button restartGame;
+    private Button goBackToReplay;
+    private Button restartReplay;
+    private Button startGame;
+    private Button endGame;
 
     RelativeLayout buttonsLayout;
     private BoardView boardView;
@@ -60,8 +67,9 @@ public class GameActivity extends AppCompatActivity {
     private Player player2;
     private boolean isGameRunning;
 
-    private boolean isBoardMode; // when it is a generic game
-    private boolean isReplayMode; // when it comes from replay activity
+    private boolean isBoardModeManualEnding = false;
+    private boolean isBoardMode = false; // when it is a generic game
+    private boolean isReplayMode = false; // when it comes from replay activity
 
     private boolean isReplayRunning;
     private Replay replay;
@@ -88,8 +96,8 @@ public class GameActivity extends AppCompatActivity {
 
         if (gameName == null) {
             Board board = findBoardFromName(boardName);
-            game = new GenericGame();
-            game.setBoard(board);
+            GenericGame genericGame = new GenericGame(board);
+            game = genericGame;
             isBoardMode = true;
         } else {
             game = PreGameActivity.GAMES.get(gameName);
@@ -116,12 +124,8 @@ public class GameActivity extends AppCompatActivity {
         replayButtonsLayout = findViewById(R.id.replayLayout);
 
         // status
-        findViewById(R.id.statusLayout).setVisibility(!isBoardMode ? View.VISIBLE: View.GONE);
+        findViewById(R.id.statusLayout).setVisibility(!isBoardMode ? View.VISIBLE : View.GONE);
         statusTextView = findViewById(R.id.status);
-
-
-
-
 
         goBackToMenu = findViewById(R.id.goBackToMenu);
         goBackToMenu.setOnClickListener(view -> finish());
@@ -143,22 +147,23 @@ public class GameActivity extends AppCompatActivity {
         });
 
         goBackToReplay = findViewById(R.id.goBackToReplay);
-        goBackToReplay.setOnClickListener((view) -> finish());
+        goBackToReplay.setOnClickListener(view -> finish());
 
 
         restartReplay = findViewById(R.id.restartReplay);
-        restartReplay.setOnClickListener((view) -> initializeGame());
+        restartReplay.setOnClickListener(view -> initializeGame());
 
         startGame = findViewById(R.id.startGame);
         startGame.setOnClickListener(view -> {
+            isReplayRunning = false;
             initializeGame();
             toggleStartGameEndGameButtons();
         });
         endGame = findViewById(R.id.endGame);
         endGame.setOnClickListener(view -> {
+            endGame();
             toggleStartGameEndGameButtons();
         });
-
 
         if (isReplayMode) {
             goBackToReplay.setVisibility(View.VISIBLE);
@@ -173,7 +178,6 @@ public class GameActivity extends AppCompatActivity {
             saveReplay.setVisibility(View.VISIBLE);
             goBackToMenu.setVisibility(View.VISIBLE);
         }
-
 
         initializeGame();
         new Thread(GameActivity.this::gameLoop).start();
@@ -304,14 +308,27 @@ public class GameActivity extends AppCompatActivity {
                     if (game.isLegalMove(move)) {
                         makeMove(move);
                         if (game.isTerminalState()) {
-                            setReplayButtonsVisibility(true);
                             endGame();
                         }
                     } else {
                         boardView.drawSelectedPosition();
                     }
                 }
+                validateReplayEnd();
             }
+        }
+    }
+
+    private void validateReplayEnd() {
+        boolean player1ReplayedEnded = player1 instanceof ReplayPlayer && ((ReplayPlayer) player1).isReplayFinished();
+        boolean player2ReplayedEnded = player2 instanceof ReplayPlayer && ((ReplayPlayer) player2).isReplayFinished();
+
+        if (player1ReplayedEnded && player2ReplayedEnded) {
+            endGame();
+        } else if (player1ReplayedEnded) {
+            turn = Player.PLAYER_2;
+        } else if (player2ReplayedEnded) {
+            turn = Player.PLAYER_1;
         }
     }
 
@@ -351,6 +368,7 @@ public class GameActivity extends AppCompatActivity {
 
     private void endGame() {
         isGameRunning = false;
+        setReplayButtonsVisibility(true);
         showResult();
     }
 

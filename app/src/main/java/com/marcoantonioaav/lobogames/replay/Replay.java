@@ -64,10 +64,7 @@ public class Replay {
 
 
     public String getName() {
-        String name = new GenericGame().getName().equals(gameName)
-                ? boardName
-                : gameName;
-
+        String name = GenericGame.NAME.equals(gameName) ? boardName : gameName;
         name += " - " + getDateString();
         return name;
     }

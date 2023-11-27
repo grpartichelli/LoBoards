@@ -21,7 +21,7 @@ public class ReplayPlayer extends Player {
 
     @Override
     public Move getMove(Game game) {
-        if (moves.size() <= currentMoveIndex) {
+        if (isReplayFinished()) {
             throw new IllegalStateException("Replay player ran out of moves");
         }
         Move move = moves.get(currentMoveIndex);
@@ -32,6 +32,10 @@ public class ReplayPlayer extends Player {
 
     @Override
     public boolean isReady() {
+        if (isReplayFinished()) {
+            return false;
+        }
+
         if (lastTime == 0) {
             lastTime = SystemClock.uptimeMillis();
             return false;
@@ -41,5 +45,9 @@ public class ReplayPlayer extends Player {
             return true;
         }
         return false;
+    }
+
+    public boolean isReplayFinished() {
+        return moves.size() <= currentMoveIndex;
     }
 }

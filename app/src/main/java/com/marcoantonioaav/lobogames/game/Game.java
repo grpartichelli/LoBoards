@@ -1,6 +1,5 @@
 package com.marcoantonioaav.lobogames.game;
 
-import androidx.annotation.Nullable;
 import com.marcoantonioaav.lobogames.board.Board;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.player.Player;

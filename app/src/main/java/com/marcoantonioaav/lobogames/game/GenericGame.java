@@ -17,14 +17,26 @@ import java.util.List;
  * allowing most moves and not having any specific win condition
  */
 public class GenericGame extends StandardGame {
+
+    public static final String NAME = "Generic";
+    private final Board initalBoard;
+
+    public GenericGame(Board board) {
+        this.initalBoard = board;
+        restart();
+    }
+
     @Override
     public String getName() {
-        return "Genérico";
+        return NAME;
     }
 
     @Override
     public Board getInitialBoard() {
-        return board;
+        if (initalBoard == null) {
+            return null;
+        }
+        return initalBoard.copy();
     }
 
     @Override
@@ -35,7 +47,7 @@ public class GenericGame extends StandardGame {
 
     @Override
     public Game newInstance() {
-        return new GenericGame();
+        return new GenericGame(initalBoard);
     }
 
     @Override
