@@ -47,7 +47,7 @@ public class GameActivity extends AppCompatActivity {
     public static final String IS_MULTIPLAYER = "IS_MULTIPLAYER";
     public static final String DIFFICULTY = "DIFFICULTY";
 
-    Button playAgain, endGame;
+    Button restartGame, endGame, startGame, saveReplay, playReplay, restartReplay, goBackToMenu, goBackToReplay;
 
     RelativeLayout buttonsLayout;
     private BoardView boardView;
@@ -60,9 +60,9 @@ public class GameActivity extends AppCompatActivity {
     private Player player2;
     private boolean isGameRunning;
 
-    private boolean isBoardMode; // when it's a generic game
-
+    private boolean isBoardMode; // when it is a generic game
     private boolean isReplayMode; // when it comes from replay activity
+
     private boolean isReplayRunning;
     private Replay replay;
     private LinearLayout replayButtonsLayout;
@@ -112,72 +112,80 @@ public class GameActivity extends AppCompatActivity {
         gameNameTextView = findViewById(R.id.gameName);
         gameNameTextView.setText(game.getName());
 
-        // status
-        findViewById(R.id.statusLayout).setVisibility(isBoardMode ? View.GONE : View.VISIBLE);
-        statusTextView = findViewById(R.id.status);
-
         // replay
         replayButtonsLayout = findViewById(R.id.replayLayout);
 
-        // buttons when coming from game/board activity
-        Button playReplay = findViewById(R.id.playReplay);
+        // status
+        findViewById(R.id.statusLayout).setVisibility(!isBoardMode ? View.VISIBLE: View.GONE);
+        statusTextView = findViewById(R.id.status);
+
+
+
+
+
+        goBackToMenu = findViewById(R.id.goBackToMenu);
+        goBackToMenu.setOnClickListener(view -> finish());
+
+        saveReplay = findViewById(R.id.saveReplay);
+        saveReplay.setOnClickListener(view -> saveReplay());
+
+
+        playReplay = findViewById(R.id.playReplay);
         playReplay.setOnClickListener(view -> {
             isReplayRunning = true;
             initializeGame();
         });
-        playReplay.setVisibility(isReplayMode ? View.GONE : View.VISIBLE);
 
-        Button saveReplay = findViewById(R.id.saveReplay);
-        saveReplay.setOnClickListener(view -> saveReplay());
-        saveReplay.setVisibility(isReplayMode ? View.GONE : View.VISIBLE);
-
-        // buttons when coming from replay activity
-        Button goToReplay = findViewById(R.id.goBackToReplay);
-        goToReplay.setOnClickListener((view) -> finish());
-        goToReplay.setVisibility(isReplayMode ?  View.VISIBLE : View.GONE);
-
-        Button replayAgain = findViewById(R.id.replayAgain);
-        replayAgain.setOnClickListener((view) -> initializeGame());
-        replayAgain.setVisibility(isReplayMode ?  View.VISIBLE : View.GONE);
-
-
-        // play again
-        playAgain = findViewById(R.id.playAgain);
-        playAgain.setVisibility(isReplayMode || isBoardMode ? View.GONE : View.VISIBLE);
-        playAgain.setOnClickListener(view -> {
+        restartGame = findViewById(R.id.restartGame);
+        restartGame.setOnClickListener(view -> {
             isReplayRunning = false;
-            togglePlayAgainAndEndGameButtonsVisibility();
             initializeGame();
         });
 
-        // back
-        Button goBackToMenu = findViewById(R.id.back);
-        goBackToMenu.setOnClickListener(view -> finish());
-        goBackToMenu.setVisibility(isReplayMode ? View.GONE : View.VISIBLE);
+        goBackToReplay = findViewById(R.id.goBackToReplay);
+        goBackToReplay.setOnClickListener((view) -> finish());
 
 
-        // buttons when coming from pre-board activity
-        endGame = findViewById(R.id.endGame);
-        endGame.setVisibility(isBoardMode ?  View.VISIBLE : View.GONE);
-        endGame.setOnClickListener(view -> {
-            togglePlayAgainAndEndGameButtonsVisibility();
+        restartReplay = findViewById(R.id.restartReplay);
+        restartReplay.setOnClickListener((view) -> initializeGame());
+
+        startGame = findViewById(R.id.startGame);
+        startGame.setOnClickListener(view -> {
+            initializeGame();
+            toggleStartGameEndGameButtons();
         });
+        endGame = findViewById(R.id.endGame);
+        endGame.setOnClickListener(view -> {
+            toggleStartGameEndGameButtons();
+        });
+
+
+        if (isReplayMode) {
+            goBackToReplay.setVisibility(View.VISIBLE);
+            restartReplay.setVisibility(View.VISIBLE);
+        } else {
+            if (isBoardMode) {
+                endGame.setVisibility(View.VISIBLE);
+            } else {
+                restartGame.setVisibility(View.VISIBLE);
+            }
+            playReplay.setVisibility(View.VISIBLE);
+            saveReplay.setVisibility(View.VISIBLE);
+            goBackToMenu.setVisibility(View.VISIBLE);
+        }
 
 
         initializeGame();
         new Thread(GameActivity.this::gameLoop).start();
     }
 
-    private void togglePlayAgainAndEndGameButtonsVisibility() {
-        if (!isBoardMode) {
-            return;
-        }
-        playAgain.setVisibility(playAgain.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+    private void toggleStartGameEndGameButtons() {
+        startGame.setVisibility(startGame.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
         endGame.setVisibility(endGame.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
     }
 
     private Board findBoardFromName(String boardName) {
-        for (Board board: PreBoardActivity.BOARDS) {
+        for (Board board : PreBoardActivity.BOARDS) {
             if (board.getName().equals(boardName)) {
                 return board;
             }
@@ -186,7 +194,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private Replay findReplayFromName(String replayName) {
-        for (Replay replay: REPLAYS) {
+        for (Replay replay : REPLAYS) {
             if (replay.getName().equals(replayName)) {
                 return replay;
             }
@@ -216,7 +224,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void setUpButtons() {
-        for (Button button: positionButtonsMap.values()) {
+        for (Button button : positionButtonsMap.values()) {
             buttonsLayout.removeView(button);
         }
 
@@ -244,7 +252,7 @@ public class GameActivity extends AppCompatActivity {
                 boardView.setBoard(game.getBoard().copy());
                 Button previousButton = null;
 
-                for (Position position:  getPositionsSortedByAccessibility()) {
+                for (Position position : getPositionsSortedByAccessibility()) {
                     Button button = new Button(LoBoGames.getAppContext());
                     RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                             ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -274,7 +282,7 @@ public class GameActivity extends AppCompatActivity {
             if (player instanceof Human) {
                 ((Human) player).setCursor(selectedPosition);
                 boardView.setSelectedPosition(selectedPosition);
-                runOnUiThread(() -> boardView.announceForAccessibility("Selecionado " +  selectedPosition.getId()));
+                runOnUiThread(() -> boardView.announceForAccessibility("Selecionado " + selectedPosition.getId()));
             }
         }
     }
@@ -326,7 +334,7 @@ public class GameActivity extends AppCompatActivity {
         showTurn();
         Player currentPlayer = Player.selectPlayerById(player1, player2, turn);
         if (currentPlayer instanceof Human) {
-             runOnUiThread(this::updateButtonsDescription);
+            runOnUiThread(this::updateButtonsDescription);
         }
     }
 

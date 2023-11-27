@@ -67,6 +67,7 @@
                     android:contentDescription="Replay"
                     android:text="Replay"
                     android:layout_marginRight="20dp"
+                    android:visibility="gone"
             />
 
             <Button
@@ -76,6 +77,7 @@
                     android:textSize="16sp"
                     android:contentDescription="Salvar"
                     android:text="Salvar"
+                    android:visibility="gone"
             />
         </LinearLayout>
     </RelativeLayout>
@@ -90,15 +92,17 @@
             android:paddingTop="10dp"
             android:paddingBottom="20dp"
     >
-            <Button
-                    android:id="@+id/playAgain"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:textSize="16sp"
-                    android:contentDescription="Recomeçar partida"
-                    android:text="Recomeçar\nPartida"
-                    android:layout_marginRight="15dp"/>
+        <Button
+                android:id="@+id/restartGame"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="50"
+                android:textSize="16sp"
+                android:contentDescription="Recomeçar partida"
+                android:text="Recomeçar\nPartida"
+                android:layout_marginRight="15dp"
+                android:visibility="gone"
+        />
 
         <Button
                 android:id="@+id/endGame"
@@ -108,39 +112,57 @@
                 android:textSize="16sp"
                 android:contentDescription="Terminar partida"
                 android:text="Terminar\nPartida"
-                android:layout_marginRight="15dp"/>
+                android:layout_marginRight="15dp"
+                android:visibility="gone"
+        />
 
-            <Button
-                    android:id="@+id/back"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:textSize="16sp"
-                    android:contentDescription="Voltar ao menu"
-                    android:text="Voltar\nao menu"
-            />
+        <Button
+                android:id="@+id/startGame"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="50"
+                android:textSize="16sp"
+                android:contentDescription="Iniciar partida"
+                android:text="Iniciar\nPartida"
+                android:layout_marginRight="15dp"
+                android:visibility="gone"
+        />
 
-            <Button
-                    android:id="@+id/goBackToReplay"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:textSize="16sp"
-                    android:contentDescription="Voltar para replays"
-                    android:text="Voltar \naos replays"
 
-                    android:layout_marginRight="15dp"
-            />
+        <Button
+                android:id="@+id/restartReplay"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="50"
+                android:textSize="16sp"
+                android:contentDescription="Ver novamente"
+                android:text="Ver \nnovamente"
+                android:layout_marginRight="15dp"
+                android:visibility="gone"
+        />
 
-            <Button
-                    android:id="@+id/replayAgain"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="50"
-                    android:textSize="16sp"
-                    android:contentDescription="Ver novamente"
-                    android:text="Ver \nnovamente"
-            />
+        <Button
+                android:id="@+id/goBackToMenu"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="50"
+                android:textSize="16sp"
+                android:contentDescription="Voltar ao menu"
+                android:text="Voltar\nao menu"
+                android:visibility="gone"
+        />
+
+        <Button
+                android:id="@+id/goBackToReplay"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="50"
+                android:textSize="16sp"
+                android:contentDescription="Voltar a replays"
+                android:text="Voltar \na replays"
+                android:layout_marginRight="15dp"
+                android:visibility="gone"
+        />
 
     </LinearLayout>
 </LinearLayout>
