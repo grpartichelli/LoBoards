@@ -94,10 +94,10 @@ public class GameActivity extends AppCompatActivity {
             isReplayMode = true;
         }
 
-        if (gameName == null) {
+        if (GenericGame.NAME.equals(gameName)) {
             Board board = findBoardFromName(boardName);
-            GenericGame genericGame = new GenericGame(board);
-            game = genericGame;
+            game = new GenericGame(board);
+            game.setBoard(board);
             isBoardMode = true;
         } else {
             game = PreGameActivity.GAMES.get(gameName);

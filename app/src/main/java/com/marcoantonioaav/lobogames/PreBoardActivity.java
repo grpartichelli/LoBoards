@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.marcoantonioaav.lobogames.board.Board;
 
 import com.marcoantonioaav.lobogames.board.StandardBoard;
+import com.marcoantonioaav.lobogames.game.GenericGame;
 import com.marcoantonioaav.lobogames.game.GenericGameFileService;
 
 import java.util.List;
@@ -75,6 +76,7 @@ public class PreBoardActivity extends AppCompatActivity {
 
     private void openGameActivity() {
         Intent intent = new Intent(this, GameActivity.class);
+        intent.putExtra(GameActivity.GAME_NAME, GenericGame.NAME);
         intent.putExtra(GameActivity.BOARD_NAME, selectedBoardName);
         intent.putExtra(GameActivity.IS_MULTIPLAYER, true);
 

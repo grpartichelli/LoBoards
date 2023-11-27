@@ -1,6 +1,7 @@
 package com.marcoantonioaav.lobogames.game;
 
 import com.marcoantonioaav.lobogames.board.Board;
+import com.marcoantonioaav.lobogames.board.StandardBoard;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.move.Movement;
 import com.marcoantonioaav.lobogames.move.StandardMove;
@@ -9,6 +10,7 @@ import com.marcoantonioaav.lobogames.player.Player;
 import com.marcoantonioaav.lobogames.position.Position;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -19,10 +21,10 @@ import java.util.List;
 public class GenericGame extends StandardGame {
 
     public static final String NAME = "Generic";
-    private final Board initalBoard;
 
     public GenericGame(Board board) {
-        this.initalBoard = board;
+        super();
+        setBoard(board);
         restart();
     }
 
@@ -33,10 +35,14 @@ public class GenericGame extends StandardGame {
 
     @Override
     public Board getInitialBoard() {
-        if (initalBoard == null) {
+        if (this.board == null) {
             return null;
         }
-        return initalBoard.copy();
+
+        for (Position position: this.board.getPositions()) {
+            position.setPlayerId(Player.EMPTY);
+        }
+        return board;
     }
 
     @Override
@@ -47,7 +53,7 @@ public class GenericGame extends StandardGame {
 
     @Override
     public Game newInstance() {
-        return new GenericGame(initalBoard);
+        return new GenericGame(board);
     }
 
     @Override
