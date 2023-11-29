@@ -267,7 +267,7 @@ public class GameActivity extends AppCompatActivity {
                     layoutParams.leftMargin = leftOffset + position.getCoordinate().x() - (int) (buttonSize / 2);
                     layoutParams.topMargin = topOffset + position.getCoordinate().y() - (int) (buttonSize / 2);
                     button.setOnClickListener(view -> setCursorByClick(position));
-                    button.setBackgroundColor(Color.TRANSPARENT);
+                    //button.setBackgroundColor(Color.TRANSPARENT);
                     buttonsLayout.addView(button, layoutParams);
                     positionButtonsMap.put(position, button);
                     if (previousButton != null) {

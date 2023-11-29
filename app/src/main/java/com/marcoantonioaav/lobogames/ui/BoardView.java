@@ -36,8 +36,6 @@ public class BoardView extends View {
     private static final int ANIMATION_DURATION_IN_MS = 300;
     private static final int ANIMATION_STEPS_TOTAL = 30;
     private Position animatingPosition = Position.instanceOutOfBoard();
-    private int height;
-    private int width;
 
     public BoardView(Context context) {
         super(context);

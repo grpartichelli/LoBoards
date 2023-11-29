@@ -42,14 +42,34 @@
             android:layout_height="0dp"
             android:layout_weight="85"
             android:id="@+id/buttonsLayout"
+            android:background="#0f0"
     >
 
-        <com.marcoantonioaav.lobogames.ui.BoardView
-                android:id="@+id/boardView"
+        <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-        />
+                android:orientation="vertical"
+        >
+            <com.marcoantonioaav.lobogames.ui.OutOfBoardPositionsView
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:background="@color/teal_200"
+
+            />
+            <com.marcoantonioaav.lobogames.ui.BoardView
+                    android:id="@+id/boardView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#f0f"
+            />
+            <com.marcoantonioaav.lobogames.ui.OutOfBoardPositionsView
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:background="@color/purple_500"
+            />
+
+        </LinearLayout>
 
         <LinearLayout
                 android:id="@+id/replayLayout"
