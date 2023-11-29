@@ -8,9 +8,7 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import androidx.annotation.Nullable;
-import com.marcoantonioaav.lobogames.R;
 import com.marcoantonioaav.lobogames.board.Board;
 import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.move.Movement;
@@ -134,7 +132,7 @@ public class BoardView extends View {
         float positionBorderRadius = getPositionBorderRadius();
         float selectedPositionBorderRadius = getSelectedPositionBorderRadius();
 
-        for (Position position: this.board.getPositions()) {
+        for (Position position : this.board.getPositions()) {
             position = animatingPosition.equals(position) ? animatingPosition : position;
 
             if (position.getPlayerId() != Player.EMPTY) {

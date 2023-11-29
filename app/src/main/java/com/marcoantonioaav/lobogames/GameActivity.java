@@ -30,6 +30,7 @@ import com.marcoantonioaav.lobogames.replay.Replay;
 import com.marcoantonioaav.lobogames.replay.ReplayFileService;
 import com.marcoantonioaav.lobogames.ui.BoardButtonDelegate;
 import com.marcoantonioaav.lobogames.ui.BoardView;
+import com.marcoantonioaav.lobogames.ui.OutOfBoardPositionsView;
 
 import java.util.Calendar;
 import java.util.Collections;
@@ -58,6 +59,8 @@ public class GameActivity extends AppCompatActivity {
 
     RelativeLayout buttonsLayout;
     private BoardView boardView;
+    private OutOfBoardPositionsView topOutOfBoardPositionsView;
+    private OutOfBoardPositionsView bottomOutOfBoardPositionsView;
     private final Map<Position, Button> positionButtonsMap = new HashMap<>();
     private TextView gameNameTextView, statusTextView;
 
@@ -67,7 +70,6 @@ public class GameActivity extends AppCompatActivity {
     private Player player2;
     private boolean isGameRunning;
 
-    private boolean isBoardModeManualEnding = false;
     private boolean isBoardMode = false; // when it is a generic game
     private boolean isReplayMode = false; // when it comes from replay activity
 
@@ -116,6 +118,10 @@ public class GameActivity extends AppCompatActivity {
         boardView.setPlayer2Color(getSharedPreferences(SettingsActivity.SETTINGS, MODE_PRIVATE).getInt(SettingsActivity.PLAYER_2_COLOR, Color.RED));
         boardView.setCursorColor(getSharedPreferences(SettingsActivity.SETTINGS, MODE_PRIVATE).getInt(SettingsActivity.CURSOR_COLOR, Color.BLUE));
 
+        // out of board positions
+        topOutOfBoardPositionsView = findViewById(R.id.topOutOfBoardPositionsView);
+        bottomOutOfBoardPositionsView = findViewById(R.id.bottomOutOfBoardPositionsView);
+
         // game name
         gameNameTextView = findViewById(R.id.gameName);
         gameNameTextView.setText(game.getName());
@@ -133,7 +139,6 @@ public class GameActivity extends AppCompatActivity {
         saveReplay = findViewById(R.id.saveReplay);
         saveReplay.setOnClickListener(view -> saveReplay());
 
-
         playReplay = findViewById(R.id.playReplay);
         playReplay.setOnClickListener(view -> {
             isReplayRunning = true;
@@ -148,7 +153,6 @@ public class GameActivity extends AppCompatActivity {
 
         goBackToReplay = findViewById(R.id.goBackToReplay);
         goBackToReplay.setOnClickListener(view -> finish());
-
 
         restartReplay = findViewById(R.id.restartReplay);
         restartReplay.setOnClickListener(view -> initializeGame());
@@ -227,7 +231,7 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-    private void setUpButtons() {
+    private void setupBoardViewAndButtons() {
         for (Button button : positionButtonsMap.values()) {
             buttonsLayout.removeView(button);
         }
@@ -236,21 +240,30 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onGlobalLayout() {
 
-                int leftOffset = 0;
-                int topOffset = 0;
-                int width = buttonsLayout.getWidth();
-                int height = buttonsLayout.getHeight();
-                if (width > height) {
-                    boardView.resize(height);
-                    leftOffset = (width - height) / 2;
-                } else {
-                    boardView.resize(width);
-                    topOffset = (height - width) / 2;
+                // setup board view size and obtain offset
+                int buttonsLayoutWidth = buttonsLayout.getWidth();
+                int buttonsLayoutHeight = buttonsLayout.getHeight();
+                int outOfBoardHeight = 0;
+
+                int boardViewSize = Math.min(buttonsLayoutWidth, buttonsLayoutHeight);
+                if (isBoardMode) {
+                    outOfBoardHeight = (int) (boardViewSize *  2.75 * game.getBoard().getPositionRadiusScale());
+
+                    if (buttonsLayoutHeight - boardViewSize < 2 * outOfBoardHeight) {
+                       boardViewSize = buttonsLayoutHeight - 2 * outOfBoardHeight;
+                    }
                 }
 
+                int leftOffset = (buttonsLayoutWidth - boardViewSize) / 2;
+                int topOffset = (buttonsLayoutHeight - boardViewSize) / 2;
+
+                setupOutOfBoardPositionsView(boardViewSize, outOfBoardHeight);
+                boardView.resize(boardViewSize);
                 boardView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 
-                RelativeLayout buttonsLayout = findViewById(R.id.buttonsLayout);
+
+                // setup buttons
+                buttonsLayout = findViewById(R.id.buttonsLayout);
                 double buttonSize = boardView.getSelectedPositionBorderRadius() * 2.5;
                 game.getBoard().scaleToLayoutParams(boardView.getLayoutParams());
                 boardView.setBoard(game.getBoard().copy());
@@ -278,6 +291,13 @@ public class GameActivity extends AppCompatActivity {
                 updateButtonsDescription();
             }
         });
+    }
+
+    private void setupOutOfBoardPositionsView(int width, int height) {
+        topOutOfBoardPositionsView.resize(width, height);
+        topOutOfBoardPositionsView.setVisibility(View.VISIBLE);
+        bottomOutOfBoardPositionsView.resize(width, height);
+        bottomOutOfBoardPositionsView.setVisibility(View.VISIBLE);
     }
 
     private void setCursorByClick(Position selectedPosition) {
@@ -377,7 +397,7 @@ public class GameActivity extends AppCompatActivity {
         game.restart();
         boardView.reset();
         boardView.setBoard(game.getBoard().copy());
-        setUpButtons();
+        setupBoardViewAndButtons();
         turn = Player.PLAYER_1;
         showTurn();
         isGameRunning = true;

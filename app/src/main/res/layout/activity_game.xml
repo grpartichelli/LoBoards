@@ -36,7 +36,6 @@
         />
     </LinearLayout>
 
-
     <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -50,12 +49,15 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:orientation="vertical"
+                android:gravity="center_horizontal|center_vertical"
+
         >
             <com.marcoantonioaav.lobogames.ui.OutOfBoardPositionsView
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp"
+                    android:id="@+id/topOutOfBoardPositionsView"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
                     android:background="@color/teal_200"
-
+                    android:visibility="gone"
             />
             <com.marcoantonioaav.lobogames.ui.BoardView
                     android:id="@+id/boardView"
@@ -64,9 +66,11 @@
                     android:background="#f0f"
             />
             <com.marcoantonioaav.lobogames.ui.OutOfBoardPositionsView
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp"
+                    android:id="@+id/bottomOutOfBoardPositionsView"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
                     android:background="@color/purple_500"
+                    android:visibility="gone"
             />
 
         </LinearLayout>

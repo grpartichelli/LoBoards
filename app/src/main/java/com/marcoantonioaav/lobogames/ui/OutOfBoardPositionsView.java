@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import androidx.annotation.Nullable;
 
 public class OutOfBoardPositionsView extends View {
@@ -31,4 +32,13 @@ public class OutOfBoardPositionsView extends View {
 //        paint.setStyle(Paint.Style.FILL);
 //        canvas.drawPaint(paint);
     }
+
+
+    public void resize(int width, int height) {
+        ViewGroup.LayoutParams layoutParams = getLayoutParams();
+        layoutParams.width = width;
+        layoutParams.height = height;
+        setLayoutParams(layoutParams);
+    }
+
 }
