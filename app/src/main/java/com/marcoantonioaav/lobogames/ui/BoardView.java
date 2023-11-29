@@ -128,8 +128,8 @@ public class BoardView extends View {
     }
 
     private void drawPositions(Canvas canvas) {
-        float positionRadius = getPositionRadius();
-        float positionBorderRadius = getPositionBorderRadius();
+        float positionRadius = this.board.getPositionRadius(getWidth());
+        float positionBorderRadius = this.board.getPositionBorderRadius(getWidth());
         float selectedPositionBorderRadius = getSelectedPositionBorderRadius();
 
         for (Position position : this.board.getPositions()) {
@@ -159,20 +159,6 @@ public class BoardView extends View {
         setLayoutParams(layoutParams);
     }
 
-    public float getPositionRadius() {
-        return (float) (getWidth() * this.board.getPositionRadiusScale());
-    }
-
-    public float getPositionBorderRadius() {
-        // NOTE: slightly bigger than radius, shows as a ring around all positions
-        return (float) (getWidth() * this.board.getPositionRadiusScale() * 1.09);
-    }
-
-    public float getSelectedPositionBorderRadius() {
-        // NOTE: slightly bigger than radius, shows as a ring around the selected position
-        return (float) (getWidth() * this.board.getPositionRadiusScale() * 1.11);
-    }
-
     public int getPlayerColor(int playerId) {
         if (playerId == Player.PLAYER_1)
             return player1Color;
@@ -188,6 +174,10 @@ public class BoardView extends View {
         if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES)
             return Color.WHITE;
         return Color.BLACK;
+    }
+
+    public Board getBoard() {
+        return this.board;
     }
 
     public void setBoard(Board board) {
@@ -216,5 +206,9 @@ public class BoardView extends View {
 
     public void setPlayer2Color(int player2Color) {
         this.player2Color = player2Color;
+    }
+
+    public float getSelectedPositionBorderRadius() {
+        return this.board.getSelectedPositionBorderRadius(getWidth());
     }
 }

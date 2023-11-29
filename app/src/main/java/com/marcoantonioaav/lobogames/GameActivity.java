@@ -257,16 +257,16 @@ public class GameActivity extends AppCompatActivity {
                 int leftOffset = (buttonsLayoutWidth - boardViewSize) / 2;
                 int topOffset = (buttonsLayoutHeight - boardViewSize) / 2;
 
-                setupOutOfBoardPositionsView(boardViewSize, outOfBoardHeight);
                 boardView.resize(boardViewSize);
+                game.getBoard().scaleToLayoutParams(boardView.getLayoutParams());
+                boardView.setBoard(game.getBoard().copy());
                 boardView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                setupOutOfBoardPositionsView(boardViewSize, outOfBoardHeight, boardView.getBoard());
 
 
                 // setup buttons
                 buttonsLayout = findViewById(R.id.buttonsLayout);
                 double buttonSize = boardView.getSelectedPositionBorderRadius() * 2.5;
-                game.getBoard().scaleToLayoutParams(boardView.getLayoutParams());
-                boardView.setBoard(game.getBoard().copy());
                 Button previousButton = null;
 
                 for (Position position : getPositionsSortedByAccessibility()) {
@@ -293,9 +293,11 @@ public class GameActivity extends AppCompatActivity {
         });
     }
 
-    private void setupOutOfBoardPositionsView(int width, int height) {
+    private void setupOutOfBoardPositionsView(int width, int height, Board board) {
+        topOutOfBoardPositionsView.setBoard(board);
         topOutOfBoardPositionsView.resize(width, height);
         topOutOfBoardPositionsView.setVisibility(View.VISIBLE);
+        bottomOutOfBoardPositionsView.setBoard(board);
         bottomOutOfBoardPositionsView.resize(width, height);
         bottomOutOfBoardPositionsView.setVisibility(View.VISIBLE);
     }

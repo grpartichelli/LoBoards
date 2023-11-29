@@ -117,4 +117,19 @@ public abstract class Board {
     public void setName(String name) {
         this.name = name;
     }
+
+
+    public float getPositionRadius(int width) {
+        return (float) (width * this.getPositionRadiusScale());
+    }
+
+    public float getPositionBorderRadius(int width) {
+        // NOTE: slightly bigger than radius, shows as a ring around all positions
+        return (float) (width * this.getPositionRadiusScale() * 1.09);
+    }
+
+    public float getSelectedPositionBorderRadius(int width) {
+        // NOTE: slightly bigger than radius, shows as a ring around the selected position
+        return (float) (width * this.getPositionRadiusScale() * 1.11);
+    }
 }

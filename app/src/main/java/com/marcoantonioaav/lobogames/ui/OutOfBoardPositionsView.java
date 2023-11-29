@@ -2,16 +2,17 @@ package com.marcoantonioaav.lobogames.ui;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.Nullable;
+import com.marcoantonioaav.lobogames.board.Board;
 
 public class OutOfBoardPositionsView extends View {
 
     Paint paint = new Paint();
+    Board board;
 
     public OutOfBoardPositionsView(Context context) {
         super(context);
@@ -41,4 +42,11 @@ public class OutOfBoardPositionsView extends View {
         setLayoutParams(layoutParams);
     }
 
+    public Board getBoard() {
+        return board;
+    }
+
+    public void setBoard(Board board) {
+        this.board = board;
+    }
 }
