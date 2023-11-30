@@ -163,6 +163,7 @@ public class StandardBoard extends Board {
     }
 
     public Position findPositionById(String id) {
+        // TODO: This is overwriting, fix it
         if (id.isEmpty()) {
             return Position.instanceOutOfBoard();
         }

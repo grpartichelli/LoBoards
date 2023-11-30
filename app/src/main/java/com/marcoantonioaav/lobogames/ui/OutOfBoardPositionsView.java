@@ -12,12 +12,16 @@ import android.widget.RelativeLayout;
 import androidx.annotation.Nullable;
 import com.marcoantonioaav.lobogames.application.LoBoGames;
 import com.marcoantonioaav.lobogames.board.Board;
+import com.marcoantonioaav.lobogames.player.Human;
+import com.marcoantonioaav.lobogames.player.Player;
 import com.marcoantonioaav.lobogames.position.Coordinate;
+import com.marcoantonioaav.lobogames.position.Position;
 
 public class OutOfBoardPositionsView extends View {
 
     Paint paint = new Paint();
     Board board;
+    Player player;
     int playerColor;
     boolean isTop = false;
     RelativeLayout buttonsLayout;
@@ -80,14 +84,25 @@ public class OutOfBoardPositionsView extends View {
         layoutParams.leftMargin = offsetWidth + coordinate.x() - (int) (buttonSize / 2);
 
 
-        // button.setOnClickListener(view -> setCursorByClick(position));
+        button.setOnClickListener(view -> outOfBoardClick());
         //button.setBackgroundColor(Color.TRANSPARENT);
+
+
+        // TODO: accessibility
         buttonsLayout.addView(button, layoutParams);
 //        if (previousButton != null) {
 //            ViewCompat.setAccessibilityDelegate(button, new BoardButtonDelegate(previousButton));
 //        }
 //        previousButton = button;
         return button;
+    }
+
+    private void outOfBoardClick() {
+        if (player instanceof Human) {
+            Position outOfBoard = Position.instanceOutOfBoard();
+            outOfBoard.setPlayerId(player.getId());
+            ((Human) player).setCursor(outOfBoard);
+        }
     }
 
     private Coordinate resolveStoppedCoordinate() {
@@ -116,6 +131,10 @@ public class OutOfBoardPositionsView extends View {
 
     public void setPlayerColor(int playerColor) {
         this.playerColor = playerColor;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 
     public void setIsTop(boolean isTop) {

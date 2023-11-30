@@ -39,7 +39,7 @@ public class GenericGame extends StandardGame {
             return null;
         }
 
-        for (Position position: this.board.getPositions()) {
+        for (Position position : this.board.getPositions()) {
             position.setPlayerId(Player.EMPTY);
         }
         return board;
@@ -75,10 +75,8 @@ public class GenericGame extends StandardGame {
         Position endPosition = this.board.findPositionById(movement.getEndPositionId());
 
         // TODO: Consider out of board
-        //      !startPosition.isOutOfBoard()
-        //      && !endPosition.isOutOfBoard())
-        //      && startPosition.getPlayerId() == movement.getPlayerId()
-        return endPosition.getPlayerId() == Player.EMPTY;
+        return startPosition.getPlayerId() == movement.getPlayerId()
+                && endPosition.getPlayerId() == Player.EMPTY;
     }
 
     @Override

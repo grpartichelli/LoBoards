@@ -299,6 +299,7 @@ public class GameActivity extends AppCompatActivity {
         topOutOfBoardPositionsView.resize(width, height);
         topOutOfBoardPositionsView.setVisibility(View.VISIBLE);
         topOutOfBoardPositionsView.setPlayerColor(getSharedPreferences(SettingsActivity.SETTINGS, MODE_PRIVATE).getInt(SettingsActivity.PLAYER_2_COLOR, Color.GREEN));
+        topOutOfBoardPositionsView.setPlayer(player2);
         topOutOfBoardPositionsView.setIsTop(true);
         topOutOfBoardPositionsView.setButtonsLayout(buttonsLayout);
         topOutOfBoardPositionsView.setBoardView(boardView);
@@ -307,6 +308,7 @@ public class GameActivity extends AppCompatActivity {
         bottomOutOfBoardPositionsView.resize(width, height);
         bottomOutOfBoardPositionsView.setVisibility(View.VISIBLE);
         bottomOutOfBoardPositionsView.setPlayerColor(getSharedPreferences(SettingsActivity.SETTINGS, MODE_PRIVATE).getInt(SettingsActivity.PLAYER_1_COLOR, Color.GREEN));
+        bottomOutOfBoardPositionsView.setPlayer(player1);
         bottomOutOfBoardPositionsView.setButtonsLayout(buttonsLayout);
         bottomOutOfBoardPositionsView.setBoardView(boardView);
     }
