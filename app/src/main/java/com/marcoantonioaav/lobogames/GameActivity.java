@@ -232,6 +232,8 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void setupBoardViewAndButtons() {
+        buttonsLayout = findViewById(R.id.buttonsLayout);
+
         for (Button button : positionButtonsMap.values()) {
             buttonsLayout.removeView(button);
         }
@@ -247,10 +249,10 @@ public class GameActivity extends AppCompatActivity {
 
                 int boardViewSize = Math.min(buttonsLayoutWidth, buttonsLayoutHeight);
                 if (isBoardMode) {
-                    outOfBoardHeight = (int) (boardViewSize *  2.75 * game.getBoard().getPositionRadiusScale());
+                    outOfBoardHeight = (int) (boardViewSize * 2.75 * game.getBoard().getPositionRadiusScale());
 
                     if (buttonsLayoutHeight - boardViewSize < 2 * outOfBoardHeight) {
-                       boardViewSize = buttonsLayoutHeight - 2 * outOfBoardHeight;
+                        boardViewSize = buttonsLayoutHeight - 2 * outOfBoardHeight;
                     }
                 }
 
@@ -265,7 +267,6 @@ public class GameActivity extends AppCompatActivity {
 
 
                 // setup buttons
-                buttonsLayout = findViewById(R.id.buttonsLayout);
                 double buttonSize = boardView.getSelectedPositionBorderRadius() * 2.5;
                 Button previousButton = null;
 
@@ -275,12 +276,12 @@ public class GameActivity extends AppCompatActivity {
                             ViewGroup.LayoutParams.WRAP_CONTENT,
                             ViewGroup.LayoutParams.WRAP_CONTENT
                     );
-                    layoutParams.height = (int) (buttonSize);
-                    layoutParams.width = (int) (buttonSize);
+                    layoutParams.height = (int) buttonSize;
+                    layoutParams.width = (int) buttonSize;
                     layoutParams.leftMargin = leftOffset + position.getCoordinate().x() - (int) (buttonSize / 2);
                     layoutParams.topMargin = topOffset + position.getCoordinate().y() - (int) (buttonSize / 2);
                     button.setOnClickListener(view -> setCursorByClick(position));
-                    //button.setBackgroundColor(Color.TRANSPARENT);
+                    button.setBackgroundColor(Color.TRANSPARENT);
                     buttonsLayout.addView(button, layoutParams);
                     positionButtonsMap.put(position, button);
                     if (previousButton != null) {
@@ -297,9 +298,17 @@ public class GameActivity extends AppCompatActivity {
         topOutOfBoardPositionsView.setBoard(board);
         topOutOfBoardPositionsView.resize(width, height);
         topOutOfBoardPositionsView.setVisibility(View.VISIBLE);
+        topOutOfBoardPositionsView.setPlayerColor(getSharedPreferences(SettingsActivity.SETTINGS, MODE_PRIVATE).getInt(SettingsActivity.PLAYER_2_COLOR, Color.GREEN));
+        topOutOfBoardPositionsView.setIsTop(true);
+        topOutOfBoardPositionsView.setButtonsLayout(buttonsLayout);
+        topOutOfBoardPositionsView.setBoardView(boardView);
+
         bottomOutOfBoardPositionsView.setBoard(board);
         bottomOutOfBoardPositionsView.resize(width, height);
         bottomOutOfBoardPositionsView.setVisibility(View.VISIBLE);
+        bottomOutOfBoardPositionsView.setPlayerColor(getSharedPreferences(SettingsActivity.SETTINGS, MODE_PRIVATE).getInt(SettingsActivity.PLAYER_1_COLOR, Color.GREEN));
+        bottomOutOfBoardPositionsView.setButtonsLayout(buttonsLayout);
+        bottomOutOfBoardPositionsView.setBoardView(boardView);
     }
 
     private void setCursorByClick(Position selectedPosition) {

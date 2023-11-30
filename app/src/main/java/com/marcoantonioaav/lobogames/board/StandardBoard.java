@@ -40,7 +40,6 @@ public class StandardBoard extends Board {
         for (Position position: positions) {
             this.positionsMap.put(position.getId(), position);
         }
-        this.positionsMap.put("", Position.instanceOutOfBoard());
         this.connections.addAll(connections);
     }
 
@@ -91,7 +90,7 @@ public class StandardBoard extends Board {
 
     @Override
     public void updateCoordinate(Position position, Coordinate newCoordinate) {
-        Position positionToUpdate = positionsMap.get(position.getId());
+        Position positionToUpdate = findPositionById(position.getId());
         positionToUpdate.setCoordinate(newCoordinate);
         positionsMap.put(positionToUpdate.getId(), positionToUpdate);
     }
@@ -139,7 +138,7 @@ public class StandardBoard extends Board {
             if (!connection.getStartPositionId().equals(position.getId())) {
                 continue;
             }
-            connectedPositionsOfPlayer.add(positionsMap.get(connection.getEndPositionId()));
+            connectedPositionsOfPlayer.add(findPositionById(connection.getEndPositionId()));
         }
         return connectedPositionsOfPlayer;
     }
@@ -151,7 +150,7 @@ public class StandardBoard extends Board {
                 continue;
             }
 
-            Position connectedPosition = positionsMap.get(connection.getEndPositionId());
+            Position connectedPosition = findPositionById(connection.getEndPositionId());
             if (connectedPosition.getPlayerId() == playerId) {
                 connectedPositionsOfPlayer.add(connectedPosition);
             }
@@ -164,6 +163,9 @@ public class StandardBoard extends Board {
     }
 
     public Position findPositionById(String id) {
+        if (id.isEmpty()) {
+            return Position.instanceOutOfBoard();
+        }
         return this.positionsMap.get(id);
     }
 

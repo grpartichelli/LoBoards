@@ -1,7 +1,6 @@
 package com.marcoantonioaav.lobogames.ui;
 
 import android.content.Context;
-import android.content.res.Configuration;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -141,7 +140,7 @@ public class BoardView extends View {
                     paint.setColor(cursorColor);
                     canvas.drawCircle(position.getCoordinate().x(), position.getCoordinate().y(), selectedPositionBorderRadius, paint);
                 } else {
-                    paint.setColor(getPrimaryColor());
+                    paint.setColor(Color.BLACK);
                     canvas.drawCircle(position.getCoordinate().x(), position.getCoordinate().y(), positionBorderRadius, paint);
                 }
 
@@ -167,14 +166,6 @@ public class BoardView extends View {
         return Color.GRAY;
     }
 
-
-    // TODO: Add dark mode board?
-    private int getPrimaryColor() {
-        int nightModeFlags = getContext().getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-        if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES)
-            return Color.WHITE;
-        return Color.BLACK;
-    }
 
     public Board getBoard() {
         return this.board;
