@@ -12,7 +12,7 @@ import com.marcoantonioaav.lobogames.position.Position;
 import java.util.List;
 
 public abstract class Board {
-    protected Drawable image; // TODO: turn final
+    protected final Drawable image;
     protected final double paddingPercentageHorizontal;
     protected final double paddingPercentageVertical;
     protected final double positionRadiusScale;
@@ -69,10 +69,6 @@ public abstract class Board {
 
     public Drawable getImageCopy()  {
         return image.getConstantState().newDrawable().mutate();
-    }
-
-    public void setImage(Drawable image) {
-        this.image = image;
     }
 
     /**

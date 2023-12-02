@@ -7,7 +7,7 @@ import java.util.Objects;
 
 public class Position {
 
-    public static Position instanceOutOfBoard() {
+    public static Position empty() {
         return new Position(Coordinate.instanceOutOfBoard(), "", -1);
     }
 

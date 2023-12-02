@@ -119,7 +119,7 @@ public class WatermelonChess extends StandardGame {
             }
 
             if (shouldAddMovement) {
-                movements.add(new StandardMovement(enemyPosition, Position.instanceOutOfBoard(), movement.getPlayerId()));
+                movements.add(new StandardMovement(enemyPosition, Position.empty(), movement.getPlayerId()));
             }
         }
         return movements;

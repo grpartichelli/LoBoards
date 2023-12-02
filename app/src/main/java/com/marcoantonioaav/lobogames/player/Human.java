@@ -5,8 +5,8 @@ import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.position.Position;
 
 public class Human extends Player {
-    private String lastCursor = Position.instanceOutOfBoard().getId();
-    private String cursor = Position.instanceOutOfBoard().getId();
+    private String lastCursor = Position.empty().getId();
+    private String cursor = Position.empty().getId();
 
     private boolean ready = false;
 

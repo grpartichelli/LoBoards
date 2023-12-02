@@ -99,7 +99,7 @@ public class OutOfBoardPositionsView extends View {
 
     private void outOfBoardClick() {
         if (player instanceof Human) {
-            Position outOfBoard = Position.instanceOutOfBoard();
+            Position outOfBoard = Position.empty();
             outOfBoard.setPlayerId(player.getId());
             ((Human) player).setCursor(outOfBoard);
         }
