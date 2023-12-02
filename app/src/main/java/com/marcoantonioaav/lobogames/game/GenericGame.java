@@ -74,9 +74,9 @@ public class GenericGame extends StandardGame {
         Position startPosition = this.board.findPositionById(movement.getStartPositionId());
         Position endPosition = this.board.findPositionById(movement.getEndPositionId());
 
-        // TODO: Consider out of board
-        return startPosition.getPlayerId() == movement.getPlayerId()
-                && endPosition.getPlayerId() == Player.EMPTY;
+        return  !startPosition.getId().isEmpty()
+                && endPosition.getPlayerId() == Player.EMPTY
+                && !endPosition.isOutOfBoard();
     }
 
     @Override
@@ -89,7 +89,8 @@ public class GenericGame extends StandardGame {
     public Move getPlayerMove(String startPositionId, String endPositionId, int playerId) {
         Position startPosition = this.board.findPositionById(startPositionId);
         Position endPosition = this.board.findPositionById(endPositionId);
-        StandardMovement movement = new StandardMovement(startPosition, endPosition, playerId);
+        // NOTE: Consider the start position as the moves player
+        StandardMovement movement = new StandardMovement(startPosition, endPosition, startPosition.getPlayerId());
         return new StandardMove(playerId, new ArrayList<>(Collections.singletonList(movement)));
     }
 
