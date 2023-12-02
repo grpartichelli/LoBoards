@@ -72,6 +72,7 @@ public class BoardView extends View {
 
     private Position calculateAnimatingPosition(Position startPosition, Position endPosition) {
         List<Coordinate> coordinatesBetween = this.board.findCoordinatesBetween(startPosition, endPosition);
+        enrichStartAndEndCoordinatesOutOfBoard(startPosition, endPosition, coordinatesBetween);
         double numberOfStepsPerCoordinatePair = (double) ANIMATION_STEPS_TOTAL / (coordinatesBetween.size() - 1);
 
         int currentCoordinatePairStartIndex = (int) (currentAnimationStep / numberOfStepsPerCoordinatePair);
@@ -90,6 +91,32 @@ public class BoardView extends View {
         );
         newAnimatingPosition.setPlayerId(startPosition.getPlayerId());
         return newAnimatingPosition;
+    }
+
+    private void enrichStartAndEndCoordinatesOutOfBoard(Position startPosition, Position endPosition, List<Coordinate> coordinatesBetween) {
+
+        int offsetWidth = getWidth() / 5;
+
+        Coordinate firstCoordinate = coordinatesBetween.get(0);
+        if (firstCoordinate.isOutOfBoard()) {
+            boolean isTop = startPosition.getPlayerId() == Player.PLAYER_2;
+            Coordinate newFirstCoordinate = new Coordinate(
+                    isTop ? offsetWidth : getWidth() - offsetWidth,
+                    isTop ? 0 : getHeight()
+            );
+            coordinatesBetween.set(0, newFirstCoordinate);
+        }
+
+        Coordinate lastCoordinate = coordinatesBetween.get(coordinatesBetween.size() - 1);
+        if (lastCoordinate.isOutOfBoard()) {
+            boolean isTop = endPosition.getPlayerId() == Player.PLAYER_2;
+            Coordinate newLastCoordinate = new Coordinate(
+                    isTop ? offsetWidth : getWidth() - offsetWidth,
+                    isTop ? 0 : getHeight()
+            );
+
+            coordinatesBetween.set(coordinatesBetween.size() - 1, newLastCoordinate);
+        }
     }
 
     private Coordinate calculateCoordinateBetweenCoordinatePairByProgress(

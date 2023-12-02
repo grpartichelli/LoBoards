@@ -82,6 +82,6 @@ public class Position {
     }
 
     public boolean isOutOfBoard() {
-        return this.coordinate.equals(Coordinate.instanceOutOfBoard());
+        return this.id.startsWith(OUT_OF_BOARD_PREFIX);
     }
 }

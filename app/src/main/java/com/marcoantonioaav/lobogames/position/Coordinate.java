@@ -46,4 +46,8 @@ public class Coordinate {
     public Coordinate copy() {
         return new Coordinate(x, y);
     }
+
+    public boolean isOutOfBoard() {
+        return this.equals(instanceOutOfBoard());
+    }
 }
