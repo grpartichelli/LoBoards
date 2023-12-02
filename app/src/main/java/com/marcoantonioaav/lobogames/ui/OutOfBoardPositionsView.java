@@ -23,9 +23,11 @@ public class OutOfBoardPositionsView extends View {
     Board board;
     Player player;
     int playerColor;
+    int cursorColor;
     boolean isTop = false;
     RelativeLayout buttonsLayout;
     BoardView boardView;
+    boolean isSelected = false;
 
     public OutOfBoardPositionsView(Context context) {
         super(context);
@@ -44,17 +46,18 @@ public class OutOfBoardPositionsView extends View {
         super.onDraw(canvas);
         float positionRadius = this.board.getPositionRadius(getWidth());
         float positionBorderRadius = this.board.getPositionBorderRadius(getWidth());
-        //  float selectedPositionBorderRadius = this.board.getSelectedPositionBorderRadius(getWidth());
-
-//        // paint position border
-//        if (selectedPosition.equals(position)) {
-//            paint.setColor(cursorColor);
-//            canvas.drawCircle(position.getCoordinate().x(), position.getCoordinate().y(), selectedPositionBorderRadius, paint);
-//        } else {
+        float selectedPositionBorderRadius = this.board.getSelectedPositionBorderRadius(getWidth());
         Coordinate coordinate = resolveStoppedCoordinate();
 
-        paint.setColor(Color.BLACK);
-        canvas.drawCircle(coordinate.x(), coordinate.y(), positionBorderRadius, paint);
+
+        // paint position border
+        if (isSelected) {
+            paint.setColor(cursorColor);
+            canvas.drawCircle(coordinate.x(), coordinate.y(), selectedPositionBorderRadius, paint);
+        } else {
+            paint.setColor(Color.BLACK);
+            canvas.drawCircle(coordinate.x(), coordinate.y(), positionBorderRadius, paint);
+        }
 
         // paint position
         paint.setColor(playerColor);
@@ -98,6 +101,7 @@ public class OutOfBoardPositionsView extends View {
     }
 
     private void outOfBoardClick() {
+        setSelection(true);
         if (player instanceof Human) {
             ((Human) player).setCursor(Position.instanceOutOfBoardForPlayerId(resolveMovePlayerId()));
         }
@@ -149,5 +153,15 @@ public class OutOfBoardPositionsView extends View {
 
     public void setBoardView(BoardView boardView) {
         this.boardView = boardView;
+    }
+
+
+    public void setCursorColor(int selectedColor) {
+        this.cursorColor = selectedColor;
+    }
+
+    public void setSelection(boolean selected) {
+        isSelected = selected;
+        invalidate();
     }
 }

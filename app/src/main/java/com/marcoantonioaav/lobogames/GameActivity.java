@@ -267,7 +267,7 @@ public class GameActivity extends AppCompatActivity {
                 game.getBoard().scaleToLayoutParams(boardView.getLayoutParams());
                 boardView.setBoard(game.getBoard().copy());
                 boardView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                setupOutOfBoardPositionsView(boardViewSize, outOfBoardHeight, boardView.getBoard());
+                setupOutOfBoardPositionsViews(boardViewSize, outOfBoardHeight, boardView.getBoard());
 
                 // setup buttons
                 double buttonSize = boardView.getSelectedPositionBorderRadius() * 2.5;
@@ -297,26 +297,33 @@ public class GameActivity extends AppCompatActivity {
         });
     }
 
-    private void setupOutOfBoardPositionsView(int width, int height, Board board) {
-        topOutOfBoardPositionsView.setBoard(board);
-        topOutOfBoardPositionsView.resize(width, height);
-        topOutOfBoardPositionsView.setVisibility(View.VISIBLE);
-        topOutOfBoardPositionsView.setPlayerColor(getSharedPreferences(SettingsActivity.SETTINGS, MODE_PRIVATE).getInt(SettingsActivity.PLAYER_2_COLOR, Color.GREEN));
-        topOutOfBoardPositionsView.setPlayer(player1);
-        topOutOfBoardPositionsView.setIsTop(true);
-        topOutOfBoardPositionsView.setButtonsLayout(buttonsLayout);
-        topOutOfBoardPositionsView.setBoardView(boardView);
-
-        bottomOutOfBoardPositionsView.setBoard(board);
-        bottomOutOfBoardPositionsView.resize(width, height);
-        bottomOutOfBoardPositionsView.setVisibility(View.VISIBLE);
-        bottomOutOfBoardPositionsView.setPlayerColor(getSharedPreferences(SettingsActivity.SETTINGS, MODE_PRIVATE).getInt(SettingsActivity.PLAYER_1_COLOR, Color.GREEN));
-        bottomOutOfBoardPositionsView.setPlayer(player1);
-        bottomOutOfBoardPositionsView.setButtonsLayout(buttonsLayout);
-        bottomOutOfBoardPositionsView.setBoardView(boardView);
+    private void setupOutOfBoardPositionsViews(int width, int height, Board board) {
+        setupOutOfBoardPositionsView(topOutOfBoardPositionsView, width, height, board, true);
+        setupOutOfBoardPositionsView(bottomOutOfBoardPositionsView, width, height, board, false);
     }
 
+    private void setupOutOfBoardPositionsView(OutOfBoardPositionsView positionsView, int width, int height, Board board, boolean isTop) {
+        positionsView.setBoard(board);
+        positionsView.resize(width, height);
+        positionsView.setVisibility(View.VISIBLE);
+        int color = isTop
+                ? getSharedPreferences(SettingsActivity.SETTINGS, MODE_PRIVATE).getInt(SettingsActivity.PLAYER_2_COLOR, Color.RED)
+                : getSharedPreferences(SettingsActivity.SETTINGS, MODE_PRIVATE).getInt(SettingsActivity.PLAYER_1_COLOR, Color.GREEN);
+        positionsView.setPlayerColor(color);
+        positionsView.setPlayer(player1);
+        positionsView.setIsTop(isTop);
+        positionsView.setButtonsLayout(buttonsLayout);
+        positionsView.setBoardView(boardView);
+        positionsView.setCursorColor(getSharedPreferences(SettingsActivity.SETTINGS, MODE_PRIVATE).getInt(SettingsActivity.CURSOR_COLOR, Color.BLUE));
+    }
+
+
     private void setCursorByClick(Position selectedPosition) {
+        if (isBoardMode) {
+            topOutOfBoardPositionsView.setSelection(false);
+            bottomOutOfBoardPositionsView.setSelection(false);
+        }
+
         if (isGameRunning) {
             Player player = resolvePlayer(turn);
             if (player instanceof Human) {
