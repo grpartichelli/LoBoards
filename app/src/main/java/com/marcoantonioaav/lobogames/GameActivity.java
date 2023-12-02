@@ -386,7 +386,13 @@ public class GameActivity extends AppCompatActivity {
 
         game.getBoard().applyMove(move);
         runOnUiThread(() -> boardView.announceForAccessibility(move.toString()));
-        runOnUiThread(() -> boardView.drawMove(move));
+        runOnUiThread(() -> {
+            if (isBoardMode) {
+                topOutOfBoardPositionsView.startAnimation();
+                bottomOutOfBoardPositionsView.startAnimation();
+            }
+            boardView.drawMove(move);
+        });
 
 
         turn = Player.getOpponentOf(turn);

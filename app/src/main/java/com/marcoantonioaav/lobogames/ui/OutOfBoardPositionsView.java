@@ -16,6 +16,9 @@ import com.marcoantonioaav.lobogames.player.Human;
 import com.marcoantonioaav.lobogames.player.Player;
 import com.marcoantonioaav.lobogames.position.Coordinate;
 import com.marcoantonioaav.lobogames.position.Position;
+import kotlin.Function;
+
+import java.util.concurrent.Callable;
 
 public class OutOfBoardPositionsView extends View {
 
@@ -28,6 +31,14 @@ public class OutOfBoardPositionsView extends View {
     RelativeLayout buttonsLayout;
     BoardView boardView;
     boolean isSelected = false;
+    Button button;
+
+    private int currentAnimationStep = 0;
+    private boolean isAnimating = false;
+    private static final int ANIMATION_DURATION_IN_MS = 100;
+    private static final int ANIMATION_STEPS_TOTAL = 10;
+    private Coordinate animatingCoordinate = Coordinate.instanceOutOfBoard();
+
 
     public OutOfBoardPositionsView(Context context) {
         super(context);
@@ -41,14 +52,34 @@ public class OutOfBoardPositionsView extends View {
         super(context, attrs, defStyleAttr);
     }
 
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        Coordinate coordinate = resolveStoppedCoordinate();
+        drawPosition(coordinate, canvas, isSelected);
+
+        if (isAnimating) {
+            if (currentAnimationStep <= ANIMATION_STEPS_TOTAL) {
+                drawPosition(animatingCoordinate, canvas, false);
+                currentAnimationStep += 1;
+                animatingCoordinate = resolveAnimatingCoordinate();
+                postInvalidateDelayed(ANIMATION_DURATION_IN_MS / ANIMATION_STEPS_TOTAL);
+            } else {
+                currentAnimationStep = 0;
+                animatingCoordinate = Coordinate.instanceOutOfBoard();
+                isAnimating = false;
+            }
+        }
+
+
+        setupButton();
+    }
+
+    private void drawPosition(Coordinate coordinate, Canvas canvas, boolean isSelected) {
         float positionRadius = this.board.getPositionRadius(getWidth());
         float positionBorderRadius = this.board.getPositionBorderRadius(getWidth());
         float selectedPositionBorderRadius = this.board.getSelectedPositionBorderRadius(getWidth());
-        Coordinate coordinate = resolveStoppedCoordinate();
-
 
         // paint position border
         if (isSelected) {
@@ -62,15 +93,18 @@ public class OutOfBoardPositionsView extends View {
         // paint position
         paint.setColor(playerColor);
         canvas.drawCircle(coordinate.x(), coordinate.y(), positionRadius, paint);
-        setupButton();
     }
 
 
-    public Button setupButton() {
+    public void setupButton() {
+        if (button != null) {
+            return;
+        }
+
         float selectedPositionBorderRadius = this.board.getSelectedPositionBorderRadius(getWidth());
         Coordinate coordinate = resolveStoppedCoordinate();
         double buttonSize = selectedPositionBorderRadius * 2.5;
-        Button button = new Button(LoBoGames.getAppContext());
+        button = new Button(LoBoGames.getAppContext());
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
@@ -97,7 +131,6 @@ public class OutOfBoardPositionsView extends View {
 //            ViewCompat.setAccessibilityDelegate(button, new BoardButtonDelegate(previousButton));
 //        }
 //        previousButton = button;
-        return button;
     }
 
     private void outOfBoardClick() {
@@ -112,6 +145,14 @@ public class OutOfBoardPositionsView extends View {
         int x = isTop ? offsetWidth : getWidth() - offsetWidth;
         int y = getHeight() / 2;
         return new Coordinate(x, y);
+    }
+
+    private Coordinate resolveAnimatingCoordinate() {
+        float progress = (float) currentAnimationStep / ANIMATION_STEPS_TOTAL;
+        Coordinate startCoordinate = resolveStoppedCoordinate();
+        int y = startCoordinate.y() + (isTop ? 1 : -1) * (int) (progress * getHeight() / 2);
+
+        return new Coordinate(startCoordinate.x(), y);
     }
 
     private int resolveMovePlayerId() {
@@ -162,6 +203,11 @@ public class OutOfBoardPositionsView extends View {
 
     public void setSelection(boolean selected) {
         isSelected = selected;
+        invalidate();
+    }
+
+    public void startAnimation() {
+        isAnimating = true;
         invalidate();
     }
 }

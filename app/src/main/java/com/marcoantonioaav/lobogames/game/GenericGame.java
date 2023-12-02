@@ -71,15 +71,26 @@ public class GenericGame extends StandardGame {
     @Override
     public boolean isLegalMove(Move move) {
         Movement movement = move.getMovements().get(0);
-        if (movement.getStartPositionId().isEmpty() || movement.getEndPositionId().isEmpty()) {
-            return false;
-        }
-
         Position startPosition = this.board.findPositionById(movement.getStartPositionId());
         Position endPosition = this.board.findPositionById(movement.getEndPositionId());
 
-        return endPosition.getPlayerId() == Player.EMPTY
-                || (endPosition.isOutOfBoard() && endPosition.getPlayerId() == startPosition.getPlayerId());
+        if (startPosition.equals(Position.instanceOutOfBoard()) || endPosition.equals(Position.instanceOutOfBoard())) {
+            return false;
+        }
+
+        if (startPosition.equals(endPosition)) {
+            return false;
+        }
+
+        if (startPosition.getPlayerId() == Player.EMPTY) {
+            return false;
+        }
+
+        if (endPosition.isOutOfBoard()) {
+            return startPosition.getPlayerId() != Player.EMPTY
+                    && startPosition.getPlayerId() == endPosition.getPlayerId();
+        }
+        return endPosition.getPlayerId() == Player.EMPTY;
     }
 
     @Override
