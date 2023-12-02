@@ -57,14 +57,6 @@ public class BoardView extends View {
             Position startPosition = board.findPositionById(movement.getStartPositionId());
             Position endPosition = board.findPositionById(movement.getEndPositionId());
 
-            if (startPosition.isOutOfBoard()) {
-                // no animating necessary
-                this.board.applyMovement(movement);
-                currentMovementIndex++;
-                postInvalidateDelayed(ANIMATION_DURATION_IN_MS);
-                return;
-            }
-
             if (ANIMATION_STEPS_TOTAL <= currentAnimationStep) {
                 this.board.applyMovement(movement);
                 currentMovementIndex++;
@@ -91,7 +83,11 @@ public class BoardView extends View {
                 currentCoordinatePairProgress
         );
 
-        Position newAnimatingPosition = new Position(animatingCoordinate, startPosition.getId(), startPosition.getAccessibilityOrder());
+        Position newAnimatingPosition = new Position(
+                animatingCoordinate,
+                startPosition.isOutOfBoard() ? endPosition.getId() : startPosition.getId(),
+                startPosition.getAccessibilityOrder()
+        );
         newAnimatingPosition.setPlayerId(startPosition.getPlayerId());
         return newAnimatingPosition;
     }
