@@ -71,12 +71,15 @@ public class GenericGame extends StandardGame {
     @Override
     public boolean isLegalMove(Move move) {
         Movement movement = move.getMovements().get(0);
+        if (movement.getStartPositionId().isEmpty() || movement.getEndPositionId().isEmpty()) {
+            return false;
+        }
+
         Position startPosition = this.board.findPositionById(movement.getStartPositionId());
         Position endPosition = this.board.findPositionById(movement.getEndPositionId());
 
-        return  !startPosition.getId().isEmpty()
-                && endPosition.getPlayerId() == Player.EMPTY
-                && !endPosition.isOutOfBoard();
+        return endPosition.getPlayerId() == Player.EMPTY
+                || (endPosition.isOutOfBoard() && endPosition.getPlayerId() == startPosition.getPlayerId());
     }
 
     @Override
@@ -89,7 +92,15 @@ public class GenericGame extends StandardGame {
     public Move getPlayerMove(String startPositionId, String endPositionId, int playerId) {
         Position startPosition = this.board.findPositionById(startPositionId);
         Position endPosition = this.board.findPositionById(endPositionId);
-        // NOTE: Consider the start position as the moves player
+
+//        if (endPosition.isOutOfBoard() && endPosition.getPlayerId() == startPosition.getPlayerId()) {
+//            return new StandardMove(playerId, new ArrayList<>(Arrays.asList(
+//                    new StandardMovement(startPosition, endPosition, startPosition.getPlayerId()),
+//                    new StandardMovement(endPosition, endPosition, startPosition.getPlayerId())
+//            )));
+//        }
+
+        // NOTE: Consider the moves player as the start position since we don't know who is acting
         StandardMovement movement = new StandardMovement(startPosition, endPosition, startPosition.getPlayerId());
         return new StandardMove(playerId, new ArrayList<>(Collections.singletonList(movement)));
     }
