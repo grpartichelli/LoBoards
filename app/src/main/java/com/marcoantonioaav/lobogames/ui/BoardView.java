@@ -20,7 +20,7 @@ import java.util.List;
 
 public class BoardView extends View {
     private int cursorColor = Color.BLUE;
-    private Position selectedPosition = Position.empty();
+    private Position selectedPosition = Position.instanceOutOfBoard();
     private int player1Color = Color.GREEN;
     private int player2Color = Color.RED;
     private final Paint paint = new Paint();
@@ -32,7 +32,7 @@ public class BoardView extends View {
     private int currentAnimationStep = 0;
     private static final int ANIMATION_DURATION_IN_MS = 300;
     private static final int ANIMATION_STEPS_TOTAL = 30;
-    private Position animatingPosition = Position.empty();
+    private Position animatingPosition = Position.instanceOutOfBoard();
 
     public BoardView(Context context) {
         super(context);
@@ -68,7 +68,7 @@ public class BoardView extends View {
             if (ANIMATION_STEPS_TOTAL <= currentAnimationStep) {
                 this.board.applyMovement(movement);
                 currentMovementIndex++;
-                animatingPosition = Position.empty();
+                animatingPosition = Position.instanceOutOfBoard();
                 currentAnimationStep = 0;
             } else {
                 animatingPosition = calculateAnimatingPosition(startPosition, endPosition);
@@ -113,7 +113,7 @@ public class BoardView extends View {
     }
 
     public void drawMove(Move move) {
-        this.selectedPosition = Position.empty();
+        this.selectedPosition = Position.instanceOutOfBoard();
         this.movements.addAll(move.getMovements());
         invalidate();
     }
@@ -177,7 +177,7 @@ public class BoardView extends View {
     }
 
     public void reset() {
-        animatingPosition = Position.empty();
+        animatingPosition = Position.instanceOutOfBoard();
         currentAnimationStep = 0;
         currentMovementIndex = 0;
         movements.clear();

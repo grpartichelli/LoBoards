@@ -99,7 +99,7 @@ public class MatrixBoard extends Board {
 
     private Position createPositionFromMatrixCoordinate(Coordinate coord) {
         if (coord.equals(Coordinate.instanceOutOfBoard())) {
-            return Position.empty();
+            return Position.instanceOutOfBoard();
         }
         Position position = new Position(
                 coordinateMapper.get(coord),

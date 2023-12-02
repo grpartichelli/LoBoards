@@ -85,7 +85,7 @@ public class OutOfBoardPositionsView extends View {
 
 
         button.setOnClickListener(view -> outOfBoardClick());
-        //button.setBackgroundColor(Color.TRANSPARENT);
+        button.setBackgroundColor(Color.TRANSPARENT);
 
 
         // TODO: accessibility
@@ -99,9 +99,7 @@ public class OutOfBoardPositionsView extends View {
 
     private void outOfBoardClick() {
         if (player instanceof Human) {
-            Position outOfBoard = Position.empty();
-            outOfBoard.setPlayerId(player.getId());
-            ((Human) player).setCursor(outOfBoard);
+            ((Human) player).setCursor(Position.instanceOutOfBoardForPlayerId(resolvePlayerId()));
         }
     }
 
@@ -110,6 +108,10 @@ public class OutOfBoardPositionsView extends View {
         int x = isTop ? offsetWidth : getWidth() - offsetWidth;
         int y = getHeight() / 2;
         return new Coordinate(x, y);
+    }
+
+    private int resolvePlayerId() {
+        return isTop ? Player.PLAYER_2 : Player.PLAYER_1;
     }
 
 

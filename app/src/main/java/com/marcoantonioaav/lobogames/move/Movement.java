@@ -1,5 +1,6 @@
 package com.marcoantonioaav.lobogames.move;
 
+import com.marcoantonioaav.lobogames.position.Position;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class Movement {
@@ -21,12 +22,16 @@ public abstract class Movement {
     @NotNull
     @Override
     public String toString() {
-        if (getStartPositionId().isEmpty()) {
+        if (isIdOutOfBoard(getStartPositionId())) {
             return getEndPositionId();
         }
-        if (getEndPositionId().isEmpty()) {
+        if (isIdOutOfBoard(getEndPositionId())) {
             return "";
         }
         return getStartPositionId() + " para " + getEndPositionId();
+    }
+
+    private boolean isIdOutOfBoard(String id) {
+        return id.startsWith(Position.OUT_OF_BOARD_PREFIX);
     }
 }

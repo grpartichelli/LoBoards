@@ -1,11 +1,12 @@
 package com.marcoantonioaav.lobogames.board;
 
 import com.marcoantonioaav.lobogames.position.Coordinate;
+import com.marcoantonioaav.lobogames.position.Position;
 
 public class MatrixPositionFieldsConverter {
 
     public static Coordinate resolveMatrixCoordinate(String positionId) {
-        if (positionId.isEmpty()) {
+        if (positionId.startsWith(Position.OUT_OF_BOARD_PREFIX)) {
             return Coordinate.instanceOutOfBoard();
         }
         int x = positionId.charAt(0) - 65;
@@ -15,7 +16,7 @@ public class MatrixPositionFieldsConverter {
 
     public static String resolvePositionId(Coordinate coordinate) {
         if (coordinate.equals(Coordinate.instanceOutOfBoard())) {
-            return "";
+            return Position.OUT_OF_BOARD_PREFIX + "0";
         }
         return (char)(coordinate.x() + 65) + String.valueOf(coordinate.y() + 1);
     }

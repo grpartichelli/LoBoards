@@ -66,6 +66,7 @@ public class GameActivity extends AppCompatActivity {
 
     private Game game;
     private int turn;
+    private Player boardModePlayer; // in board mode we act as if a single user is playing
     private Player player1;
     private Player player2;
     private boolean isGameRunning;
@@ -223,6 +224,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void updatePlayers() {
+        boardModePlayer = new Human(Player.EMPTY);
         player1 = new Human(Player.PLAYER_1);
         if ((boolean) this.getIntent().getExtras().get(IS_MULTIPLAYER)) {
             player2 = new Human(Player.PLAYER_2);
@@ -265,7 +267,6 @@ public class GameActivity extends AppCompatActivity {
                 boardView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 setupOutOfBoardPositionsView(boardViewSize, outOfBoardHeight, boardView.getBoard());
 
-
                 // setup buttons
                 double buttonSize = boardView.getSelectedPositionBorderRadius() * 2.5;
                 Button previousButton = null;
@@ -299,7 +300,7 @@ public class GameActivity extends AppCompatActivity {
         topOutOfBoardPositionsView.resize(width, height);
         topOutOfBoardPositionsView.setVisibility(View.VISIBLE);
         topOutOfBoardPositionsView.setPlayerColor(getSharedPreferences(SettingsActivity.SETTINGS, MODE_PRIVATE).getInt(SettingsActivity.PLAYER_2_COLOR, Color.GREEN));
-        topOutOfBoardPositionsView.setPlayer(player2);
+        topOutOfBoardPositionsView.setPlayer(boardModePlayer);
         topOutOfBoardPositionsView.setIsTop(true);
         topOutOfBoardPositionsView.setButtonsLayout(buttonsLayout);
         topOutOfBoardPositionsView.setBoardView(boardView);
@@ -308,14 +309,14 @@ public class GameActivity extends AppCompatActivity {
         bottomOutOfBoardPositionsView.resize(width, height);
         bottomOutOfBoardPositionsView.setVisibility(View.VISIBLE);
         bottomOutOfBoardPositionsView.setPlayerColor(getSharedPreferences(SettingsActivity.SETTINGS, MODE_PRIVATE).getInt(SettingsActivity.PLAYER_1_COLOR, Color.GREEN));
-        bottomOutOfBoardPositionsView.setPlayer(player1);
+        bottomOutOfBoardPositionsView.setPlayer(boardModePlayer);
         bottomOutOfBoardPositionsView.setButtonsLayout(buttonsLayout);
         bottomOutOfBoardPositionsView.setBoardView(boardView);
     }
 
     private void setCursorByClick(Position selectedPosition) {
         if (isGameRunning) {
-            Player player = Player.selectPlayerById(player1, player2, turn);
+            Player player = resolvePlayer(turn);
             if (player instanceof Human) {
                 ((Human) player).setCursor(selectedPosition);
                 boardView.setSelectedPosition(selectedPosition);
@@ -335,7 +336,7 @@ public class GameActivity extends AppCompatActivity {
     private void gameLoop() {
         while (true) {
             if (isGameRunning) {
-                Player player = Player.selectPlayerById(player1, player2, turn);
+                Player player = resolvePlayer(turn);
                 if (player.isReady()) {
                     Move move = player.getMove(game);
                     if (game.isLegalMove(move)) {
@@ -377,15 +378,23 @@ public class GameActivity extends AppCompatActivity {
         runOnUiThread(() -> boardView.announceForAccessibility(move.toString()));
         runOnUiThread(() -> boardView.drawMove(move));
 
-        if (!isBoardMode) {
-            turn = Player.getOpponentOf(turn);
-        }
 
+        turn = Player.getOpponentOf(turn);
         showTurn();
-        Player currentPlayer = Player.selectPlayerById(player1, player2, turn);
+        Player currentPlayer = resolvePlayer(turn);
         if (currentPlayer instanceof Human) {
+            if (isBoardMode) {
+                ((Human) currentPlayer).clearCursor();
+            }
             runOnUiThread(this::updateButtonsDescription);
         }
+    }
+
+    private Player resolvePlayer(int turn) {
+        if (isBoardMode) {
+            return boardModePlayer;
+        }
+        return Player.selectPlayerById(player1, player2, turn);
     }
 
     private void updateButtonsDescription() {

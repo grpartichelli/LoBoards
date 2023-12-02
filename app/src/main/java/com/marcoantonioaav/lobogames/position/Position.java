@@ -7,8 +7,21 @@ import java.util.Objects;
 
 public class Position {
 
-    public static Position empty() {
-        return new Position(Coordinate.instanceOutOfBoard(), "", -1);
+    public static final String OUT_OF_BOARD_PREFIX = "outOfBoard";
+    public static Position instanceOutOfBoard() {
+        return instanceOutOfBoardForPlayerId(Player.EMPTY);
+    }
+
+    public static Position instanceOutOfBoardForPlayerId(int playerId) {
+        String id = OUT_OF_BOARD_PREFIX + playerId;
+        Position position = new Position(Coordinate.instanceOutOfBoard(), id, -1);
+        position.setPlayerId(playerId);
+        return position;
+    }
+
+    public static Position instanceOutOfBoardForId(String id) {
+        int playerId = Integer.parseInt(id.substring(OUT_OF_BOARD_PREFIX.length()));
+        return instanceOutOfBoardForPlayerId(playerId);
     }
 
     private Coordinate coordinate;

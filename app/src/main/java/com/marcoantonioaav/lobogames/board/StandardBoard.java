@@ -163,8 +163,8 @@ public class StandardBoard extends Board {
     }
 
     public Position findPositionById(String id) {
-        if (id.isEmpty()) {
-            return Position.empty();
+        if (id.startsWith(Position.OUT_OF_BOARD_PREFIX)) {
+            return Position.instanceOutOfBoardForId(id);
         }
         return this.positionsMap.get(id);
     }
