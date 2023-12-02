@@ -140,7 +140,7 @@ public class MatrixBoard extends Board {
     @Override
     public List<Coordinate> findCoordinatesBetween(Position startPosition, Position endPosition) {
         // considers that all connections on matrix boards are straight lines
-        return Arrays.asList(startPosition.getCoordinate(), endPosition.getCoordinate());
+        return new ArrayList<>(Arrays.asList(startPosition.getCoordinate(), endPosition.getCoordinate()));
     }
 
     @Override

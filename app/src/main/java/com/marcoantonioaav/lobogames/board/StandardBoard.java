@@ -119,7 +119,7 @@ public class StandardBoard extends Board {
                 return connection.getCoordinatesBetween();
             }
         }
-        return Arrays.asList(startPosition.getCoordinate(), endPosition.getCoordinate());
+        return new ArrayList<>(Arrays.asList(startPosition.getCoordinate(), endPosition.getCoordinate()));
     }
 
     public boolean areConnected(Position position, Position otherPosition) {

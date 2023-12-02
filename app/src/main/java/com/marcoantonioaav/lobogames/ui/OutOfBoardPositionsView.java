@@ -150,7 +150,7 @@ public class OutOfBoardPositionsView extends View {
     private Coordinate resolveAnimatingCoordinate() {
         float progress = (float) currentAnimationStep / ANIMATION_STEPS_TOTAL;
         Coordinate startCoordinate = resolveStoppedCoordinate();
-        int y = startCoordinate.y() + (isTop ? 1 : -1) * (int) (progress * getHeight() / 2);
+        int y = startCoordinate.y() + (isTop ? 1 : -1) * (int) (progress * getHeight());
 
         return new Coordinate(startCoordinate.x(), y);
     }

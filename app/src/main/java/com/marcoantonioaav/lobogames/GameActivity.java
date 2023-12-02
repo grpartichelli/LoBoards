@@ -319,6 +319,8 @@ public class GameActivity extends AppCompatActivity {
 
 
     private void setCursorByClick(Position selectedPosition) {
+        topOutOfBoardPositionsView.startAnimation();
+        bottomOutOfBoardPositionsView.startAnimation();
         if (isBoardMode) {
             topOutOfBoardPositionsView.setSelection(false);
             bottomOutOfBoardPositionsView.setSelection(false);
@@ -348,6 +350,7 @@ public class GameActivity extends AppCompatActivity {
                 Player player = resolvePlayer(turn);
                 if (player.isReady()) {
                     Move move = player.getMove(game);
+                    topOutOfBoardPositionsView.startAnimation();
                     if (game.isLegalMove(move)) {
                         makeMove(move);
                         if (game.isTerminalState()) {

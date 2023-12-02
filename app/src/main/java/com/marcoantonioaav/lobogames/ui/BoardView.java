@@ -30,7 +30,7 @@ public class BoardView extends View {
     private int currentMovementIndex = 0;
 
     private int currentAnimationStep = 0;
-    private static final int ANIMATION_DURATION_IN_MS = 300;
+    private static final int ANIMATION_DURATION_IN_MS = 10000;
     private static final int ANIMATION_STEPS_TOTAL = 30;
     private Position animatingPosition = Position.instanceOutOfBoard();
 
@@ -95,28 +95,38 @@ public class BoardView extends View {
 
     private void enrichStartAndEndCoordinatesOutOfBoard(Position startPosition, Position endPosition, List<Coordinate> coordinatesBetween) {
 
-        int offsetWidth = getWidth() / 5;
 
         Coordinate firstCoordinate = coordinatesBetween.get(0);
         if (firstCoordinate.isOutOfBoard()) {
-            boolean isTop = startPosition.getPlayerId() == Player.PLAYER_2;
-            Coordinate newFirstCoordinate = new Coordinate(
-                    isTop ? offsetWidth : getWidth() - offsetWidth,
-                    isTop ? 0 : getHeight()
-            );
+            Coordinate newFirstCoordinate = resolveCoordinateOutOfBoard(startPosition, true);
+            Coordinate newSecondCoordinate = resolveCoordinateOutOfBoard(startPosition, false);
             coordinatesBetween.set(0, newFirstCoordinate);
+            coordinatesBetween.add(1, newSecondCoordinate);
         }
 
         Coordinate lastCoordinate = coordinatesBetween.get(coordinatesBetween.size() - 1);
         if (lastCoordinate.isOutOfBoard()) {
-            boolean isTop = endPosition.getPlayerId() == Player.PLAYER_2;
-            Coordinate newLastCoordinate = new Coordinate(
-                    isTop ? offsetWidth : getWidth() - offsetWidth,
-                    isTop ? 0 : getHeight()
-            );
-
-            coordinatesBetween.set(coordinatesBetween.size() - 1, newLastCoordinate);
+            Coordinate newSecondToLastCoordinate = resolveCoordinateOutOfBoard(endPosition, false);
+            Coordinate newLastCoordinate = resolveCoordinateOutOfBoard(endPosition, true);
+            coordinatesBetween.set(coordinatesBetween.size() - 1, newSecondToLastCoordinate);
+            coordinatesBetween.add(newLastCoordinate);
         }
+    }
+
+    private Coordinate resolveCoordinateOutOfBoard(Position position, boolean isFullyHidden) {
+        int offsetWidth = getWidth() / 5;
+        boolean isTop = position.getPlayerId() == Player.PLAYER_2;
+        int width;
+        int height;
+        int borderRadius = (int) this.board.getPositionBorderRadius(getWidth());
+        if (isTop) {
+            width = offsetWidth;
+            height = isFullyHidden ? -borderRadius : borderRadius;
+        } else {
+            width = getWidth() - offsetWidth;
+            height = getHeight() + (isFullyHidden ? borderRadius : -borderRadius);
+        }
+        return new Coordinate(width, height);
     }
 
     private Coordinate calculateCoordinateBetweenCoordinatePairByProgress(
