@@ -99,7 +99,7 @@ public class OutOfBoardPositionsView extends View {
 
     private void outOfBoardClick() {
         if (player instanceof Human) {
-            ((Human) player).setCursor(Position.instanceOutOfBoardForPlayerId(resolvePlayerId()));
+            ((Human) player).setCursor(Position.instanceOutOfBoardForPlayerId(resolveMovePlayerId()));
         }
     }
 
@@ -110,7 +110,7 @@ public class OutOfBoardPositionsView extends View {
         return new Coordinate(x, y);
     }
 
-    private int resolvePlayerId() {
+    private int resolveMovePlayerId() {
         return isTop ? Player.PLAYER_2 : Player.PLAYER_1;
     }
 

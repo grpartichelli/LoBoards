@@ -66,7 +66,6 @@ public class GameActivity extends AppCompatActivity {
 
     private Game game;
     private int turn;
-    private Player boardModePlayer; // in board mode we act as if a single user is playing
     private Player player1;
     private Player player2;
     private boolean isGameRunning;
@@ -156,7 +155,11 @@ public class GameActivity extends AppCompatActivity {
         goBackToReplay.setOnClickListener(view -> finish());
 
         restartReplay = findViewById(R.id.restartReplay);
-        restartReplay.setOnClickListener(view -> initializeGame());
+        restartReplay.setEnabled(false);
+        restartReplay.setOnClickListener(view -> {
+            restartReplay.setEnabled(false);
+            initializeGame();
+        });
 
         startGame = findViewById(R.id.startGame);
         startGame.setOnClickListener(view -> {
@@ -224,7 +227,6 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void updatePlayers() {
-        boardModePlayer = new Human(Player.EMPTY);
         player1 = new Human(Player.PLAYER_1);
         if ((boolean) this.getIntent().getExtras().get(IS_MULTIPLAYER)) {
             player2 = new Human(Player.PLAYER_2);
@@ -300,7 +302,7 @@ public class GameActivity extends AppCompatActivity {
         topOutOfBoardPositionsView.resize(width, height);
         topOutOfBoardPositionsView.setVisibility(View.VISIBLE);
         topOutOfBoardPositionsView.setPlayerColor(getSharedPreferences(SettingsActivity.SETTINGS, MODE_PRIVATE).getInt(SettingsActivity.PLAYER_2_COLOR, Color.GREEN));
-        topOutOfBoardPositionsView.setPlayer(boardModePlayer);
+        topOutOfBoardPositionsView.setPlayer(player1);
         topOutOfBoardPositionsView.setIsTop(true);
         topOutOfBoardPositionsView.setButtonsLayout(buttonsLayout);
         topOutOfBoardPositionsView.setBoardView(boardView);
@@ -309,7 +311,7 @@ public class GameActivity extends AppCompatActivity {
         bottomOutOfBoardPositionsView.resize(width, height);
         bottomOutOfBoardPositionsView.setVisibility(View.VISIBLE);
         bottomOutOfBoardPositionsView.setPlayerColor(getSharedPreferences(SettingsActivity.SETTINGS, MODE_PRIVATE).getInt(SettingsActivity.PLAYER_1_COLOR, Color.GREEN));
-        bottomOutOfBoardPositionsView.setPlayer(boardModePlayer);
+        bottomOutOfBoardPositionsView.setPlayer(player1);
         bottomOutOfBoardPositionsView.setButtonsLayout(buttonsLayout);
         bottomOutOfBoardPositionsView.setBoardView(boardView);
     }
@@ -358,6 +360,7 @@ public class GameActivity extends AppCompatActivity {
         boolean player2ReplayedEnded = player2 instanceof ReplayPlayer && ((ReplayPlayer) player2).isReplayFinished();
 
         if (player1ReplayedEnded && player2ReplayedEnded) {
+            runOnUiThread(() -> restartReplay.setEnabled(true));
             endGame();
         } else if (player1ReplayedEnded) {
             turn = Player.PLAYER_2;
@@ -392,7 +395,8 @@ public class GameActivity extends AppCompatActivity {
 
     private Player resolvePlayer(int turn) {
         if (isBoardMode) {
-            return boardModePlayer;
+            // in board mode we act as if a single player is playing
+            return player1;
         }
         return Player.selectPlayerById(player1, player2, turn);
     }
