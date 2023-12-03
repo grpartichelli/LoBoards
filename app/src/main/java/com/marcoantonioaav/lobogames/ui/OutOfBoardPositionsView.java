@@ -29,6 +29,9 @@ public class OutOfBoardPositionsView extends View {
     BoardView boardView;
     boolean isSelected = false;
     Button button;
+    int positionsCount = 0;
+    int maxPlayerPositionsCount = 0;
+    boolean isPositionEnabled = true;
 
     public OutOfBoardPositionsView(Context context) {
         super(context);
@@ -56,6 +59,7 @@ public class OutOfBoardPositionsView extends View {
         float positionBorderRadius = this.board.getPositionBorderRadius(getWidth());
         float selectedPositionBorderRadius = this.board.getSelectedPositionBorderRadius(getWidth());
 
+
         // paint position border
         if (isSelected) {
             paint.setColor(cursorColor);
@@ -66,8 +70,27 @@ public class OutOfBoardPositionsView extends View {
         }
 
         // paint position
-        paint.setColor(playerColor);
+        paint.setColor(isPositionEnabled ? playerColor: Color.GRAY);
         canvas.drawCircle(coordinate.x(), coordinate.y(), positionRadius, paint);
+
+
+        float textSize = 24 * getResources().getDisplayMetrics().density;
+        paint.setColor(Color.BLACK);
+        paint.setTextSize(textSize);
+        int positionsLeftCount = maxPlayerPositionsCount - positionsCount;
+        if (isTop) {
+            canvas.drawText("  x" + positionsLeftCount,
+                    coordinate.x() + positionRadius,
+                    coordinate.y() + (textSize / 3),
+                    paint
+            );
+        } else {
+            canvas.drawText("x" + positionsLeftCount + "  ",
+                    coordinate.x() - 3 * positionRadius,
+                    coordinate.y() + (textSize / 3),
+                    paint
+            );
+        }
     }
 
 
@@ -109,14 +132,14 @@ public class OutOfBoardPositionsView extends View {
     }
 
     private void outOfBoardClick() {
-        setSelection(true);
+        setSelection(isPositionEnabled);
         if (player instanceof Human) {
             ((Human) player).setCursor(Position.instanceOutOfBoardForPlayerId(resolveMovePlayerId()));
         }
     }
 
     private Coordinate resolveStoppedCoordinate() {
-        int offsetWidth = getWidth() / 5;
+        int offsetWidth = getWidth() / 4;
         int x = isTop ? offsetWidth : getWidth() - offsetWidth;
         int y = getHeight() / 2;
         return new Coordinate(x, y);
@@ -171,5 +194,15 @@ public class OutOfBoardPositionsView extends View {
     public void setSelection(boolean selected) {
         isSelected = selected;
         invalidate();
+    }
+
+    public void updatePositionsCount(int playerPositionsCount) {
+        isPositionEnabled = maxPlayerPositionsCount > playerPositionsCount;
+        this.positionsCount = playerPositionsCount;
+        invalidate();
+    }
+
+    public void setMaxPlayerPositionsCount(int maxPlayerPositionsCount) {
+        this.maxPlayerPositionsCount = maxPlayerPositionsCount;
     }
 }

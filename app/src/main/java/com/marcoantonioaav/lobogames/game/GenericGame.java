@@ -19,6 +19,7 @@ import java.util.List;
 public class GenericGame extends StandardGame {
 
     public static final String NAME = "Generic";
+    private int maxPlayerPositionsCount = 0;
 
     public GenericGame(Board board) {
         super();
@@ -72,6 +73,7 @@ public class GenericGame extends StandardGame {
         Position startPosition = this.board.findPositionById(movement.getStartPositionId());
         Position endPosition = this.board.findPositionById(movement.getEndPositionId());
 
+
         if (startPosition.equals(Position.instanceOutOfBoard()) || endPosition.equals(Position.instanceOutOfBoard())) {
             return false;
         }
@@ -83,6 +85,12 @@ public class GenericGame extends StandardGame {
         if (startPosition.getPlayerId() == Player.EMPTY) {
             return false;
         }
+
+        if (!endPosition.isOutOfBoard()
+                && this.board.countPlayerPieces(movement.getPlayerId()) >= maxPlayerPositionsCount) {
+            return false;
+        }
+
 
         if (endPosition.isOutOfBoard()) {
             return startPosition.getPlayerId() != Player.EMPTY
@@ -118,5 +126,9 @@ public class GenericGame extends StandardGame {
     public float getHeuristicEvaluationOf(int playerId, int turn) {
         // NOTE: this game doesn't implement this method due to not being used by the AI
         throw new UnsupportedOperationException();
+    }
+
+    public void setMaxPlayerPositionsCount(int maxPlayerPositionsCount) {
+        this.maxPlayerPositionsCount = maxPlayerPositionsCount;
     }
 }

@@ -68,6 +68,7 @@ public class GameActivity extends AppCompatActivity {
     private int turn;
     private Player player1;
     private Player player2;
+    private int maxPlayerPositionsCount = 1;
     private boolean isGameRunning;
 
     private boolean isBoardMode = false; // when it is a generic game
@@ -98,7 +99,9 @@ public class GameActivity extends AppCompatActivity {
 
         if (GenericGame.NAME.equals(gameName)) {
             Board board = findBoardFromName(boardName);
-            game = new GenericGame(board);
+            GenericGame genericGame = new GenericGame(board);
+            genericGame.setMaxPlayerPositionsCount(maxPlayerPositionsCount);
+            game = genericGame;
             game.setBoard(board);
             isBoardMode = true;
         } else {
@@ -386,6 +389,8 @@ public class GameActivity extends AppCompatActivity {
         }
 
         game.getBoard().applyMove(move);
+        updatePositionsCount();
+
         runOnUiThread(() -> boardView.announceForAccessibility(move.toString()));
         runOnUiThread(() -> boardView.drawMove(move));
 
@@ -420,6 +425,20 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
+    private void updatePositionsCount() {
+        if (isBoardMode) {
+            runOnUiThread(() -> {
+                bottomOutOfBoardPositionsView.setMaxPlayerPositionsCount(maxPlayerPositionsCount);
+                topOutOfBoardPositionsView.setMaxPlayerPositionsCount(maxPlayerPositionsCount);
+                int player1Positions = this.game.getBoard().countPlayerPieces(Player.PLAYER_1);
+                int player2Positions = this.game.getBoard().countPlayerPieces(Player.PLAYER_2);
+                bottomOutOfBoardPositionsView.updatePositionsCount(player1Positions);
+                topOutOfBoardPositionsView.updatePositionsCount(player2Positions);
+            });
+
+        }
+    }
+
     private void endGame() {
         isGameRunning = false;
         setReplayButtonsVisibility(true);
@@ -429,6 +448,7 @@ public class GameActivity extends AppCompatActivity {
     private void initializeGame() {
         handleReplay();
         game.restart();
+        updatePositionsCount();
         boardView.reset();
         boardView.setBoard(game.getBoard().copy());
         setupBoardViewAndButtons();
@@ -436,6 +456,7 @@ public class GameActivity extends AppCompatActivity {
         showTurn();
         isGameRunning = true;
     }
+
 
     private void handleReplay() {
         setReplayButtonsVisibility(false);
