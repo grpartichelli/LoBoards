@@ -30,7 +30,7 @@ public class BoardView extends View {
     private int currentMovementIndex = 0;
 
     private int currentAnimationStep = 0;
-    private static final int ANIMATION_DURATION_IN_MS = 10000;
+    private static final int ANIMATION_DURATION_IN_MS = 300;
     private static final int ANIMATION_STEPS_TOTAL = 30;
     private Position animatingPosition = Position.instanceOutOfBoard();
 
@@ -98,22 +98,18 @@ public class BoardView extends View {
 
         Coordinate firstCoordinate = coordinatesBetween.get(0);
         if (firstCoordinate.isOutOfBoard()) {
-            Coordinate newFirstCoordinate = resolveCoordinateOutOfBoard(startPosition, true);
-            Coordinate newSecondCoordinate = resolveCoordinateOutOfBoard(startPosition, false);
+            Coordinate newFirstCoordinate = resolveCoordinateOutOfBoard(startPosition);
             coordinatesBetween.set(0, newFirstCoordinate);
-            coordinatesBetween.add(1, newSecondCoordinate);
         }
 
         Coordinate lastCoordinate = coordinatesBetween.get(coordinatesBetween.size() - 1);
         if (lastCoordinate.isOutOfBoard()) {
-            Coordinate newSecondToLastCoordinate = resolveCoordinateOutOfBoard(endPosition, false);
-            Coordinate newLastCoordinate = resolveCoordinateOutOfBoard(endPosition, true);
-            coordinatesBetween.set(coordinatesBetween.size() - 1, newSecondToLastCoordinate);
-            coordinatesBetween.add(newLastCoordinate);
+            Coordinate newLastCoordinate = resolveCoordinateOutOfBoard(endPosition);
+            coordinatesBetween.set(coordinatesBetween.size() - 1, newLastCoordinate);
         }
     }
 
-    private Coordinate resolveCoordinateOutOfBoard(Position position, boolean isFullyHidden) {
+    private Coordinate resolveCoordinateOutOfBoard(Position position) {
         int offsetWidth = getWidth() / 5;
         boolean isTop = position.getPlayerId() == Player.PLAYER_2;
         int width;
@@ -121,10 +117,10 @@ public class BoardView extends View {
         int borderRadius = (int) this.board.getPositionBorderRadius(getWidth());
         if (isTop) {
             width = offsetWidth;
-            height = isFullyHidden ? -borderRadius : borderRadius;
+            height = borderRadius;
         } else {
             width = getWidth() - offsetWidth;
-            height = getHeight() + (isFullyHidden ? borderRadius : -borderRadius);
+            height = getHeight() -borderRadius;
         }
         return new Coordinate(width, height);
     }

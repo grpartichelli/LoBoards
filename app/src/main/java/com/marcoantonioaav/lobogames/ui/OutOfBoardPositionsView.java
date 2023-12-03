@@ -16,9 +16,6 @@ import com.marcoantonioaav.lobogames.player.Human;
 import com.marcoantonioaav.lobogames.player.Player;
 import com.marcoantonioaav.lobogames.position.Coordinate;
 import com.marcoantonioaav.lobogames.position.Position;
-import kotlin.Function;
-
-import java.util.concurrent.Callable;
 
 public class OutOfBoardPositionsView extends View {
 
@@ -32,13 +29,6 @@ public class OutOfBoardPositionsView extends View {
     BoardView boardView;
     boolean isSelected = false;
     Button button;
-
-    private int currentAnimationStep = 0;
-    private boolean isAnimating = false;
-    private static final int ANIMATION_DURATION_IN_MS = 100;
-    private static final int ANIMATION_STEPS_TOTAL = 10;
-    private Coordinate animatingCoordinate = Coordinate.instanceOutOfBoard();
-
 
     public OutOfBoardPositionsView(Context context) {
         super(context);
@@ -58,21 +48,6 @@ public class OutOfBoardPositionsView extends View {
         super.onDraw(canvas);
         Coordinate coordinate = resolveStoppedCoordinate();
         drawPosition(coordinate, canvas, isSelected);
-
-        if (isAnimating) {
-            if (currentAnimationStep <= ANIMATION_STEPS_TOTAL) {
-                drawPosition(animatingCoordinate, canvas, false);
-                currentAnimationStep += 1;
-                animatingCoordinate = resolveAnimatingCoordinate();
-                postInvalidateDelayed(ANIMATION_DURATION_IN_MS / ANIMATION_STEPS_TOTAL);
-            } else {
-                currentAnimationStep = 0;
-                animatingCoordinate = Coordinate.instanceOutOfBoard();
-                isAnimating = false;
-            }
-        }
-
-
         setupButton();
     }
 
@@ -147,14 +122,6 @@ public class OutOfBoardPositionsView extends View {
         return new Coordinate(x, y);
     }
 
-    private Coordinate resolveAnimatingCoordinate() {
-        float progress = (float) currentAnimationStep / ANIMATION_STEPS_TOTAL;
-        Coordinate startCoordinate = resolveStoppedCoordinate();
-        int y = startCoordinate.y() + (isTop ? 1 : -1) * (int) (progress * getHeight());
-
-        return new Coordinate(startCoordinate.x(), y);
-    }
-
     private int resolveMovePlayerId() {
         return isTop ? Player.PLAYER_2 : Player.PLAYER_1;
     }
@@ -203,11 +170,6 @@ public class OutOfBoardPositionsView extends View {
 
     public void setSelection(boolean selected) {
         isSelected = selected;
-        invalidate();
-    }
-
-    public void startAnimation() {
-        isAnimating = true;
         invalidate();
     }
 }
