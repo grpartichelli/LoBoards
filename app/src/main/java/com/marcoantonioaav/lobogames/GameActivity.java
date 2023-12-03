@@ -45,6 +45,7 @@ public class GameActivity extends AppCompatActivity {
     public static final String REPLAY_NAME = "REPLAY_NAME";
     public static final String GAME_NAME = "GAME_NAME";
     public static final String BOARD_NAME = "BOARD_NAME";
+    public static final String MAX_POSITIONS = "MAX_POSITIONS";
     public static final String IS_MULTIPLAYER = "IS_MULTIPLAYER";
     public static final String DIFFICULTY = "DIFFICULTY";
 
@@ -100,6 +101,7 @@ public class GameActivity extends AppCompatActivity {
         if (GenericGame.NAME.equals(gameName)) {
             Board board = findBoardFromName(boardName);
             GenericGame genericGame = new GenericGame(board);
+            maxPlayerPositionsCount = (int) this.getIntent().getExtras().get(MAX_POSITIONS);
             genericGame.setMaxPlayerPositionsCount(maxPlayerPositionsCount);
             game = genericGame;
             game.setBoard(board);

@@ -10,8 +10,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,6 +31,7 @@ public class PreBoardActivity extends AppCompatActivity {
     private Button play;
     private String selectedBoardName;
     private static final int IMPORT_FILE_CODE = 32;
+    public EditText maxPiecesInput;
 
     public static final List<StandardBoard> BOARDS = GenericGameFileService.readAll();
 
@@ -44,6 +47,10 @@ public class PreBoardActivity extends AppCompatActivity {
         play = findViewById(R.id.play);
         play.setOnClickListener(view -> openGameActivity());
         play.setEnabled(false);
+
+        maxPiecesInput = findViewById(R.id.maxPiecesInput);
+        runOnUiThread(() ->maxPiecesInput.setText("10"));
+
 
         findViewById(R.id.importBoard).setOnClickListener(view -> importFile());
     }
@@ -78,6 +85,7 @@ public class PreBoardActivity extends AppCompatActivity {
         Intent intent = new Intent(this, GameActivity.class);
         intent.putExtra(GameActivity.GAME_NAME, GenericGame.NAME);
         intent.putExtra(GameActivity.BOARD_NAME, selectedBoardName);
+        intent.putExtra(GameActivity.MAX_POSITIONS, Integer.parseInt(maxPiecesInput.getText().toString()));
         intent.putExtra(GameActivity.IS_MULTIPLAYER, true);
 
         startActivity(intent);

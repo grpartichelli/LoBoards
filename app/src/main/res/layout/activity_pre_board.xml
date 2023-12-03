@@ -36,6 +36,9 @@
             android:headerDividersEnabled="true"
     />
 
+
+
+
     <LinearLayout
         android:paddingTop="20dp"
         android:paddingBottom="40dp"
@@ -46,13 +49,34 @@
         android:orientation="vertical"
 
     >
+
+        <TextView
+                android:id="@+id/numberLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="Número de peças: "
+                android:textSize="20sp"
+                android:textStyle="bold">
+
+        </TextView>
+        <EditText
+                android:id="@+id/maxPiecesInput"
+                android:digits="0123456789."
+                android:inputType="numberDecimal"
+         android:layout_height="wrap_content"
+        android:layout_width="175dp"
+                android:layout_marginBottom="10dp"
+
+        />
+
         <Button
                 android:id="@+id/play"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Jogar"
+                android:text="Iniciar Partida"
                 android:textSize="20sp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="10dp"
         />
 
         <Button
