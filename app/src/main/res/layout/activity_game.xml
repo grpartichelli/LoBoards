@@ -80,6 +80,7 @@
                 android:orientation="horizontal"
                 android:layout_centerInParent="true"
                 android:gravity="center_horizontal"
+                android:background="@color/teal_200"
         >
             <Button
                     android:id="@+id/playReplay"
@@ -87,6 +88,8 @@
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
                     android:contentDescription="Replay"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="8dp"
                     android:text="Replay"
                     android:layout_marginRight="20dp"
                     android:visibility="gone"
@@ -97,7 +100,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
-                    android:contentDescription="Salvar"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="8dp"
+                    android:contentDescription=" Salvar "
                     android:text="Salvar"
                     android:visibility="gone"
             />
