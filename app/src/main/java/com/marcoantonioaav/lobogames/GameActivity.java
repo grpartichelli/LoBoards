@@ -144,6 +144,7 @@ public class GameActivity extends AppCompatActivity {
         saveReplay = findViewById(R.id.saveReplay);
         saveReplay.setOnClickListener(view -> saveReplay());
 
+
         playReplay = findViewById(R.id.playReplay);
         playReplay.setOnClickListener(view -> {
             isReplayRunning = true;
