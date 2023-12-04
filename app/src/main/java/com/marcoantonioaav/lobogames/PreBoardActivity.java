@@ -49,7 +49,9 @@ public class PreBoardActivity extends AppCompatActivity {
         play.setEnabled(false);
 
         maxPiecesInput = findViewById(R.id.maxPiecesInput);
-        runOnUiThread(() ->maxPiecesInput.setText("10"));
+        runOnUiThread(() -> {
+            maxPiecesInput.setText("10");
+        });
 
 
         findViewById(R.id.importBoard).setOnClickListener(view -> importFile());
