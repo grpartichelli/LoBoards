@@ -315,20 +315,32 @@ public class GameActivity extends AppCompatActivity {
                 ? getSharedPreferences(SettingsActivity.SETTINGS, MODE_PRIVATE).getInt(SettingsActivity.PLAYER_2_COLOR, Color.RED)
                 : getSharedPreferences(SettingsActivity.SETTINGS, MODE_PRIVATE).getInt(SettingsActivity.PLAYER_1_COLOR, Color.GREEN);
         positionsView.setPlayerColor(color);
-        positionsView.setPlayer(player1);
         positionsView.setIsTop(isTop);
         positionsView.setButtonsLayout(buttonsLayout);
         positionsView.setBoardView(boardView);
         positionsView.setCursorColor(getSharedPreferences(SettingsActivity.SETTINGS, MODE_PRIVATE).getInt(SettingsActivity.CURSOR_COLOR, Color.BLUE));
+        positionsView.setOnClickListener(
+                () -> {
+                    if (player1 instanceof Human) {
+                        ((Human) player1).setCursor(Position.instanceOutOfBoardForPlayerId(positionsView.getMovePlayerId()));
+                    }
+
+                    positionsView.setSelection(positionsView.isPositionEnabled());
+                    if (positionsView.isTop()) {
+                        bottomOutOfBoardPositionsView.setSelection(false);
+                    } else {
+                        topOutOfBoardPositionsView.setSelection(false);
+                    }
+
+                    return null;
+                }
+        );
     }
 
 
     private void setCursorByClick(Position selectedPosition) {
 
-        if (isBoardMode) {
-            topOutOfBoardPositionsView.setSelection(false);
-            bottomOutOfBoardPositionsView.setSelection(false);
-        }
+        resetOutOfBoardSelection();
 
         if (isGameRunning) {
             Player player = resolvePlayer(turn);
@@ -392,6 +404,7 @@ public class GameActivity extends AppCompatActivity {
 
         game.getBoard().applyMove(move);
         updatePositionsCount();
+        resetOutOfBoardSelection();
 
         runOnUiThread(() -> boardView.announceForAccessibility(move.toString()));
         runOnUiThread(() -> boardView.drawMove(move));
@@ -405,6 +418,13 @@ public class GameActivity extends AppCompatActivity {
                 ((Human) currentPlayer).clearCursor();
             }
             runOnUiThread(this::updateButtonsDescription);
+        }
+    }
+
+    private void resetOutOfBoardSelection() {
+        if (isBoardMode) {
+            topOutOfBoardPositionsView.setSelection(false);
+            bottomOutOfBoardPositionsView.setSelection(false);
         }
     }
 

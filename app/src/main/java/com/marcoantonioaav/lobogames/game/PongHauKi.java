@@ -31,7 +31,7 @@ public class PongHauKi extends StandardGame {
     @Override
     public String getRules() {
         // TODO: rules
-        return "";
+        return "Cada jogador inicia com duas peças posicionadas em lados opostos de um tabuleiro. Cada jogador pode mover uma peça para uma posição vazia conectada a ela. O jogador que conseguir impedir que o inimigo mova suas peças bloqueando todas as posições adjacentes ganha.";
     }
 
     @Override

@@ -12,16 +12,15 @@ import android.widget.RelativeLayout;
 import androidx.annotation.Nullable;
 import com.marcoantonioaav.lobogames.application.LoBoGames;
 import com.marcoantonioaav.lobogames.board.Board;
-import com.marcoantonioaav.lobogames.player.Human;
 import com.marcoantonioaav.lobogames.player.Player;
 import com.marcoantonioaav.lobogames.position.Coordinate;
-import com.marcoantonioaav.lobogames.position.Position;
+
+import java.util.concurrent.Callable;
 
 public class OutOfBoardPositionsView extends View {
 
     Paint paint = new Paint();
     Board board;
-    Player player;
     int playerColor;
     int cursorColor;
     boolean isTop = false;
@@ -32,6 +31,7 @@ public class OutOfBoardPositionsView extends View {
     int positionsCount = 0;
     int maxPlayerPositionsCount = 0;
     boolean isPositionEnabled = true;
+    Callable<Void> clickCallable;
 
     public OutOfBoardPositionsView(Context context) {
         super(context);
@@ -70,7 +70,7 @@ public class OutOfBoardPositionsView extends View {
         }
 
         // paint position
-        paint.setColor(isPositionEnabled ? playerColor: Color.GRAY);
+        paint.setColor(isPositionEnabled ? playerColor : Color.GRAY);
         canvas.drawCircle(coordinate.x(), coordinate.y(), positionRadius, paint);
 
 
@@ -78,19 +78,13 @@ public class OutOfBoardPositionsView extends View {
         paint.setColor(Color.BLACK);
         paint.setTextSize(textSize);
         int positionsLeftCount = maxPlayerPositionsCount - positionsCount;
-        if (isTop) {
-            canvas.drawText("  x" + positionsLeftCount,
-                    coordinate.x() + positionRadius,
-                    coordinate.y() + (textSize / 3),
-                    paint
-            );
-        } else {
-            canvas.drawText("x" + positionsLeftCount + "  ",
-                    coordinate.x() - 3 * positionRadius,
-                    coordinate.y() + (textSize / 3),
-                    paint
-            );
-        }
+
+        canvas.drawText(" x" + positionsLeftCount,
+                coordinate.x() + positionRadius,
+                coordinate.y() + (textSize / 3),
+                paint
+        );
+
     }
 
 
@@ -119,7 +113,7 @@ public class OutOfBoardPositionsView extends View {
         layoutParams.leftMargin = offsetWidth + coordinate.x() - (int) (buttonSize / 2);
 
 
-        button.setOnClickListener(view -> outOfBoardClick());
+        button.setOnClickListener(view -> click());
         button.setBackgroundColor(Color.TRANSPARENT);
 
 
@@ -131,21 +125,22 @@ public class OutOfBoardPositionsView extends View {
 //        previousButton = button;
     }
 
-    private void outOfBoardClick() {
-        setSelection(isPositionEnabled);
-        if (player instanceof Human) {
-            ((Human) player).setCursor(Position.instanceOutOfBoardForPlayerId(resolveMovePlayerId()));
+    private void click() {
+        try {
+            clickCallable.call();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     private Coordinate resolveStoppedCoordinate() {
-        int offsetWidth = getWidth() / 4;
+        int offsetWidth = getWidth() / 5;
         int x = isTop ? offsetWidth : getWidth() - offsetWidth;
         int y = getHeight() / 2;
         return new Coordinate(x, y);
     }
 
-    private int resolveMovePlayerId() {
+    public int getMovePlayerId() {
         return isTop ? Player.PLAYER_2 : Player.PLAYER_1;
     }
 
@@ -170,9 +165,6 @@ public class OutOfBoardPositionsView extends View {
         this.playerColor = playerColor;
     }
 
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
 
     public void setIsTop(boolean isTop) {
         this.isTop = isTop;
@@ -204,5 +196,17 @@ public class OutOfBoardPositionsView extends View {
 
     public void setMaxPlayerPositionsCount(int maxPlayerPositionsCount) {
         this.maxPlayerPositionsCount = maxPlayerPositionsCount;
+    }
+
+    public void setOnClickListener(Callable<Void> clickCallback) {
+        this.clickCallable = clickCallback;
+    }
+
+    public boolean isPositionEnabled() {
+        return isPositionEnabled;
+    }
+
+    public boolean isTop() {
+        return isTop;
     }
 }

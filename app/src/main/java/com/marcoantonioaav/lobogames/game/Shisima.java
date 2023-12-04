@@ -35,8 +35,7 @@ public class Shisima extends StandardGame {
 
     @Override
     public String getRules() {
-        // TODO: Rules
-        return null;
+        return "Cada jogador começa com 3 peças posicionadas de forma alternada em um tabuleiro circular. Cada jogador pode mover uma peça para uma posição vazia conectada a ela. Aquele jogador que conseguir alinhar três peças primeiro ganha a partida.";
     }
 
     @Override

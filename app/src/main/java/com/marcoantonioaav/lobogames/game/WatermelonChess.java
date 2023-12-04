@@ -35,8 +35,7 @@ public class WatermelonChess extends StandardGame {
 
     @Override
     public String getRules() {
-        // TODO: rules
-        return "";
+        return "Cada jogador pode mover uma peça para uma posição vazia conectada a ela. Se uma peça estiver cercada por todos os lados por peças inimigas ela é capturada e removida da partida. Ganha o jogador que conseguir capturar todas as peças do inimigo.";
     }
 
     @Override
