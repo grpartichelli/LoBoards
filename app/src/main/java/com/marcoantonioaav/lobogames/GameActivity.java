@@ -9,6 +9,7 @@ import android.text.style.StyleSpan;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.accessibility.AccessibilityEvent;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -21,6 +22,7 @@ import com.marcoantonioaav.lobogames.board.Board;
 import com.marcoantonioaav.lobogames.game.Game;
 import com.marcoantonioaav.lobogames.game.GenericGame;
 import com.marcoantonioaav.lobogames.move.Move;
+import com.marcoantonioaav.lobogames.move.Movement;
 import com.marcoantonioaav.lobogames.player.Human;
 import com.marcoantonioaav.lobogames.player.Player;
 import com.marcoantonioaav.lobogames.player.ReplayPlayer;
@@ -106,12 +108,13 @@ public class GameActivity extends AppCompatActivity {
             game = genericGame;
             game.setBoard(board);
             isBoardMode = true;
+            setTitle(board.getName());
         } else {
             game = PreGameActivity.GAMES.get(gameName);
+            setTitle(game.getName());
         }
 
 
-        setTitle(game.getName());
         updatePlayers();
 
         // buttons
@@ -198,8 +201,19 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void toggleStartGameEndGameButtons() {
-        startGame.setVisibility(startGame.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
-        endGame.setVisibility(endGame.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+        if (startGame.getVisibility() == View.VISIBLE) {
+            runOnUiThread(() -> {
+                endGame.setVisibility(View.VISIBLE);
+                startGame.setVisibility(View.GONE);
+            });
+        } else {
+            runOnUiThread(() -> {
+                startGame.setVisibility(View.VISIBLE);
+                startGame.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);
+                endGame.setVisibility(View.GONE);
+            });
+        }
+
     }
 
     private Board findBoardFromName(String boardName) {
@@ -273,7 +287,10 @@ public class GameActivity extends AppCompatActivity {
                 game.getBoard().scaleToLayoutParams(boardView.getLayoutParams());
                 boardView.setBoard(game.getBoard().copy());
                 boardView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                setupOutOfBoardPositionsViews(boardViewSize, outOfBoardHeight, boardView.getBoard());
+
+                if (isBoardMode) {
+                    setupOutOfBoardPositionsViews(boardViewSize, outOfBoardHeight, boardView.getBoard());
+                }
 
                 // setup buttons
                 double buttonSize = boardView.getSelectedPositionBorderRadius() * 2.5;
@@ -295,12 +312,28 @@ public class GameActivity extends AppCompatActivity {
                     positionButtonsMap.put(position, button);
                     if (previousButton != null) {
                         ViewCompat.setAccessibilityDelegate(button, new BoardButtonDelegate(previousButton));
+                    } else {
+                        setupOutOfBoardAccessibilityRelatedButton(button, true);
                     }
                     previousButton = button;
                 }
+
+                setupOutOfBoardAccessibilityRelatedButton(previousButton, false);
                 updateButtonsDescription();
             }
         });
+    }
+
+    private void setupOutOfBoardAccessibilityRelatedButton(Button button, boolean isFirst) {
+        if (!isBoardMode) {
+            return;
+        }
+
+        if (isFirst) {
+            topOutOfBoardPositionsView.setFirstAccessibilityButton(button);
+        } else {
+            bottomOutOfBoardPositionsView.setLastAccessibilityButton(button);
+        }
     }
 
     private void setupOutOfBoardPositionsViews(int width, int height, Board board) {
@@ -327,6 +360,8 @@ public class GameActivity extends AppCompatActivity {
                     }
 
                     positionsView.setSelection(positionsView.isPositionEnabled());
+                    runOnUiThread(() -> positionsView.announceForAccessibility("Selecionado Peças do " + Player.getName(positionsView.getMovePlayerId())));
+
                     if (positionsView.isTop()) {
                         bottomOutOfBoardPositionsView.setSelection(false);
                     } else {
@@ -403,11 +438,19 @@ public class GameActivity extends AppCompatActivity {
             replay.addMove(move);
         }
 
+        int pos = 0;
+        if (!move.getMovements().isEmpty()) {
+            pos = this.game.getBoard()
+                    .findPositionById(move.getMovements().get(0).getStartPositionId()).getPlayerId();
+        }
+        final int startPositionPlayerId = pos;
+
+
         game.getBoard().applyMove(move);
         updatePositionsCount();
         resetOutOfBoardSelection();
 
-        runOnUiThread(() -> boardView.announceForAccessibility(move.toString()));
+        runOnUiThread(() -> boardView.announceForAccessibility(resolveMoveAnnounceMessage(move, startPositionPlayerId)));
         runOnUiThread(() -> boardView.drawMove(move));
 
 
@@ -420,6 +463,21 @@ public class GameActivity extends AppCompatActivity {
             }
             runOnUiThread(this::updateButtonsDescription);
         }
+    }
+
+    private String resolveMoveAnnounceMessage(Move move, int startPositionPlayerId) {
+        if (move.getMovements().isEmpty()) {
+            return "";
+        }
+
+
+        int playerId = isBoardMode ? startPositionPlayerId : move.getPlayerId();
+        String result = Player.getName(playerId) + ": ";
+        for (Movement movement : move.getMovements()) {
+            result += " " + movement.toString();
+        }
+
+        return result;
     }
 
     private void resetOutOfBoardSelection() {
@@ -504,6 +562,9 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void showTurn() {
+        if (isBoardMode) {
+            return;
+        }
         String statusMessage = "Vez do " + Player.getName(turn);
         runOnUiThread(() -> {
             statusTextView.setText(statusMessage);
@@ -513,6 +574,10 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void showResult() {
+        if (isBoardMode) {
+            return;
+        }
+
         int resultColor;
         String resultText;
         if (game.isVictory(player1.getId())) {

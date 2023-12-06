@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import androidx.annotation.Nullable;
+import androidx.core.view.ViewCompat;
 import com.marcoantonioaav.lobogames.application.LoBoGames;
 import com.marcoantonioaav.lobogames.board.Board;
 import com.marcoantonioaav.lobogames.player.Player;
@@ -32,6 +33,8 @@ public class OutOfBoardPositionsView extends View {
     int maxPlayerPositionsCount = 0;
     boolean isPositionEnabled = true;
     Callable<Void> clickCallable;
+    Button firstAccessibilityButton;
+    Button lastAccessibilityButton;
 
     public OutOfBoardPositionsView(Context context) {
         super(context);
@@ -87,7 +90,6 @@ public class OutOfBoardPositionsView extends View {
 
     }
 
-
     public void setupButton() {
         if (button != null) {
             return;
@@ -116,13 +118,14 @@ public class OutOfBoardPositionsView extends View {
         button.setOnClickListener(view -> click());
         button.setBackgroundColor(Color.TRANSPARENT);
 
+        if (isTop) {
+            ViewCompat.setAccessibilityDelegate(firstAccessibilityButton, new BoardButtonDelegate(button));
+        } else {
+            ViewCompat.setAccessibilityDelegate(button, new BoardButtonDelegate(lastAccessibilityButton));
+        }
 
-        // TODO: accessibility
+        button.setContentDescription("Peças do jogador " + getMovePlayerId());
         buttonsLayout.addView(button, layoutParams);
-//        if (previousButton != null) {
-//            ViewCompat.setAccessibilityDelegate(button, new BoardButtonDelegate(previousButton));
-//        }
-//        previousButton = button;
     }
 
     private void click() {
@@ -208,5 +211,13 @@ public class OutOfBoardPositionsView extends View {
 
     public boolean isTop() {
         return isTop;
+    }
+
+    public void setFirstAccessibilityButton(Button firstAccessibilityButton) {
+        this.firstAccessibilityButton = firstAccessibilityButton;
+    }
+
+    public void setLastAccessibilityButton(Button lastAccessibilityButton) {
+        this.lastAccessibilityButton = lastAccessibilityButton;
     }
 }

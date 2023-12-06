@@ -144,6 +144,7 @@ public class PreBoardActivity extends AppCompatActivity {
 
                 if (textView != null) {
                     textView.setText(board.getName());
+                    textView.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
                 }
 
 
@@ -152,6 +153,7 @@ public class PreBoardActivity extends AppCompatActivity {
                 if (imageView != null) {
                     // NOTE: Must be a copy to avoid issues with resetting games
                     imageView.setImageDrawable(board.getImageCopy());
+                    imageView.setContentDescription(board.getName());
                 }
             }
 

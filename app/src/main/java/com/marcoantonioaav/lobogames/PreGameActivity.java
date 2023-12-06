@@ -144,6 +144,7 @@ public class PreGameActivity extends AppCompatActivity {
 
                 if (textView != null) {
                     textView.setText(game.getName());
+                    textView.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
                 }
 
 
@@ -152,6 +153,7 @@ public class PreGameActivity extends AppCompatActivity {
                 if (imageView != null) {
                     // NOTE: Must be a copy to avoid issues with resetting games
                     imageView.setImageDrawable(game.getBoard().getImageCopy());
+                    imageView.setContentDescription(game.getName());
                 }
             }
 
