@@ -86,8 +86,8 @@ public class GenericGame extends StandardGame {
             return false;
         }
 
-        if (!endPosition.isOutOfBoard()
-                && this.board.countPlayerPieces(movement.getPlayerId()) >= maxPlayerPositionsCount) {
+        boolean isOutOfMoves = this.board.countPlayerPieces(movement.getPlayerId()) >= maxPlayerPositionsCount;
+        if (isOutOfMoves && startPosition.isOutOfBoard()) {
             return false;
         }
 
@@ -109,14 +109,6 @@ public class GenericGame extends StandardGame {
     public Move getPlayerMove(String startPositionId, String endPositionId, int playerId) {
         Position startPosition = this.board.findPositionById(startPositionId);
         Position endPosition = this.board.findPositionById(endPositionId);
-
-//        if (endPosition.isOutOfBoard() && endPosition.getPlayerId() == startPosition.getPlayerId()) {
-//            return new StandardMove(playerId, new ArrayList<>(Arrays.asList(
-//                    new StandardMovement(startPosition, endPosition, startPosition.getPlayerId()),
-//                    new StandardMovement(endPosition, endPosition, startPosition.getPlayerId())
-//            )));
-//        }
-
         // NOTE: Consider the moves player as the start position since we don't know who is acting
         StandardMovement movement = new StandardMovement(startPosition, endPosition, startPosition.getPlayerId());
         return new StandardMove(playerId, new ArrayList<>(Collections.singletonList(movement)));
