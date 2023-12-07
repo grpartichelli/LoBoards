@@ -161,6 +161,7 @@ public class BoardView extends View {
         float selectedPositionBorderRadius = getSelectedPositionBorderRadius();
 
         for (Position position : this.board.getPositions()) {
+            // TODO: remove animation going under
             position = animatingPosition.equals(position) ? animatingPosition : position;
 
             if (position.getPlayerId() != Player.EMPTY) {

@@ -62,7 +62,7 @@ public class OutOfBoardPositionsView extends View {
         float positionBorderRadius = this.board.getPositionBorderRadius(getWidth());
         float selectedPositionBorderRadius = this.board.getSelectedPositionBorderRadius(getWidth());
 
-
+        // TODO: Consider big buttons
         // paint position border
         if (isSelected) {
             paint.setColor(cursorColor);
