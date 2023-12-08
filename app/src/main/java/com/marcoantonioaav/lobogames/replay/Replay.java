@@ -14,6 +14,7 @@ public class Replay {
     private final Date date;
     private final String gameName;
     private final String boardName;
+    private int maxPositions = 0;
 
     public Replay(Game game, Date date) {
         this.gameName = game.getName();
@@ -81,5 +82,13 @@ public class Replay {
 
     public List<Move> getMoves() {
         return moves;
+    }
+
+    public void setMaxPositions(int maxPositions) {
+        this.maxPositions = maxPositions;
+    }
+
+    public int getMaxPositions() {
+        return maxPositions;
     }
 }

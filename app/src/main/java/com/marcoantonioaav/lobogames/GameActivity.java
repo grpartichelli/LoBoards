@@ -547,6 +547,9 @@ public class GameActivity extends AppCompatActivity {
             player2 = new ReplayPlayer(Player.PLAYER_2, replay);
         } else {
             replay = new Replay(game, Calendar.getInstance().getTime());
+            if (isBoardMode) {
+                replay.setMaxPositions(maxPlayerPositionsCount);
+            }
             updatePlayers();
         }
     }

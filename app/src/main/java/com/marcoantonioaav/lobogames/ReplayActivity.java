@@ -142,6 +142,7 @@ public class ReplayActivity extends AppCompatActivity {
         Intent intent = new Intent(this, GameActivity.class);
         intent.putExtra(GameActivity.REPLAY_NAME, selectedReplayName);
         intent.putExtra(GameActivity.IS_MULTIPLAYER, true);
+        intent.putExtra(GameActivity.MAX_POSITIONS, findReplayFromName(selectedReplayName).getMaxPositions());
 
         startActivity(intent);
     }
@@ -164,6 +165,15 @@ public class ReplayActivity extends AppCompatActivity {
             Toast.makeText(this, "Replay importado com sucesso", Toast.LENGTH_SHORT).show();
             createReplayList();
         }
+    }
+
+    private Replay findReplayFromName(String replayName) {
+        for (Replay replay : REPLAYS) {
+            if (replay.getName().equals(replayName)) {
+                return replay;
+            }
+        }
+        return null;
     }
 }
 
