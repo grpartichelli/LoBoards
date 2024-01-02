@@ -18,6 +18,8 @@ import com.marcoantonioaav.lobogames.position.Coordinate;
 
 import java.util.concurrent.Callable;
 
+// TODO: ADD CEMETERY
+// TODO: MODULES?
 public class OutOfBoardPositionsView extends View {
 
     Paint paint = new Paint();

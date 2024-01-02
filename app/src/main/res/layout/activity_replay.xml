@@ -44,7 +44,7 @@
             android:layout_weight="100"
             android:divider="#000"
             android:dividerHeight="2px"
-            android:listSelector="#0f0"
+            android:listSelector="@color/orange"
             android:footerDividersEnabled="true"
             android:headerDividersEnabled="true"
     />
