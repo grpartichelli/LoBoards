@@ -4,9 +4,9 @@
     <application
         android:allowBackup="true"
         android:name="com.marcoantonioaav.lobogames.application.LoBoGames"
-        android:icon="@mipmap/ic_launcher_lobogames"
+        android:icon="@mipmap/ic_launcher_loboards"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_lobogames_round"
+        android:roundIcon="@mipmap/ic_launcher_loboards_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BoardGame"
         android:requestLegacyExternalStorage="true"
