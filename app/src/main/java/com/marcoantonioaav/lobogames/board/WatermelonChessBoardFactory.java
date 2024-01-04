@@ -2,7 +2,7 @@ package com.marcoantonioaav.lobogames.board;
 
 import androidx.core.content.ContextCompat;
 import com.marcoantonioaav.lobogames.R;
-import com.marcoantonioaav.lobogames.application.LoBoGames;
+import com.marcoantonioaav.lobogames.application.LoBoards;
 import com.marcoantonioaav.lobogames.position.Connection;
 import com.marcoantonioaav.lobogames.position.Coordinate;
 import com.marcoantonioaav.lobogames.position.Position;
@@ -341,7 +341,7 @@ public class WatermelonChessBoardFactory {
         }
 
         return new StandardBoard(
-                ContextCompat.getDrawable(LoBoGames.getAppContext(), R.drawable.watermelon_chess),
+                ContextCompat.getDrawable(LoBoards.getAppContext(), R.drawable.watermelon_chess),
                 PADDING_PERCENTAGE,
                 PADDING_PERCENTAGE,
                 POSITION_RADIUS_SCALE,

@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
-import com.marcoantonioaav.lobogames.application.LoBoGames;
+import com.marcoantonioaav.lobogames.application.LoBoards;
 import com.marcoantonioaav.lobogames.board.Board;
 import com.marcoantonioaav.lobogames.player.Player;
 import com.marcoantonioaav.lobogames.position.Coordinate;
@@ -100,7 +100,7 @@ public class OutOfBoardPositionsView extends View {
         float selectedPositionBorderRadius = this.board.getSelectedPositionBorderRadius(getWidth());
         Coordinate coordinate = resolveStoppedCoordinate();
         double buttonSize = selectedPositionBorderRadius * 2.5;
-        button = new Button(LoBoGames.getAppContext());
+        button = new Button(LoBoards.getAppContext());
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT

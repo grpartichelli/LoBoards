@@ -6,7 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.Base64;
-import com.marcoantonioaav.lobogames.application.LoBoGames;
+import com.marcoantonioaav.lobogames.application.LoBoards;
 import com.marcoantonioaav.lobogames.board.StandardBoard;
 import com.marcoantonioaav.lobogames.exceptions.FailedToReadFileException;
 import com.marcoantonioaav.lobogames.position.Connection;
@@ -32,7 +32,7 @@ public class GenericGameFileService {
     private static final double PADDING_PERCENTAGE = 0.0;
 
     public static StandardBoard createFromIntent(Intent intent) {
-        Context context = LoBoGames.getAppContext();
+        Context context = LoBoards.getAppContext();
         try (InputStream stream = context.getContentResolver().openInputStream(intent.getData())) {
             BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
             String line = reader.readLine();
@@ -59,7 +59,7 @@ public class GenericGameFileService {
     public static List<StandardBoard> readAll() {
         List<StandardBoard> boards = new ArrayList<>();
         try {
-            Context context = LoBoGames.getAppContext();
+            Context context = LoBoards.getAppContext();
 
             for (String file: context.getAssets().list("boards")) {
                 boards.add(fromAsset("boards/" + file));
@@ -81,7 +81,7 @@ public class GenericGameFileService {
     }
 
     private static StandardBoard fromAsset(String filePath) {
-        try (InputStream stream = LoBoGames.getAppContext().getAssets().open(filePath)) {
+        try (InputStream stream = LoBoards.getAppContext().getAssets().open(filePath)) {
             return processFileStream(stream);
         } catch (Exception e) {
             throw new FailedToReadFileException();
@@ -125,7 +125,7 @@ public class GenericGameFileService {
         String encodedImage = object.getString("imageUrl").split(",")[1];
         byte[] decodedString = Base64.decode(encodedImage, Base64.DEFAULT);
         Bitmap imageBitMap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-        return new BitmapDrawable(LoBoGames.getAppContext().getResources(), imageBitMap);
+        return new BitmapDrawable(LoBoards.getAppContext().getResources(), imageBitMap);
     }
 
     private static List<Position> readPositions(JSONObject object, BitmapDrawable image) throws JSONException {

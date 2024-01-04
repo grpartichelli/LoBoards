@@ -2,7 +2,7 @@ package com.marcoantonioaav.lobogames.board;
 
 import androidx.core.content.ContextCompat;
 import com.marcoantonioaav.lobogames.R;
-import com.marcoantonioaav.lobogames.application.LoBoGames;
+import com.marcoantonioaav.lobogames.application.LoBoards;
 import com.marcoantonioaav.lobogames.position.Connection;
 import com.marcoantonioaav.lobogames.position.Coordinate;
 import com.marcoantonioaav.lobogames.position.Position;
@@ -80,7 +80,7 @@ public class CircularBoardFactory {
         }
 
         return new StandardBoard(
-                ContextCompat.getDrawable(LoBoGames.getAppContext(), R.drawable.circular_board),
+                ContextCompat.getDrawable(LoBoards.getAppContext(), R.drawable.circular_board),
                 PADDING_PERCENTAGE_HORIZONTAL,
                 PADDING_PERCENTAGE_VERTICAL,
                 POSITION_RADIUS_SCALE,

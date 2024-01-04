@@ -3,7 +3,7 @@ package com.marcoantonioaav.lobogames.board;
 import android.graphics.drawable.Drawable;
 import androidx.core.content.ContextCompat;
 import com.marcoantonioaav.lobogames.R;
-import com.marcoantonioaav.lobogames.application.LoBoGames;
+import com.marcoantonioaav.lobogames.application.LoBoards;
 import com.marcoantonioaav.lobogames.position.Coordinate;
 
 import java.util.HashMap;
@@ -14,7 +14,7 @@ public class Matrix5x5BoardFactory {
     private Matrix5x5BoardFactory() {
     }
 
-    private static final Drawable IMAGE = ContextCompat.getDrawable(LoBoGames.getAppContext(), R.drawable._5x5);
+    private static final Drawable IMAGE = ContextCompat.getDrawable(LoBoards.getAppContext(), R.drawable._5x5);
     private static final double PADDING_PERCENTAGE = 0.05;
     private static final double POSITION_RADIUS_SCALE = (double) 1 / 20;
     private static final Map<Coordinate, Coordinate> coordinateMapper = new HashMap<>();

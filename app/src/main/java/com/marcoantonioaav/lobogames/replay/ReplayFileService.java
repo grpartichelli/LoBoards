@@ -3,9 +3,8 @@ package com.marcoantonioaav.lobogames.replay;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
-import android.text.style.TabStopSpan;
 import android.util.Log;
-import com.marcoantonioaav.lobogames.application.LoBoGames;
+import com.marcoantonioaav.lobogames.application.LoBoards;
 import com.marcoantonioaav.lobogames.exceptions.FailedToReadFileException;
 import com.marcoantonioaav.lobogames.exceptions.FailedToWriteFileException;
 import com.marcoantonioaav.lobogames.move.MatrixMove;
@@ -38,7 +37,7 @@ public class ReplayFileService {
     }
 
     public static Replay createFromIntent(Intent intent) {
-        Context context = LoBoGames.getAppContext();
+        Context context = LoBoards.getAppContext();
         try (InputStream stream = context.getContentResolver().openInputStream(intent.getData())) {
             Replay replay = processFileStream(stream);
             save(replay);
@@ -49,7 +48,7 @@ public class ReplayFileService {
     }
 
     public static void delete(Replay replay) {
-        File dir = new File(LoBoGames.getAppContext().getFilesDir(), REPLAYS_DIRECTORY);
+        File dir = new File(LoBoards.getAppContext().getFilesDir(), REPLAYS_DIRECTORY);
         File file = new File(dir, replay.getFileName());
         file.delete();
     }
@@ -57,7 +56,7 @@ public class ReplayFileService {
     public static void export(Replay replay) {
         try {
 
-            Context context = LoBoGames.getAppContext();
+            Context context = LoBoards.getAppContext();
 
             for (File file : context.getFilesDir().listFiles()) {
                 if (!file.getName().equals("replays")) {
@@ -134,7 +133,7 @@ public class ReplayFileService {
 
             replayJson.put("moves", movesJsonArray);
 
-            File dir = new File(LoBoGames.getAppContext().getFilesDir(), REPLAYS_DIRECTORY);
+            File dir = new File(LoBoards.getAppContext().getFilesDir(), REPLAYS_DIRECTORY);
 
             if (!dir.exists()) {
                 dir.mkdir();
@@ -154,7 +153,7 @@ public class ReplayFileService {
     public static List<Replay> readAll() {
         List<Replay> replays = new ArrayList<>();
         try {
-            Context context = LoBoGames.getAppContext();
+            Context context = LoBoards.getAppContext();
 
             for (File file : context.getFilesDir().listFiles()) {
                 if (!file.getName().equals("replays")) {

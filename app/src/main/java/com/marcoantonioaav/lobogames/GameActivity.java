@@ -17,7 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.ViewCompat;
-import com.marcoantonioaav.lobogames.application.LoBoGames;
+import com.marcoantonioaav.lobogames.application.LoBoards;
 import com.marcoantonioaav.lobogames.board.Board;
 import com.marcoantonioaav.lobogames.game.Game;
 import com.marcoantonioaav.lobogames.game.GenericGame;
@@ -297,7 +297,7 @@ public class GameActivity extends AppCompatActivity {
                 Button previousButton = null;
 
                 for (Position position : getPositionsSortedByAccessibility()) {
-                    Button button = new Button(LoBoGames.getAppContext());
+                    Button button = new Button(LoBoards.getAppContext());
                     RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                             ViewGroup.LayoutParams.WRAP_CONTENT,
                             ViewGroup.LayoutParams.WRAP_CONTENT
