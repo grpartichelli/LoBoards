@@ -1,68 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center_horizontal|center_vertical"
-    android:orientation="vertical"
-    tools:actionBarNavMode="list"
-    tools:context=".MainActivity">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:actionBarNavMode="list"
+              tools:context=".MainActivity">
 
-        <ImageView
+    <ImageView
             android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="250dp"
-            android:layout_marginBottom="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="40"
+            android:padding="30dp"
             android:contentDescription="LoBoards"
-            app:srcCompat="@drawable/loboards" />
+            app:srcCompat="@drawable/loboards"/>
 
+
+    <LinearLayout
+            android:paddingBottom="30dp"
+            android:paddingHorizontal="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="60"
+            android:orientation="vertical"
+    >
         <Button
-            android:id="@+id/buttonGames"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:text="Jogos"
-            android:textSize="20sp" />
+                android:id="@+id/buttonGames"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="100"
+                android:layout_marginBottom="5dp"
+                android:text="Jogos"
+                android:textSize="20sp"
+
+        />
 
         <Button
                 android:id="@+id/buttonBoards"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="100"
+                android:layout_marginBottom="5dp"
                 android:text="Tabuleiros"
-                android:textSize="20sp" />
+                android:textSize="20sp"/>
+
 
         <Button
                 android:id="@+id/buttonReplays"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="100"
+                android:layout_marginBottom="5dp"
                 android:text="Replays"
-                android:textSize="20sp" />
+                android:textSize="20sp"/>
+
 
         <Button
-            android:id="@+id/buttonHowToPlay"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:text="Como Jogar"
-            android:textSize="20sp" />
+                android:id="@+id/buttonSettings"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="100"
+                android:layout_marginBottom="5dp"
+                android:text="Configurações"
+                android:textSize="20sp"
+
+        />
 
         <Button
-            android:id="@+id/buttonSettings"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:text="Configurações"
-            android:textSize="20sp" />
+                android:id="@+id/buttonAbout"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="100"
+                android:layout_marginBottom="5dp"
+                android:text="Sobre"
+                android:textSize="20sp"/>
 
-        <Button
-            android:id="@+id/buttonAbout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:text="Sobre"
-            android:textSize="20sp" />
 
+    </LinearLayout>
 </LinearLayout>
+
+

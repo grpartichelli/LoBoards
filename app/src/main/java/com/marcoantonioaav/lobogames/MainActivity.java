@@ -29,14 +29,14 @@ public class MainActivity extends AppCompatActivity {
         replays = findViewById(R.id.buttonReplays);
         replays.setOnClickListener(view -> openReplayActivity());
 
-        howToPlay = findViewById(R.id.buttonHowToPlay);
-        howToPlay.setOnClickListener(view -> openHowToPlayActivity());
+//        howToPlay = findViewById(R.id.buttonHowToPlay);
+//        howToPlay.setOnClickListener(view -> openHowToPlayActivity());
 
         settings = findViewById(R.id.buttonSettings);
         settings.setOnClickListener(view -> openSettingsActivity());
-
-        about = findViewById(R.id.buttonAbout);
-        about.setOnClickListener(view -> openAboutActivity());
+//
+//        about = findViewById(R.id.buttonAbout);
+//        about.setOnClickListener(view -> openAboutActivity());
     }
 
     private void openReplayActivity() {
