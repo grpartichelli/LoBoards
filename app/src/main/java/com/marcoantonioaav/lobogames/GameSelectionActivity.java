@@ -71,7 +71,7 @@ public class GameSelectionActivity extends AppCompatActivity {
         boardListLabel.setText(isGameModuleSelected ?  "Selecione um jogo:" : "Selecione um tabuleiro:");
 
         importButton = findViewById(R.id.importBoard);
-        importButton.setVisibility(isGameModuleSelected ? View.GONE : View.VISIBLE);
+        importButton.setVisibility(View.GONE); // NOTE: Disabled for now
         importButton.setOnClickListener(view -> importFile());
     }
 
@@ -105,7 +105,11 @@ public class GameSelectionActivity extends AppCompatActivity {
         Intent intent = new Intent(this, GameActivity.class);
         intent.putExtra(GameActivity.GAME_NAME, GenericGame.NAME);
         intent.putExtra(GameActivity.BOARD_NAME, selectedBoardName);
-        intent.putExtra(GameActivity.MAX_POSITIONS, Integer.parseInt(maxPiecesInput.getText().toString()));
+        intent.putExtra(GameActivity.MAX_POSITIONS,
+                Integer.parseInt(maxPiecesInput.getText().toString().isEmpty()
+                        ? "10"
+                        : maxPiecesInput.getText().toString())
+        );
         intent.putExtra(GameActivity.IS_MULTIPLAYER, true);
 
         startActivity(intent);
