@@ -73,6 +73,7 @@ public class OutOfBoardPositionsView extends View {
             canvas.drawCircle(coordinate.x(), coordinate.y(), positionBorderRadius, paint);
         }
 
+
         // paint position
         paint.setColor(isPositionEnabled ? playerColor : Color.GRAY);
         canvas.drawCircle(coordinate.x(), coordinate.y(), positionRadius, paint);
@@ -138,7 +139,7 @@ public class OutOfBoardPositionsView extends View {
     }
 
     private Coordinate resolveStoppedCoordinate() {
-        int offsetWidth = getWidth() / 5;
+        int offsetWidth = getWidth() / 3;
         int x = isTop ? offsetWidth : getWidth() - offsetWidth;
         int y = getHeight() / 2;
         return new Coordinate(x, y);

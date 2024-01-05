@@ -110,7 +110,7 @@ public class BoardView extends View {
     }
 
     private Coordinate resolveCoordinateOutOfBoard(Position position) {
-        int offsetWidth = getWidth() / 5;
+        int offsetWidth =  getWidth() / 3;
         boolean isTop = position.getPlayerId() == Player.PLAYER_2;
         int width;
         int height;
@@ -160,10 +160,9 @@ public class BoardView extends View {
         float positionBorderRadius = this.board.getPositionBorderRadius(getWidth());
         float selectedPositionBorderRadius = getSelectedPositionBorderRadius();
 
-        for (Position position : this.board.getPositions()) {
-            // TODO: remove animation going under
-            position = animatingPosition.equals(position) ? animatingPosition : position;
 
+        List<Position> positionsWithAnimation = resolvePositionsWithAnimation();
+        for (Position position : positionsWithAnimation) {
             if (position.getPlayerId() != Player.EMPTY) {
                 // paint position border
                 if (selectedPosition.equals(position)) {
@@ -179,6 +178,24 @@ public class BoardView extends View {
                 canvas.drawCircle(position.getCoordinate().x(), position.getCoordinate().y(), positionRadius, paint);
             }
         }
+    }
+
+    public List<Position> resolvePositionsWithAnimation() {
+        List<Position> positions = this.board.getPositions();
+        Position existingPosition = null;
+        for (Position position : positions) {
+            if (animatingPosition.equals(position)) {
+                existingPosition = position;
+            }
+
+        }
+
+        if (existingPosition != null) {
+            positions.remove(existingPosition);
+            positions.add(animatingPosition);
+        }
+
+        return positions;
     }
 
     public void resize(int size) {
