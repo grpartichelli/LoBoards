@@ -85,7 +85,7 @@ public class OutOfBoardPositionsView extends View {
         int positionsLeftCount = maxPlayerPositionsCount - positionsCount;
 
         canvas.drawText(" x" + positionsLeftCount,
-                coordinate.x() + positionRadius,
+                (float) (coordinate.x() + (positionRadius * 1.1)),
                 coordinate.y() + (textSize / 3),
                 paint
         );
