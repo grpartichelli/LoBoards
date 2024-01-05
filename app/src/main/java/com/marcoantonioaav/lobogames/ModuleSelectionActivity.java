@@ -43,7 +43,7 @@ public class ModuleSelectionActivity extends AppCompatActivity {
 
     private void openGameSelectionActivity(GameModule gameModule) {
         Intent intent = new Intent(this, GameSelectionActivity.class);
-        intent.putExtra("gameModule", gameModule);
+        intent.putExtra(GameSelectionActivity.GAME_MODULE, gameModule.toString());
         startActivity(intent);
         finish();
     }

@@ -11,7 +11,7 @@
     <TextView
             android:id="@+id/boardListLabel"
             android:paddingTop="40dp"
-            android:paddingBottom="10dp"
+            android:paddingBottom="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0"
@@ -19,7 +19,6 @@
             android:gravity="center_horizontal|center_vertical"
             android:layout_marginBottom="5dp"
             android:textSize="20sp"
-            android:text="Selecionar Tabuleiro:"
             android:textStyle="bold"
     />
 
@@ -36,12 +35,10 @@
             android:headerDividersEnabled="true"
     />
 
-
-
-
     <LinearLayout
-        android:paddingTop="20dp"
-        android:paddingBottom="40dp"
+        android:paddingHorizontal="30dp"
+        android:paddingBottom="30dp"
+        android:paddingTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0"
@@ -49,7 +46,6 @@
         android:orientation="vertical"
 
     >
-
         <TextView
                 android:id="@+id/numberLabel"
                 android:layout_width="wrap_content"
@@ -65,28 +61,35 @@
                 android:digits="0123456789."
                 android:inputType="numberDecimal"
                 android:layout_height="wrap_content"
-                android:layout_width="215dp"
+                android:layout_width="fill_parent"
                 android:layout_marginBottom="10dp"
         />
 
-        <Button
-                android:id="@+id/play"
-                android:layout_width="wrap_content"
+        <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Iniciar Partida"
-                android:textSize="20sp"
-                android:layout_marginBottom="10dp"
-        />
+                android:orientation="vertical"
+        >
+            <Button
+                    android:id="@+id/play"
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="Iniciar Partida"
+                    android:textSize="20sp"
 
-        <Button
-                android:id="@+id/importBoard"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:text="Importar Tabuleiro"
-                android:textSize="20sp"
-        />
-    </LinearLayout>
+            />
 
+            <Button
+                    android:id="@+id/importBoard"
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:layout_weight="100"
+                    android:layout_marginBottom="5dp"
+                    android:text="Importar Tabuleiro"
+                    android:textSize="20sp"/>
 
-
+        </LinearLayout>
+    </LinearLayout
+            >
 </LinearLayout>

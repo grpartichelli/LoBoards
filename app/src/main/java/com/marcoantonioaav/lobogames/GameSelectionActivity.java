@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.marcoantonioaav.lobogames.board.Board;
 
 import com.marcoantonioaav.lobogames.board.StandardBoard;
+import com.marcoantonioaav.lobogames.game.GameModule;
 import com.marcoantonioaav.lobogames.game.GenericGame;
 import com.marcoantonioaav.lobogames.game.GenericGameFileService;
 
@@ -27,10 +28,14 @@ import java.util.Objects;
 
 public class GameSelectionActivity extends AppCompatActivity {
     private ListView boardListView;
-    private Button play;
+    private Button playButton, importButton;
     private String selectedBoardName;
     private static final int IMPORT_FILE_CODE = 32;
     public EditText maxPiecesInput;
+    public static final String GAME_MODULE = "GAME_MODULE";
+    GameModule gameModule;
+    boolean isGameModuleSelected = false;
+
 
     public static final List<StandardBoard> BOARDS = GenericGameFileService.readAll();
 
@@ -43,17 +48,31 @@ public class GameSelectionActivity extends AppCompatActivity {
 
         createBoardList();
 
-        play = findViewById(R.id.play);
-        play.setOnClickListener(view -> openGameActivity());
-        play.setEnabled(false);
+        String possibleModule = (String) this.getIntent().getExtras().get(GAME_MODULE);
+        if (!possibleModule.isEmpty()) {
+            gameModule = GameModule.valueOf(possibleModule);
+            isGameModuleSelected = true;
+        } else {
+            isGameModuleSelected = false;
+        }
+
+        playButton = findViewById(R.id.play);
+        playButton.setOnClickListener(view -> openGameActivity());
+        playButton.setEnabled(false);
+
 
         maxPiecesInput = findViewById(R.id.maxPiecesInput);
-        runOnUiThread(() -> {
-            maxPiecesInput.setText("10");
-        });
+        maxPiecesInput.setVisibility(isGameModuleSelected ? View.GONE : View.VISIBLE);
+        runOnUiThread(() -> maxPiecesInput.setText("10"));
 
+        findViewById(R.id.numberLabel).setVisibility(isGameModuleSelected ? View.GONE : View.VISIBLE);
 
-        findViewById(R.id.importBoard).setOnClickListener(view -> importFile());
+        TextView boardListLabel = findViewById(R.id.boardListLabel);
+        boardListLabel.setText(isGameModuleSelected ?  "Selecione um jogo:" : "Selecione um tabuleiro:");
+
+        importButton = findViewById(R.id.importBoard);
+        importButton.setVisibility(isGameModuleSelected ? View.GONE : View.VISIBLE);
+        importButton.setOnClickListener(view -> importFile());
     }
 
     private void createBoardList() {
@@ -71,7 +90,7 @@ public class GameSelectionActivity extends AppCompatActivity {
         boardListView.setOnItemClickListener(
                 (AdapterView<?> ad, View v, int position, long id) -> {
                     selectedBoardName = ((StandardBoard) boardListView.getItemAtPosition(position)).getName();
-                    play.setEnabled(true);
+                    playButton.setEnabled(true);
                 }
         );
     }
