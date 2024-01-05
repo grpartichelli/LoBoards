@@ -11,14 +11,14 @@
     <TextView
             android:id="@+id/boardListLabel"
             android:paddingTop="40dp"
-            android:paddingBottom="20dp"
+            android:paddingBottom="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0"
             android:labelFor="@id/boardList"
             android:gravity="center_horizontal|center_vertical"
             android:layout_marginBottom="5dp"
-            android:textSize="20sp"
+            android:textSize="24sp"
             android:textStyle="bold"
     />
 

@@ -4,79 +4,115 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal|center_vertical"
+    android:gravity="center_vertical"
     android:orientation="vertical"
     tools:context=".AboutActivity">
 
-    <TextView
-        android:id="@+id/aboutTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp"
-        android:gravity="center"
-        android:text="Sobre"
-        android:textSize="34sp" />
 
     <TextView
-        android:id="@+id/linkLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginRight="10dp"
-        android:labelFor="@id/linkButton"
-        android:text="Visite o site do projeto LoBoGames:"
-        android:textSize="20sp"
-        android:gravity="center" />
+            android:id="@+id/aboutTitle"
+            android:paddingTop="40dp"
+            android:paddingBottom="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:labelFor="@id/replayList"
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_marginBottom="5dp"
+            android:textSize="24sp"
+            android:text="Sobre o LoBoards:"
+            android:textStyle="bold"
+    />
+
+    <LinearLayout
+            android:paddingHorizontal="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="100"
+            android:layout_marginBottom="10dp"
+            android:orientation="vertical"
+    >
+    <TextView
+            android:id="@+id/creatorText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="Aplicativo construído por Gabriel Rizzolli Partichelli para o projeto de extensão LoBoGames. "
+            android:textSize="20sp" />
+
+        <TextView
+                android:id="@+id/creatorText2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Código e teoria baseado no aplicativo LoBoGames de Marco Antônio Vieira."
+                android:textSize="20sp" />
+
+
+    <TextView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="100"
+    />
+
+
 
     <Button
-        android:id="@+id/linkButton"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:insetTop="0dp"
-        android:insetBottom="0dp"
-        android:maxWidth="400dp"
-        android:text="https://www.inf.ufrgs.br/lobogames"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="#0915F6"
-        android:textSize="20sp"
-        app:backgroundTint="#00FFFFFF" />
+            android:id="@+id/linkButton2"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center_vertical"
+            android:padding="0dp"
+            android:text="Baixe o aplicativo LoBoGames"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="#0915F6"
+            android:textSize="20sp"
+            app:backgroundTint="#00FFFFFF"
+            android:layout_marginBottom="5dp"/>
+
+
+        <Button
+                android:id="@+id/linkButton"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left|center_vertical"
+                android:padding="0dp"
+                android:text="Visite o site do projeto LoBoGames"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="#0915F6"
+                android:textSize="20sp"
+                app:backgroundTint="#00FFFFFF" />
 
     <TextView
-        android:id="@+id/creatorText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="20dp"
-        android:gravity="center"
-        android:text="Aplicativo feito por Marco Antônio Vieira como parte do trabalho de conclusão de curso de Ciência da Computação.\n\nContato: marco.vieira@inf.ufrgs.br"
-        android:textSize="20sp" />
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="100"
+            />
+
+    <TextView
+            android:id="@+id/contactText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="Contato:\ngabriel.partichelli@inf.ufrgs.br"
+            android:textSize="20sp" />
 
     <TextView
         android:id="@+id/versionText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="30dp"
-        android:gravity="center"
-        android:text="Versão do aplicativo: X.Y.Z"
-        android:textSize="15sp" />
+        android:layout_marginBottom="5dp"
+        android:textSize="14sp" />
 
+    </LinearLayout>
     <Button
-        android:id="@+id/back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Voltar"
-        android:textSize="20sp" />
-
-
+            android:id="@+id/back"
+            android:layout_width="fill_parent"
+            android:layout_height="70dp"
+            android:text="Voltar"
+            android:textSize="20sp"
+            android:layout_marginBottom="30dp"
+            android:layout_marginHorizontal="30dp"
+    />
 </LinearLayout>

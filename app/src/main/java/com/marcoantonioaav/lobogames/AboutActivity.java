@@ -22,8 +22,8 @@ public class AboutActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Objects.requireNonNull(getSupportActionBar()).hide();
 
-        link = findViewById(R.id.linkButton);
-        link.setOnClickListener(view -> openWebsite("https://www.inf.ufrgs.br/lobogames/"));
+        findViewById(R.id.linkButton).setOnClickListener(view -> openWebsite("https://www.inf.ufrgs.br/lobogames/"));
+        findViewById(R.id.linkButton2).setOnClickListener(view -> openWebsite("https://play.google.com/store/apps/details?id=com.marcoantonioaav.lobogames"));
         version = findViewById(R.id.versionText);
         version.setText("Versão do aplicativo: " + BuildConfig.VERSION_NAME);
         back = findViewById(R.id.back);
