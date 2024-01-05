@@ -15,6 +15,9 @@ import com.marcoantonioaav.lobogames.game.Game;
 
 import java.util.Objects;
 
+/**
+ * NOTE: This is currently not being used, it's LoBoGames HowToPlayActivity
+ */
 public class HowToPlayActivity extends AppCompatActivity {
     private Spinner gameSpinner;
     private TextView gameRules;

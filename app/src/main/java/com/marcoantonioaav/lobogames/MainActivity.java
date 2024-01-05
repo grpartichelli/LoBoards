@@ -34,9 +34,9 @@ public class MainActivity extends AppCompatActivity {
 
         settings = findViewById(R.id.buttonSettings);
         settings.setOnClickListener(view -> openSettingsActivity());
-//
-//        about = findViewById(R.id.buttonAbout);
-//        about.setOnClickListener(view -> openAboutActivity());
+
+        about = findViewById(R.id.buttonAbout);
+        about.setOnClickListener(view -> openAboutActivity());
     }
 
     private void openReplayActivity() {
@@ -44,11 +44,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void openPreBoardActivity() {
-        startActivity(new Intent(this, PreBoardActivity.class));
+        startActivity(new Intent(this, GameSelectionActivity.class));
     }
 
     private void openPreGameActivity() {
-        startActivity(new Intent(this, PreGameActivity.class));
+        startActivity(new Intent(this, ModuleSelectionActivity.class));
     }
 
     private void openHowToPlayActivity() { startActivity(new Intent(this, HowToPlayActivity.class)); }

@@ -217,7 +217,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private Board findBoardFromName(String boardName) {
-        for (Board board : PreBoardActivity.BOARDS) {
+        for (Board board : GameSelectionActivity.BOARDS) {
             if (board.getName().equals(boardName)) {
                 return board;
             }

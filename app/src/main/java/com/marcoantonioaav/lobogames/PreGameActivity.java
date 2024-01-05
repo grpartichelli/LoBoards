@@ -28,6 +28,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * NOTE: This is currently not being used, it's LoBoGames PreGameActivity
+ * // but updated with new UI elements and the new Game class
+ */
 public class PreGameActivity extends AppCompatActivity {
     private RadioGroup difficultyChooser, numberOfPlayersChooser;
     private Button play;

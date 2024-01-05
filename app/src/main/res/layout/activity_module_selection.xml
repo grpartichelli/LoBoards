@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:actionBarNavMode="list"
+              tools:context=".MainActivity">
+
+
+
+    <TextView
+            android:paddingTop="50dp"
+            android:paddingBottom="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:labelFor="@id/boardList"
+            android:gravity="center_horizontal|center_vertical"
+            android:textSize="20sp"
+            android:text="Selecionar Módulo:"
+            android:textStyle="bold"
+    />
+
+
+    <LinearLayout
+            android:paddingBottom="30dp"
+            android:paddingHorizontal="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="60"
+            android:orientation="vertical"
+    >
+        <Button
+                android:id="@+id/blockAlignmentButton"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="100"
+                android:layout_marginBottom="5dp"
+                android:text="Bloqueio ou Alinhamento"
+                android:textSize="20sp"
+
+        />
+
+        <Button
+                android:id="@+id/dislocationButton"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="100"
+                android:layout_marginBottom="5dp"
+                android:text="Deslocamento"
+                android:textSize="20sp"/>
+
+
+        <Button
+                android:id="@+id/positionButton"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="100"
+                android:layout_marginBottom="5dp"
+                android:text="Posicionamento"
+                android:textSize="20sp"/>
+
+
+        <Button
+                android:id="@+id/captureButton"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="100"
+                android:layout_marginBottom="5dp"
+                android:text="Captura"
+                android:textSize="20sp"
+
+        />
+
+        <Button
+                android:id="@+id/huntButton"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="100"
+                android:layout_marginBottom="5dp"
+                android:text="Caça"
+                android:textSize="20sp"/>
+
+
+    </LinearLayout>
+</LinearLayout>
+
+

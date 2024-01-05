@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,7 +25,7 @@ import com.marcoantonioaav.lobogames.game.GenericGameFileService;
 import java.util.List;
 import java.util.Objects;
 
-public class PreBoardActivity extends AppCompatActivity {
+public class GameSelectionActivity extends AppCompatActivity {
     private ListView boardListView;
     private Button play;
     private String selectedBoardName;
@@ -38,7 +37,7 @@ public class PreBoardActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pre_board);
+        setContentView(R.layout.activity_game_selection);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Objects.requireNonNull(getSupportActionBar()).hide();
 

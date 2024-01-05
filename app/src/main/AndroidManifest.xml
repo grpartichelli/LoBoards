@@ -34,14 +34,14 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".PreGameActivity"
+            android:name=".ModuleSelectionActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-                android:name=".PreBoardActivity"
+                android:name=".GameSelectionActivity"
                 android:exported="false">
             <meta-data
                     android:name="android.app.lib_name"
