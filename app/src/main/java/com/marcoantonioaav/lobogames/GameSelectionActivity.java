@@ -28,7 +28,7 @@ import java.util.Objects;
 
 public class GameSelectionActivity extends AppCompatActivity {
     private ListView boardListView;
-    private Button playButton, importButton;
+    private Button playButton, importButton, textButton, videoButton;
     private String selectedBoardName;
     private static final int IMPORT_FILE_CODE = 32;
     public EditText maxPiecesInput;
@@ -59,6 +59,15 @@ public class GameSelectionActivity extends AppCompatActivity {
         playButton = findViewById(R.id.play);
         playButton.setOnClickListener(view -> openGameActivity());
         playButton.setEnabled(false);
+
+        textButton = findViewById(R.id.textLink);
+        textButton.setVisibility(isGameModuleSelected ? View.VISIBLE : View.GONE);
+        textButton.setEnabled(false);
+
+        videoButton = findViewById(R.id.videoLink);
+        videoButton.setVisibility(isGameModuleSelected ? View.VISIBLE : View.GONE);
+        videoButton.setEnabled(false);
+
 
 
         maxPiecesInput = findViewById(R.id.maxPiecesInput);
@@ -91,6 +100,8 @@ public class GameSelectionActivity extends AppCompatActivity {
                 (AdapterView<?> ad, View v, int position, long id) -> {
                     selectedBoardName = ((StandardBoard) boardListView.getItemAtPosition(position)).getName();
                     playButton.setEnabled(true);
+                    textButton.setEnabled(true);
+                    videoButton.setEnabled(true);
                 }
         );
     }

@@ -68,6 +68,35 @@
 
         <LinearLayout
                 android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="5dp"
+                android:gravity="center_horizontal|center_vertical"
+                android:orientation="horizontal"
+        >
+
+            <Button
+                    android:id="@+id/textLink"
+                    android:layout_width="0dp"
+                    android:layout_weight="50"
+                    android:layout_height="70dp"
+                    android:text="Regras"
+                    android:textSize="20sp"
+                    android:layout_marginRight="15dp"
+            />
+
+            <Button
+                    android:id="@+id/videoLink"
+                    android:layout_width="0dp"
+                    android:layout_weight="50"
+                    android:layout_height="70dp"
+                    android:text="Vídeo"
+                    android:textSize="20sp"
+
+            />
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
         >
@@ -86,7 +115,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="70dp"
                     android:layout_weight="100"
-                    android:layout_marginBottom="5dp"
                     android:text="Importar Tabuleiro"
                     android:textSize="20sp"/>
 
