@@ -92,7 +92,6 @@ public class ReplayFileService {
 
             JSONObject replayJson = new JSONObject();
             replayJson.put("gameName", replay.getGameName());
-            replayJson.put("boardName", replay.getBoardName());
             replayJson.put("date", replay.getDateString());
             replayJson.put("maxPositions", replay.getMaxPositions());
 
@@ -186,9 +185,9 @@ public class ReplayFileService {
 
         Date date = getDate(object);
         String gameName = object.getString("gameName");
-        String boardName = object.getString("boardName");
         int maxPositions = object.getInt("maxPositions");
-        Replay replay = new Replay(gameName, boardName, date);
+        boolean isFreeMovementMode = object.getBoolean("isFreeMovementMode");
+        Replay replay = new Replay(gameName, date, isFreeMovementMode);
         replay.setMaxPositions(maxPositions);
         List<Move> moves = getMoves(object);
         replay.addAllMoves(moves);

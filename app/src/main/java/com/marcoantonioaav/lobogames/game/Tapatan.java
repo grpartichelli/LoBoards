@@ -27,6 +27,11 @@ public class Tapatan extends MatrixGame {
     }
 
     @Override
+    public GameModule getModule() {
+        return GameModule.ALIGNMENT_OR_BLOCK;
+    }
+
+    @Override
     public MatrixBoard getInitialBoard() {
         int[][] matrix = new int[][]{
                 {Player.PLAYER_1, Player.EMPTY, Player.PLAYER_2},

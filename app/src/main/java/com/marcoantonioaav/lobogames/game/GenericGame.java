@@ -18,10 +18,11 @@ import java.util.List;
  */
 public class GenericGame extends StandardGame {
 
-    public static final String NAME = "Generic";
+    private String name = "";
     private int maxPlayerPositionsCount = 0;
     private String videoUrl = "";
     private String textUrl = "";
+    private GameModule module = GameModule.UNDEFINED;
 
     public GenericGame(Board board) {
         super();
@@ -31,7 +32,11 @@ public class GenericGame extends StandardGame {
 
     @Override
     public String getName() {
-        return NAME;
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
@@ -73,6 +78,15 @@ public class GenericGame extends StandardGame {
 
     public void setTextUrl(String textUrl) {
         this.textUrl = textUrl;
+    }
+
+    @Override
+    public GameModule getModule() {
+        return module;
+    }
+
+    public void setModule(GameModule module) {
+        this.module = module;
     }
 
     @Override

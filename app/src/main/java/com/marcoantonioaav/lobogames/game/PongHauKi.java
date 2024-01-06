@@ -35,6 +35,11 @@ public class PongHauKi extends StandardGame {
     }
 
     @Override
+    public GameModule getModule() {
+        return GameModule.ALIGNMENT_OR_BLOCK;
+    }
+
+    @Override
     public int getMaxPlayerPositionsCount() {
         return 2;
     }

@@ -1,7 +1,6 @@
 package com.marcoantonioaav.lobogames.replay;
 
 import com.marcoantonioaav.lobogames.game.Game;
-import com.marcoantonioaav.lobogames.game.GenericGame;
 import com.marcoantonioaav.lobogames.move.Move;
 
 import java.text.SimpleDateFormat;
@@ -13,19 +12,19 @@ public class Replay {
     private final List<Move> moves = new ArrayList<>();
     private final Date date;
     private final String gameName;
-    private final String boardName;
     private int maxPositions = 0;
+    private boolean isFreeMovementMode = false;
 
-    public Replay(Game game, Date date) {
+    public Replay(Game game, Date date, boolean isFreeMovementMode) {
         this.gameName = game.getName();
-        this.boardName = game.getBoard().getName();
         this.date = date;
+        this.isFreeMovementMode = isFreeMovementMode;
     }
 
-    public Replay(String gameName, String boardName,  Date date) {
+    public Replay(String gameName, Date date, boolean isFreeMovementMode){
         this.gameName = gameName;
-        this.boardName = boardName;
         this.date = date;
+        this.isFreeMovementMode = isFreeMovementMode;
     }
 
     public void addMove(Move move) {
@@ -59,15 +58,10 @@ public class Replay {
         return gameName;
     }
 
-    public String getBoardName() {
-        return boardName;
-    }
 
 
     public String getName() {
-        String name = GenericGame.NAME.equals(gameName) ? boardName : gameName;
-        name += " - " + getDateString();
-        return name;
+        return gameName + " - " + getDateString();
     }
 
 
@@ -82,6 +76,10 @@ public class Replay {
 
     public List<Move> getMoves() {
         return moves;
+    }
+
+    public boolean isFreeMovementMode() {
+        return isFreeMovementMode;
     }
 
     public void setMaxPositions(int maxPositions) {

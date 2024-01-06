@@ -28,6 +28,11 @@ public class Alquerque extends MatrixGame {
     }
 
     @Override
+    public GameModule getModule() {
+        return GameModule.CAPTURE;
+    }
+
+    @Override
     public MatrixBoard getInitialBoard() {
         int[][] matrix = new int[][]{
                 {Player.PLAYER_1, Player.PLAYER_1, Player.PLAYER_1, Player.PLAYER_2, Player.PLAYER_2},

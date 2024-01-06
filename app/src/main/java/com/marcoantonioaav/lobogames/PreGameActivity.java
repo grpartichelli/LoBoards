@@ -16,9 +16,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
 
-import com.marcoantonioaav.lobogames.board.StandardBoard;
 import com.marcoantonioaav.lobogames.game.*;
 import com.marcoantonioaav.lobogames.player.agent.Agent;
 
@@ -92,6 +90,7 @@ public class PreGameActivity extends AppCompatActivity {
     private void openGameActivity() {
         Intent intent = new Intent(this, GameActivity.class);
         intent.putExtra(GameActivity.GAME_NAME, selectedGameName);
+        intent.putExtra(GameActivity.IS_FREE_MOVEMENT_MODE, false);
         intent.putExtra(GameActivity.IS_MULTIPLAYER, getIsMultiplayer());
         intent.putExtra(GameActivity.DIFFICULTY, getDifficulty());
 

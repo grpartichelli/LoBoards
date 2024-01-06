@@ -27,11 +27,12 @@ import java.util.List;
 
 public class GenericGameFileService {
 
-    private GenericGameFileService() {}
+    private GenericGameFileService() {
+    }
 
     private static final double PADDING_PERCENTAGE = 0.0;
 
-    public static StandardBoard createFromIntent(Intent intent) {
+    public static List<GenericGame> createFromIntent(Intent intent) {
         Context context = LoBoards.getAppContext();
         try (InputStream stream = context.getContentResolver().openInputStream(intent.getData())) {
             BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
@@ -40,7 +41,7 @@ public class GenericGameFileService {
             String boardName = object.getString("name");
             File dir = new File(context.getFilesDir(), "boards");
 
-            if(!dir.exists()){
+            if (!dir.exists()) {
                 dir.mkdir();
             }
 
@@ -56,31 +57,31 @@ public class GenericGameFileService {
         }
     }
 
-    public static List<StandardBoard> readAll() {
-        List<StandardBoard> boards = new ArrayList<>();
+    public static List<GenericGame> readAll() {
+        List<GenericGame> games = new ArrayList<>();
         try {
             Context context = LoBoards.getAppContext();
 
-            for (String file: context.getAssets().list("boards")) {
-                boards.add(fromAsset("boards/" + file));
+            for (String file : context.getAssets().list("boards")) {
+                games.addAll(fromAsset("boards/" + file));
             }
 
-            for (File file: context.getFilesDir().listFiles()) {
+            for (File file : context.getFilesDir().listFiles()) {
                 if (!file.getName().equals("boards")) {
                     continue;
                 }
 
-                for (File importedFilePaths: file.listFiles()) {
-                    boards.add(fromFilePath(importedFilePaths.getPath()));
+                for (File importedFilePaths : file.listFiles()) {
+                    games.addAll(fromFilePath(importedFilePaths.getPath()));
                 }
             }
         } catch (Exception e) {
             throw new FailedToReadFileException();
         }
-        return boards;
+        return games;
     }
 
-    private static StandardBoard fromAsset(String filePath) {
+    private static List<GenericGame> fromAsset(String filePath) {
         try (InputStream stream = LoBoards.getAppContext().getAssets().open(filePath)) {
             return processFileStream(stream);
         } catch (Exception e) {
@@ -88,7 +89,7 @@ public class GenericGameFileService {
         }
     }
 
-    private static StandardBoard fromFilePath(String filePath) {
+    private static List<GenericGame> fromFilePath(String filePath) {
         File myFile = new File(filePath);
         try (InputStream stream = new FileInputStream(myFile)) {
             return processFileStream(stream);
@@ -97,28 +98,31 @@ public class GenericGameFileService {
         }
     }
 
-    private static StandardBoard processFileStream(InputStream stream) throws Exception {
+    private static List<GenericGame> processFileStream(InputStream stream) throws Exception {
         BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
         String line = reader.readLine();
         JSONObject object = new JSONObject(line);
 
         double positionRadiusScale = readPositionRadiusScale(object);
-        String name = readName(object);
         BitmapDrawable image = readImage(object);
         List<Position> positions = readPositions(object, image);
         List<Connection> connections = readConnections(positions);
 
         StandardBoard board = new StandardBoard(image, PADDING_PERCENTAGE, positionRadiusScale, positions, connections);
-        board.setName(name);
-        return board;
+        List<GenericGame> games = readGames(object, board);
+        return games;
     }
 
     private static double readPositionRadiusScale(JSONObject object) throws JSONException {
         return object.getDouble("positionRadiusScale");
     }
 
-    private static String readName(JSONObject object) throws JSONException {
-        return object.getString("name");
+    private static String safeGetString(String value, JSONObject object) {
+        try {
+            return object.getString(value);
+        } catch (JSONException e) {
+            return "";
+        }
     }
 
     private static BitmapDrawable readImage(JSONObject object) throws JSONException {
@@ -126,6 +130,39 @@ public class GenericGameFileService {
         byte[] decodedString = Base64.decode(encodedImage, Base64.DEFAULT);
         Bitmap imageBitMap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
         return new BitmapDrawable(LoBoards.getAppContext().getResources(), imageBitMap);
+    }
+
+    private static List<GenericGame> readGames(JSONObject object, StandardBoard board) throws JSONException {
+        JSONArray jsonArray = safeReadJsonArray("games", object);
+        List<GenericGame> games = new ArrayList<>();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject gameObject = jsonArray.getJSONObject(i);
+            String name = safeGetString("name", gameObject);
+            String videoUrl = safeGetString("videoUrl", gameObject);
+            String textUrl = safeGetString("textUrl", gameObject);
+            int maxPlayerPositionsCount = gameObject.getInt("maxPlayerPositionsCount");
+            GameModule module = GameModule.valueOf(safeGetString("module", gameObject));
+            GenericGame game = new GenericGame(board);
+            game.setName(name);
+            game.setVideoUrl(videoUrl);
+            game.setTextUrl(textUrl);
+            game.setMaxPlayerPositionsCount(maxPlayerPositionsCount);
+            game.setModule(module);
+            games.add(game);
+        }
+
+        GenericGame boardNamedGame = new GenericGame(board);
+        boardNamedGame.setName(safeGetString("name", object));
+        games.add(boardNamedGame);
+        return games;
+    }
+
+    private static JSONArray safeReadJsonArray(String value, JSONObject object) {
+        try {
+            return object.getJSONArray(value);
+        } catch (JSONException e) {
+            return new JSONArray();
+        }
     }
 
     private static List<Position> readPositions(JSONObject object, BitmapDrawable image) throws JSONException {
@@ -153,8 +190,8 @@ public class GenericGameFileService {
 
     private static List<Connection> readConnections(List<Position> positions) {
         List<Connection> connections = new ArrayList<>();
-        for (Position position: positions) {
-            for (Position otherPosition: positions) {
+        for (Position position : positions) {
+            for (Position otherPosition : positions) {
                 if (position.equals(otherPosition)) {
                     continue;
                 }

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
+import com.marcoantonioaav.lobogames.game.GameModule;
 
 import java.util.Objects;
 
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void openPreBoardActivity() {
         Intent intent  = new Intent(this, GameSelectionActivity.class);
-        intent.putExtra(GameSelectionActivity.GAME_MODULE, "");
+        intent.putExtra(GameSelectionActivity.GAME_MODULE, GameModule.UNDEFINED);
         startActivity(intent);
     }
 

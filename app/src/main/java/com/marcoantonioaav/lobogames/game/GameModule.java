@@ -5,5 +5,18 @@ public enum GameModule {
     DISLOCATION,
     POSITION,
     CAPTURE,
-    HUNT
+    HUNT,
+    UNDEFINED;
+
+
+    public static GameModule parse(String module) {
+        if (module == null || module.isEmpty()) {
+            return UNDEFINED;
+        }
+        return GameModule.valueOf(module.toUpperCase());
+    }
+
+    public boolean isUndefined() {
+        return this == UNDEFINED;
+    }
 }

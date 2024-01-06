@@ -16,28 +16,25 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import com.marcoantonioaav.lobogames.board.Board;
-
-import com.marcoantonioaav.lobogames.board.StandardBoard;
 import com.marcoantonioaav.lobogames.game.GameModule;
 import com.marcoantonioaav.lobogames.game.GenericGame;
 import com.marcoantonioaav.lobogames.game.GenericGameFileService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class GameSelectionActivity extends AppCompatActivity {
-    private ListView boardListView;
+    private ListView gameListView;
     private Button playButton, importButton, textButton, videoButton;
-    private String selectedBoardName;
+    private GenericGame selectedGame;
     private static final int IMPORT_FILE_CODE = 32;
-    public EditText maxPiecesInput;
+    public EditText maxPlayerPositionsCountSelector;
     public static final String GAME_MODULE = "GAME_MODULE";
     GameModule gameModule;
-    boolean isGameModuleSelected = false;
 
 
-    public static final List<StandardBoard> BOARDS = GenericGameFileService.readAll();
+    public static final List<GenericGame> GAMES = GenericGameFileService.readAll();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,64 +43,72 @@ public class GameSelectionActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Objects.requireNonNull(getSupportActionBar()).hide();
 
-        createBoardList();
-
-        String possibleModule = (String) this.getIntent().getExtras().get(GAME_MODULE);
-        if (!possibleModule.isEmpty()) {
-            gameModule = GameModule.valueOf(possibleModule);
-            isGameModuleSelected = true;
-        } else {
-            isGameModuleSelected = false;
-        }
+        gameModule = (GameModule) this.getIntent().getExtras().get(GAME_MODULE);
 
         playButton = findViewById(R.id.play);
         playButton.setOnClickListener(view -> openGameActivity());
         playButton.setEnabled(false);
 
         textButton = findViewById(R.id.textLink);
-        textButton.setVisibility(isGameModuleSelected ? View.VISIBLE : View.GONE);
+        textButton.setVisibility(gameModule.isUndefined() ? View.GONE : View.VISIBLE);
         textButton.setEnabled(false);
 
         videoButton = findViewById(R.id.videoLink);
-        videoButton.setVisibility(isGameModuleSelected ? View.VISIBLE : View.GONE);
+        videoButton.setVisibility(gameModule.isUndefined() ? View.GONE : View.VISIBLE);
         videoButton.setEnabled(false);
 
+        maxPlayerPositionsCountSelector = findViewById(R.id.maxPiecesInput);
+        maxPlayerPositionsCountSelector.setVisibility(gameModule.isUndefined() ? View.VISIBLE : View.GONE);
+        runOnUiThread(() -> maxPlayerPositionsCountSelector.setText("10"));
 
-
-        maxPiecesInput = findViewById(R.id.maxPiecesInput);
-        maxPiecesInput.setVisibility(isGameModuleSelected ? View.GONE : View.VISIBLE);
-        runOnUiThread(() -> maxPiecesInput.setText("10"));
-
-        findViewById(R.id.numberLabel).setVisibility(isGameModuleSelected ? View.GONE : View.VISIBLE);
+        findViewById(R.id.numberLabel).setVisibility(gameModule.isUndefined() ? View.VISIBLE : View.GONE);
 
         TextView boardListLabel = findViewById(R.id.boardListLabel);
-        boardListLabel.setText(isGameModuleSelected ?  "Selecione um jogo:" : "Selecione um tabuleiro:");
+        boardListLabel.setText(gameModule.isUndefined() ? "Selecione um tabuleiro:" : "Selecione um jogo:");
 
         importButton = findViewById(R.id.importBoard);
         importButton.setVisibility(View.GONE); // NOTE: Disabled for now
         importButton.setOnClickListener(view -> importFile());
+
+        createBoardList();
     }
 
     private void createBoardList() {
-        if (boardListView != null) {
-            boardListView.setAdapter(null);
-        }  else {
-            boardListView = findViewById(R.id.boardList);
-            boardListView.addHeaderView(new View(getBaseContext()), null, true);
-            boardListView.addFooterView(new View(getBaseContext()), null, true);
+        if (gameListView != null) {
+            gameListView.setAdapter(null);
+        } else {
+            gameListView = findViewById(R.id.boardList);
+            gameListView.addHeaderView(new View(getBaseContext()), null, true);
+            gameListView.addFooterView(new View(getBaseContext()), null, true);
         }
 
-        BoardListAdapter adapter = new BoardListAdapter(this, R.layout.board_list_item, BOARDS);
+        BoardListAdapter adapter = new BoardListAdapter(this, R.layout.board_list_item, resolveGamesFilteredByModule());
 
-        boardListView.setAdapter(adapter);
-        boardListView.setOnItemClickListener(
+        gameListView.setAdapter(adapter);
+        gameListView.setOnItemClickListener(
                 (AdapterView<?> ad, View v, int position, long id) -> {
-                    selectedBoardName = ((StandardBoard) boardListView.getItemAtPosition(position)).getName();
+                    selectedGame = ((GenericGame) gameListView.getItemAtPosition(position));
                     playButton.setEnabled(true);
-                    textButton.setEnabled(true);
-                    videoButton.setEnabled(true);
+                    if (!selectedGame.getVideoUrl().isEmpty()) {
+                        videoButton.setEnabled(true);
+
+                    }
+
+                    if (!selectedGame.getTextUrl().isEmpty()) {
+                        textButton.setEnabled(true);
+                    }
                 }
         );
+    }
+
+    private List<GenericGame> resolveGamesFilteredByModule() {
+        List<GenericGame> filteredGames = new ArrayList<>();
+        for (GenericGame game : GAMES) {
+            if (game.getModule().equals(gameModule)) {
+                filteredGames.add(game);
+            }
+        }
+        return filteredGames;
     }
 
     private void importFile() {
@@ -113,14 +118,17 @@ public class GameSelectionActivity extends AppCompatActivity {
     }
 
     private void openGameActivity() {
-        Intent intent = new Intent(this, GameActivity.class);
-        intent.putExtra(GameActivity.GAME_NAME, GenericGame.NAME);
-        intent.putExtra(GameActivity.BOARD_NAME, selectedBoardName);
-        intent.putExtra(GameActivity.MAX_POSITIONS,
-                Integer.parseInt(maxPiecesInput.getText().toString().isEmpty()
+        int positionsCount =
+                Integer.parseInt(maxPlayerPositionsCountSelector.getText().toString().isEmpty()
                         ? "10"
-                        : maxPiecesInput.getText().toString())
-        );
+                        : maxPlayerPositionsCountSelector.getText().toString());
+
+        if (selectedGame.getMaxPlayerPositionsCount() == 0) {
+            selectedGame.setMaxPlayerPositionsCount(positionsCount);
+        }
+        Intent intent = new Intent(this, GameActivity.class);
+        intent.putExtra(GameActivity.GAME_NAME, selectedGame.getName());
+        intent.putExtra(GameActivity.IS_FREE_MOVEMENT_MODE, true);
         intent.putExtra(GameActivity.IS_MULTIPLAYER, true);
 
         startActivity(intent);
@@ -129,33 +137,34 @@ public class GameSelectionActivity extends AppCompatActivity {
 
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == IMPORT_FILE_CODE) {
-            StandardBoard board = GenericGameFileService.createFromIntent(data);
+            List<GenericGame> games = GenericGameFileService.createFromIntent(data);
 
-            for(int i=0; i < BOARDS.size(); i++){
-                if(BOARDS.get(i).getName().equals(board.getName())){
-                    BOARDS.remove(i);
-                    break;
+            for (int i = 0; i < GAMES.size(); i++) {
+                for (int j = 0; j < games.size(); j++) {
+                    if (GAMES.get(i).getName().equals(games.get(i).getName())) {
+                        GAMES.remove(i);
+                        break;
+                    }
                 }
             }
 
-            BOARDS.add(0, board);
-            selectedBoardName = board.getName();
+            GAMES.addAll(games);
+            selectedGame = games.get(0);
             Toast.makeText(this, "Tabuleiro importado com sucesso", Toast.LENGTH_SHORT).show();
             createBoardList();
         }
     }
 
-    private static class BoardListAdapter extends ArrayAdapter<StandardBoard> {
+    private static class BoardListAdapter extends ArrayAdapter<GenericGame> {
 
         private int resourceLayout;
         private Context mContext;
 
-        public BoardListAdapter(Context context, int resource, List<StandardBoard> boards) {
-            super(context, resource, boards);
+        public BoardListAdapter(Context context, int resource, List<GenericGame> games) {
+            super(context, resource, games);
             this.resourceLayout = resource;
             this.mContext = context;
         }
@@ -170,13 +179,13 @@ public class GameSelectionActivity extends AppCompatActivity {
                 view = layoutInflater.inflate(resourceLayout, null);
             }
 
-            Board board = getItem(position);
+            GenericGame game = getItem(position);
 
-            if (board != null) {
+            if (game != null) {
                 TextView textView = view.findViewById(R.id.boardListItemTextView);
 
                 if (textView != null) {
-                    textView.setText(board.getName());
+                    textView.setText(game.getName());
                     textView.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
                 }
 
@@ -185,8 +194,8 @@ public class GameSelectionActivity extends AppCompatActivity {
 
                 if (imageView != null) {
                     // NOTE: Must be a copy to avoid issues with resetting games
-                    imageView.setImageDrawable(board.getImageCopy());
-                    imageView.setContentDescription(board.getName());
+                    imageView.setImageDrawable(game.getBoard().getImageCopy());
+                    imageView.setContentDescription(game.getName());
                 }
             }
 

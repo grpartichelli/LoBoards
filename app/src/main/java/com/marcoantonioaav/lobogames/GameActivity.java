@@ -46,8 +46,8 @@ import static com.marcoantonioaav.lobogames.ReplayActivity.REPLAYS;
 public class GameActivity extends AppCompatActivity {
     public static final String REPLAY_NAME = "REPLAY_NAME";
     public static final String GAME_NAME = "GAME_NAME";
-    public static final String BOARD_NAME = "BOARD_NAME";
-    public static final String MAX_POSITIONS = "MAX_POSITIONS";
+    public static final String IS_FREE_MOVEMENT_MODE = "IS_FREE_MOVEMENT_MODE";
+
     public static final String IS_MULTIPLAYER = "IS_MULTIPLAYER";
     public static final String DIFFICULTY = "DIFFICULTY";
 
@@ -71,10 +71,9 @@ public class GameActivity extends AppCompatActivity {
     private int turn;
     private Player player1;
     private Player player2;
-    private int maxPlayerPositionsCount = 1;
     private boolean isGameRunning;
 
-    private boolean isBoardMode = false; // when it is a generic game
+    private boolean isFreeMovementMode = false; // when it comes from game selection activity
     private boolean isReplayMode = false; // when it comes from replay activity
 
     private boolean isReplayRunning;
@@ -89,32 +88,27 @@ public class GameActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).hide();
 
         String gameName = (String) this.getIntent().getExtras().get(GAME_NAME);
-        String boardName = (String) this.getIntent().getExtras().get(BOARD_NAME);
         String replayName = (String) this.getIntent().getExtras().get(REPLAY_NAME);
+        isFreeMovementMode = (boolean) this.getIntent().getExtras().get(IS_FREE_MOVEMENT_MODE);
 
         if (replayName != null) {
             replay = findReplayFromName(replayName);
             gameName = replay.getGameName();
-            boardName = replay.getBoardName();
-            isReplayRunning = true;
             isReplayMode = true;
         }
 
-        if (GenericGame.NAME.equals(gameName)) {
-            Board board = findBoardFromName(boardName);
-            GenericGame genericGame = new GenericGame(board);
-            maxPlayerPositionsCount = (int) this.getIntent().getExtras().get(MAX_POSITIONS);
-            genericGame.setMaxPlayerPositionsCount(maxPlayerPositionsCount);
+        if (isFreeMovementMode) {
+            GenericGame genericGame = findGameFromName(gameName);
+            if (isReplayMode) {
+                genericGame.setMaxPlayerPositionsCount(replay.getMaxPositions());
+            }
             game = genericGame;
-            game.setBoard(board);
-            isBoardMode = true;
-            setTitle(board.getName());
         } else {
             game = PreGameActivity.GAMES.get(gameName);
-            setTitle(game.getName());
         }
 
 
+        setTitle(game.getName());
         updatePlayers();
 
         // buttons
@@ -138,7 +132,7 @@ public class GameActivity extends AppCompatActivity {
         replayButtonsLayout = findViewById(R.id.replayLayout);
 
         // status
-        findViewById(R.id.statusLayout).setVisibility(!isBoardMode ? View.VISIBLE : View.GONE);
+        findViewById(R.id.statusLayout).setVisibility(!isFreeMovementMode ? View.VISIBLE : View.GONE);
         statusTextView = findViewById(R.id.status);
 
         goBackToMenu = findViewById(R.id.goBackToMenu);
@@ -186,7 +180,7 @@ public class GameActivity extends AppCompatActivity {
             goBackToReplay.setVisibility(View.VISIBLE);
             restartReplay.setVisibility(View.VISIBLE);
         } else {
-            if (isBoardMode) {
+            if (isFreeMovementMode) {
                 endGame.setVisibility(View.VISIBLE);
             } else {
                 restartGame.setVisibility(View.VISIBLE);
@@ -216,10 +210,10 @@ public class GameActivity extends AppCompatActivity {
 
     }
 
-    private Board findBoardFromName(String boardName) {
-        for (Board board : GameSelectionActivity.BOARDS) {
-            if (board.getName().equals(boardName)) {
-                return board;
+    private GenericGame findGameFromName(String gameName) {
+        for (GenericGame game : GameSelectionActivity.GAMES) {
+            if (game.getName().equals(gameName)) {
+                return game;
             }
         }
         return null;
@@ -272,7 +266,7 @@ public class GameActivity extends AppCompatActivity {
                 int outOfBoardHeight = 0;
 
                 int boardViewSize = Math.min(buttonsLayoutWidth, buttonsLayoutHeight);
-                if (isBoardMode) {
+                if (isFreeMovementMode) {
                     outOfBoardHeight = (int) (boardViewSize * 2.75 * game.getBoard().getPositionRadiusScale());
 
                     if (buttonsLayoutHeight - boardViewSize < 2 * outOfBoardHeight) {
@@ -288,7 +282,7 @@ public class GameActivity extends AppCompatActivity {
                 boardView.setBoard(game.getBoard().copy());
                 boardView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 
-                if (isBoardMode) {
+                if (isFreeMovementMode) {
                     setupOutOfBoardPositionsViews(boardViewSize, outOfBoardHeight, boardView.getBoard());
                 }
 
@@ -325,7 +319,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void setupOutOfBoardAccessibilityRelatedButton(Button button, boolean isFirst) {
-        if (!isBoardMode) {
+        if (!isFreeMovementMode) {
             return;
         }
 
@@ -458,7 +452,7 @@ public class GameActivity extends AppCompatActivity {
         showTurn();
         Player currentPlayer = resolvePlayer(turn);
         if (currentPlayer instanceof Human) {
-            if (isBoardMode) {
+            if (isFreeMovementMode) {
                 ((Human) currentPlayer).clearCursor();
             }
             runOnUiThread(this::updateButtonsDescription);
@@ -471,7 +465,7 @@ public class GameActivity extends AppCompatActivity {
         }
 
 
-        int playerId = isBoardMode ? startPositionPlayerId : move.getPlayerId();
+        int playerId = isFreeMovementMode ? startPositionPlayerId : move.getPlayerId();
         String result = Player.getName(playerId) + ": ";
         for (Movement movement : move.getMovements()) {
             result += " " + movement.toString();
@@ -481,15 +475,15 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void resetOutOfBoardSelection() {
-        if (isBoardMode) {
+        if (isFreeMovementMode) {
             topOutOfBoardPositionsView.setSelection(false);
             bottomOutOfBoardPositionsView.setSelection(false);
         }
     }
 
     private Player resolvePlayer(int turn) {
-        if (isBoardMode) {
-            // in board mode we act as if a single player is playing
+        if (isFreeMovementMode) {
+            // in free movement mode we act as if a single player is playing
             return player1;
         }
         return Player.selectPlayerById(player1, player2, turn);
@@ -507,10 +501,10 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void updatePositionsCount() {
-        if (isBoardMode) {
+        if (isFreeMovementMode) {
             runOnUiThread(() -> {
-                bottomOutOfBoardPositionsView.setMaxPlayerPositionsCount(maxPlayerPositionsCount);
-                topOutOfBoardPositionsView.setMaxPlayerPositionsCount(maxPlayerPositionsCount);
+                bottomOutOfBoardPositionsView.setMaxPlayerPositionsCount(game.getMaxPlayerPositionsCount());
+                topOutOfBoardPositionsView.setMaxPlayerPositionsCount(game.getMaxPlayerPositionsCount());
                 int player1Positions = this.game.getBoard().countPlayerPieces(Player.PLAYER_1);
                 int player2Positions = this.game.getBoard().countPlayerPieces(Player.PLAYER_2);
                 bottomOutOfBoardPositionsView.updatePositionsCount(player1Positions);
@@ -546,10 +540,8 @@ public class GameActivity extends AppCompatActivity {
             player1 = new ReplayPlayer(Player.PLAYER_1, replay);
             player2 = new ReplayPlayer(Player.PLAYER_2, replay);
         } else {
-            replay = new Replay(game, Calendar.getInstance().getTime());
-            if (isBoardMode) {
-                replay.setMaxPositions(maxPlayerPositionsCount);
-            }
+            replay = new Replay(game, Calendar.getInstance().getTime(), isFreeMovementMode);
+            replay.setMaxPositions(game.getMaxPlayerPositionsCount());
             updatePlayers();
         }
     }
@@ -565,7 +557,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void showTurn() {
-        if (isBoardMode) {
+        if (isFreeMovementMode) {
             return;
         }
         String statusMessage = "Vez do " + Player.getName(turn);
@@ -577,7 +569,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void showResult() {
-        if (isBoardMode) {
+        if (isFreeMovementMode) {
             return;
         }
 

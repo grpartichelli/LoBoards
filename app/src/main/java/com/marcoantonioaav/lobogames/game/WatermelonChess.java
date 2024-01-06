@@ -39,6 +39,11 @@ public class WatermelonChess extends StandardGame {
     }
 
     @Override
+    public GameModule getModule() {
+        return GameModule.CAPTURE;
+    }
+
+    @Override
     public int getMaxPlayerPositionsCount() {
         return 6;
     }

@@ -28,6 +28,11 @@ public class TicTacToe extends MatrixGame {
     }
 
     @Override
+    public GameModule getModule() {
+        return GameModule.POSITION;
+    }
+
+    @Override
     public MatrixBoard getInitialBoard() {
         int[][] matrix = new int[][]{
                 {Player.EMPTY, Player.EMPTY, Player.EMPTY},

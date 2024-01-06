@@ -16,7 +16,6 @@ public abstract class Board {
     protected final double paddingPercentageHorizontal;
     protected final double paddingPercentageVertical;
     protected final double positionRadiusScale;
-    private String name = "";
 
     protected Board(Drawable image, double paddingPercentage, double positionRadiusScale) {
         this(image, paddingPercentage, paddingPercentage, positionRadiusScale);
@@ -105,15 +104,6 @@ public abstract class Board {
 
     public abstract List<Coordinate> findCoordinatesBetween(Position startPosition, Position endPosition);
     public abstract Position findPositionById(String positionId);
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
 
     public float getPositionRadius(int width) {
         return (float) (width * this.getPositionRadiusScale());

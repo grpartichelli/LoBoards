@@ -139,10 +139,11 @@ public class ReplayActivity extends AppCompatActivity {
     }
 
     private void openGameActivity() {
+        Replay replay = findReplayFromName(selectedReplayName);
         Intent intent = new Intent(this, GameActivity.class);
         intent.putExtra(GameActivity.REPLAY_NAME, selectedReplayName);
         intent.putExtra(GameActivity.IS_MULTIPLAYER, true);
-        intent.putExtra(GameActivity.MAX_POSITIONS, findReplayFromName(selectedReplayName).getMaxPositions());
+        intent.putExtra(GameActivity.IS_FREE_MOVEMENT_MODE, replay.isFreeMovementMode());
 
         startActivity(intent);
     }

@@ -27,6 +27,8 @@ public abstract class Game {
 
     public abstract String getVideoUrl();
 
+    public abstract GameModule getModule();
+
     public abstract Game newInstance();
 
     public Game copy() {

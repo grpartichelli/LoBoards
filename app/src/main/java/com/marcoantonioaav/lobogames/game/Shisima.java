@@ -54,6 +54,11 @@ public class Shisima extends StandardGame {
     }
 
     @Override
+    public GameModule getModule() {
+        return GameModule.ALIGNMENT_OR_BLOCK;
+    }
+
+    @Override
     public Game newInstance() {
         return new Shisima();
     }

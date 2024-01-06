@@ -2,7 +2,6 @@ package com.marcoantonioaav.lobogames.game;
 
 import com.marcoantonioaav.lobogames.board.MatrixBoard;
 import com.marcoantonioaav.lobogames.move.MatrixMove;
-import com.marcoantonioaav.lobogames.move.Move;
 import com.marcoantonioaav.lobogames.player.Player;
 import com.marcoantonioaav.lobogames.player.agent.MinimaxAgent;
 import com.marcoantonioaav.lobogames.board.Matrix5x5BoardFactory;
@@ -25,6 +24,10 @@ public class TsoroYematatuV2 extends MatrixGame {
     @Override
     public String getRules() {
         return "Em sua vez, o jogador pode inserir uma peça em uma posição vazia do tabuleiro, até atingir 4 peças. Após, pode movimentar uma peça por vez, apenas em áreas adjacentes à atual posição. Ganha aquele que conseguir alinhar 4 peças.";
+    }
+
+    public GameModule getModule() {
+        return GameModule.ALIGNMENT_OR_BLOCK;
     }
 
     @Override
