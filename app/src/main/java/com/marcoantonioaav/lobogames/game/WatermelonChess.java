@@ -39,6 +39,21 @@ public class WatermelonChess extends StandardGame {
     }
 
     @Override
+    public int getMaxPlayerPositionsCount() {
+        return 6;
+    }
+
+    @Override
+    public String getTextUrl() {
+        return "";
+    }
+
+    @Override
+    public String getVideoUrl() {
+        return "";
+    }
+
+    @Override
     public Game newInstance() {
         return new WatermelonChess();
     }

@@ -21,6 +21,12 @@ public abstract class Game {
 
     public abstract String getRules();
 
+    public abstract int getMaxPlayerPositionsCount();
+
+    public abstract String getTextUrl();
+
+    public abstract String getVideoUrl();
+
     public abstract Game newInstance();
 
     public Game copy() {

@@ -32,6 +32,21 @@ public abstract class MatrixGame extends Game {
         return getPlayerMatrixMove(startCoordinate.x(), startCoordinate.y(), endCoordinate.x(), endCoordinate.y(), playerId);
     }
 
+    @Override
+    public int getMaxPlayerPositionsCount() {
+        return this.board.getWidth() * this.board.getWidth();
+    }
+
+    @Override
+    public String getTextUrl() {
+        return "";
+    }
+
+    @Override
+    public String getVideoUrl() {
+        return "";
+    }
+
     public abstract MatrixMove getPlayerMatrixMove(int startX, int startY, int endX, int endY, int playerId);
 
     @Override

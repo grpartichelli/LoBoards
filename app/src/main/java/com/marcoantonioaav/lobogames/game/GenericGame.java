@@ -20,6 +20,8 @@ public class GenericGame extends StandardGame {
 
     public static final String NAME = "Generic";
     private int maxPlayerPositionsCount = 0;
+    private String videoUrl = "";
+    private String textUrl = "";
 
     public GenericGame(Board board) {
         super();
@@ -48,6 +50,29 @@ public class GenericGame extends StandardGame {
     public String getRules() {
         // NOTE: this game doesn't implement this method because it has no specific rules
         throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public int getMaxPlayerPositionsCount() {
+        return maxPlayerPositionsCount;
+    }
+
+    @Override
+    public String getVideoUrl() {
+        return videoUrl;
+    }
+
+    public void setVideoUrl(String videoUrl) {
+        this.videoUrl = videoUrl;
+    }
+
+    @Override
+    public String getTextUrl() {
+        return textUrl;
+    }
+
+    public void setTextUrl(String textUrl) {
+        this.textUrl = textUrl;
     }
 
     @Override

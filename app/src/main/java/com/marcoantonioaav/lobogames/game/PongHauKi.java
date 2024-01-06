@@ -35,6 +35,21 @@ public class PongHauKi extends StandardGame {
     }
 
     @Override
+    public int getMaxPlayerPositionsCount() {
+        return 2;
+    }
+
+    @Override
+    public String getTextUrl() {
+        return "";
+    }
+
+    @Override
+    public String getVideoUrl() {
+        return "";
+    }
+
+    @Override
     public Game newInstance() {
         return new PongHauKi();
     }
