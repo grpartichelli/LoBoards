@@ -3,6 +3,7 @@ package com.gabrielpartichelli.loboards;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,11 +52,13 @@ public class GameSelectionActivity extends AppCompatActivity {
 
         textButton = findViewById(R.id.textLink);
         textButton.setVisibility(gameModule.isUndefined() ? View.GONE : View.VISIBLE);
+        textButton.setOnClickListener(view -> openWebsite(selectedGame.getTextUrl()));
         textButton.setEnabled(false);
 
         videoButton = findViewById(R.id.videoLink);
         videoButton.setVisibility(gameModule.isUndefined() ? View.GONE : View.VISIBLE);
         videoButton.setEnabled(false);
+        videoButton.setOnClickListener(view -> openWebsite(selectedGame.getVideoUrl()));
 
         maxPlayerPositionsCountSelector = findViewById(R.id.maxPiecesInput);
         maxPlayerPositionsCountSelector.setVisibility(gameModule.isUndefined() ? View.VISIBLE : View.GONE);
@@ -71,6 +74,10 @@ public class GameSelectionActivity extends AppCompatActivity {
         importButton.setOnClickListener(view -> importFile());
 
         createBoardList();
+    }
+
+    private void openWebsite(String link) {
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(link)));
     }
 
     private String resolveListLabel() {
