@@ -105,14 +105,8 @@ public class GameSelectionActivity extends AppCompatActivity {
                 (AdapterView<?> ad, View v, int position, long id) -> {
                     selectedGame = ((GenericGame) gameListView.getItemAtPosition(position));
                     playButton.setEnabled(true);
-                    if (!selectedGame.getVideoUrl().isEmpty()) {
-                        videoButton.setEnabled(true);
-
-                    }
-
-                    if (!selectedGame.getTextUrl().isEmpty()) {
-                        textButton.setEnabled(true);
-                    }
+                    videoButton.setEnabled(!selectedGame.getVideoUrl().isEmpty());
+                    textButton.setEnabled(!selectedGame.getTextUrl().isEmpty());
                 }
         );
     }
