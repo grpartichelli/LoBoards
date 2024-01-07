@@ -94,6 +94,7 @@ public class ReplayFileService {
             replayJson.put("gameName", replay.getGameName());
             replayJson.put("date", replay.getDateString());
             replayJson.put("maxPositions", replay.getMaxPositions());
+            replayJson.put("isFreeMovementMode", replay.isFreeMovementMode());
 
             JSONArray movesJsonArray = new JSONArray();
 
@@ -145,6 +146,7 @@ public class ReplayFileService {
             writer.close();
 
         } catch (Exception e) {
+            Log.e("ReplayFileService", e.getMessage());
             throw new FailedToReadFileException();
         }
     }

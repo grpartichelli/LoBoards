@@ -95,6 +95,7 @@ public class GameActivity extends AppCompatActivity {
             replay = findReplayFromName(replayName);
             gameName = replay.getGameName();
             isReplayMode = true;
+            isReplayRunning = true;
         }
 
         if (isFreeMovementMode) {

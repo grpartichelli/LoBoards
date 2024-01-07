@@ -117,6 +117,7 @@ public class GameSelectionActivity extends AppCompatActivity {
         startActivityForResult(intent, IMPORT_FILE_CODE);
     }
 
+    // TODO: Fix replay
     private void openGameActivity() {
         int positionsCount =
                 Integer.parseInt(maxPlayerPositionsCountSelector.getText().toString().isEmpty()
