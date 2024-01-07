@@ -63,14 +63,23 @@ public class GameSelectionActivity extends AppCompatActivity {
 
         findViewById(R.id.numberLabel).setVisibility(gameModule.isUndefined() ? View.VISIBLE : View.GONE);
 
-        TextView boardListLabel = findViewById(R.id.boardListLabel);
-        boardListLabel.setText(gameModule.isUndefined() ? "Selecione um tabuleiro:" : "Selecione um jogo:");
+        TextView gameListLabel = findViewById(R.id.gameListLabel);
+        gameListLabel.setText(resolveListLabel());
 
         importButton = findViewById(R.id.importBoard);
         importButton.setVisibility(View.GONE); // NOTE: Disabled for now
         importButton.setOnClickListener(view -> importFile());
 
         createBoardList();
+    }
+
+    private String resolveListLabel() {
+        if (gameModule.isUndefined()) {
+            return "Selecione um tabuleiro:";
+        }
+
+
+        return "Jogos de " + gameModule.getName() + ":";
     }
 
     private void createBoardList() {

@@ -9,7 +9,7 @@
 
 
     <TextView
-            android:id="@+id/boardListLabel"
+            android:id="@+id/gameListLabel"
             android:paddingTop="40dp"
             android:paddingBottom="10dp"
             android:layout_width="match_parent"

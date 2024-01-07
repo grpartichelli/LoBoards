@@ -141,7 +141,7 @@ public class GenericGameFileService {
             String videoUrl = safeGetString("videoUrl", gameObject);
             String textUrl = safeGetString("textUrl", gameObject);
             int maxPlayerPositionsCount = gameObject.getInt("maxPlayerPositionsCount");
-            GameModule module = GameModule.valueOf(safeGetString("module", gameObject));
+            GameModule module = GameModule.parse(safeGetString("module", gameObject));
             GenericGame game = new GenericGame(board);
             game.setName(name);
             game.setVideoUrl(videoUrl);
