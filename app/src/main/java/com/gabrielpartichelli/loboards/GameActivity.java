@@ -351,7 +351,7 @@ public class GameActivity extends AppCompatActivity {
         positionsView.setOnClickListener(
                 () -> {
                     if (player1 instanceof Human) {
-                        ((Human) player1).setCursor(Position.instanceOutOfBoardForPlayerId(positionsView.getMovePlayerId()));
+                        ((Human) player1).setCurrentPositionId(Position.instanceOutOfBoardForPlayerId(positionsView.getMovePlayerId()));
                     }
 
                     positionsView.setSelection(positionsView.isPositionEnabled());
@@ -376,7 +376,7 @@ public class GameActivity extends AppCompatActivity {
         if (isGameRunning) {
             Player player = resolvePlayer(turn);
             if (player instanceof Human) {
-                ((Human) player).setCursor(selectedPosition);
+                ((Human) player).setCurrentPositionId(selectedPosition);
                 boardView.setSelectedPosition(selectedPosition);
                 runOnUiThread(() -> boardView.announceForAccessibility("Selecionado " + selectedPosition.getId()));
             }

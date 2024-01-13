@@ -5,8 +5,8 @@ import com.gabrielpartichelli.loboards.move.Move;
 import com.gabrielpartichelli.loboards.position.Position;
 
 public class Human extends Player {
-    private String lastCursor = Position.instanceOutOfBoard().getId();
-    private String cursor = Position.instanceOutOfBoard().getId();
+    private String lastPositionId = Position.instanceOutOfBoard().getId();
+    private String currentPositionId = Position.instanceOutOfBoard().getId();
 
     private boolean ready = false;
 
@@ -22,17 +22,17 @@ public class Human extends Player {
     @Override
     public Move getMove(Game game) {
         ready = false;
-        return game.getPlayerMove(lastCursor, cursor, getId());
+        return game.getPlayerMove(lastPositionId, currentPositionId, getId());
     }
 
-    public void setCursor(Position position) {
-        this.lastCursor = this.cursor;
-        this.cursor = position.getId();
+    public void setCurrentPositionId(Position position) {
+        this.lastPositionId = this.currentPositionId;
+        this.currentPositionId = position.getId();
         ready = true;
     }
 
     public void clearCursor() {
-        this.lastCursor = Position.instanceOutOfBoard().getId();;
-        this.cursor = Position.instanceOutOfBoard().getId();
+        this.lastPositionId = Position.instanceOutOfBoard().getId();;
+        this.currentPositionId = Position.instanceOutOfBoard().getId();
     }
 }
