@@ -45,8 +45,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void openPreBoardActivity() {
-        Intent intent  = new Intent(this, GameSelectionActivity.class);
-        intent.putExtra(GameSelectionActivity.GAME_MODULE, GameModule.UNDEFINED);
+        Intent intent  = new Intent(this, PlayOptionsActiviy.class);
+        intent.putExtra(PlayOptionsActiviy.GAME_MODULE, GameModule.UNDEFINED);
         startActivity(intent);
     }
 

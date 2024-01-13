@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class GameSelectionActivity extends AppCompatActivity {
+public class PlayOptionsActiviy extends AppCompatActivity {
     private ListView gameListView;
     private Button playButton, importButton, textButton, videoButton;
     private GenericGame selectedGame;

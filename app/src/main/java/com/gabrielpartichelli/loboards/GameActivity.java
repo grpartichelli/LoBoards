@@ -212,7 +212,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private GenericGame findGameFromName(String gameName) {
-        for (GenericGame game : GameSelectionActivity.GAMES) {
+        for (GenericGame game : PlayOptionsActiviy.GAMES) {
             if (game.getName().equals(gameName)) {
                 return game;
             }
