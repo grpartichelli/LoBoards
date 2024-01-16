@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void openPreGameActivity() {
-        startActivity(new Intent(this, ModuleSelectionActivity.class));
+        startActivity(new Intent(this, ModuleActivity.class));
     }
 
     private void openHowToPlayActivity() { startActivity(new Intent(this, HowToPlayActivity.class)); }

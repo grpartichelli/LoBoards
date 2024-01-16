@@ -9,7 +9,7 @@ import com.gabrielpartichelli.loboards.game.GameModule;
 
 import java.util.Objects;
 
-public class ModuleSelectionActivity extends AppCompatActivity {
+public class ModuleActivity extends AppCompatActivity {
     private Button play;
 
     @Override
