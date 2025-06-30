@@ -3,14 +3,14 @@ plugins {
 }
 
 android {
-    compileSdk 32
+    compileSdk 34
 
     defaultConfig {
-        applicationId "com.gabrielpartichelli.loboards"
-        minSdk 16
-        targetSdk 32
-        versionCode 5
-        versionName "1.0.4"
+        applicationId "com.gabrielpartichelli.loboards.ufrgs"
+        minSdk 21
+        targetSdk 34
+        versionCode 6
+        versionName "1.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
